@@ -1,3 +1,3 @@
 import { User } from 'prisma/prisma-client';
 
-export type IAuthResponse = Omit<User, 'hashPassword' | 'salt' | 'id'>;
+export type IAuthResponse = Omit<User, 'hashPassword' | 'salt' | 'id' | 'link' | 'role'>;

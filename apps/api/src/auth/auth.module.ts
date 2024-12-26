@@ -5,11 +5,10 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { UserModule } from '../user/user.module';
 import { PasswordModule } from '../password/password.module';
 import { TokenModule } from '../token/token.module';
-import { SignupGuard } from './guards/signup.guard';
-
+import { MailModule } from '../mail/mail.module';
 @Module({
-  imports: [PrismaModule, UserModule, PasswordModule, TokenModule],
+  imports: [UserModule, PrismaModule, PasswordModule, TokenModule, MailModule],
   controllers: [AuthController],
-  providers: [AuthService, SignupGuard, SignupGuard]
+  providers: [AuthService],
 })
 export class AuthModule {}

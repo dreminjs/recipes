@@ -3,17 +3,24 @@ import {
   ExecutionContext,
   HttpException,
   HttpStatus,
+  Injectable,
+  Logger,
 } from '@nestjs/common';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../user';
 import { SignupDto } from '../dto/signup.dto';
 
+@Injectable()
 export class SignupGuard implements CanActivate {
   constructor(private readonly userService: UserService) {}
+
+  private logger = new Logger(SignupGuard.name);
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const { email } = context.switchToHttp().getRequest().body as SignupDto;
 
     const user = await this.userService.findOne({ email });
+
+    this.logger.log(email)
 
     if (user) {
       throw new HttpException(
@@ -22,6 +29,6 @@ export class SignupGuard implements CanActivate {
       );
     }
 
-    return true
+    return true;
   }
 }

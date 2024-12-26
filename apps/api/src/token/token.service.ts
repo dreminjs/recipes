@@ -12,8 +12,8 @@ export class TokenService {
   ) {}
 
   public async generateTokens(payload: ITokenPayload): Promise<ITokens> {
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '1d' });
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '1w' });
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '1d',secret: process.env.ACCESS_TOKEN });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '1w',secret: process.env.REFRESH_TOKEN });
 
     return {
       accessToken,

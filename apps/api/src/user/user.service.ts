@@ -17,4 +17,9 @@ export class UserService {
       where,
     });
   }
+
+  public async updateOne(where: Prisma.UserWhereUniqueInput, dto: Prisma.UserUpdateInput): Promise<User> {
+    return await this.prisma.user.update({ where, data: dto }); 
+  }
+
 }

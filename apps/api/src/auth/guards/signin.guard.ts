@@ -3,22 +3,23 @@ import {
   ExecutionContext,
   HttpException,
   HttpStatus,
+  Injectable,
 } from '@nestjs/common';
 import { PasswordService } from '../../password/password.service';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../user';
 import { SigninDto } from '../dto/signin.dto';
 
+@Injectable()
 export class SigninGuard implements CanActivate {
   constructor(
-    private readonly passwordService: PasswordService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly passwordService: PasswordService
   ) {}
-
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const { password, email } = request.body as SigninDto;
-    const user = await this.userService.findOne({ email });
+    const { email, password } = context.switchToHttp().getRequest()
+      .body as SigninDto;
 
+    const user = await this.userService.findOne({ email });
     if (!user) {
       throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
     }
@@ -27,10 +28,10 @@ export class SigninGuard implements CanActivate {
       password,
       user.hashPassword
     );
-
     if (!isPasswordValid) {
-      throw new HttpException('Неверный пароль', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Неверный пароль', HttpStatus.UNAUTHORIZED);
     }
-    return isPasswordValid;
+
+    return true;
   }
 }
