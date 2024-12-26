@@ -1,4 +1,4 @@
-import { Ingredient, Step, User } from 'prisma/prisma-client';
+import { Ingredient, Recipe, Step, User } from 'prisma/prisma-client';
 
 export type IAuthResponse = Omit<
   User,
@@ -8,3 +8,8 @@ export type IAuthResponse = Omit<
 export type IIngredient = Pick<Ingredient, 'title'>;
 
 export type IStep = Pick<Step, 'content'>;
+
+export interface RecipesResponse {
+  data: Recipe[];
+  nextCursor: number;
+}
