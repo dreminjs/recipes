@@ -42,6 +42,7 @@ model Recipe {
   id          String       @id @default(uuid())
   title       String
   description String
+  photo       String
   userId      String
   user        User         @relation(references: [id], fields: [userId])
   ingredients  Ingredient[]
