@@ -16,4 +16,13 @@ export class CreateRecipeDto {
   ingredients: IIngredient[];
   @IsArray({ message: 'Шаги должны быть массивом' })
   steps: IStep[];
+  
+  @IsString()
+  nationalCuisineId: string;
+
+  @IsString()
+  typeId: string;
+
+  @IsString()
+  holidayId: string;
 }

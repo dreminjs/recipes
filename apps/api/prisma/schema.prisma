@@ -39,14 +39,20 @@ model RefreshToken {
 }
 
 model Recipe {
-  id          String       @id @default(uuid())
-  title       String
-  description String
-  photo       String
-  userId      String
-  user        User         @relation(references: [id], fields: [userId])
-  ingredients  Ingredient[]
-  steps        Step[]
+  id                String          @id @default(uuid())
+  title             String
+  description       String
+  photo             String
+  userId            String
+  user              User            @relation(references: [id], fields: [userId])
+  ingredients       Ingredient[]
+  steps             Step[]
+  type              Type            @relation(fields: [typeId], references: [id])
+  typeId            String
+  nationalCuisine   NationalCuisine @relation(fields: [nationalCuisineId], references: [id])
+  nationalCuisineId String
+  holiday           Holiday         @relation(fields: [holidayId], references: [id])
+  holidayId         String
 }
 
 model Ingredient {
@@ -59,7 +65,27 @@ model Ingredient {
 model Step {
   id       String  @id @default(uuid())
   content  String
-  photo    String?
   recipeId String
   recipe   Recipe  @relation(references: [id], fields: [recipeId])
+}
+
+model NationalCuisine {
+  id        String   @id @default(uuid())
+  title     String   @unique
+  isVisible Boolean  @default(true)
+  recipe    Recipe[]
+}
+
+model Type {
+  id        String   @id @default(uuid())
+  title     String   @unique
+  isVisible Boolean  @default(true)
+  recipe    Recipe[]
+}
+
+model Holiday {
+  id        String   @id @default(uuid())
+  title     String   @unique
+  isVisible Boolean  @default(true)
+  recipe    Recipe[]
 }
