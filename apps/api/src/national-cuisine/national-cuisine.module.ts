@@ -1,7 +1,11 @@
 import { Module } from '@nestjs/common';
 import { NationalCuisineController } from './national-cuisine.controller';
+import { NationalCuisineService } from './national-cuisine.service';
+import { PrismaModule } from '../prisma';
 
 @Module({
-  controllers: [NationalCuisineController]
+  imports: [PrismaModule],
+  controllers: [NationalCuisineController],
+  providers: [NationalCuisineService]
 })
 export class NationalCuisineModule {}
