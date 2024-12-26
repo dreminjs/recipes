@@ -13,8 +13,8 @@ export class UserService {
     });
   }
 
-  public async findOne(where: Prisma.UserWhereUniqueInput ): Promise<User> {
-    return await this.prisma.user.findUnique({
+  public async findOne(where: Prisma.UserWhereInput ): Promise<User> {
+    return await this.prisma.user.findFirst({
       where,
     });
   }
