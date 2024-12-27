@@ -19,17 +19,18 @@ enum Roles {
 }
 
 model User {
-  id            String          @id @default(uuid())
-  nickname      String
-  email         String          @unique
-  isActived     Boolean
-  link          String?         @unique
-  role          Roles
-  hashPassword  String
-  salt          String
-  RefreshToken  RefreshToken[]
-  Recipe        Recipe[]
-  RecipeComment RecipeComment[]
+  id             String           @id @default(uuid())
+  nickname       String
+  email          String           @unique
+  isActived      Boolean
+  link           String?          @unique
+  role           Roles
+  hashPassword   String
+  salt           String
+  RefreshToken   RefreshToken[]
+  Recipe         Recipe[]
+  RecipeComment  RecipeComment[]
+  FavoriteRecipe FavoriteRecipe[]
 }
 
 model RefreshToken {
@@ -40,21 +41,22 @@ model RefreshToken {
 }
 
 model Recipe {
-  id                String          @id @default(uuid())
+  id                String           @id @default(uuid())
   title             String
   description       String
   photo             String
   userId            String
-  user              User            @relation(references: [id], fields: [userId])
+  user              User             @relation(references: [id], fields: [userId])
   ingredients       Ingredient[]
   steps             Step[]
-  type              Type            @relation(fields: [typeId], references: [id])
+  type              Type             @relation(fields: [typeId], references: [id])
   typeId            String
-  nationalCuisine   NationalCuisine @relation(fields: [nationalCuisineId], references: [id])
+  nationalCuisine   NationalCuisine  @relation(fields: [nationalCuisineId], references: [id])
   nationalCuisineId String
-  holiday           Holiday         @relation(fields: [holidayId], references: [id])
+  holiday           Holiday          @relation(fields: [holidayId], references: [id])
   holidayId         String
   RecipeComment     RecipeComment[]
+  FavoriteRecipe    FavoriteRecipe[]
 }
 
 model Ingredient {
@@ -99,7 +101,15 @@ model RecipeComment {
   user            User            @relation(references: [id], fields: [userId])
   recipeId        String
   recipe          Recipe          @relation(references: [id], fields: [recipeId])
-  recipeCommentId String?         
+  recipeCommentId String?
   recipeComment   RecipeComment?  @relation("RecipeComments", fields: [recipeCommentId], references: [id])
   RecipeComment   RecipeComment[] @relation("RecipeComments")
+}
+
+model FavoriteRecipe {
+  id       String @id @default(uuid())
+  userId   String
+  user     User   @relation(references: [id], fields: [userId])
+  recipeId String
+  recipe   Recipe @relation(references: [id], fields: [recipeId])
 }

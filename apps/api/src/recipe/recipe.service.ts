@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma';
-import { Prisma, Recipe } from '@prisma/client';
+import { FavoriteRecipe, Prisma, Recipe } from '@prisma/client';
 
 @Injectable()
 export class RecipeService {
@@ -29,5 +29,12 @@ export class RecipeService {
     await this.prisma.recipe.delete({ where });
   }
 
+  public async favorite(data: Prisma.FavoriteRecipeCreateInput) : Promise<FavoriteRecipe> {
+    return await this.prisma.favoriteRecipe.create({data});
+  }
   
+  public async unfavorite(data: Prisma.FavoriteRecipeWhereUniqueInput) : Promise<FavoriteRecipe> {
+    return await this.prisma.favoriteRecipe.delete({where: data});
+  }
+
 }

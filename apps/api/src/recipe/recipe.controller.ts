@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
-import { Recipe, User } from '@prisma/client';
+import { FavoriteRecipe, Recipe, User } from '@prisma/client';
 import { RecipeService } from './recipe.service';
 import { CurrentUser } from '../user';
 import { RecipePhoto } from './recipe-photo.decorator';
@@ -81,6 +81,20 @@ export class RecipeController {
       data: recipes,
       nextCursor
     }
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post("favorite/:recipeId")
+  public async favorite(@CurrentUser() user: User, @Param("recipeId") recipeId: string) : Promise<FavoriteRecipe> {
+    return await this.recipeService.favorite({ user: { connect: { id: user.id } }, recipe: { connect: { id: recipeId } }});
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Delete("unfavorite/:id")
+  public async unfavorite(@Param("id") recipeId: string) : Promise<FavoriteRecipe> {
+    return await this.recipeService.unfavorite({
+      id: recipeId
+    });
   }
 
 
