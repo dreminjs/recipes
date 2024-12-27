@@ -10,6 +10,7 @@ import { UploadPhotoMiddleware } from './middlewares/recipe-photo-upload.middlew
   imports: [PrismaModule, MulterModule.register({ dest: './assets' })],
   controllers: [RecipeController],
   providers: [RecipeService],
+  exports: [RecipeService],
 })
 export class RecipeModule {
   configure(consumer: MiddlewareConsumer) {

@@ -6,7 +6,7 @@ import { CurrentUser } from '../user';
 import { RecipePhoto } from './recipe-photo.decorator';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
-import { RecipesResponse } from 'interfaces';
+import { InfiniteScrollResponse } from 'interfaces';
 
 @Controller('recipe')
 export class RecipeController {
@@ -61,7 +61,7 @@ export class RecipeController {
       take,
       title
     }: GetRecipesQueryParameters
-  ): Promise<RecipesResponse> {
+  ): Promise<InfiniteScrollResponse<Recipe>> {
     const recipes = await this.recipeService.findMany({
       where: {
         ...(typeId && { type: { id: typeId } }),
