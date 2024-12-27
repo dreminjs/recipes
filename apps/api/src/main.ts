@@ -13,7 +13,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  app.enableCors({ origin: 'http://localhost:3000' });
+  const port = 3001;
 
   app.setBaseViewsDir(join(__dirname,'..',  '..', '..', 'apps', 'api', 'templates'));
   app.setViewEngine('ejs');
