@@ -16,3 +16,5 @@ export { AuthButton } from './ui/auth-button';
 export { GreetingTitle } from './ui/greeting-title';
 
 export { usePostSignIn, usePostSignUp } from './api/queries/auth.queries';
+
+export { BasicModal } from "./ui/basic-modal"

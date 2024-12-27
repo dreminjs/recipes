@@ -10,6 +10,8 @@ export const QUERY_KEYS = {
 
 export const SERVICE_KEYS = {
     auth: 'auth',
+    signup: '/',
+    signin: 'signin',
 }
 
 export const PAGE_KEYS = {

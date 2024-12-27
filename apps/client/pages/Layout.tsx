@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { QueryProvider } from '../src/application/providers/query-provider';
+import { CommonProvider } from '../src/application/providers/common-provider';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
-      <QueryProvider>
+      <CommonProvider>
         <main className="">{children}</main>
-      </QueryProvider>
+      </CommonProvider>
     </>
   );
 }

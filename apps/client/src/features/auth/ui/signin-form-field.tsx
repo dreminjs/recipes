@@ -15,16 +15,22 @@ interface IProps {
     | undefined;
   register: UseFormRegister<ISignIn>;
   type: 'email' | 'password';
+  className?: string;
 }
 
-export const SigninFormField: FC<IProps> = ({ register, error, type }) => {
+export const SigninFormField: FC<IProps> = ({
+  register,
+  error,
+  type,
+  className,
+}) => {
   const placeholder = {
     email: 'Email',
     password: 'Password',
   };
 
   return (
-    <div className="mb-2">
+    <div className={`pb-2 mb-3 4 ${className} relative`}>
       <input
         placeholder={placeholder[type]}
         {...register(type)}
