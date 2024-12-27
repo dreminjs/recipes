@@ -36,7 +36,7 @@ export const SigninFormField: FC<IProps> = ({
         {...register(type)}
         className="text-[24px] bg-transparent placeholder:text-white text-white outline-none border-b-2 w-full"
       />
-      {error && <p>{error.toString()}</p>}
+        {error && <p className='text-[24px] text-white underline'>{error.toString()}</p>}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SignupFormField } from '../../../features/auth';
 import { usePostSignUp } from '../../../shared/api/queries/auth.queries';
 import { MessageModal } from '../../../features/message';
+import { useEffect } from 'react';
 
 export const SignUpForm = () => {
   const {
@@ -49,7 +50,7 @@ export const SignUpForm = () => {
         isLoading={signupIsLoading}
         isSuccess={signupIsSuccess}
         message={{
-          isError: "Проверте данные которые вы ввели",
+          isError: "Проверьте данные которые вы ввели",
           isLoading: "Загрузка...",
           isSuccess: "Вы успешно зарегистрировались",
         }}    

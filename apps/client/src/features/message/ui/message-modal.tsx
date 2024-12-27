@@ -44,7 +44,7 @@ export const MessageModal: FC<IProps> = ({
     if (isVisible) {
       setTimeout(() => {
         setIsVisible(false);
-      }, 3000);
+      }, 6000);
     }
   }, [isVisible]);
 

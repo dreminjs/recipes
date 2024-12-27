@@ -3,6 +3,7 @@ import { AuthButton, ISignIn, SignInSchema } from '../../../shared/';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SigninFormField } from '../../../features/auth';
 import { usePostSignIn } from '../../../shared/api/queries/auth.queries';
+import { MessageModal } from '../../../features/message';
 
 export const SignInForm = () => {
   const {
@@ -11,25 +12,43 @@ export const SignInForm = () => {
     formState: { errors },
   } = useForm<ISignIn>({ resolver: zodResolver(SignInSchema) });
 
-  const { signin } = usePostSignIn();
+  const {
+    signin,
+    signinIsLoading,
+  
+    signinIsSuccess,
+    signinIsError,
+  } = usePostSignIn();
 
   return (
-    <form
-      className="max-w-[400px]"
-      onSubmit={handleSubmit((data) => signin({ ...data }))}
-    >
-      <SigninFormField
-        register={register}
-        error={errors.email?.message}
-        type={'email'}
-      />
+    <>
+      <form
+        className="max-w-[400px]"
+        onSubmit={handleSubmit((data) => signin({ ...data }))}
+      >
+        <SigninFormField
+          register={register}
+          error={errors.email?.message}
+          type={'email'}
+        />
 
-      <SigninFormField
-        register={register}
-        error={errors.password?.message}
-        type={'password'}
+        <SigninFormField
+          register={register}
+          error={errors.password?.message}
+          type={'password'}
+        />
+        <AuthButton className="text-[24px] rounded-xl px-5 py-2 text-[white] border-2 border-[white]" />
+      </form>
+      <MessageModal
+        isError={signinIsError}
+        isLoading={signinIsLoading}
+        isSuccess={signinIsSuccess}
+        message={{
+          isError: 'Проверьте данные которые вы ввели',
+          isLoading: 'Загрузка...',
+          isSuccess: 'Вы успешно зарегистрировались',
+        }}
       />
-      <AuthButton className="text-[24px] rounded-xl px-5 py-2 text-[white] border-2 border-[white]" />
-    </form>
+    </>
   );
 };

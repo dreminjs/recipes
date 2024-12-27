@@ -13,11 +13,13 @@ import { SignupDto } from './dto/signup.dto';
 import { IAuthResponse } from 'interfaces';
 import { SigninDto } from './dto/signin.dto';
 import { PasswordService } from '../password/password.service';
-import { UserService } from '../user/';
+import { CurrentUser, UserService } from '../user/';
 import { TokenService } from '../token/token.service';
 
 import { MailService } from '../mail/mail.service';
 import { SignupGuard } from './guards/signup.guard';
+import { AccessTokenGuard } from '../token';
+import { User } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {
@@ -87,16 +89,25 @@ export class AuthController {
   @Render('thank-you.ejs')
   @Get(`/active-account/:link`)
   public async activeAccount(@Param('link') link: string) {
-
-    this.logger.log(link, "LINK");
+    this.logger.log(link, 'LINK');
 
     const user = await this.userService.findOne({
-      link
+      link,
     });
 
     await this.userService.updateOne(
       { link, email: user.email, id: user.id },
       { isActived: true }
     );
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get()
+  public async index(@CurrentUser() user: User): Promise<IAuthResponse> {
+    return {
+      email: user.email,
+      nickname: user.nickname,
+      isActived: user.isActived,
+    };
   }
 }

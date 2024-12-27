@@ -1,6 +1,6 @@
 import { EmailConfirmPage } from "../../src/pages-components/email-confirm";
 
 
-export function Index(){
+export default function Index(){
     return <EmailConfirmPage />
 }
