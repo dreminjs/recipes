@@ -19,16 +19,17 @@ enum Roles {
 }
 
 model User {
-  id           String         @id @default(uuid())
-  nickname     String
-  email        String         @unique
-  isActived    Boolean
-  link         String?        @unique
-  role         Roles
-  hashPassword String
-  salt         String
-  RefreshToken RefreshToken[]
-  Recipe       Recipe[]
+  id            String          @id @default(uuid())
+  nickname      String
+  email         String          @unique
+  isActived     Boolean
+  link          String?         @unique
+  role          Roles
+  hashPassword  String
+  salt          String
+  RefreshToken  RefreshToken[]
+  Recipe        Recipe[]
+  RecipeComment RecipeComment[]
 }
 
 model RefreshToken {
@@ -53,6 +54,7 @@ model Recipe {
   nationalCuisineId String
   holiday           Holiday         @relation(fields: [holidayId], references: [id])
   holidayId         String
+  RecipeComment     RecipeComment[]
 }
 
 model Ingredient {
@@ -63,10 +65,10 @@ model Ingredient {
 }
 
 model Step {
-  id       String  @id @default(uuid())
+  id       String @id @default(uuid())
   content  String
   recipeId String
-  recipe   Recipe  @relation(references: [id], fields: [recipeId])
+  recipe   Recipe @relation(references: [id], fields: [recipeId])
 }
 
 model NationalCuisine {
@@ -88,4 +90,16 @@ model Holiday {
   title     String   @unique
   isVisible Boolean  @default(true)
   recipe    Recipe[]
+}
+
+model RecipeComment {
+  id              String          @id @default(uuid())
+  content         String
+  userId          String
+  user            User            @relation(references: [id], fields: [userId])
+  recipeId        String
+  recipe          Recipe          @relation(references: [id], fields: [recipeId])
+  recipeCommentId String?         
+  recipeComment   RecipeComment?  @relation("RecipeComments", fields: [recipeCommentId], references: [id])
+  RecipeComment   RecipeComment[] @relation("RecipeComments")
 }
