@@ -28,7 +28,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     });
   }
 
-  async validate({ email }: ITokenPayload): Promise<User> {
+  async validate({ email }: ITokenPayload): Promise<User | null> {
     const user = await this.userService.findOne({ email });
 
     return user;

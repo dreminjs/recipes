@@ -7,19 +7,11 @@ import { ITokens } from './token.interface';
 
 @Controller('token')
 export class TokenController {
+  constructor(private readonly tokenService: TokenService) {}
 
-
-    constructor(
-        private readonly tokenService: TokenService
-    ){}
-
-
-    @UseGuards(RefreshTokenGuard)
-    @Get("")
-    public async index(@CurrentUser() user : User): Promise<ITokens> {
-        return await this.tokenService.generateTokens(user);
-    }
-
-
-
+  @UseGuards(RefreshTokenGuard)
+  @Get('')
+  public async index(@CurrentUser() user: User): Promise<ITokens> {
+    return await this.tokenService.generateTokens(user);
+  }
 }
