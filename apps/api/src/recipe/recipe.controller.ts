@@ -59,6 +59,7 @@ export class RecipeController {
       nationalCuisineId,
       cursor,
       take,
+      title
     }: GetRecipesQueryParameters
   ): Promise<RecipesResponse> {
     const recipes = await this.recipeService.findMany({
@@ -68,6 +69,7 @@ export class RecipeController {
         ...(nationalCuisineId && {
           nationalCuisine: { id: nationalCuisineId },
         }),
+        title: { contains: title },
       },
       skip: cursor,
       take,

@@ -9,6 +9,8 @@ export class GetRecipesQueryParameters {
 
     holidayId?: string
 
+    title: string
+
     @Transform(({ value }) => parseInt(value, 10))
     cursor: number
 
