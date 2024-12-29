@@ -15,7 +15,7 @@ import { SigninDto } from './dto/signin.dto';
 import { PasswordService } from '../password/password.service';
 import { CurrentUser, UserService } from '../user/';
 import { TokenService } from '../token/token.service';
-
+import { Response } from 'express';
 import { MailService } from '../mail/mail.service';
 import { SignupGuard } from './guards/signup.guard';
 import { AccessTokenGuard } from '../token';
@@ -55,11 +55,24 @@ export class AuthController {
 
     await this.mailService.sendMail({ user, urlConfirmAddress: link });
 
-    const tokens = await this.tokenService.generateTokens(user);
+    const { accessToken, refreshToken } =
+      await this.tokenService.generateTokens(user);
 
-    res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
-    res.cookie('accessToken', tokens.accessToken, { httpOnly: true });
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/',
+      domain: 'localhost',
+    });
 
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/',
+      domain: 'localhost',
+    });
     return {
       nickname: user.nickname,
       email: user.email,
@@ -70,14 +83,26 @@ export class AuthController {
   @Post('/signin')
   public async signin(
     @Body() body: SigninDto,
-    @Res({ passthrough: true }) res
+    @Res({ passthrough: true }) res: Response
   ): Promise<IAuthResponse> {
     const user = await this.userService.findOne({ email: body.email });
 
-    const tokens = await this.tokenService.generateTokens(user);
+    const { accessToken, refreshToken } =
+      await this.tokenService.generateTokens(user);
 
-    res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
-    res.cookie('accessToken', tokens.accessToken, { httpOnly: true });
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/',
+    });
 
     return {
       email: body.email,

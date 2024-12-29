@@ -1,11 +1,11 @@
 
 
 
-export default function Index() {
+export const MainRecipesPage = () => {
+
     return (
         <div>
-       
         
         </div>
-    );
+    )
 }

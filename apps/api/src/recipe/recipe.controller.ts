@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { FavoriteRecipe, Recipe, User } from '@prisma/client';
 import { RecipeService } from './recipe.service';
@@ -6,11 +15,21 @@ import { CurrentUser } from '../user';
 import { RecipePhoto } from './recipe-photo.decorator';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
-import { InfiniteScrollResponse } from 'interfaces';
+import {
+  InfiniteScrollRecipeSelectionResponse,
+  InfiniteScrollResponse,
+} from 'interfaces';
+import { HolidayService } from '../holiday/holiday.service';
+import { NationalCuisineService } from '../national-cuisine/national-cuisine.service';
 
 @Controller('recipe')
 export class RecipeController {
-  constructor(private readonly recipeService: RecipeService) {}
+  constructor(
+    private readonly recipeService: RecipeService,
+    private readonly holidayService: HolidayService,
+    private readonly nationalCuisineService: NationalCuisineService,
+    private readonly typeService
+  ) {}
 
   @UseGuards(AccessTokenGuard)
   @Post()
@@ -50,6 +69,69 @@ export class RecipeController {
     return recipe;
   }
 
+  @Get('selection')
+  public async findSelection(
+    @Query()
+    {
+      typeId,
+      holidayId,
+      nationalCuisineId,
+      cursor,
+      take,
+      title,
+    }: GetRecipesQueryParameters
+  ): Promise<InfiniteScrollRecipeSelectionResponse> {
+    let characteristicTitle = '';
+
+    if (typeId) {
+      characteristicTitle = await this.typeService.findOne({
+        id: typeId,
+      });
+    }
+
+    if (holidayId) {
+      characteristicTitle = await this.holidayService
+        .findOne({
+          id: holidayId,
+        })
+        .then((holiday) => holiday.title);
+    }
+
+    if (nationalCuisineId) {
+      characteristicTitle = await this.nationalCuisineService
+        .findOne({
+          id: nationalCuisineId,
+        })
+        .then((nationalCuisine) => nationalCuisine.title);
+    }
+
+    const recipes = await this.recipeService.findMany({
+      where: {
+        ...(typeId && { type: { id: typeId } }),
+        ...(holidayId && { holiday: { id: holidayId } }),
+        ...(nationalCuisineId && {
+          nationalCuisine: { id: nationalCuisineId },
+        }),
+        title: { contains: title },
+      },
+      skip: cursor,
+      take,
+    });
+
+    const nextCursor = recipes.length > 0 ? cursor + take : null;
+
+    return {
+      characteristicTitle,
+      characteristicType: {
+        typeId: typeId,
+        holidayId: holidayId,
+        nationalCuisineId: nationalCuisineId,
+      }[typeId ? 'typeId' : holidayId ? 'holidayId' : 'nationalCuisineId'],
+      data: recipes,
+      nextCursor,
+    };
+  }
+
   @Get()
   public async findMany(
     @Query()
@@ -59,7 +141,7 @@ export class RecipeController {
       nationalCuisineId,
       cursor,
       take,
-      title
+      title,
     }: GetRecipesQueryParameters
   ): Promise<InfiniteScrollResponse<Recipe>> {
     const recipes = await this.recipeService.findMany({
@@ -79,23 +161,29 @@ export class RecipeController {
 
     return {
       data: recipes,
-      nextCursor
-    }
+      nextCursor,
+    };
   }
 
   @UseGuards(AccessTokenGuard)
-  @Post("favorite/:recipeId")
-  public async favorite(@CurrentUser() user: User, @Param("recipeId") recipeId: string) : Promise<FavoriteRecipe> {
-    return await this.recipeService.favorite({ user: { connect: { id: user.id } }, recipe: { connect: { id: recipeId } }});
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Delete("unfavorite/:id")
-  public async unfavorite(@Param("id") recipeId: string) : Promise<FavoriteRecipe> {
-    return await this.recipeService.unfavorite({
-      id: recipeId
+  @Post('favorite/:recipeId')
+  public async favorite(
+    @CurrentUser() user: User,
+    @Param('recipeId') recipeId: string
+  ): Promise<FavoriteRecipe> {
+    return await this.recipeService.favorite({
+      user: { connect: { id: user.id } },
+      recipe: { connect: { id: recipeId } },
     });
   }
 
-
+  @UseGuards(AccessTokenGuard)
+  @Delete('unfavorite/:id')
+  public async unfavorite(
+    @Param('id') recipeId: string
+  ): Promise<FavoriteRecipe> {
+    return await this.recipeService.unfavorite({
+      id: recipeId,
+    });
+  }
 }

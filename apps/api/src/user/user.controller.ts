@@ -1,20 +1,11 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { UserService } from './user.service';
+import { Controller, Get } from '@nestjs/common';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { User } from '@prisma/client';
 
 @Controller('user')
 export class UserController {
-
-    constructor(private readonly userService: UserService) {}
-
-    @Get("role")
-    public async findUserRole(){
-        return await this.userService.findOne({ role: "USER" });
-    }
-
-    @Get(":id")
-    public async findOne(@Query("id") id: string){
-        return await this.userService.findOne({ id });
-    }
-
-
+  @Get()
+  public async index(@CurrentUser() user: User): Promise<User> {
+    return user;
+  }
 }

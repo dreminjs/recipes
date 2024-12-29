@@ -59,20 +59,6 @@ model Recipe {
   FavoriteRecipe    FavoriteRecipe[]
 }
 
-model Ingredient {
-  id       String @id @default(uuid())
-  title    String
-  recipeId String
-  recipe   Recipe @relation(references: [id], fields: [recipeId])
-}
-
-model Step {
-  id       String @id @default(uuid())
-  content  String
-  recipeId String
-  recipe   Recipe @relation(references: [id], fields: [recipeId])
-}
-
 model NationalCuisine {
   id        String   @id @default(uuid())
   title     String   @unique
@@ -110,6 +96,20 @@ model FavoriteRecipe {
   id       String @id @default(uuid())
   userId   String
   user     User   @relation(references: [id], fields: [userId])
+  recipeId String
+  recipe   Recipe @relation(references: [id], fields: [recipeId])
+}
+
+model Ingredient {
+  id       String @id @default(uuid())
+  title    String
+  recipeId String
+  recipe   Recipe @relation(references: [id], fields: [recipeId])
+}
+
+model Step {
+  id       String @id @default(uuid())
+  content  String
   recipeId String
   recipe   Recipe @relation(references: [id], fields: [recipeId])
 }

@@ -37,4 +37,18 @@ export class RecipeService {
     return await this.prisma.favoriteRecipe.delete({where: data});
   }
 
+  public async findManySelections(countSelections: number): Promise<Recipe[]> {
+
+
+    const data = []
+
+    for (let i = 0; i < countSelections; i++) {
+      const recipes = await this.prisma.recipe.findMany({})
+      data.push(recipes)
+    }
+
+
+  }
+
+
 }

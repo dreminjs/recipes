@@ -24,5 +24,10 @@ export class HolidayController {
   public async createOne(@Body() body: UpdateHolidayDto): Promise<Holiday> {
     return await this.holidayService.createOne(body);
   }
+
+  @Get(":id")
+  public async findOne(@Query('id') id: string): Promise<Holiday> {
+    return await this.holidayService.findOne({id});
+  }
   
 }

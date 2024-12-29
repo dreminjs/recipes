@@ -21,4 +21,9 @@ export class TypeService {
   public async createOne(dto: Prisma.TypeCreateInput): Promise<Type> {
     return await this.prisma.type.create({ data: dto });
   }
+
+  public async findOne(where: Prisma.TypeWhereUniqueInput): Promise<Type> {
+    return await this.prisma.type.findUnique({ where });
+  }
+
 }

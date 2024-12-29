@@ -29,4 +29,9 @@ export class NationalCuisineController {
   ): Promise<NationalCuisine> {
     return await this.nationalCuisineService.updateOne(body, { id });
   }
+
+  @Get(":id")
+  public async findOne(@Param('id') id: string): Promise<NationalCuisine> {
+    return await this.nationalCuisineService.findOne({ id });
+  }
 }

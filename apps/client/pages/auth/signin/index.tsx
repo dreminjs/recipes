@@ -1,4 +1,4 @@
-import { SignInPage } from '../../src/pages-components/signin';
+import { SignInPage } from '../../../src/pages-components/signin';
 
 export function Index() {
 

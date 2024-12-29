@@ -25,4 +25,9 @@ export class TypeController {
   ): Promise<Type> {
     return await this.typeService.updateOne({ id }, { ...body });
   }
+
+  @Get(':id')
+  public async findOne(@Query('id') id: string): Promise<Type> {
+    return await this.typeService.findOne({ id });
+  }
 }

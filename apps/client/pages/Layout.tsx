@@ -5,7 +5,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <CommonProvider>
-        <main className="">{children}</main>
+        <main className="max-w-[90%]">{children}</main>
       </CommonProvider>
     </>
   );
