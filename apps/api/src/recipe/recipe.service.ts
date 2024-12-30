@@ -22,20 +22,26 @@ export class RecipeService {
     dto: Prisma.RecipeUpdateInput,
     where: Prisma.RecipeWhereUniqueInput
   ): Promise<Recipe> {
-    return await this.prisma.recipe.update({ where, data: dto });
+    return await this.prisma.recipe.update({
+      where,
+      data: dto,
+     
+    });
   }
 
   public async deleteOne(where: Prisma.RecipeWhereUniqueInput): Promise<void> {
     await this.prisma.recipe.delete({ where });
   }
 
-  public async favorite(data: Prisma.FavoriteRecipeCreateInput) : Promise<FavoriteRecipe> {
-    return await this.prisma.favoriteRecipe.create({data});
-  }
-  
-  public async unfavorite(data: Prisma.FavoriteRecipeWhereUniqueInput) : Promise<FavoriteRecipe> {
-    return await this.prisma.favoriteRecipe.delete({where: data});
+  public async favorite(
+    data: Prisma.FavoriteRecipeCreateInput
+  ): Promise<FavoriteRecipe> {
+    return await this.prisma.favoriteRecipe.create({ data });
   }
 
-
+  public async unfavorite(
+    data: Prisma.FavoriteRecipeWhereUniqueInput
+  ): Promise<FavoriteRecipe> {
+    return await this.prisma.favoriteRecipe.delete({ where: data });
+  }
 }

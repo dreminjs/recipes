@@ -1,5 +1,5 @@
 import { IsArray, IsString, MaxLength, MinLength } from 'class-validator';
-import { IIngredient, IStep } from 'interfaces';
+import { IRecipeIngredient, IStep } from 'interfaces';
 
 export class CreateRecipeDto {
   @MinLength(2, { message: 'Заголовок должен быть больше 2 символов' })
@@ -13,7 +13,7 @@ export class CreateRecipeDto {
   description: string;
 
   @IsArray({ message: 'Ингредиенты должны быть массивом' })
-  ingredients: IIngredient[];
+  recipeIngredients: IRecipeIngredient[];
   @IsArray({ message: 'Шаги должны быть массивом' })
   steps: IStep[];
   

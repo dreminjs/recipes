@@ -20,6 +20,7 @@ import { HolidayService } from '../holiday/holiday.service';
 import { NationalCuisineService } from '../national-cuisine/national-cuisine.service';
 import { GetRecipesSelectionQueryParameters } from './dto/get-recipes-selection-query-parameters.ts';
 import { TypeService } from '../type/type.service';
+import { create } from 'domain';
 
 @Controller('recipe')
 export class RecipeController {
@@ -41,11 +42,7 @@ export class RecipeController {
       title: body.title,
       description: body.description,
       photo,
-      ingredients: {
-        createMany: {
-          data: body.ingredients,
-        },
-      },
+      recipeIngredient: { createMany: { data: body.recipeIngredients } },
       steps: {
         createMany: {
           data: body.steps,
@@ -122,6 +119,7 @@ export class RecipeController {
         }),
         title: { contains: title },
       },
+      include: { recipeIngredient: { include: { ingredient: true } } },
       skip: cursor,
       take,
     });
@@ -157,32 +155,32 @@ export class RecipeController {
   }
 
   @Get('selection')
-public async findAll(
-  @Query()
-  { isType, isNationalCuisine, isHoliday }: GetRecipesSelectionQueryParameters
-): Promise<Recipe[]> {
-  let type, nationalCuisine, holiday
+  public async findAll(
+    @Query()
+    { isType, isNationalCuisine, isHoliday }: GetRecipesSelectionQueryParameters
+  ): Promise<Recipe[]> {
+    let type, nationalCuisine, holiday;
 
-  // НУЖНО ОТСЛЫЛАТЬ КОНКРЕТНЫЙ ТИП И ТД
+    // НУЖНО ОТСЛЫЛАТЬ КОНКРЕТНЫЙ ТИП И ТД
 
-  if (isType) {
-    type = await this.typeService.findOne();
+    if (isType) {
+      type = await this.typeService.findOne();
+    }
+
+    if (isNationalCuisine) {
+      nationalCuisine = await this.nationalCuisineService.findOne();
+    }
+
+    if (isHoliday) {
+      holiday = await this.holidayService.findOne();
+    }
+
+    return await this.recipeService.findMany({
+      where: {
+        ...(isType && { typeId: type.id }),
+        ...(isNationalCuisine && { nationalCuisineId: nationalCuisine.id }),
+        ...(isHoliday && { holidayId: holiday.id }),
+      },
+    });
   }
-
-  if (isNationalCuisine) {
-    nationalCuisine = await this.nationalCuisineService.findOne();
-  }
-
-  if (isHoliday) {
-    holiday = await this.holidayService.findOne();
-  }
-
-  return await this.recipeService.findMany({
-    where: {
-      ...(isType && { typeId: type.id }),
-      ...(isNationalCuisine && { nationalCuisineId: nationalCuisine.id }),
-      ...(isHoliday && { holidayId: holiday.id }),
-    },
-  });
-}
 }

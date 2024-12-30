@@ -41,22 +41,22 @@ model RefreshToken {
 }
 
 model Recipe {
-  id                String           @id @default(uuid())
+  id                String             @id @default(uuid())
   title             String
   description       String
   photo             String
   userId            String
-  user              User             @relation(references: [id], fields: [userId])
-  ingredients       Ingredient[]
+  user              User               @relation(references: [id], fields: [userId])
   steps             Step[]
-  type              Type             @relation(fields: [typeId], references: [id])
+  type              Type               @relation(fields: [typeId], references: [id])
   typeId            String
-  nationalCuisine   NationalCuisine  @relation(fields: [nationalCuisineId], references: [id])
+  nationalCuisine   NationalCuisine    @relation(fields: [nationalCuisineId], references: [id])
   nationalCuisineId String
-  holiday           Holiday          @relation(fields: [holidayId], references: [id])
+  holiday           Holiday            @relation(fields: [holidayId], references: [id])
   holidayId         String
-  RecipeComment     RecipeComment[]
-  FavoriteRecipe    FavoriteRecipe[]
+  recipeComment     RecipeComment[]
+  favoriteRecipe    FavoriteRecipe[]
+  recipeIngredient  RecipeIngredient[]
 }
 
 model NationalCuisine {
@@ -89,7 +89,7 @@ model RecipeComment {
   recipe          Recipe          @relation(references: [id], fields: [recipeId])
   recipeCommentId String?
   recipeComment   RecipeComment?  @relation("RecipeComments", fields: [recipeCommentId], references: [id])
-  RecipeComment   RecipeComment[] @relation("RecipeComments")
+  replies         RecipeComment[] @relation("RecipeComments")
 }
 
 model FavoriteRecipe {
@@ -101,10 +101,9 @@ model FavoriteRecipe {
 }
 
 model Ingredient {
-  id       String @id @default(uuid())
-  title    String
-  recipeId String
-  recipe   Recipe @relation(references: [id], fields: [recipeId])
+  id               String             @id @default(uuid())
+  title            String
+  RecipeIngredient RecipeIngredient[]
 }
 
 model Step {
@@ -112,4 +111,12 @@ model Step {
   content  String
   recipeId String
   recipe   Recipe @relation(references: [id], fields: [recipeId])
+}
+
+model RecipeIngredient {
+  id           String     @id @default(uuid())
+  ingredient   Ingredient @relation(references: [id], fields: [ingredientId])
+  ingredientId String
+  recipeId     String
+  recipe       Recipe     @relation(references: [id], fields: [recipeId])
 }

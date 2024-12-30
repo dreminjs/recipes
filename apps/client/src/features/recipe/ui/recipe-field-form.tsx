@@ -12,7 +12,7 @@ export const RecipeFieldForm: FC<IProps> = ({ register }) => {
       <input
         {...register('title')}
         placeholder='заголовок'
-        className="text-[24px] outline-none border-b-2 mb-6"
+        className="text-[24px] outline-none border-b-2 mb-6 pb-2"
         type="text"
       />
       {}

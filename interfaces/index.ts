@@ -1,11 +1,14 @@
-import { Ingredient, Step, User } from 'prisma/prisma-client';
+import { Step, User } from 'prisma/prisma-client';
 
 export type IAuthResponse = Omit<
   User,
   'hashPassword' | 'salt' | 'id' | 'link' | 'role'
 >;
 
-export type IIngredient = Pick<Ingredient, 'title'>;
+export type IRecipeIngredient = {
+  id: string;
+  ingredientId: string;
+};
 
 export type IStep = Pick<Step, 'content'>;
 
