@@ -20,8 +20,8 @@ export class NationalCuisineService {
         return this.prisma.nationalCuisine.update({ where, data: dto });
     }
 
-    async findOne(where: Prisma.NationalCuisineWhereUniqueInput): Promise<NationalCuisine> {
-        return this.prisma.nationalCuisine.findUnique({ where });
+    async findOne(dto: Prisma.NationalCuisineFindFirstArgs = {}): Promise<NationalCuisine> {
+        return this.prisma.nationalCuisine.findFirst({ ...dto });
     }
 
 }

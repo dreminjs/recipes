@@ -6,6 +6,7 @@ import { PrismaModule } from '../prisma';
 @Module({
   imports: [PrismaModule],
   controllers: [HolidayController],
-  providers: [HolidayService]
+  providers: [HolidayService],
+  exports: [HolidayService],
 })
 export class HolidayModule {}

@@ -1,4 +1,4 @@
-import { Ingredient, Recipe, Step, User } from 'prisma/prisma-client';
+import { Ingredient, Step, User } from 'prisma/prisma-client';
 
 export type IAuthResponse = Omit<
   User,
@@ -13,8 +13,11 @@ export interface InfiniteScrollResponse<T> {
   data: T[];
   nextCursor: number | null;
 }
-export interface InfiniteScrollRecipeSelectionResponse
-  extends InfiniteScrollResponse<Recipe> {
-  characteristicTitle: string;
-  characteristicType: string;
+
+export type characteristics = 'holiday' | 'type' | 'national-cuisine';
+
+export interface ICharacteristic {
+  id: string;
+  title: string;
+  type: characteristics;
 }

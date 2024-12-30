@@ -1,11 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
-import { CurrentUser } from './decorators/current-user.decorator';
+import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
+
+import { AccessTokenGuard } from '../token';
+
 import { User } from '@prisma/client';
+
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('user')
 export class UserController {
+
+  private logger = new Logger(UserController.name)
+
   @Get()
-  public async index(@CurrentUser() user: User): Promise<User> {
-    return user;
+  @UseGuards(AccessTokenGuard)
+  public async index(@CurrentUser() user: User) {
+
+    return user
   }
 }

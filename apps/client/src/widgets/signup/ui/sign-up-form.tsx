@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SignupFormField } from '../../../features/auth';
 import { usePostSignUp } from '../../../shared/api/queries/auth.queries';
 import { MessageModal } from '../../../features/message';
-import { useEffect } from 'react';
+
 
 export const SignUpForm = () => {
   const {

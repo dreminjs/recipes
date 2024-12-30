@@ -1,0 +1,21 @@
+import { FC } from 'react';
+import { IPostRecipeForm } from '../../../shared';
+import { UseFormRegister } from 'react-hook-form';
+
+interface IProps {
+  register: UseFormRegister<IPostRecipeForm>;
+}
+
+export const RecipeFieldForm: FC<IProps> = ({ register }) => {
+  return (
+    <div>
+      <input
+        {...register('title')}
+        placeholder='заголовок'
+        className="text-[24px] outline-none border-b-2 mb-6"
+        type="text"
+      />
+      {}
+    </div>
+  );
+};

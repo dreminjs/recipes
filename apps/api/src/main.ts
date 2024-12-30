@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -19,6 +19,12 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   app.use(cookieParser());
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    })
+  );
 
   app.enableCors({ origin: true, credentials: true });
 

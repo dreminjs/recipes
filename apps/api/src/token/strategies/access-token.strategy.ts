@@ -4,7 +4,9 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import { UserService } from '../../user';
 import { ITokenPayload } from '../token.interface';
 import { User } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class AccessTokenStrategy extends PassportStrategy(
   Strategy,
   'AccessTokenStrategy'
@@ -24,7 +26,7 @@ export class AccessTokenStrategy extends PassportStrategy(
         },
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get('ACCESS_TOKEN_SECRET'),
+      secretOrKey: process.env.ACCESS_TOKEN,
     });
   }
 

@@ -7,6 +7,8 @@ export const QUERY_KEYS = {
     signup: 'signup',
     signin: 'signin',
     recipe: 'recipe',
+    characteristic: "characteristic",
+    user: "user"
 }
 
 export const SERVICE_KEYS = {
@@ -15,10 +17,13 @@ export const SERVICE_KEYS = {
     signin: 'signin',
     user: 'user',
     selection: 'selection',
+    random: 'random',
+    post: 'post'
 }
 
 export const PAGE_KEYS = {
     signup: 'signup',
     signin: 'signin',
     emailConfirm: 'email-confirm',
+    recipe: 'recipe',
 }

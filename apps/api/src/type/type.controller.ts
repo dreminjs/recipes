@@ -28,6 +28,6 @@ export class TypeController {
 
   @Get(':id')
   public async findOne(@Query('id') id: string): Promise<Type> {
-    return await this.typeService.findOne({ id });
+    return await this.typeService.findOne({ where: { id } });
   }
 }

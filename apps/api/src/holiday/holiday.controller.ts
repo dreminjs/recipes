@@ -17,7 +17,7 @@ export class HolidayController {
     @Query('id') id: string,
     @Body() body: UpdateHolidayDto
   ): Promise<Holiday> {
-    return await this.holidayService.updateOne({id}, body);
+    return await this.holidayService.updateOne({ id }, body);
   }
 
   @Post()
@@ -25,9 +25,8 @@ export class HolidayController {
     return await this.holidayService.createOne(body);
   }
 
-  @Get(":id")
+  @Get(':id')
   public async findOne(@Query('id') id: string): Promise<Holiday> {
-    return await this.holidayService.findOne({id});
+    return await this.holidayService.findOne({ where: { id } });
   }
-  
 }

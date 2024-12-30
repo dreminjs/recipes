@@ -12,7 +12,7 @@ export const useGetRecipes = (queryParams: IGetRecipesQueryParameters) => {
     isSuccess: isRecipesSuccess,
     isError: isRecipesError,
   } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.recipe],
+    queryKey: [QUERY_KEYS.recipe, queryParams],
     queryFn: async ({ pageParam }) =>
       recipeService.findMany({ take: 10, cursor: pageParam, ...queryParams }),
     getNextPageParam: (lastPage, allPages) => lastPage.nextCursor,
@@ -27,3 +27,18 @@ export const useGetRecipes = (queryParams: IGetRecipesQueryParameters) => {
     isRecipesError,
   };
 };
+
+// export const useGetRecipeSelection = (
+//   queryParams: IGetRecipesQueryParameters
+// ) => {
+//   const {
+//     data: recipeSelection,
+//     isLoading: recipeSelectionIsLoading,
+//     isError: recipeSelectionIsError,
+//   } = useInfiniteQuery({
+//     queryKey: [QUERY_KEYS.recipe, SERVICE_KEYS.selection, queryParams],
+//     queryFn: async () => recipeService.findSelection(queryParams),
+//   });
+
+//   return { recipeSelection, recipeSelectionIsLoading, recipeSelectionIsError };
+// };

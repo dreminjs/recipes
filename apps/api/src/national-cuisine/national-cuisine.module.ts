@@ -6,6 +6,7 @@ import { PrismaModule } from '../prisma';
 @Module({
   imports: [PrismaModule],
   controllers: [NationalCuisineController],
-  providers: [NationalCuisineService]
+  providers: [NationalCuisineService],
+  exports: [NationalCuisineService],
 })
 export class NationalCuisineModule {}

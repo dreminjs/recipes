@@ -12,8 +12,8 @@ export class HolidayService {
         return await this.prisma.holiday.findMany({ where });
     }
 
-    public async findOne(where: Prisma.HolidayWhereInput): Promise<Holiday> {
-        return await this.prisma.holiday.findFirst({ where });
+    public async findOne(dto: Prisma.HolidayFindFirstArgs = {}): Promise<Holiday> {
+        return await this.prisma.holiday.findFirst({ ...dto });
     }
 
     public async createOne(dto: Prisma.HolidayCreateInput): Promise<Holiday> {

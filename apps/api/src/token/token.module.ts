@@ -1,15 +1,16 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TokenService } from './token.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from '../prisma';
 import { UserModule } from '../user';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { TokenController } from './token.controller';
+import { AccessTokenStrategy } from './strategies/access-token.strategy';
 
 @Module({
-  imports: [JwtModule.register({}), PrismaModule, UserModule, ConfigModule],
-  providers: [TokenService],
-  exports: [TokenService],
+  imports: [JwtModule.register({}), PrismaModule, forwardRef(() => UserModule)],
+  providers: [TokenService, AccessTokenStrategy, ConfigService],
+  exports: [TokenService, AccessTokenStrategy],
   controllers: [TokenController],
 })
 export class TokenModule {}

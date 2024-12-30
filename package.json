@@ -5,7 +5,11 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^3.9.1",
+    "@mui/icons-material": "^6.3.0",
+    "@mui/material": "^6.3.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^10.0.2",
     "@nestjs/config": "^3.3.0",
