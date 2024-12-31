@@ -7,9 +7,7 @@ import { Type } from '@prisma/client';
 export class TypeService {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async findMany(
-    args: Prisma.TypeFindManyArgs = {}
-  ): Promise<Type[]> {
+  public async findMany(args: Prisma.TypeFindManyArgs = {}): Promise<Type[]> {
     return await this.prisma.type.findMany(args);
   }
 
@@ -26,5 +24,9 @@ export class TypeService {
 
   public async findOne(dto: Prisma.TypeFindFirstArgs = {}): Promise<Type> {
     return await this.prisma.type.findFirst({ ...dto });
+  }
+
+  public async deleteOne(where: Prisma.TypeWhereUniqueInput): Promise<void> {
+    await this.prisma.type.delete({ where });
   }
 }

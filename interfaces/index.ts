@@ -23,4 +23,5 @@ export interface ICharacteristic {
   id: string;
   title: string;
   type: characteristics;
+  isVisible: boolean;
 }

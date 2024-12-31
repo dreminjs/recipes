@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { Type } from 'prisma/prisma-client';
 import { TypeService } from './type.service';
 import { CreateTypeDto } from './dto/create-type.dto';
@@ -42,5 +42,10 @@ export class TypeController {
   @Get(':id')
   public async findOne(@Query('id') id: string): Promise<Type> {
     return await this.typeService.findOne({ where: { id } });
+  }
+
+  @Delete(':id')
+  public async deleteOne(@Param('id') id: string): Promise<void> {
+    await this.typeService.deleteOne({ id }); 
   }
 }

@@ -39,3 +39,5 @@ export {
 export type { IPostCharacteristicForm } from './model/interfaces/characteristic.interface';
 
 export { PostCharacteristicFormSchema } from './model/schemas/characteristic.schema';
+
+export { InputSearch } from './ui/input-search';

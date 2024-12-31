@@ -1,5 +1,5 @@
+export { AdminLinksList } from './ui/common/admin-links-list';
 
+export { AdminPostCharacteristic } from './ui/characteristic/admin-post-characteristic';
 
-export { AdminLinksList } from "./ui/admin-links-list"
-
-export { AdminPostCharacteristic } from "./ui/admin-post-characteristic"
+export { AdminCharacteristicsList } from './ui/characteristic/admin-characteristics-list';

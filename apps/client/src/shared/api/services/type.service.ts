@@ -21,7 +21,7 @@ export const typeService = {
 
     if (query.limit) urlSearchParams.append('limit', query.limit.toString());
 
-    return await this.axios.get(`${this.root}?${urlSearchParams.toString()}`);
+    return (await this.axios.get(`${this.root}?${urlSearchParams.toString()}`)).data
   },
 
   async createOne(dto: Prisma.TypeCreateInput): Promise<Type> {

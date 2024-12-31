@@ -1,27 +1,35 @@
 import {
-  useQuery,
-  useQueryClient,
   useMutation,
   useInfiniteQuery,
 } from '@tanstack/react-query';
-import { IGetCharacteristicsQueryParameters } from '../../model/interfaces/characteristic.interface';
 import { QUERY_KEYS } from '../../model/constants';
 import { typeService } from '../services/type.service';
 import { Prisma } from 'prisma/prisma-client';
 
-export const useGetTypes = (query: IGetCharacteristicsQueryParameters) => {
+export const useGetTypes = ({ title }: { title?: string }) => {
   const {
     data: types,
     isLoading: typesIsLoading,
+    isSuccess: typesIsSuccess,
     fetchNextPage,
     hasNextPage,
     isError: typesIsError,
+    refetch: refetchTypes,
   } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.type, query],
-    queryFn: () => typeService.findMany(query),
+    queryKey: [QUERY_KEYS.type],
+    queryFn: ({ pageParam }) =>
+      typeService.findMany({ limit: 10, cursor: pageParam, title }),
   });
 
-  return { types, typesIsLoading, fetchNextPage, hasNextPage, typesIsError };
+  return {
+    types,
+    typesIsLoading,
+    fetchNextPage,
+    hasNextPage,
+    typesIsError,
+    typesIsSuccess,
+    refetchTypes,
+  };
 };
 
 export const usePostType = () => {

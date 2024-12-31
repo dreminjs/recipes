@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   IPostCharacteristicForm,
   PostCharacteristicFormSchema,
-} from '../../../shared/';
+} from '../../../../shared';
 import { characteristics } from 'interfaces';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
@@ -22,11 +22,13 @@ export const AdminPostCharacteristic: FC<IProps> = ({ label, onPost }) => {
     resolver: zodResolver(PostCharacteristicFormSchema),
   });
 
+  const onSubmit = (data: IPostCharacteristicForm) => {
+    onPost({ ...data });
+    reset();
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit((data) => onPost({ ...data }))}
-      className="flex gap-5"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex gap-5 mb-5">
       <div>
         <input
           {...register('title')}

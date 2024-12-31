@@ -1,4 +1,4 @@
-import { AdminLink } from '../../../entities/admin/';
+import { AdminLink } from '../../../../entities/admin/';
 
 export const AdminLinksList = () => {
   return (
