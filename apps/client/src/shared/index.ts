@@ -25,6 +25,17 @@ export { useGetRandomCharacteristic } from './api/queries/characteristic.queries
 
 export { PostRecipeFormSchema } from './model/schemas/recipe.schema';
 
-export type { IPostRecipeForm } from "./model/interfaces/recipe.interface"; 
+export type { IPostRecipeForm } from './model/interfaces/recipe.interface';
 
 export { useGetRecipes } from './api/queries/recipe.queries';
+
+export {
+  useDeleteType,
+  useGetTypes,
+  usePostType,
+  usePutType,
+} from './api/queries/type.queries';
+
+export type { IPostCharacteristicForm } from './model/interfaces/characteristic.interface';
+
+export { PostCharacteristicFormSchema } from './model/schemas/characteristic.schema';

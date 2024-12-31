@@ -7,15 +7,17 @@ import { Type } from '@prisma/client';
 export class TypeService {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async findMany(where: Prisma.TypeWhereInput = {}): Promise<Type[]> {
-    return await this.prisma.type.findMany({ where });
+  public async findMany(
+    args: Prisma.TypeFindManyArgs = {}
+  ): Promise<Type[]> {
+    return await this.prisma.type.findMany(args);
   }
 
   public async updateOne(
     where: Prisma.TypeWhereUniqueInput,
     dto: Prisma.TypeUpdateInput
   ): Promise<Type> {
-    return await this.prisma.type.update({data: dto, where});
+    return await this.prisma.type.update({ data: dto, where });
   }
 
   public async createOne(dto: Prisma.TypeCreateInput): Promise<Type> {
@@ -25,5 +27,4 @@ export class TypeService {
   public async findOne(dto: Prisma.TypeFindFirstArgs = {}): Promise<Type> {
     return await this.prisma.type.findFirst({ ...dto });
   }
-
 }

@@ -8,8 +8,8 @@ export class HolidayService {
         private readonly prisma: PrismaService
     ){}
 
-    public async findMany(where: Prisma.HolidayWhereInput = {}): Promise<Holiday[]> {
-        return await this.prisma.holiday.findMany({ where });
+    public async findMany(args: Prisma.HolidayFindManyArgs = {}): Promise<Holiday[]> {
+        return await this.prisma.holiday.findMany(args);
     }
 
     public async findOne(dto: Prisma.HolidayFindFirstArgs = {}): Promise<Holiday> {

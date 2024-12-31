@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateNationalCuisineDto } from './dtos/create-national-cuisine.dto';
 import { NationalCuisine } from '@prisma/client';
 import { UpdateNationalCuisineDto } from './dtos/update-national-cuisine.dto';
 import { NationalCuisineService } from './national-cuisine.service';
+import { GetCharacteristicsQueryParameters } from '../shared';
+import { InfiniteScrollResponse } from 'interfaces';
 
 @Controller('national-cuisine')
 export class NationalCuisineController {
@@ -17,10 +19,23 @@ export class NationalCuisineController {
     return this.nationalCuisineService.createOne(body);
   }
 
-  @Get()
-  public async findMany(): Promise<NationalCuisine[]> {
-    return await this.nationalCuisineService.findMany();
-  }
+ 
+   @Get()
+   public async findMany(
+     @Query() { title, cursor, limit }: GetCharacteristicsQueryParameters
+   ): Promise<InfiniteScrollResponse<NationalCuisine>> {
+     const nationalCuisines = await this.nationalCuisineService.findMany({
+       where: {
+         ...(title && { title }),
+       },
+       skip: cursor,
+       take: limit,
+     });
+ 
+     const nextCursor = nationalCuisines.length > 0 ? limit + cursor : null;
+ 
+     return { data: nationalCuisines, nextCursor, };
+   }
 
   @Put(':id')
   public async updateOne(

@@ -4,25 +4,30 @@ import { NationalCuisine, Prisma } from '@prisma/client';
 
 @Injectable()
 export class NationalCuisineService {
-    constructor(
-        private readonly prisma: PrismaService
-    ){}
+  constructor(private readonly prisma: PrismaService) {}
 
-    async createOne(dto: Prisma.NationalCuisineCreateInput): Promise<NationalCuisine> {
-        return this.prisma.nationalCuisine.create({ data: dto });
-    }
+  async createOne(
+    dto: Prisma.NationalCuisineCreateInput
+  ): Promise<NationalCuisine> {
+    return this.prisma.nationalCuisine.create({ data: dto });
+  }
 
-    async findMany(where: Prisma.NationalCuisineWhereInput = {}): Promise<NationalCuisine[]> {
-        return this.prisma.nationalCuisine.findMany({ where });
-    }
+  async findMany(
+    args: Prisma.NationalCuisineFindManyArgs = {}
+  ): Promise<NationalCuisine[]> {
+    return this.prisma.nationalCuisine.findMany(args);
+  }
 
-    async updateOne(where: Prisma.NationalCuisineWhereUniqueInput, dto: Prisma.NationalCuisineUpdateInput): Promise<NationalCuisine> {
-        return this.prisma.nationalCuisine.update({ where, data: dto });
-    }
+  async updateOne(
+    where: Prisma.NationalCuisineWhereUniqueInput,
+    dto: Prisma.NationalCuisineUpdateInput
+  ): Promise<NationalCuisine> {
+    return this.prisma.nationalCuisine.update({ where, data: dto });
+  }
 
-    async findOne(dto: Prisma.NationalCuisineFindFirstArgs = {}): Promise<NationalCuisine> {
-        return this.prisma.nationalCuisine.findFirst({ ...dto });
-    }
-
+  async findOne(
+    dto: Prisma.NationalCuisineFindFirstArgs = {}
+  ): Promise<NationalCuisine> {
+    return this.prisma.nationalCuisine.findFirst({ ...dto });
+  }
 }
-

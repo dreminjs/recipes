@@ -2,7 +2,7 @@ import Link from 'next/link';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 export const Header = () => {
   return (
-    <header className="border-2 py-5 px-5 mx-auto flex justify-between items-center mb-[50px] rounded-2xl">
+    <header className="border-2 py-5 px-5 mx-auto flex justify-between items-center mb-[40px] rounded-2xl">
       <Link href={'/'} className="text-[32px]">
         Recipes :)
       </Link>

@@ -8,7 +8,10 @@ export const QUERY_KEYS = {
     signin: 'signin',
     recipe: 'recipe',
     characteristic: "characteristic",
-    user: "user"
+    user: "user",
+    nationalCuisine: "nationalCuisine",
+    type: "type",
+    holiday: "holiday"
 }
 
 export const SERVICE_KEYS = {

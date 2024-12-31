@@ -8,8 +8,6 @@ interface IProps {
   error?: FieldError;
 }
 
-
-
 export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -34,13 +32,13 @@ export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
     <div className="mb-3">
       {imagePreview && (
         <Image
-          width={300}
-          height={300}
+          width={280}
+          height={280}
           src={imagePreview}
           alt="Recipe Preview"
         />
       )}
-      <button className='block' type="button" onClick={onClick}>Выбрать превью для рецепта</button>
+      <button className='block border-2 px-5 py-2' type="button" onClick={onClick}>Выбрать превью для рецепта</button>
       <input
         {...register('photo', {
           onChange: handleImageChange,
@@ -48,7 +46,7 @@ export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
         ref={inputRef}
         type="file"
         accept="image/*"
-        style={{ display: 'none' }} // Скрываем input
+        style={{ display: 'none' }} 
       />
       {error && <p>{error.message}</p>}
     </div>

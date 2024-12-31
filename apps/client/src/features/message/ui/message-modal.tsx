@@ -1,4 +1,3 @@
-import { set } from 'react-hook-form';
 import { BasicModal } from '../../../shared';
 import { FC, useEffect, useState } from 'react';
 
@@ -11,6 +10,7 @@ interface IProps {
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
+  className?: string;
 }
 
 export const MessageModal: FC<IProps> = ({
@@ -18,6 +18,7 @@ export const MessageModal: FC<IProps> = ({
   isError,
   isLoading,
   isSuccess,
+  className,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -41,12 +42,12 @@ export const MessageModal: FC<IProps> = ({
   }, [message, isError, isLoading, isSuccess]);
 
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && !isLoading) {
       setTimeout(() => {
         setIsVisible(false);
-      }, 6000);
+      }, 1000);
     }
-  }, [isVisible]);
+  }, [isVisible, isLoading]);
 
   return (
     <BasicModal onClose={handleClose} isOpen={isVisible}>
