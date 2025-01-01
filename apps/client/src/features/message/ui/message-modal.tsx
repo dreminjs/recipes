@@ -39,6 +39,7 @@ export const MessageModal: FC<IProps> = ({
       }
       setIsVisible(true);
     }
+
   }, [message, isError, isLoading, isSuccess]);
 
   useEffect(() => {

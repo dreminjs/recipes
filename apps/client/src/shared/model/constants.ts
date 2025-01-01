@@ -9,7 +9,7 @@ export const QUERY_KEYS = {
     recipe: 'recipe',
     characteristic: "characteristic",
     user: "user",
-    nationalCuisine: "nationalCuisine",
+    nationalCuisine: "national-cuisine",
     type: "type",
     holiday: "holiday"
 }

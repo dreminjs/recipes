@@ -62,20 +62,24 @@ export const AdminTypesPage = () => {
     setTitle(event.target.value);
   };
 
+  const handleShowInput = (idx: number) => {
+    setCurrentCharacteristicIdx(idx);
+    setIsVisible((prev) => !prev);
+  };
+
+  const handleHideInput = () => {
+    setCurrentCharacteristicIdx(null);
+    setIsVisible((prev) => !prev);
+  };
+
   const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
     usePostType();
 
   useEffect(() => {
-    if (
-      typesIsSuccess ||
-      postTypeIsSuccess ||
-      deleteTypeIsSuccess ||
-      putTypeIsSuccess
-    ) {
+    if (postTypeIsSuccess || deleteTypeIsSuccess || putTypeIsSuccess) {
       refetchTypes();
     }
   }, [
-    typesIsSuccess,
     refetchTypes,
     postTypeIsSuccess,
     deleteTypeIsSuccess,
@@ -92,14 +96,15 @@ export const AdminTypesPage = () => {
         />
         <InputSearch value={title} onChange={handleTitleChange} />
         <AdminCharacteristicsList
-          onToggleVisibility={handleToggleInputVisibility}
+          onHideInput={handleHideInput}
+          onShowInput={handleShowInput}
           visibleIdx={currentCharacteristicIdx}
           isVisible={isVisible}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           characteristicsIsError={typesIsError}
-          characteristicsIsLoading={typesIsError}
-          characteristicIsSuccess={typesIsError}
+          characteristicsIsLoading={typesIsLoading}
+          characteristicIsSuccess={typesIsSuccess}
           onDelete={deleleType}
           onPut={handlePutType}
           characteristics={types}

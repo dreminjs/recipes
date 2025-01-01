@@ -3,7 +3,6 @@ import { useInView } from 'react-intersection-observer';
 import { AdminCharacteristicItem } from '../../../../entities/admin';
 import { InfiniteData } from '@tanstack/react-query';
 import { ICharacteristic, InfiniteScrollResponse } from 'interfaces';
-import { Prisma } from 'prisma/prisma-client';
 
 interface IProps {
   characteristicsIsError: boolean;
@@ -15,10 +14,11 @@ interface IProps {
     InfiniteScrollResponse<Omit<ICharacteristic, 'type'>>
   >;
   onDelete(id: string): void;
-  visibleIdx: number | null
-  isVisible: boolean
-  onToggleVisibility(idx: number): void
-  onPut(data: Prisma.TypeUpdateInput, id: string): void
+  visibleIdx: number | null;
+  isVisible: boolean;
+  onShowInput: (idx: number) => void;
+  onHideInput: () => void;
+  onPut(data: { title: string }, id: string): void;
 }
 
 export const AdminCharacteristicsList: FC<IProps> = ({
@@ -29,10 +29,11 @@ export const AdminCharacteristicsList: FC<IProps> = ({
   characteristicsIsError,
   characteristics,
   onDelete,
-  onToggleVisibility,
+  onHideInput,
+  onShowInput,
   isVisible,
   visibleIdx,
-  onPut
+  onPut,
 }) => {
   const { ref, inView } = useInView();
   useEffect(() => {
@@ -44,9 +45,10 @@ export const AdminCharacteristicsList: FC<IProps> = ({
       {characteristicsIsLoading && <li className="text-[32px] ">Loading...</li>}
       {characteristicsIsError && <li className="text-[32px] ">Error</li>}
       {characteristics?.pages?.map((page) =>
-        page?.data?.map(({ title, id },idx) => (
+        page?.data?.map(({ title, id }, idx) => (
           <AdminCharacteristicItem
-            onToggleVisibility={onToggleVisibility}
+            onShowInput={onShowInput}
+            onHideInput={onHideInput}
             isVisible={isVisible}
             onDelete={onDelete}
             title={title}

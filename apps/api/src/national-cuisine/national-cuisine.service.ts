@@ -30,4 +30,10 @@ export class NationalCuisineService {
   ): Promise<NationalCuisine> {
     return this.prisma.nationalCuisine.findFirst({ ...dto });
   }
+
+  async deleteOne(
+    where: Prisma.NationalCuisineWhereUniqueInput
+  ): Promise<NationalCuisine> {
+    return this.prisma.nationalCuisine.delete({ where });
+  }
 }

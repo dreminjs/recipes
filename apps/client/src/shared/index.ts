@@ -41,3 +41,10 @@ export type { IPostCharacteristicForm } from './model/interfaces/characteristic.
 export { PostCharacteristicFormSchema } from './model/schemas/characteristic.schema';
 
 export { InputSearch } from './ui/input-search';
+
+export {
+  useDeleteNationalCuisine,
+  useGetNationalCuisines,
+  usePostNationalCuisine,
+  usePutNationalCuisine,
+} from './api/queries/national-cuisine.queries';

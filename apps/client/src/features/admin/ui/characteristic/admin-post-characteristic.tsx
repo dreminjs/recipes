@@ -8,7 +8,7 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface IProps {
-  label: characteristics;
+  label: string;
   onPost: (data: IPostCharacteristicForm) => void;
 }
 

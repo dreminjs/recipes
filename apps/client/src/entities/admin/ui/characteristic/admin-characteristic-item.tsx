@@ -7,9 +7,10 @@ interface IProps {
   onDelete: (id: string) => void;
   currentIdx: number;
   visibleIdx: number | null;
-  onToggleVisibility: (idx: number) => void;
   isVisible: boolean;
   onPut(data: Prisma.TypeUpdateInput, id: string): void;
+  onShowInput: (idx: number) => void;
+  onHideInput: () => void;
 }
 
 export const AdminCharacteristicItem: FC<IProps> = ({
@@ -19,10 +20,12 @@ export const AdminCharacteristicItem: FC<IProps> = ({
   currentIdx,
   visibleIdx,
   isVisible,
-  onToggleVisibility,
   onPut,
+  onShowInput,
+  onHideInput,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [text, setText] = useState<string>('');
 
@@ -31,19 +34,21 @@ export const AdminCharacteristicItem: FC<IProps> = ({
   }, [title]);
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         inputRef.current &&
-        !inputRef.current.id === event.target.id
+        !inputRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
       ) {
-        onToggleVisibility(currentIdx);
+        onHideInput();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [currentIdx, onToggleVisibility]);
+  }, [currentIdx, onHideInput]);
 
   return (
     <li className="p-5 border-2 mb-5 rounded-xl flex justify-between items-center">
@@ -58,6 +63,7 @@ export const AdminCharacteristicItem: FC<IProps> = ({
               className="text-[25px] p-0 m-0 outline-none border-b-2 w-[50%]"
             />
             <button
+              ref={buttonRef}
               onClick={() => onPut({ title: text }, id)}
               className="text-[25px] px-5 py-2 rounded-xl"
             >
@@ -66,7 +72,7 @@ export const AdminCharacteristicItem: FC<IProps> = ({
           </div>
         ) : (
           <p
-            onClick={() => onToggleVisibility(currentIdx)}
+            onClick={() => onShowInput(currentIdx)}
             className="text-[25px] p-0 m-0"
           >
             {title}

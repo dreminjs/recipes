@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateNationalCuisineDto } from './dtos/create-national-cuisine.dto';
 import { NationalCuisine } from '@prisma/client';
 import { UpdateNationalCuisineDto } from './dtos/update-national-cuisine.dto';
@@ -19,34 +19,38 @@ export class NationalCuisineController {
     return this.nationalCuisineService.createOne(body);
   }
 
- 
-   @Get()
-   public async findMany(
-     @Query() { title, cursor, limit }: GetCharacteristicsQueryParameters
-   ): Promise<InfiniteScrollResponse<NationalCuisine>> {
-     const nationalCuisines = await this.nationalCuisineService.findMany({
-       where: {
-         ...(title && { title }),
-       },
-       skip: cursor,
-       take: limit,
-     });
- 
-     const nextCursor = nationalCuisines.length > 0 ? limit + cursor : null;
- 
-     return { data: nationalCuisines, nextCursor, };
-   }
+  @Get()
+  public async findMany(
+    @Query() { title, cursor, limit }: GetCharacteristicsQueryParameters
+  ): Promise<InfiniteScrollResponse<NationalCuisine>> {
+    const nationalCuisines = await this.nationalCuisineService.findMany({
+      where: {
+        ...(title && { title }),
+      },
+      skip: cursor,
+      take: limit,
+    });
+
+    const nextCursor = nationalCuisines.length > 0 ? limit + cursor : null;
+
+    return { data: nationalCuisines, nextCursor };
+  }
 
   @Put(':id')
   public async updateOne(
     @Body() body: UpdateNationalCuisineDto,
     @Param('id') id: string
   ): Promise<NationalCuisine> {
-    return await this.nationalCuisineService.updateOne(body, { id });
+    return await this.nationalCuisineService.updateOne({ id }, { ...body });
   }
 
   @Get(':id')
   public async findOne(@Param('id') id: string): Promise<NationalCuisine> {
     return await this.nationalCuisineService.findOne({ where: { id } });
+  }
+
+  @Delete(':id')
+  public async deleteOne(@Param('id') id: string): Promise<void> {
+    await this.nationalCuisineService.deleteOne({ id }); 
   }
 }
