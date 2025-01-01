@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { Holiday } from '@prisma/client';
 import { HolidayService } from './holiday.service';
 import { UpdateHolidayDto } from './dto/update-holiday.dto';
@@ -23,12 +32,12 @@ export class HolidayController {
 
     const nextCursor = holidays.length > 0 ? limit + cursor : null;
 
-    return { data: holidays, nextCursor, };
+    return { data: holidays, nextCursor };
   }
 
-  @Put()
+  @Put(":id")
   public async updateOne(
-    @Query('id') id: string,
+    @Param('id') id: string,
     @Body() body: UpdateHolidayDto
   ): Promise<Holiday> {
     return await this.holidayService.updateOne({ id }, body);
@@ -40,7 +49,12 @@ export class HolidayController {
   }
 
   @Get(':id')
-  public async findOne(@Query('id') id: string): Promise<Holiday> {
+  public async findOne(@Param('id') id: string): Promise<Holiday> {
     return await this.holidayService.findOne({ where: { id } });
+  }
+
+  @Delete(':id')
+  public async deleteOne(@Param('id') id: string): Promise<void> {
+    return await this.holidayService.deleteOne({ id });
   }
 }

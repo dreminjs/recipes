@@ -48,3 +48,10 @@ export {
   usePostNationalCuisine,
   usePutNationalCuisine,
 } from './api/queries/national-cuisine.queries';
+
+export {
+  useDeleteHoliday,
+  useGetHolidays,
+  usePostHoliday,
+  usePutHoliday,
+} from './api/queries/holiday.queries';

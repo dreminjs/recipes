@@ -51,7 +51,7 @@ export const usePostHoliday = () => {
 
 export const useDeleteHoliday = () => {
   const {
-    mutate: deleleHoliday,
+    mutate: deleteHoliday,
     isLoading: deleteHolidayIsLoading,
     isError: deleteHolidayIsError,
     isSuccess: deleteHolidayIsSuccess,
@@ -63,7 +63,7 @@ export const useDeleteHoliday = () => {
     deleteHolidayIsSuccess,
     deleteHolidayIsError,
     deleteHolidayIsLoading,
-    deleleHoliday,
+    deleteHoliday,
   };
 };
 
