@@ -10,19 +10,24 @@ import {
   AdminPostCharacteristic,
 } from '../../../features/admin';
 import { MessageModal } from '../../../features/message';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useDebounce } from 'use-debounce';
+import { Prisma } from 'prisma/prisma-client';
 
 export const AdminTypesPage = () => {
   const [title, setTitle] = useState('');
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
+  const [isVisible, setIsVisible] = useState(false);
 
-  const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
-    usePostType();
+  const [currentCharacteristicIdx, setCurrentCharacteristicIdx] = useState<
+    number | null
+  >(null);
 
-  const {} = usePutType();
+  const [value] = useDebounce(title, 500);
+
+  const { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess } =
+    usePutType();
 
   const {
     deleleType,
@@ -40,8 +45,31 @@ export const AdminTypesPage = () => {
     typesIsSuccess,
     refetchTypes,
   } = useGetTypes({
-    title,
+    title: value,
   });
+
+  const handleToggleInputVisibility = (idx: number) => {
+    setCurrentCharacteristicIdx(idx);
+    setIsVisible((prev) => !prev);
+  };
+
+  const handlePutType = (data: Prisma.TypeUpdateInput, id: string) => {
+    handleToggleInputVisibility(-1)
+    putType({ data, id });
+  };
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
+    usePostType();
+
+  useEffect(() => {
+    if (typesIsSuccess || postTypeIsSuccess || deleteTypeIsSuccess || putTypeIsSuccess) {
+      refetchTypes();
+    }
+  }, [typesIsSuccess, refetchTypes, postTypeIsSuccess, deleteTypeIsSuccess, putTypeIsSuccess]);
 
   return (
     <>
@@ -52,25 +80,28 @@ export const AdminTypesPage = () => {
         />
         <InputSearch value={title} onChange={handleTitleChange} />
         <AdminCharacteristicsList
-          characteristicIsSuccess={postTypeIsSuccess || deleteTypeIsSuccess}
+          onToggleVisibility={handleToggleInputVisibility}
+          visibleIdx={currentCharacteristicIdx}
+          isVisible={isVisible}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
-          refetchCharacteristics={refetchTypes}
-          characteristicsIsLoading={typesIsLoading || deleteTypeIsLoading}
-          characteristicsIsError={typesIsError || deleteTypeIsError}
-          characteristics={types}
+          characteristicsIsError={typesIsError}
+          characteristicsIsLoading={typesIsError}
+          characteristicIsSuccess={typesIsError}
           onDelete={deleleType}
+          onPut={handlePutType}
+          characteristics={types}
         />
       </div>
       <MessageModal
         message={{
-          isSuccess: 'Тип загружен!',
+          isSuccess: 'Успешно',
           isError: 'Ошибка! проверте данные',
           isLoading: 'Загрузка...',
         }}
-        isLoading={postTypeIsLoading}
+        isLoading={postTypeIsLoading || deleteTypeIsLoading}
         isError={postTypeIsError}
-        isSuccess={postTypeIsSuccess}
+        isSuccess={postTypeIsSuccess || deleteTypeIsSuccess}
       />
     </>
   );

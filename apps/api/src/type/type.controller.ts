@@ -16,7 +16,7 @@ export class TypeController {
   ): Promise<InfiniteScrollResponse<Type>> {
     const types = await this.typeService.findMany({
       where: {
-        ...(title && { title }),
+        ...(title && { title: { contains: title } }),
       },
       skip: cursor,
       take: limit,
@@ -34,7 +34,7 @@ export class TypeController {
   @Put(':id')
   public async updateOne(
     @Body() body: UpdateHolidayDto,
-    @Query('id') id: string
+    @Param('id') id: string
   ): Promise<Type> {
     return await this.typeService.updateOne({ id }, { ...body });
   }
