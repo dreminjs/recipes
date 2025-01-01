@@ -54,7 +54,7 @@ export const AdminTypesPage = () => {
   };
 
   const handlePutType = (data: Prisma.TypeUpdateInput, id: string) => {
-    handleToggleInputVisibility(-1)
+    handleToggleInputVisibility(-1);
     putType({ data, id });
   };
 
@@ -66,10 +66,22 @@ export const AdminTypesPage = () => {
     usePostType();
 
   useEffect(() => {
-    if (typesIsSuccess || postTypeIsSuccess || deleteTypeIsSuccess || putTypeIsSuccess) {
+    if (
+      typesIsSuccess ||
+      postTypeIsSuccess ||
+      deleteTypeIsSuccess ||
+      putTypeIsSuccess
+    ) {
       refetchTypes();
     }
-  }, [typesIsSuccess, refetchTypes, postTypeIsSuccess, deleteTypeIsSuccess, putTypeIsSuccess]);
+  }, [
+    typesIsSuccess,
+    refetchTypes,
+    postTypeIsSuccess,
+    deleteTypeIsSuccess,
+    putTypeIsSuccess,
+    value,
+  ]);
 
   return (
     <>
