@@ -55,3 +55,12 @@ export {
   usePostHoliday,
   usePutHoliday,
 } from './api/queries/holiday.queries';
+
+export { ingredientFormSchema } from './model/schemas/ingredient.schema';
+
+export type { IIngredientForm } from './model/interfaces/ingredient.interface';
+
+export {
+  usePostIngredient,
+  useGetIngredients,
+} from './api/queries/ingredient.queries';

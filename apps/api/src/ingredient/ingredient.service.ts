@@ -21,4 +21,8 @@ export class IngredientService {
     public async createOne(dto: Prisma.IngredientCreateInput): Promise<Ingredient> {
         return await this.prisma.ingredient.create({ data: dto });
     }
+
+    public async createRequest(dto: Prisma.IngredientRequestCreateInput): Promise<Ingredient> {
+        return await this.prisma.ingredientRequest.create({ data: dto });
+    }
 }

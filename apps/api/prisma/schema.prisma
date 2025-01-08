@@ -18,6 +18,14 @@ enum Roles {
   ADMIN
 }
 
+enum Measure {
+  ML
+  L
+  KG
+  G
+  N
+}
+
 model User {
   id             String           @id @default(uuid())
   nickname       String
@@ -103,6 +111,7 @@ model FavoriteRecipe {
 model Ingredient {
   id               String             @id @default(uuid())
   title            String
+  measure          Measure
   RecipeIngredient RecipeIngredient[]
 }
 
@@ -114,9 +123,17 @@ model Step {
 }
 
 model RecipeIngredient {
-  id           String     @id @default(uuid())
-  ingredient   Ingredient @relation(references: [id], fields: [ingredientId])
+  id         String     @id @default(uuid())
+  ingredient Ingredient @relation(references: [id], fields: [ingredientId])
+  count      Int
+
   ingredientId String
   recipeId     String
-  recipe       Recipe     @relation(references: [id], fields: [recipeId])
+  recipe       Recipe @relation(references: [id], fields: [recipeId])
+}
+
+model IngredientRequest {
+  id      String  @id @default(uuid())
+  title   String
+  measure Measure
 }

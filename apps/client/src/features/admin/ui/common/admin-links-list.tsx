@@ -5,7 +5,7 @@ export const AdminLinksList = () => {
     <ul className="border-2 flex list-none gap-5 p-5 rounded-xl flex-wrap justify-center">
       <AdminLink content="Управление рецептами" href="admin/recipe" />
       <AdminLink content="Управление пользователями" href="admin/users" />
-      <AdminLink content="Управление ингредиентами" href="admin/ingredients" />
+      <AdminLink content="Управление ингредиентами" href="admin/ingredient" />
       <AdminLink content="Управление типами" href="admin/types" />
       <AdminLink
         content="Управление национальными кухнями"

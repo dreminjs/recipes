@@ -1,0 +1,1 @@
+export { AdminPostIngredient } from "./ui/ingredient/admin-post-ingredient"

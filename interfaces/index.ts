@@ -5,10 +5,7 @@ export type IAuthResponse = Omit<
   'hashPassword' | 'salt' | 'id' | 'link' | 'role'
 >;
 
-export type IRecipeIngredient = {
-  id: string;
-  ingredientId: string;
-};
+
 
 export type IStep = Pick<Step, 'content'>;
 

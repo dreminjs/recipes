@@ -10,6 +10,7 @@ import { HolidayModule } from '../holiday/holiday.module';
 import { CharacteristicModule } from '../characteristic/characteristic.module';
 import { RecipeModule } from '../recipe/recipe.module';
 import { ConfigModule } from '@nestjs/config';
+import { IngredientModule } from '../ingredient/ingredient.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConfigModule } from '@nestjs/config';
     NationalCuisineModule,
     HolidayModule,
     CharacteristicModule,
+    IngredientModule,
     RecipeModule,
     ConfigModule.forRoot({ isGlobal: true }),
   ],

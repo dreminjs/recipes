@@ -11,7 +11,8 @@ export const QUERY_KEYS = {
     user: "user",
     nationalCuisine: "national-cuisine",
     type: "type",
-    holiday: "holiday"
+    holiday: "holiday",
+    ingredient: "ingredient",
 }
 
 export const SERVICE_KEYS = {

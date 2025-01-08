@@ -1,9 +1,8 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { IngredientService } from './ingredient.service';
-import { Ingredient } from '@prisma/client';
+import { Ingredient, IngredientRequest } from '@prisma/client';
 import { GetIngredientsQueryParameters } from './dto/get-ingredients-query-parameters';
-import { title } from 'process';
 import { InfiniteScrollResponse } from 'interfaces';
 
 @Controller('ingredient')
@@ -35,5 +34,12 @@ export class IngredientController {
       nextCursor,
       data: ingredients,
     };
+  }
+
+  @Post('request')
+  public async createRequest(
+    @Body() body: CreateIngredientDto
+  ): Promise<IngredientRequest> {
+    return await this.ingredientService.createRequest({ ...body });
   }
 }
