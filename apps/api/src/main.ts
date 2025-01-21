@@ -26,7 +26,7 @@ async function bootstrap() {
     })
   );
 
-  app.enableCors({ origin: true, credentials: true });
+  app.enableCors({ origin: "http://localhost:4200", credentials: true });
 
   const port = 3001;
 

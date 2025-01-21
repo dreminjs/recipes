@@ -7,7 +7,6 @@ interface IProps {
   onDelete: (id: string) => void;
   currentIdx: number;
   visibleIdx: number | null;
-  isVisible: boolean;
   onPut(data: Prisma.TypeUpdateInput, id: string): void;
   onShowInput: (idx: number) => void;
   onHideInput: () => void;
@@ -19,7 +18,6 @@ export const AdminCharacteristicItem: FC<IProps> = ({
   onDelete,
   currentIdx,
   visibleIdx,
-  isVisible,
   onPut,
   onShowInput,
   onHideInput,
@@ -42,6 +40,7 @@ export const AdminCharacteristicItem: FC<IProps> = ({
         !buttonRef.current.contains(event.target as Node)
       ) {
         onHideInput();
+        setText(title)
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -53,7 +52,7 @@ export const AdminCharacteristicItem: FC<IProps> = ({
   return (
     <li className="p-5 border-2 mb-5 rounded-xl flex justify-between items-center">
       <div>
-        {isVisible && currentIdx === visibleIdx ? (
+        {currentIdx === visibleIdx ? (
           <div id="input" className="flex gap-5">
             <input
               value={text}

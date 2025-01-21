@@ -100,7 +100,6 @@ export const AdminHolidaysPage = () => {
           onShowInput={handleShowInput}
           onHideInput={handleHideInput}
           visibleIdx={currentCharacteristicIdx}
-          isVisible={isVisible}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           characteristicsIsError={holidaysIsError}

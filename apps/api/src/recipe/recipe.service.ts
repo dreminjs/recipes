@@ -25,7 +25,6 @@ export class RecipeService {
     return await this.prisma.recipe.update({
       where,
       data: dto,
-     
     });
   }
 
@@ -44,4 +43,6 @@ export class RecipeService {
   ): Promise<FavoriteRecipe> {
     return await this.prisma.favoriteRecipe.delete({ where: data });
   }
+
+  
 }

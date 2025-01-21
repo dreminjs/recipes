@@ -28,8 +28,13 @@ export const usePostSignIn = () => {
 
   const { mutate, isLoading, data, isSuccess, isError } = useMutation({
     mutationFn: (data: ISignIn) => AuthService.signin(data),
-    onSuccess: () => {
-      navigate(PAGE_KEYS.emailConfirm);
+    onSuccess: (data) => {
+      console.log(data);
+      if (!data.isActived) {
+        navigate(PAGE_KEYS.emailConfirm);
+      }else {
+        navigate("/")
+      }
     },
   });
 

@@ -20,6 +20,7 @@ import { MailService } from '../mail/mail.service';
 import { SignupGuard } from './guards/signup.guard';
 import { AccessTokenGuard } from '../token';
 import { User } from '@prisma/client';
+import * as crypto from 'node:crypto';
 
 @Controller('auth')
 export class AuthController {
@@ -60,18 +61,16 @@ export class AuthController {
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000,
       path: '/',
-      domain: 'localhost',
     });
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/',
-      domain: 'localhost',
     });
     return {
       nickname: user.nickname,

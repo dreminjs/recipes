@@ -27,7 +27,7 @@ export const RecipeSelection: FC<IProps> = ({ idx }) => {
   });
 
   const [characteristicState, setCharateristicState] = useState<
-    Omit<ICharacteristic, 'id'>
+    Omit<ICharacteristic, 'id' | 'isVisible'>
   >({
     title: '',
     type: 'type',

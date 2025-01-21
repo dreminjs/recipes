@@ -15,7 +15,7 @@ interface IProps {
   >;
   onDelete(id: string): void;
   visibleIdx: number | null;
-  isVisible: boolean;
+
   onShowInput: (idx: number) => void;
   onHideInput: () => void;
   onPut(data: { title: string }, id: string): void;
@@ -31,7 +31,6 @@ export const AdminCharacteristicsList: FC<IProps> = ({
   onDelete,
   onHideInput,
   onShowInput,
-  isVisible,
   visibleIdx,
   onPut,
 }) => {
@@ -49,7 +48,6 @@ export const AdminCharacteristicsList: FC<IProps> = ({
           <AdminCharacteristicItem
             onShowInput={onShowInput}
             onHideInput={onHideInput}
-            isVisible={isVisible}
             onDelete={onDelete}
             title={title}
             id={id}

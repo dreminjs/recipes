@@ -53,6 +53,7 @@ export const useDeleteType = () => {
     isLoading: deleteTypeIsLoading,
     isError: deleteTypeIsError,
     isSuccess: deleteTypeIsSuccess,
+    
   } = useMutation({
     mutationFn: (id: string) => typeService.deleteOne({ id }),
     mutationKey: [QUERY_KEYS.type],

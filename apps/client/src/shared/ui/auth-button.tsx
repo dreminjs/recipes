@@ -18,7 +18,7 @@ export const AuthButton: FC<IProps> = ({ className }) => {
       </button>
       <Link
       className='text-[20px] text-[white] py-1 px-5'
-        href={`/${
+        href={`${
           router.pathname === '/' ? `${SERVICE_KEYS.signin}` : `${SERVICE_KEYS.signup}`
         }`}
       >

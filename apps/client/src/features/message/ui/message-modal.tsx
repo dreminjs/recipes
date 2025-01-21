@@ -29,6 +29,13 @@ export const MessageModal: FC<IProps> = ({
   const handleClose = () => setIsVisible(false);
 
   useEffect(() => {
+
+    console.log({
+      isSuccess,
+      isError,
+      isLoading
+    })
+
     if (isSuccess || isError || isLoading) {
       if (isSuccess) {
         setType('isSuccess');
@@ -43,12 +50,16 @@ export const MessageModal: FC<IProps> = ({
   }, [message, isError, isLoading, isSuccess]);
 
   useEffect(() => {
-    if (isVisible && !isLoading) {
+    if (isVisible && isLoading) {
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 1000);
+    } else if (isVisible && isSuccess){
       setTimeout(() => {
         setIsVisible(false);
       }, 1000);
     }
-  }, [isVisible, isLoading]);
+  }, [isVisible, isLoading, isSuccess]);
 
   return (
     <BasicModal onClose={handleClose} isOpen={isVisible}>

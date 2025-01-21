@@ -30,10 +30,10 @@ model User {
   id             String           @id @default(uuid())
   nickname       String
   email          String           @unique
-  isActived      Boolean
+  isActived      Boolean          @map("is_actived")
   link           String?          @unique
   role           Roles
-  hashPassword   String
+  hashPassword   String           @map("hass_password")
   salt           String
   RefreshToken   RefreshToken[]
   Recipe         Recipe[]
@@ -45,7 +45,7 @@ model RefreshToken {
   id     String @id @default(uuid())
   token  String
   user   User   @relation(references: [id], fields: [userId])
-  userId String
+  userId String @map("user_id")
 }
 
 model Recipe {
@@ -53,15 +53,15 @@ model Recipe {
   title             String
   description       String
   photo             String
-  userId            String
+  userId            String             @map("user_id")
   user              User               @relation(references: [id], fields: [userId])
   steps             Step[]
   type              Type               @relation(fields: [typeId], references: [id])
-  typeId            String
+  typeId            String             @map("type_id")
   nationalCuisine   NationalCuisine    @relation(fields: [nationalCuisineId], references: [id])
-  nationalCuisineId String
+  nationalCuisineId String             @map("national_cuisine_id")
   holiday           Holiday            @relation(fields: [holidayId], references: [id])
-  holidayId         String
+  holidayId         String             @map("holiday_id")
   recipeComment     RecipeComment[]
   favoriteRecipe    FavoriteRecipe[]
   recipeIngredient  RecipeIngredient[]
@@ -70,41 +70,41 @@ model Recipe {
 model NationalCuisine {
   id        String   @id @default(uuid())
   title     String   @unique
-  isVisible Boolean  @default(true)
+  isVisible Boolean  @default(true)     @map("is_visible")
   recipe    Recipe[]
 }
 
 model Type {
   id        String   @id @default(uuid())
   title     String   @unique
-  isVisible Boolean  @default(true)
+  isVisible Boolean  @default(true) @map("is_visible")
   recipe    Recipe[]
 }
 
 model Holiday {
   id        String   @id @default(uuid())
   title     String   @unique
-  isVisible Boolean  @default(true)
+  isVisible Boolean  @default(true) @map("is_visible")
   recipe    Recipe[]
 }
 
 model RecipeComment {
   id              String          @id @default(uuid())
   content         String
-  userId          String
+  userId          String          @map("user_id")
   user            User            @relation(references: [id], fields: [userId])
-  recipeId        String
+  recipeId        String          @map("recipe_id")
   recipe          Recipe          @relation(references: [id], fields: [recipeId])
-  recipeCommentId String?
+  recipeCommentId String?         @map("recipe_comment_id")
   recipeComment   RecipeComment?  @relation("RecipeComments", fields: [recipeCommentId], references: [id])
   replies         RecipeComment[] @relation("RecipeComments")
 }
 
 model FavoriteRecipe {
   id       String @id @default(uuid())
-  userId   String
+  userId   String @map("user_id")
   user     User   @relation(references: [id], fields: [userId])
-  recipeId String
+  recipeId String @map("recipe_id")
   recipe   Recipe @relation(references: [id], fields: [recipeId])
 }
 
@@ -118,7 +118,7 @@ model Ingredient {
 model Step {
   id       String @id @default(uuid())
   content  String
-  recipeId String
+  recipeId String @map("recipe_id")
   recipe   Recipe @relation(references: [id], fields: [recipeId])
 }
 
@@ -128,7 +128,7 @@ model RecipeIngredient {
   count      Int
 
   ingredientId String
-  recipeId     String
+  recipeId     String @map("recipe_id")
   recipe       Recipe @relation(references: [id], fields: [recipeId])
 }
 

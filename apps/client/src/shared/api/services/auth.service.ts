@@ -16,6 +16,6 @@ export const AuthService = {
     return await this.axios.post(
       `${SERVICE_KEYS.auth}/${QUERY_KEYS.signin}`,
       data
-    );
+    ).then(res => res.data)
   },
 };

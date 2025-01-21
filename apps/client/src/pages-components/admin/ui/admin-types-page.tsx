@@ -18,8 +18,6 @@ import { Prisma } from 'prisma/prisma-client';
 export const AdminTypesPage = () => {
   const [title, setTitle] = useState('');
 
-  const [isVisible, setIsVisible] = useState(false);
-
   const [currentCharacteristicIdx, setCurrentCharacteristicIdx] = useState<
     number | null
   >(null);
@@ -50,7 +48,6 @@ export const AdminTypesPage = () => {
 
   const handleToggleInputVisibility = (idx: number) => {
     setCurrentCharacteristicIdx(idx);
-    setIsVisible((prev) => !prev);
   };
 
   const handlePutType = (data: Prisma.TypeUpdateInput, id: string) => {
@@ -64,28 +61,21 @@ export const AdminTypesPage = () => {
 
   const handleShowInput = (idx: number) => {
     setCurrentCharacteristicIdx(idx);
-    setIsVisible((prev) => !prev);
   };
 
   const handleHideInput = () => {
     setCurrentCharacteristicIdx(null);
-    setIsVisible((prev) => !prev);
   };
 
   const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
     usePostType();
 
   useEffect(() => {
+    console.log('Hello');
     if (postTypeIsSuccess || deleteTypeIsSuccess || putTypeIsSuccess) {
       refetchTypes();
     }
-  }, [
-    refetchTypes,
-    postTypeIsSuccess,
-    deleteTypeIsSuccess,
-    putTypeIsSuccess,
-    value,
-  ]);
+  }, [refetchTypes, postTypeIsSuccess, deleteTypeIsSuccess, putTypeIsSuccess]);
 
   return (
     <>
@@ -99,7 +89,6 @@ export const AdminTypesPage = () => {
           onHideInput={handleHideInput}
           onShowInput={handleShowInput}
           visibleIdx={currentCharacteristicIdx}
-          isVisible={isVisible}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           characteristicsIsError={typesIsError}
@@ -116,9 +105,9 @@ export const AdminTypesPage = () => {
           isError: 'Ошибка! проверте данные',
           isLoading: 'Загрузка...',
         }}
-        isLoading={postTypeIsLoading || deleteTypeIsLoading}
-        isError={postTypeIsError}
-        isSuccess={postTypeIsSuccess || deleteTypeIsSuccess}
+        isLoading={postTypeIsLoading || deleteTypeIsLoading || typesIsLoading}
+        isError={postTypeIsError || putTypeIsError}
+        isSuccess={postTypeIsSuccess || deleteTypeIsSuccess || putTypeIsLoading}
       />
     </>
   );

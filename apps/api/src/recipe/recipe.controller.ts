@@ -64,40 +64,7 @@ export class RecipeController {
 
     return recipe;
   }
-
-  @Get('selection')
-  public async findSelection(
-    @Query()
-    {
-      typeId,
-      holidayId,
-      nationalCuisineId,
-      cursor,
-      take,
-      title,
-    }: GetRecipesQueryParameters
-  ): Promise<InfiniteScrollResponse<Recipe>> {
-    const recipes = await this.recipeService.findMany({
-      where: {
-        ...(typeId && { type: { id: typeId } }),
-        ...(holidayId && { holiday: { id: holidayId } }),
-        ...(nationalCuisineId && {
-          nationalCuisine: { id: nationalCuisineId },
-        }),
-        title: { contains: title },
-      },
-      skip: cursor,
-      take,
-    });
-
-    const nextCursor = recipes.length > 0 ? cursor + take : null;
-
-    return {
-      data: recipes,
-      nextCursor,
-    };
-  }
-
+  
   @Get()
   public async findMany(
     @Query()
@@ -151,36 +118,6 @@ export class RecipeController {
   ): Promise<FavoriteRecipe> {
     return await this.recipeService.unfavorite({
       id: recipeId,
-    });
-  }
-
-  @Get('selection')
-  public async findAll(
-    @Query()
-    { isType, isNationalCuisine, isHoliday }: GetRecipesSelectionQueryParameters
-  ): Promise<Recipe[]> {
-    let type, nationalCuisine, holiday;
-
-    // НУЖНО ОТСЛЫЛАТЬ КОНКРЕТНЫЙ ТИП И ТД
-
-    if (isType) {
-      type = await this.typeService.findOne();
-    }
-
-    if (isNationalCuisine) {
-      nationalCuisine = await this.nationalCuisineService.findOne();
-    }
-
-    if (isHoliday) {
-      holiday = await this.holidayService.findOne();
-    }
-
-    return await this.recipeService.findMany({
-      where: {
-        ...(isType && { typeId: type.id }),
-        ...(isNationalCuisine && { nationalCuisineId: nationalCuisine.id }),
-        ...(isHoliday && { holidayId: holiday.id }),
-      },
     });
   }
 }

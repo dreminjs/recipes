@@ -11,9 +11,6 @@ export class CharacteristicController {
     private readonly nationalCuisineService: NationalCuisineService,
     private readonly typeService: TypeService
   ) {}
-
-  private logger = new Logger(CharacteristicController.name);
-
   @Get('random')
   async findRandom(): Promise<ICharacteristic> {
     const characteristicIdx = Math.floor(Math.random() * 3);
