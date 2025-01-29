@@ -1,122 +1,66 @@
 import {
   InputSearch,
-  useDeleteNationalCuisine,
-  useGetNationalCuisines,
-  usePostNationalCuisine,
-  usePutNationalCuisine,
+  useCharacteristics,
 } from '../../../shared';
-import {
-  AdminCharacteristicsList,
-  AdminPostCharacteristic,
-} from '../../../features/admin';
+import { AdminCharacteristicsTable } from '../../../widgets/admin';
+import { AdminPostCharacteristic } from '../../../features/admin';
 import { MessageModal } from '../../../features/message';
-import { useEffect, useState } from 'react';
-import { useDebounce } from 'use-debounce';
-import { Prisma } from 'prisma/prisma-client';
+import { useNationalCuisines } from '../model/use-national-cuisines';
+import { FC } from 'react';
+import { CharactersticsLayout } from 'apps/client/src/application';
 
-export const AdminNationalCuisinesPage = () => {
-  const [title, setTitle] = useState('');
+export const AdminNationalCuisinesPage: FC = () => {
+  const { newCharacteristicValue, selectedCharacteristics } =
+    useCharacteristics();
 
-  const [isVisible, setIsVisible] = useState(false);
-
-  const [currentCharacteristicIdx, setCurrentCharacteristicIdx] = useState<
-    number | null
-  >(null);
-
-  const [value] = useDebounce(title, 500);
-
-  const {
-    postNationalCuisine,
-    postNationalCuisineIsLoading,
-    postNationalCuisineIsError,
-    postNationalCuisineIsSuccess,
-  } = usePostNationalCuisine();
-
-  const {
-    putNationalCuisine,
-    putNationalCuisineIsLoading,
-    putNationalCuisineIsError,
-    putNationalCuisineIsSuccess,
-  } = usePutNationalCuisine();
-
-  const {
-    deleteNationalCuisine,
-    deleteNationalCuisineIsLoading,
-    deleteNationalCuisineIsError,
-    deleteNationalCuisineIsSuccess,
-  } = useDeleteNationalCuisine();
-
-  const {
-    nationalCuisines,
-    fetchNextPage,
-    hasNextPage,
-    nationalCuisinesIsError,
-    nationalCuisinesIsSuccess,
-    nationalCuisinesIsLoading,
-    refetchNationalCuisines,
-  } = useGetNationalCuisines({
-    title: value,
+  const nationalCuisinesProps = useNationalCuisines({
+    initialLimit: 5,
+    initialPage: 0,
+    initialTitle: '',
   });
 
-  const handleShowInput = (idx: number) => {
-    setCurrentCharacteristicIdx(idx);
-    setIsVisible((prev) => !prev);
-  };
-
-  const handleHideInput = () => {
-    setCurrentCharacteristicIdx(null);
-    setIsVisible((prev) => !prev);
-  };
-
-  const handlePutNationalCuisine = (
-    data: Prisma.NationalCuisineUpdateInput,
-    id: string
-  ) => {
-    handleHideInput();
-    putNationalCuisine({ data, id });
-  };
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-  useEffect(() => {
-    if (
-      postNationalCuisineIsSuccess ||
-      deleteNationalCuisineIsSuccess ||
-      putNationalCuisineIsSuccess
-    ) {
-      refetchNationalCuisines();
+  const handlePutNationalCuisine = () => {
+    if (newCharacteristicValue) {
+      if (typeof newCharacteristicValue.payload === 'boolean') {
+        nationalCuisinesProps.putNationalCuisine({
+          data: { isVisible: newCharacteristicValue.payload },
+          id: newCharacteristicValue.id,
+        });
+      } else {
+        nationalCuisinesProps.putNationalCuisine({
+          data: { title: newCharacteristicValue.payload },
+          id: newCharacteristicValue.id,
+        });
+      }
     }
-  }, [
-    postNationalCuisineIsSuccess,
-    deleteNationalCuisineIsSuccess,
-    putNationalCuisineIsSuccess,
-    refetchNationalCuisines,
-    value,
-  ]);
+  };
+
+  const handleDeleteNationalCuisines = () =>
+    selectedCharacteristics
+      ? nationalCuisinesProps.deleteManyNationalCuisines(selectedCharacteristics)
+      : alert('Wait!');
 
   return (
     <>
-      <div className="flex flex-col items-center">
+      <CharactersticsLayout>
         <AdminPostCharacteristic
-          onPost={(data) => postNationalCuisine(data)}
-          label="national cuisine"
+          onPost={(data) => nationalCuisinesProps.postNationalCuisine(data)}
+          label="national cuisines"
         />
-        <InputSearch value={title} onChange={handleTitleChange} />
-        <AdminCharacteristicsList
-          onShowInput={handleShowInput}
-          onHideInput={handleHideInput}
-          visibleIdx={currentCharacteristicIdx}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          characteristicsIsError={nationalCuisinesIsError}
-          characteristicsIsLoading={nationalCuisinesIsError}
-          characteristicIsSuccess={nationalCuisinesIsError}
-          onDelete={deleteNationalCuisine}
+        <InputSearch
+          value={nationalCuisinesProps.title}
+          onChange={nationalCuisinesProps.handleChangeTitle}
+        />
+        <AdminCharacteristicsTable
+          onDeleteMany={handleDeleteNationalCuisines}
           onPut={handlePutNationalCuisine}
-          characteristics={nationalCuisines}
+          onChangePage={(e, newPage) => nationalCuisinesProps.handleChangePage(e, newPage)}
+          count={nationalCuisinesProps.nationalCuisines?.countItems}
+          limit={nationalCuisinesProps.limit}
+          currentPage={nationalCuisinesProps.currentPage}
+          onChangeLimit={nationalCuisinesProps.handleChangeLimit}
         />
-      </div>
+      </CharactersticsLayout>
       <MessageModal
         message={{
           isSuccess: 'Успешно',
@@ -124,20 +68,19 @@ export const AdminNationalCuisinesPage = () => {
           isLoading: 'Загрузка...',
         }}
         isLoading={
-          postNationalCuisineIsLoading ||
-          deleteNationalCuisineIsLoading ||
-          putNationalCuisineIsLoading ||
-          nationalCuisinesIsLoading
+          nationalCuisinesProps.postNationalCuisineIsLoading ||
+          nationalCuisinesProps.deleteManyNationalCuisinesIsLoading ||
+          nationalCuisinesProps.nationalCuisinesIsLoading
         }
         isError={
-          postNationalCuisineIsError ||
-          deleteNationalCuisineIsError ||
-          putNationalCuisineIsError
+          nationalCuisinesProps.nationalCuisinesIsError ||
+          nationalCuisinesProps.postNationalCuisineIsError ||
+          nationalCuisinesProps.deleteManyNationalCuisinesIsError
         }
         isSuccess={
-          postNationalCuisineIsSuccess ||
-          deleteNationalCuisineIsSuccess ||
-          putNationalCuisineIsSuccess
+          nationalCuisinesProps.postNationalCuisineIsSuccess ||
+          nationalCuisinesProps.nationalCuisinesIsSuccess ||
+          nationalCuisinesProps.putNationalCuisineIsSuccess
         }
       />
     </>

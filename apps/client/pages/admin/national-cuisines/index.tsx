@@ -1,7 +1,10 @@
-import { AdminNationalCuisinesPage } from "../../../src/pages-components/admin";
-
-
+import { CharacteristicsProvider } from 'apps/client/src/application';
+import { AdminNationalCuisinesPage } from 'apps/client/src/pages-components/admin';
 
 export default function Index() {
-    return <AdminNationalCuisinesPage />
+  return (
+    <CharacteristicsProvider>
+      <AdminNationalCuisinesPage />
+    </CharacteristicsProvider>
+  );
 }

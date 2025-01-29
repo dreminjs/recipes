@@ -9,6 +9,7 @@ import { AdminPostCharacteristic } from '../../../features/admin';
 import { MessageModal } from '../../../features/message';
 import { FC } from 'react';
 import { useTypes } from '../model/use-types';
+import { CharactersticsLayout } from 'apps/client/src/application';
 export const AdminTypesPage: FC = () => {
   const { newCharacteristicValue, selectedCharacteristics } =
     useCharacteristics();
@@ -42,7 +43,7 @@ export const AdminTypesPage: FC = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center">
+      <CharactersticsLayout>
         <AdminPostCharacteristic
           onPost={(data) => typesProps.postType(data)}
           label="type"
@@ -60,7 +61,7 @@ export const AdminTypesPage: FC = () => {
           currentPage={typesProps.currentPage}
           onChangeLimit={typesProps.handleChangeLimit}
         />
-      </div>
+      </CharactersticsLayout>
       <MessageModal
         message={{
           isSuccess: 'Успешно',

@@ -48,6 +48,7 @@ export {
   useGetNationalCuisines,
   usePostNationalCuisine,
   usePutNationalCuisine,
+  useDeleteManyNationalCuisine
 } from './api/queries/national-cuisine.queries';
 
 export {

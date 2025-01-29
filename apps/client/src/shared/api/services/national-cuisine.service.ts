@@ -1,4 +1,4 @@
-import { IInfiniteScrollResponse } from 'interfaces';
+import { IInfiniteScrollResponse, IItemsPaginationResponse } from 'interfaces';
 import { QUERY_KEYS } from '../../model/constants';
 import { IGetCharacteristicsQueryParameters } from '../../model/interfaces/characteristic.interface';
 import { instance } from '../api.instance';
@@ -12,16 +12,17 @@ export const nationalCuisineService = {
 
   async findMany(
     query: IGetCharacteristicsQueryParameters
-  ): Promise<IInfiniteScrollResponse<NationalCuisine>> {
+  ): Promise<IItemsPaginationResponse<NationalCuisine>> {
     const urlSearchParams = new URLSearchParams();
 
     if (query.title) urlSearchParams.append('title', query.title);
 
-    if (query.cursor) urlSearchParams.append('cursor', query.cursor.toString());
+    if (query.page) urlSearchParams.append('page', query.page.toString());
 
     if (query.limit) urlSearchParams.append('limit', query.limit.toString());
 
-    return (await this.axios.get(`${this.root}?${urlSearchParams.toString()}`)).data
+    return (await this.axios.get(`${this.root}?${urlSearchParams.toString()}`))
+      .data;
   },
 
   async createOne(dto: Prisma.NationalCuisineCreateInput): Promise<Type> {
@@ -31,11 +32,20 @@ export const nationalCuisineService = {
   async updateOne(
     where: Prisma.NationalCuisineWhereUniqueInput,
     dto: Prisma.NationalCuisineUpdateInput
-  ): Promise<Type> {
+  ): Promise<NationalCuisine> {
     return await this.axios.put(`${this.root}/${where.id}`, dto);
   },
 
   async deleteOne(where: Prisma.NationalCuisineWhereUniqueInput) {
     return await this.axios.delete(`${this.root}/${where.id}`);
+  },
+
+  async deleteMany(ids: string[]) {
+    const queryParameters = new URLSearchParams();
+
+    ids.forEach((id) => queryParameters.append('id', id.toString()));
+    return await this.axios.delete(
+      `${this.root}/${queryParameters.toString()}`
+    );
   },
 };
