@@ -3,7 +3,7 @@ import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { IngredientService } from './ingredient.service';
 import { Ingredient, IngredientRequest } from '@prisma/client';
 import { GetIngredientsQueryParameters } from './dto/get-ingredients-query-parameters';
-import { InfiniteScrollResponse } from 'interfaces';
+import { IInfiniteScrollResponse } from 'interfaces';
 
 @Controller('ingredient')
 export class IngredientController {
@@ -19,7 +19,7 @@ export class IngredientController {
   @Get()
   public async findMany(
     @Query() { title, cursor, limit }: GetIngredientsQueryParameters
-  ): Promise<InfiniteScrollResponse<Ingredient>> {
+  ): Promise<IInfiniteScrollResponse<Ingredient>> {
     const ingredients = await this.ingredientService.findMany({
       where: {
         ...(title ? { title } : {}),

@@ -3,7 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   HttpException,
-  HttpStatus
+  HttpStatus,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';

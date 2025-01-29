@@ -17,8 +17,10 @@ const measures = {
 export const AdminIngredientItem: FC<IProps> = ({ title, measure }) => {
   return (
     <li className="w-[400px] flex justify-between mb-4 border-2 p-2">
-      <p className="text-[32px]">{title}</p>
-      <p className="text-[32px]">{measures[measure]}</p>
+      <div>
+        <p className="text-[24px]">{title}</p>
+        <p className="text-[24px]">{measures[measure]}</p>
+      </div>
     </li>
   );
 };

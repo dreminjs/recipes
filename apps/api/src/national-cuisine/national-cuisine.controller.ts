@@ -14,7 +14,7 @@ import { NationalCuisine, Roles } from '@prisma/client';
 import { UpdateNationalCuisineDto } from './dtos/update-national-cuisine.dto';
 import { NationalCuisineService } from './national-cuisine.service';
 import { GetCharacteristicsQueryParameters } from '../shared';
-import { InfiniteScrollResponse } from 'interfaces';
+import { IItemsPaginationResponse } from 'interfaces';
 import { RolesGuard } from '../user/guards/roles.guard';
 import { AllowedRoles } from '../user/decorators/roles.decorator';
 import { AccessTokenGuard } from '../token';
@@ -25,6 +25,8 @@ export class NationalCuisineController {
     private readonly nationalCuisineService: NationalCuisineService
   ) {}
 
+  @AllowedRoles(Roles.ADMIN)
+  @UseGuards(RolesGuard, AccessTokenGuard)
   @Post()
   public async createOne(
     @Body() body: CreateNationalCuisineDto
@@ -34,24 +36,25 @@ export class NationalCuisineController {
 
   @Get()
   public async findMany(
-    @Query() { title, cursor, limit }: GetCharacteristicsQueryParameters
-  ): Promise<InfiniteScrollResponse<NationalCuisine>> {
-    const nationalCuisines = await this.nationalCuisineService.findMany({
-      where: {
-        ...(title && { title }),
-      },
-      skip: cursor,
-      take: limit,
-    });
+    @Query() { title, page, limit }: GetCharacteristicsQueryParameters
+  ): Promise<IItemsPaginationResponse<NationalCuisine>> {
+    const [items, count] = await Promise.all([
+      await this.nationalCuisineService.findMany({
+        where: {
+          ...(title && { title: { contains: title } }),
+        },
+        skip: (page - 1) * limit,
+      }),
+      await this.nationalCuisineService.count({
+        where: { ...(title && { title: { contains: title } }) },
+      }),
+    ]);
 
-    const nextCursor = nationalCuisines.length > 0 ? limit + cursor : null;
-
-    return { data: nationalCuisines, nextCursor };
+    return { items: items, currentPage: page, countItems: count };
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @AllowedRoles(Roles.ADMIN)
-  @UseGuards(RolesGuard)
   @Put(':id')
   public async updateOne(
     @Body() body: UpdateNationalCuisineDto,
@@ -61,16 +64,18 @@ export class NationalCuisineController {
   }
 
   @AllowedRoles(Roles.ADMIN)
-  @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard, AccessTokenGuard)
   @Get(':id')
   public async findOne(@Param('id') id: string): Promise<NationalCuisine> {
     return await this.nationalCuisineService.findOne({ where: { id } });
   }
 
   @AllowedRoles(Roles.ADMIN)
-  @UseGuards(RolesGuard)
-  @Delete(':id')
-  public async deleteOne(@Param('id') id: string): Promise<void> {
-    await this.nationalCuisineService.deleteOne({ id });
+  @UseGuards(RolesGuard, AccessTokenGuard)
+  @Delete()
+  public async deleteMany(@Query('id') id: string[] | string): Promise<void> {
+    await this.nationalCuisineService.deleteMany({
+      where: { id: { in: id instanceof Array ? [...id] : [id] } },
+    });
   }
 }

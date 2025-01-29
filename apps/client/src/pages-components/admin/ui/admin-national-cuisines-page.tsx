@@ -87,12 +87,6 @@ export const AdminNationalCuisinesPage = () => {
     ) {
       refetchNationalCuisines();
     }
-
-    console.log({
-      postNationalCuisineIsSuccess,
-      deleteNationalCuisineIsSuccess,
-      putNationalCuisineIsSuccess,
-    });
   }, [
     postNationalCuisineIsSuccess,
     deleteNationalCuisineIsSuccess,
@@ -113,7 +107,6 @@ export const AdminNationalCuisinesPage = () => {
           onShowInput={handleShowInput}
           onHideInput={handleHideInput}
           visibleIdx={currentCharacteristicIdx}
-          isVisible={isVisible}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           characteristicsIsError={nationalCuisinesIsError}

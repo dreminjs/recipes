@@ -1,8 +1,10 @@
 import Link from 'next/link';
-import { AdminPostIngredient } from '../../../widgets/admin';
-import { AdminIngredientsList } from '../../../features/admin';
-import { use, useState } from 'react';
-import { usePostIngredient, useGetIngredients } from '../../../shared';
+import {
+  AdminPostIngredient,
+  AdminIngredientsTable,
+} from '../../../widgets/admin';
+import { useState } from 'react';
+import { useGetIngredients } from '../../../shared';
 import { useDebounce } from 'use-debounce';
 
 export const AdminIngredientPage = () => {
@@ -26,7 +28,7 @@ export const AdminIngredientPage = () => {
         Заявки
       </Link>
       <AdminPostIngredient refetch={refetchIngredients} />
-      <AdminIngredientsList ingredients={ingredients} />
+      <AdminIngredientsTable ingredients={ingredients} />
     </div>
   );
 };

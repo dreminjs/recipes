@@ -1,4 +1,4 @@
-import { InfiniteScrollResponse } from 'interfaces';
+import { IInfiniteScrollResponse } from 'interfaces';
 import { QUERY_KEYS } from '../../model/constants';
 import { IGetCharacteristicsQueryParameters } from '../../model/interfaces/characteristic.interface';
 import { instance } from '../api.instance';
@@ -12,7 +12,7 @@ export const nationalCuisineService = {
 
   async findMany(
     query: IGetCharacteristicsQueryParameters
-  ): Promise<InfiniteScrollResponse<NationalCuisine>> {
+  ): Promise<IInfiniteScrollResponse<NationalCuisine>> {
     const urlSearchParams = new URLSearchParams();
 
     if (query.title) urlSearchParams.append('title', query.title);

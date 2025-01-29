@@ -2,7 +2,7 @@ import { Recipe } from 'prisma/prisma-client';
 import { QUERY_KEYS } from '../../model/constants';
 import { IGetRecipesQueryParameters } from '../../model/interfaces/recipe.interface';
 import { instance } from '../api.instance';
-import { InfiniteScrollResponse } from 'interfaces';
+import { IInfiniteScrollResponse } from 'interfaces';
 
 export const recipeService = {
   axios: instance,
@@ -11,7 +11,7 @@ export const recipeService = {
 
   async findMany(
     queryParams: IGetRecipesQueryParameters
-  ): Promise<InfiniteScrollResponse<Recipe>> {
+  ): Promise<IInfiniteScrollResponse<Recipe>> {
     const { typeId, holidayId, nationalCuisineId, cursor, take, title } =
       queryParams;
 
@@ -29,7 +29,7 @@ export const recipeService = {
       .data;
   },
 
-  async findOne(recipeId: number) {
+  async findOne(recipeId: number): Promise<Recipe> {
     return await this.axios.get(`${this.root}/${recipeId}`);
   },
 

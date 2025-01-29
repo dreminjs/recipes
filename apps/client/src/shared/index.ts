@@ -34,9 +34,10 @@ export {
   useGetTypes,
   usePostType,
   usePutType,
+  useDeleteManyTypes,
 } from './api/queries/type.queries';
 
-export type { IPostCharacteristicForm } from './model/interfaces/characteristic.interface';
+export type { IPostCharacteristicForm,CharacteristicsPayload,ICharacteristicsTableCoordinats } from './model/interfaces/characteristic.interface';
 
 export { PostCharacteristicFormSchema } from './model/schemas/characteristic.schema';
 
@@ -64,3 +65,7 @@ export {
   usePostIngredient,
   useGetIngredients,
 } from './api/queries/ingredient.queries';
+
+export {useTypes} from "./model/hooks/use-types"
+
+export {CharacteristicsContext} from "./model/context/characteristics.context"

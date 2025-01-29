@@ -1,15 +1,13 @@
-import { Step, User } from 'prisma/prisma-client';
+import { Roles, Step, User } from 'prisma/prisma-client';
 
 export type IAuthResponse = Omit<
   User,
-  'hashPassword' | 'salt' | 'id' | 'link' | 'role'
+  'hashPassword' | 'salt' | 'id' | 'link' | 'role' | "createdAt"
 >;
-
-
 
 export type IStep = Pick<Step, 'content'>;
 
-export interface InfiniteScrollResponse<T> {
+export interface IInfiniteScrollResponse<T> {
   data: T[];
   nextCursor: number | null;
 }
@@ -21,4 +19,17 @@ export interface ICharacteristic {
   title: string;
   type: characteristics;
   isVisible: boolean;
+}
+
+export interface IItemsPaginationResponse<T> {
+  items: T[]
+  currentPage: number 
+  countItems: number | null;
+}
+
+export interface IUserResponse {
+  nickname: string
+  role: Roles
+  isActived: boolean
+  email: string
 }

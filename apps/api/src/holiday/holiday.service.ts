@@ -32,4 +32,12 @@ export class HolidayService {
   public async deleteOne(where: Prisma.HolidayWhereUniqueInput): Promise<void> {
     await this.prisma.holiday.delete({ where });
   }
+
+  public async deleteMany(args: Prisma.HolidayDeleteManyArgs): Promise<void> {
+    await this.prisma.holiday.deleteMany(args);
+  }
+
+  public async count(args: Prisma.HolidayCountArgs = {}) : Promise<number> {
+    return await this.prisma.holiday.count(args)
+  }
 }

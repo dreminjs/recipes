@@ -36,4 +36,12 @@ export class NationalCuisineService {
   ): Promise<NationalCuisine> {
     return this.prisma.nationalCuisine.delete({ where });
   }
-}
+
+  async count(args: Prisma.NationalCuisineCountArgs = {}): Promise<number> {
+    return await this.prisma.nationalCuisine.count(args)
+  }
+
+  async deleteMany(args: Prisma.NationalCuisineDeleteManyArgs): Promise<void> {
+    await this.prisma.nationalCuisine.deleteMany(args)
+  }
+ }

@@ -7,5 +7,6 @@ export class GetCharacteristicsQueryParameters {
   limit: number;
 
   @Transform(({ value }) => parseInt(value, 10))
-  cursor: number;
+  page: number;
 }
+

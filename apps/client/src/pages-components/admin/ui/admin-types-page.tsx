@@ -1,103 +1,78 @@
+'use client';
+
 import {
+  CharacteristicsContext,
   InputSearch,
+  useDeleteManyTypes,
   useDeleteType,
   useGetTypes,
   usePostType,
   usePutType,
+  useTypes,
 } from '../../../shared';
-import {
-  AdminCharacteristicsList,
-  AdminPostCharacteristic,
-} from '../../../features/admin';
+import { AdminCharacteristicsTable } from '../../../widgets/admin';
+import { AdminPostCharacteristic } from '../../../features/admin';
 import { MessageModal } from '../../../features/message';
-import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { FC, useEffect, useState, createContext, useContext } from 'react';
 import { useDebounce } from 'use-debounce';
-import { Prisma } from 'prisma/prisma-client';
+import { Prisma, Type } from 'prisma/prisma-client';
+import { IItemsPaginationResponse } from 'interfaces';
+import { CharacteristicsProvider } from 'apps/client/src/application';
+import { Pagination, TablePagination } from '@mui/material';
 
-export const AdminTypesPage = () => {
-  const [title, setTitle] = useState('');
+export const AdminTypesPage: FC = () => {
+  const { newCharacteristicValue, selectedCharacteristics } = useContext(
+    CharacteristicsContext
+  );
 
-  const [currentCharacteristicIdx, setCurrentCharacteristicIdx] = useState<
-    number | null
-  >(null);
-
-  const [value] = useDebounce(title, 500);
-
-  const { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess } =
-    usePutType();
-
-  const {
-    deleleType,
-    deleteTypeIsLoading,
-    deleteTypeIsError,
-    deleteTypeIsSuccess,
-  } = useDeleteType();
-
-  const {
-    types,
-    typesIsLoading,
-    fetchNextPage,
-    hasNextPage,
-    typesIsError,
-    typesIsSuccess,
-    refetchTypes,
-  } = useGetTypes({
-    title: value,
+  const typesProps = useTypes({
+    initialLimit: 5,
+    initialPage: 0,
+    initialTitle: '',
   });
 
-  const handleToggleInputVisibility = (idx: number) => {
-    setCurrentCharacteristicIdx(idx);
-  };
-
-  const handlePutType = (data: Prisma.TypeUpdateInput, id: string) => {
-    handleToggleInputVisibility(-1);
-    putType({ data, id });
-  };
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-
-  const handleShowInput = (idx: number) => {
-    setCurrentCharacteristicIdx(idx);
-  };
-
-  const handleHideInput = () => {
-    setCurrentCharacteristicIdx(null);
-  };
-
-  const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
-    usePostType();
-
-  useEffect(() => {
-    console.log('Hello');
-    if (postTypeIsSuccess || deleteTypeIsSuccess || putTypeIsSuccess) {
-      refetchTypes();
+  const handlePutType = () => {
+    if (newCharacteristicValue) {
+      if (typeof newCharacteristicValue.payload === 'boolean') {
+        typesProps.putType({
+          data: { isVisible: newCharacteristicValue.payload },
+          id: newCharacteristicValue.id,
+        });
+      } else {
+        typesProps.putType({
+          data: { title: newCharacteristicValue.payload },
+          id: newCharacteristicValue.id,
+        });
+      }
     }
-  }, [refetchTypes, postTypeIsSuccess, deleteTypeIsSuccess, putTypeIsSuccess]);
+  };
+
+  const handleDeleteTypes = () =>
+    selectedCharacteristics
+      ? typesProps.deleteTypes(selectedCharacteristics)
+      : alert('Wait!');
 
   return (
     <>
       <div className="flex flex-col items-center">
         <AdminPostCharacteristic
-          onPost={(data) => postType(data)}
+          onPost={(data) => typesProps.postType(data)}
           label="type"
         />
-        <InputSearch value={title} onChange={handleTitleChange} />
-        <AdminCharacteristicsList
-          onHideInput={handleHideInput}
-          onShowInput={handleShowInput}
-          visibleIdx={currentCharacteristicIdx}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          characteristicsIsError={typesIsError}
-          characteristicsIsLoading={typesIsLoading}
-          characteristicIsSuccess={typesIsSuccess}
-          onDelete={deleleType}
-          onPut={handlePutType}
-          characteristics={types}
+        <InputSearch
+          value={typesProps.title}
+          onChange={typesProps.handleChangeTitle}
         />
+        <AdminCharacteristicsTable
+          onDeleteMany={handleDeleteTypes}
+          onPut={handlePutType}
+          onChangePage={(e,newPage) => typesProps.handleChangePage(e,newPage)}
+          count={typesProps.types?.countItems}
+          limit={typesProps.limit}
+          currentPage={typesProps.currentPage}
+          onChangeLimit={typesProps.handleChangeLimit}
+        />
+      
       </div>
       <MessageModal
         message={{
@@ -105,9 +80,21 @@ export const AdminTypesPage = () => {
           isError: 'Ошибка! проверте данные',
           isLoading: 'Загрузка...',
         }}
-        isLoading={postTypeIsLoading || deleteTypeIsLoading || typesIsLoading}
-        isError={postTypeIsError || putTypeIsError}
-        isSuccess={postTypeIsSuccess || deleteTypeIsSuccess || putTypeIsLoading}
+        isLoading={
+          typesProps.postTypeIsLoading ||
+          typesProps.deleteTypesIsLoading ||
+          typesProps.typesIsLoading
+        }
+        isError={
+          typesProps.postTypeIsError ||
+          typesProps.putTypeIsError ||
+          typesProps.deleteTypesIsError
+        }
+        isSuccess={
+          typesProps.postTypeIsSuccess ||
+          typesProps.deleteTypesIsSuccess ||
+          typesProps.putTypeIsSuccess
+        }
       />
     </>
   );

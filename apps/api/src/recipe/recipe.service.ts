@@ -14,7 +14,7 @@ export class RecipeService {
     return await this.prisma.recipe.findFirst({ where });
   }
 
-  public async findMany(args: Prisma.RecipeFindManyArgs): Promise<Recipe[]> {
+  public async findMany(args: Prisma.RecipeFindManyArgs = {}): Promise<Recipe[]> {
     return await this.prisma.recipe.findMany(args);
   }
 

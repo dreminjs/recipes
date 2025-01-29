@@ -2,8 +2,12 @@ export { AdminLinksList } from './ui/common/admin-links-list';
 
 export { AdminPostCharacteristic } from './ui/characteristic/admin-post-characteristic';
 
-export { AdminCharacteristicsList } from './ui/characteristic/admin-characteristics-list';
-
 export { AdminIngredientInput } from './ui/ingredient/admin-ingredient-input';
 
-export { AdminIngredientsList } from './ui/ingredient/admin-ingredients-list';
+export { AdminIngredientItem } from './ui/ingredient/admin-ingredient-item';
+
+export { AdminCharacteristicHeadTable } from './ui/characteristic/admin-characteristic-head-table';
+
+export { AdminCharacteristictsBodyTable } from './ui/characteristic/admin-characteristic-body-table';
+
+export { AdminCharacteristicToolBarTable } from './ui/characteristic/admin-characteristic-toolbar-table';

@@ -1,0 +1,1 @@
+export { CharacteristicsProvider } from "./providers/characteristics-provider"

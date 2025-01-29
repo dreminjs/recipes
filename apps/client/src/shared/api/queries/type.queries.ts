@@ -1,31 +1,42 @@
-import {
-  useMutation,
-  useInfiniteQuery,
-} from '@tanstack/react-query';
+import { useMutation, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../../model/constants';
 import { typeService } from '../services/type.service';
 import { Prisma } from 'prisma/prisma-client';
+import { useContext } from 'react';
+import { CharacteristicsContext } from '../../model/context/characteristics.context';
 
-export const useGetTypes = ({ title }: { title?: string }) => {
+export const useGetTypes = ({
+  title,
+  page,
+  limit,
+}: {
+  title?: string;
+  page: number;
+  limit: number;
+}) => {
+  const { onSetCharacterstics } = useContext(CharacteristicsContext);
+
   const {
     data: types,
     isLoading: typesIsLoading,
     isSuccess: typesIsSuccess,
-    fetchNextPage,
-    hasNextPage,
+
     isError: typesIsError,
     refetch: refetchTypes,
-  } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.type],
-    queryFn: ({ pageParam }) =>
-      typeService.findMany({ limit: 10, cursor: pageParam, title }),
+  } = useQuery({
+    queryKey: [QUERY_KEYS.type, page, title, limit],
+    queryFn: () => typeService.findMany({ limit, page, title }),
+    onSuccess: (data) =>
+      onSetCharacterstics({
+        items: [...data.items],
+        countItems: data.countItems,
+        currentPage: data.currentPage,
+      }),
   });
 
   return {
     types,
     typesIsLoading,
-    fetchNextPage,
-    hasNextPage,
     typesIsError,
     typesIsSuccess,
     refetchTypes,
@@ -49,11 +60,10 @@ export const usePostType = () => {
 
 export const useDeleteType = () => {
   const {
-    mutate: deleleType,
+    mutate: deleteType,
     isLoading: deleteTypeIsLoading,
     isError: deleteTypeIsError,
     isSuccess: deleteTypeIsSuccess,
-    
   } = useMutation({
     mutationFn: (id: string) => typeService.deleteOne({ id }),
     mutationKey: [QUERY_KEYS.type],
@@ -62,11 +72,13 @@ export const useDeleteType = () => {
     deleteTypeIsSuccess,
     deleteTypeIsError,
     deleteTypeIsLoading,
-    deleleType,
+    deleteType,
   };
 };
 
 export const usePutType = () => {
+  const { onHideInputCell } = useContext(CharacteristicsContext);
+
   const {
     mutate: putType,
     isLoading: putTypeIsLoading,
@@ -76,7 +88,32 @@ export const usePutType = () => {
     mutationFn: ({ data, id }: { data: Prisma.TypeUpdateInput; id: string }) =>
       typeService.updateOne({ id }, data),
     mutationKey: [QUERY_KEYS.type],
+    onSuccess: () => onHideInputCell(),
   });
 
   return { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess };
+};
+
+export const useDeleteManyTypes = () => {
+  const { onToggleAllCharacteristics } = useContext(CharacteristicsContext);
+
+  const {
+    mutate: deleteTypes,
+    isLoading: deleteTypesIsLoading,
+    isSuccess: deleteTypesIsSuccess,
+    isError: deleteTypesIsError,
+  } = useMutation({
+    mutationFn: (ids: string[]) => typeService.deleteMany(ids),
+    mutationKey: [QUERY_KEYS.type],
+    onSuccess:() => {
+      // onToggleAllCharacteristics()
+    }
+  });
+
+  return {
+    deleteTypes,
+    deleteTypesIsSuccess,
+    deleteTypesIsLoading,
+    deleteTypesIsError,
+  };
 };

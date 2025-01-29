@@ -3,8 +3,10 @@ import { RecipeSelection } from '../../../features/recipe';
 export const MainRecipesPage = () => {
   return (
     <div>
-      <RecipeSelection idx={1} />
-      <RecipeSelection idx={2} />
+      {[1, 2, 3].map((el) => (
+        <RecipeSelection key={el} idx={el} />
+      ))}
     </div>
   );
 };
+    

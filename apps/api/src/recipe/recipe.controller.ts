@@ -15,7 +15,7 @@ import { CurrentUser } from '../user';
 import { RecipePhoto } from './recipe-photo.decorator';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
-import { InfiniteScrollResponse } from 'interfaces';
+import { IInfiniteScrollResponse } from 'interfaces';
 import { HolidayService } from '../holiday/holiday.service';
 import { NationalCuisineService } from '../national-cuisine/national-cuisine.service';
 import { GetRecipesSelectionQueryParameters } from './dto/get-recipes-selection-query-parameters.ts';
@@ -24,12 +24,7 @@ import { create } from 'domain';
 
 @Controller('recipe')
 export class RecipeController {
-  constructor(
-    private readonly recipeService: RecipeService,
-    private readonly holidayService: HolidayService,
-    private readonly nationalCuisineService: NationalCuisineService,
-    private readonly typeService: TypeService
-  ) {}
+  constructor(private readonly recipeService: RecipeService) {}
 
   @UseGuards(AccessTokenGuard)
   @Post()
@@ -64,7 +59,7 @@ export class RecipeController {
 
     return recipe;
   }
-  
+
   @Get()
   public async findMany(
     @Query()
@@ -76,7 +71,7 @@ export class RecipeController {
       take,
       title,
     }: GetRecipesQueryParameters
-  ): Promise<InfiniteScrollResponse<Recipe>> {
+  ): Promise<IInfiniteScrollResponse<Recipe>> {
     const recipes = await this.recipeService.findMany({
       where: {
         ...(typeId && { type: { id: typeId } }),

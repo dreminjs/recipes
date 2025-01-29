@@ -37,7 +37,7 @@ export const RecipeSelection: FC<IProps> = ({ idx }) => {
     if (characteristic) {
       setCharateristicState({
         title: characteristic.title,
-        type: characteristic.type,
+        type: characteristic.type || "",
       });
     }
   }, [characteristic]);

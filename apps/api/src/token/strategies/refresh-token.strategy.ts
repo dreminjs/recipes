@@ -27,7 +27,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
         },
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get('REFRESH_TOKEN_SECRET'),
+      secretOrKey: configService.get('REFRESH_TOKEN'),
     });
   }
 

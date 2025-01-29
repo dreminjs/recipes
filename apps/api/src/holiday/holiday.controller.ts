@@ -12,7 +12,7 @@ import { Holiday } from '@prisma/client';
 import { HolidayService } from './holiday.service';
 import { UpdateHolidayDto } from './dto/update-holiday.dto';
 import { GetCharacteristicsQueryParameters } from '../shared';
-import { InfiniteScrollResponse } from 'interfaces';
+import { IItemsPaginationResponse } from 'interfaces';
 
 @Controller('holiday')
 export class HolidayController {
@@ -20,22 +20,26 @@ export class HolidayController {
 
   @Get()
   public async findMany(
-    @Query() { title, cursor, limit }: GetCharacteristicsQueryParameters
-  ): Promise<InfiniteScrollResponse<Holiday>> {
-    const holidays = await this.holidayService.findMany({
-      where: {
-        ...(title && { title }),
-      },
-      skip: cursor,
-      take: limit,
-    });
-
-    const nextCursor = holidays.length > 0 ? limit + cursor : null;
-
-    return { data: holidays, nextCursor };
+    @Query() { title, page, limit }: GetCharacteristicsQueryParameters
+  ): Promise<IItemsPaginationResponse<Holiday>> {
+    const [items, count] = await Promise.all([
+      await this.holidayService.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: {
+          ...(title && { title: { contains: title } }),
+        },
+      }),
+      await this.holidayService.count(),
+    ]);
+    return {
+      items,
+      currentPage: page,
+      countItems: count,
+    };
   }
 
-  @Put(":id")
+  @Put(':id')
   public async updateOne(
     @Param('id') id: string,
     @Body() body: UpdateHolidayDto
@@ -53,8 +57,10 @@ export class HolidayController {
     return await this.holidayService.findOne({ where: { id } });
   }
 
-  @Delete(':id')
-  public async deleteOne(@Param('id') id: string): Promise<void> {
-    return await this.holidayService.deleteOne({ id });
+  @Delete()
+  public async deleteMany(@Query('id') id: string[] | string): Promise<void> {
+    return await this.holidayService.deleteMany({
+      where: { id: { in: id instanceof Array ? [...id] : [id] } },
+    });
   }
 }

@@ -29,4 +29,13 @@ export class TypeService {
   public async deleteOne(where: Prisma.TypeWhereUniqueInput): Promise<void> {
     await this.prisma.type.delete({ where });
   }
+
+  public async count(args: Prisma.TypeCountArgs = {}): Promise<number> {
+    return await this.prisma.type.count({ ...args });
+  }
+
+  public async deleteMany(args: Prisma.TypeDeleteManyArgs): Promise<void> {
+    await this.prisma.type.deleteMany(args)
+  }
+
 }

@@ -1,5 +1,5 @@
 import { BasicModal } from '../../../shared';
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 
 interface IProps {
   message: {
@@ -21,45 +21,25 @@ export const MessageModal: FC<IProps> = ({
   className,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-
-  const [type, setType] = useState<'isLoading' | 'isError' | 'isSuccess'>(
-    'isLoading'
-  );
+  const [type, setType] = useState<'isLoading' | 'isError' | 'isSuccess'>('isLoading');
 
   const handleClose = () => setIsVisible(false);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
 
-    console.log({
-      isSuccess,
-      isError,
-      isLoading
-    })
-
-    if (isSuccess || isError || isLoading) {
-      if (isSuccess) {
-        setType('isSuccess');
-      } else if (isError) {
-        setType('isError');
-      } else if (isLoading) {
-        setType('isLoading');
-      }
+    if (isSuccess) {
+      setType('isSuccess');
       setIsVisible(true);
+      timer = setTimeout(() => setIsVisible(false), 2000);
+    } else if (isError) {
+      setType('isError');
+      setIsVisible(true);
+      timer = setTimeout(() => setIsVisible(false), 2000);
     }
 
-  }, [message, isError, isLoading, isSuccess]);
-
-  useEffect(() => {
-    if (isVisible && isLoading) {
-      setTimeout(() => {
-        setIsVisible(false);
-      }, 1000);
-    } else if (isVisible && isSuccess){
-      setTimeout(() => {
-        setIsVisible(false);
-      }, 1000);
-    }
-  }, [isVisible, isLoading, isSuccess]);
+    return () => clearTimeout(timer);
+  }, [isError, isSuccess]);
 
   return (
     <BasicModal onClose={handleClose} isOpen={isVisible}>
