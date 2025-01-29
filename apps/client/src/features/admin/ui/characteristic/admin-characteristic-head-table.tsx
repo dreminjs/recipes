@@ -1,15 +1,12 @@
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
-import { CharacteristicsContext } from 'apps/client/src/shared';
-import { FC, useContext, useEffect } from 'react';
-
+import { useCharacteristics } from 'apps/client/src/shared';
 
 export const AdminCharacteristicHeadTable = () => {
-  const { onToggleAllCharacteristics, isHeadCheckboxChecked } = useContext(
-    CharacteristicsContext
-  );
+  const { isHeadCheckboxChecked, onToggleAllCharacteristics } =
+    useCharacteristics();
   return (
-    <TableHead className=''>
-      <TableRow className=''>
+    <TableHead>
+      <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
             color="primary"

@@ -1,11 +1,14 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import {
   AdminCharacteristicHeadTable,
   AdminCharacteristicToolBarTable,
   AdminCharacteristictsBodyTable,
 } from 'apps/client/src/features/admin';
 import { Type } from 'prisma/prisma-client';
-import { CharacteristicsContext } from 'apps/client/src/shared';
+import {
+  CharacteristicsContext,
+  useCharacteristics,
+} from 'apps/client/src/shared';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { Paper, TableFooter, TableRow } from '@mui/material';
@@ -35,36 +38,38 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   limit,
   currentPage,
 }) => {
-  const { selectedCharacteristics } = useContext(CharacteristicsContext);
+  const { selectedCharacteristics } = useCharacteristics();
+
+  const [countItems, setCountItems] = useState<number>(0);
+
+  useEffect(() => {
+    count && setCountItems(count);
+  }, [count]);
 
   return (
-      <Paper className="">
-        <AdminCharacteristicToolBarTable
-          onDeleteMany={onDeleteMany}
-          onPut={onPut}
-          numSelected={
-            selectedCharacteristics ? selectedCharacteristics?.length : 0
-          }
-        />
-        <TableContainer className="">
-          <Table>
-            <AdminCharacteristicHeadTable />
-            <AdminCharacteristictsBodyTable />
-            <TableFooter >
-              <TableRow>
-                <TablePagination
-                  count={count || 0}
-                  rowsPerPage={limit}
-                  page={currentPage}
-                  onPageChange={onChangePage}
-                  onRowsPerPageChange={onChangeLimit}
-                  rowsPerPageOptions={[5, 10, 15, 25]}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
-      </Paper>
-    
+    <Paper>
+      <AdminCharacteristicToolBarTable
+        onDeleteMany={onDeleteMany}
+        onPut={onPut}
+        numSelected={
+          selectedCharacteristics ? selectedCharacteristics?.length : 0
+        }
+      />
+      <TableContainer sx={{ height: 440 }}>
+        <Table stickyHeader>
+          <AdminCharacteristicHeadTable />
+          <AdminCharacteristictsBodyTable />
+        </Table>
+      </TableContainer>
+      <TablePagination
+        count={countItems || 0}
+        rowsPerPage={limit}
+        component={'div'}
+        page={currentPage}
+        onPageChange={onChangePage}
+        onRowsPerPageChange={onChangeLimit}
+        rowsPerPageOptions={[5, 10, 15, 25]}
+      />
+    </Paper>
   );
 };

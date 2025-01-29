@@ -66,6 +66,6 @@ export {
   useGetIngredients,
 } from './api/queries/ingredient.queries';
 
-export {useTypes} from "./model/hooks/use-types"
+export { useCharacteristics } from "./model/hooks/use-characteristics"
 
 export {CharacteristicsContext} from "./model/context/characteristics.context"

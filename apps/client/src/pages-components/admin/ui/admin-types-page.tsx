@@ -1,29 +1,17 @@
 'use client';
 
 import {
-  CharacteristicsContext,
   InputSearch,
-  useDeleteManyTypes,
-  useDeleteType,
-  useGetTypes,
-  usePostType,
-  usePutType,
-  useTypes,
+  useCharacteristics,
 } from '../../../shared';
 import { AdminCharacteristicsTable } from '../../../widgets/admin';
 import { AdminPostCharacteristic } from '../../../features/admin';
 import { MessageModal } from '../../../features/message';
-import { FC, useEffect, useState, createContext, useContext } from 'react';
-import { useDebounce } from 'use-debounce';
-import { Prisma, Type } from 'prisma/prisma-client';
-import { IItemsPaginationResponse } from 'interfaces';
-import { CharacteristicsProvider } from 'apps/client/src/application';
-import { Pagination, TablePagination } from '@mui/material';
-
+import { FC } from 'react';
+import { useTypes } from '../model/use-types';
 export const AdminTypesPage: FC = () => {
-  const { newCharacteristicValue, selectedCharacteristics } = useContext(
-    CharacteristicsContext
-  );
+  const { newCharacteristicValue, selectedCharacteristics } =
+    useCharacteristics();
 
   const typesProps = useTypes({
     initialLimit: 5,
@@ -66,13 +54,12 @@ export const AdminTypesPage: FC = () => {
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteTypes}
           onPut={handlePutType}
-          onChangePage={(e,newPage) => typesProps.handleChangePage(e,newPage)}
+          onChangePage={(e, newPage) => typesProps.handleChangePage(e, newPage)}
           count={typesProps.types?.countItems}
           limit={typesProps.limit}
           currentPage={typesProps.currentPage}
           onChangeLimit={typesProps.handleChangeLimit}
         />
-      
       </div>
       <MessageModal
         message={{

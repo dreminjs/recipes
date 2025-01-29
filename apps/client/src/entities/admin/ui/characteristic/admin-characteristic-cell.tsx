@@ -69,7 +69,6 @@ export const AdminCharacteristicCell: FC<IProps> = ({
       {isActiveCell ? (
         typeof payload === 'boolean' ? (
           <input
-            className="w"
             type="checkbox"
             onChange={onChangeCharactersticValue}
             defaultChecked={payload}

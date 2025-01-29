@@ -1,7 +1,7 @@
 import { IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CharacteristicsContext } from 'apps/client/src/shared';
+import { useCharacteristics } from 'apps/client/src/shared';
 
 interface IProps {
   numSelected: number;
@@ -14,9 +14,8 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
   onPut,
   onDeleteMany,
 }) => {
-  const { activeCell, selectedCharacteristics } = useContext(
-    CharacteristicsContext
-  );
+  const { activeCell,selectedCharacteristics } =
+    useCharacteristics();
 
   const handleConfirmClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation()

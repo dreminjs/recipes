@@ -1,26 +1,17 @@
-import { InfiniteData } from '@tanstack/react-query';
 import { AdminCharacteristicCell } from '../../../../entities/admin';
-import {
-  IInfiniteScrollResponse,
-  ICharacteristic,
-  IItemsPaginationResponse,
-} from 'interfaces';
-import { FC, useContext, useEffect, useState } from 'react';
-import { Prisma, Type } from 'prisma/prisma-client';
+import { FC } from 'react';
 import { Checkbox, TableBody, TableCell, TableRow } from '@mui/material';
 import {
-  CharacteristicsContext,
-  ICharacteristicsTableCoordinats,
-  useGetTypes,
+  useCharacteristics,
 } from 'apps/client/src/shared';
 
 
 export const AdminCharacteristictsBodyTable: FC = ({}) => {
-  const { characteristics, selectedCharacteristics, onSelectCharacteristic } =
-    useContext(CharacteristicsContext);
+  const { characteristics, selectedCharacteristics,onSelectCharacteristic } =
+    useCharacteristics();
 
   return (
-    <TableBody className=''>
+    <TableBody>
       {characteristics?.items.map((el, idx) => {
         const isChecked = selectedCharacteristics?.some((id) => el.id === id);
         return (
@@ -29,12 +20,12 @@ export const AdminCharacteristictsBodyTable: FC = ({}) => {
             role="checkbox"
             key={el.id}
             sx={{ cursor: 'pointer' }}
-            className=''
           >
             <TableCell padding="checkbox">
               <Checkbox
                 onClick={() => onSelectCharacteristic(el.id)}
                 checked={isChecked}
+                tabIndex={-1}
                 color="primary"
               />
             </TableCell>

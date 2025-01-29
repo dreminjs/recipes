@@ -3,7 +3,6 @@ import {
   IPostCharacteristicForm,
   PostCharacteristicFormSchema,
 } from '../../../../shared';
-import { characteristics } from 'interfaces';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
