@@ -18,7 +18,7 @@ export const AdminCharacteristicHeadTable = () => {
           />
         </TableCell>
         {['id', 'title', 'is visible'].map((item) => (
-          <TableCell key={item}>{item}</TableCell>
+          <TableCell align='left' key={item}>{item}</TableCell>
         ))}
       </TableRow>
     </TableHead>

@@ -65,6 +65,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
     <TableCell
       ref={cellRef}
       onClick={() => cellCoordinates && onShowInputCell({ ...cellCoordinates })}
+      align='left'
     >
       {isActiveCell ? (
         typeof payload === 'boolean' ? (
@@ -87,9 +88,9 @@ export const AdminCharacteristicCell: FC<IProps> = ({
           />
         )
       ) : (
-        <p className='text-center'>
+        <>
           {typeof payload === 'boolean' ? (payload ? 'yes' : 'no') : payload}
-        </p>
+        </>
       )}
     </TableCell>
   );

@@ -25,8 +25,9 @@ export class NationalCuisineController {
     private readonly nationalCuisineService: NationalCuisineService
   ) {}
 
+  
   @AllowedRoles(Roles.ADMIN)
-  @UseGuards(RolesGuard, AccessTokenGuard)
+  @UseGuards(AccessTokenGuard,RolesGuard)
   @Post()
   public async createOne(
     @Body() body: CreateNationalCuisineDto
@@ -53,8 +54,8 @@ export class NationalCuisineController {
     return { items: items, currentPage: page, countItems: count };
   }
 
-  @UseGuards(AccessTokenGuard, RolesGuard)
   @AllowedRoles(Roles.ADMIN)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @Put(':id')
   public async updateOne(
     @Body() body: UpdateNationalCuisineDto,

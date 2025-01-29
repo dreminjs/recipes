@@ -2,8 +2,12 @@ import { useMutation, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../../model/constants';
 import { Prisma } from 'prisma/prisma-client';
 import { nationalCuisineService } from '../services/national-cuisine.service';
+import { useCharacteristics } from '../../model/hooks/use-characteristics';
 
 export const useGetNationalCuisines = ({ title,page,limit }: { title?: string,page:number,limit: number }) => {
+
+    const { onSetCharacterstics } = useCharacteristics()
+    
   const {
     data: nationalCuisines,
     isLoading: nationalCuisinesIsLoading,
@@ -14,6 +18,12 @@ export const useGetNationalCuisines = ({ title,page,limit }: { title?: string,pa
     queryKey: [QUERY_KEYS.nationalCuisine],
     queryFn: () =>
       nationalCuisineService.findMany({ limit, page, title }),
+    onSuccess: (data) =>
+      onSetCharacterstics({
+        items: [...data.items],
+        countItems: data.countItems,
+        currentPage: data.currentPage,
+      }),
   });
 
   return {

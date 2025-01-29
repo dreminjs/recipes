@@ -4,6 +4,7 @@ import { typeService } from '../services/type.service';
 import { Prisma } from 'prisma/prisma-client';
 import { useContext } from 'react';
 import { CharacteristicsContext } from '../../model/context/characteristics.context';
+import { useCharacteristics } from '../../model/hooks/use-characteristics';
 
 export const useGetTypes = ({
   title,
@@ -14,7 +15,7 @@ export const useGetTypes = ({
   page: number;
   limit: number;
 }) => {
-  const { onSetCharacterstics } = useContext(CharacteristicsContext);
+  const { onSetCharacterstics } = useCharacteristics()
 
   const {
     data: types,
@@ -77,7 +78,7 @@ export const useDeleteType = () => {
 };
 
 export const usePutType = () => {
-  const { onHideInputCell } = useContext(CharacteristicsContext);
+  const { onHideInputCell } = useCharacteristics()
 
   const {
     mutate: putType,
@@ -95,7 +96,7 @@ export const usePutType = () => {
 };
 
 export const useDeleteManyTypes = () => {
-  const { onToggleAllCharacteristics } = useContext(CharacteristicsContext);
+  const { onToggleAllCharacteristics } = useCharacteristics()
 
   const {
     mutate: deleteTypes,

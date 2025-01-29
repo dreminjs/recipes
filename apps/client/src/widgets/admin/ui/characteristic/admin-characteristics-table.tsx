@@ -55,7 +55,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
           selectedCharacteristics ? selectedCharacteristics?.length : 0
         }
       />
-      <TableContainer sx={{ height: 440 }}>
+      <TableContainer sx={{ height: 440,width:900 }}>
         <Table stickyHeader>
           <AdminCharacteristicHeadTable />
           <AdminCharacteristictsBodyTable />
