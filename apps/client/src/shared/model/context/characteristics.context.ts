@@ -26,6 +26,7 @@ export const CharacteristicsContext = createContext<{
     id: string;
   }) => void;
   onHideInputCell: () => void;
+  onUnSelectedCharaceteristics: () => void;
 }>({
   characteristics: { items: [], countItems: 0, currentPage: 0 },
   onSetCharacterstics(payload) {},
@@ -39,4 +40,5 @@ export const CharacteristicsContext = createContext<{
   onChangeCharactersticValue: (event) => {},
   onSetCharactersticValue: (payload) => {},
   onHideInputCell() {},
+  onUnSelectedCharaceteristics() {},
 });

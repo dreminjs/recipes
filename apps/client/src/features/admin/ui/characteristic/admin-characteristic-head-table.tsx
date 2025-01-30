@@ -1,8 +1,14 @@
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import { useCharacteristics } from 'apps/client/src/shared';
+import { FC } from 'react';
 
-export const AdminCharacteristicHeadTable = () => {
-  const { isHeadCheckboxChecked, onToggleAllCharacteristics } =
+
+interface IProps {
+  limit: number
+}
+
+export const AdminCharacteristicHeadTable: FC<IProps> = ({limit}) => {
+  const { isHeadCheckboxChecked, onToggleAllCharacteristics,selectedCharacteristics } =
     useCharacteristics();
   return (
     <TableHead>

@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  InputSearch,
-  useCharacteristics,
-} from '../../../shared';
+import { InputSearch, useCharacteristics } from '../../../shared';
 import { AdminCharacteristicsTable } from '../../../widgets/admin';
 import { AdminPostCharacteristic } from '../../../features/admin';
 import { MessageModal } from '../../../features/message';
@@ -36,10 +33,12 @@ export const AdminTypesPage: FC = () => {
     }
   };
 
-  const handleDeleteTypes = () =>
+  const handleDeleteTypes = () => {
     selectedCharacteristics
       ? typesProps.deleteTypes(selectedCharacteristics)
       : alert('Wait!');
+      
+  };
 
   return (
     <>

@@ -38,18 +38,19 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   limit,
   currentPage,
 }) => {
-  const { selectedCharacteristics } = useCharacteristics();
+  const { selectedCharacteristics,onUnSelectedCharaceteristics } = useCharacteristics();
 
   const [countItems, setCountItems] = useState<number>(0);
 
   useEffect(() => {
     count && setCountItems(count);
+    onUnSelectedCharaceteristics()
   }, [count]);
 
   return (
     <Paper>
       <AdminCharacteristicToolBarTable
-        onDeleteMany={onDeleteMany}
+        onDeleteMany={() => onDeleteMany()}
         onPut={onPut}
         numSelected={
           selectedCharacteristics ? selectedCharacteristics?.length : 0
@@ -57,12 +58,12 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
       />
       <TableContainer sx={{ height: 440, width: 900 }}>
         <Table stickyHeader>
-          <AdminCharacteristicHeadTable />
+          <AdminCharacteristicHeadTable limit={limit} />
           <AdminCharacteristictsBodyTable />
         </Table>
       </TableContainer>
       <TablePagination
-        count={countItems || 0}
+        count={countItems}
         rowsPerPage={limit}
         component={'div'}
         page={currentPage}

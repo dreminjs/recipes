@@ -13,7 +13,7 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
   const [characteristics, setCharacteristics] =
     useState<CharacteristicsPayload | null>(null);
 
-  const [selectedCharacteristics, setSelectAllCharacteristics] = useState<
+  const [selectedCharacteristics, setSelectedCharacteristics] = useState<
     string[] | undefined
   >([]);
 
@@ -47,22 +47,22 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
 
   const handleSelectAllCharacteristics = () => {
     if (selectedCharacteristics?.length === characteristics?.items.length) {
-      setSelectAllCharacteristics([]);
+      setSelectedCharacteristics([]);
       setIsHeadCheckboxChecked(false);
     } else {
-      setSelectAllCharacteristics(characteristics?.items.map((el) => el.id));
+      setSelectedCharacteristics(characteristics?.items.map((el) => el.id));
       setIsHeadCheckboxChecked(true);
     }
   };
 
   const handleSelectCharacteristic = (id: string) => {
     if (selectedCharacteristics?.includes(id)) {
-      setSelectAllCharacteristics(
-        selectedCharacteristics.filter((selectedId) => selectedId !== id)
+      setSelectedCharacteristics(
+        (prev) => prev && prev.filter((selectedId) => selectedId !== id)
       );
-      setIsHeadCheckboxChecked(false);
+      false;
     } else {
-      setSelectAllCharacteristics((prev) => prev && [...prev, id]);
+      setSelectedCharacteristics((prev) => prev && [...prev, id]);
       setIsHeadCheckboxChecked(false);
     }
 
@@ -86,6 +86,11 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
     setNewCharacteristicValue({ payload: newValue, id });
   };
 
+  const handleUnSelectedCharaceteristics = () => {
+    setSelectedCharacteristics([])
+    setIsHeadCheckboxChecked(false)
+  };
+
   return (
     <CharacteristicsContext.Provider
       value={{
@@ -101,6 +106,7 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
         onChangeCharactersticValue: onChangeCharacteristicValue,
         onSetCharactersticValue: handleSetCharacteristicValue,
         onHideInputCell: handelHideInput,
+        onUnSelectedCharaceteristics: handleUnSelectedCharaceteristics
       }}
     >
       {children}
