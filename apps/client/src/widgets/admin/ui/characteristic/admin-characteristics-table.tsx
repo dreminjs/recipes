@@ -39,16 +39,14 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   currentPage,
 }) => {
   const { selectedCharacteristics,onUnSelectedCharaceteristics } = useCharacteristics();
-
-  // useEffect(() => {
-  //   count && setCountItems(count);
-  //   onUnSelectedCharaceteristics()
-  // }, [count]);                                  
-
+            
   return (
     <Paper>
       <AdminCharacteristicToolBarTable
-        onDeleteMany={() => onDeleteMany()}
+        onDeleteMany={() => {
+          onDeleteMany()
+          onUnSelectedCharaceteristics()
+        }}
         onPut={onPut}
         numSelected={
           selectedCharacteristics ? selectedCharacteristics?.length : 0
