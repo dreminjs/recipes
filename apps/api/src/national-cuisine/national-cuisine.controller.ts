@@ -38,12 +38,16 @@ export class NationalCuisineController {
   public async findMany(
     @Query() { title, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<NationalCuisine>> {
+
+    console.log(limit)
+
     const [items, count] = await Promise.all([
       await this.nationalCuisineService.findMany({
         where: {
           ...(title && { title: { contains: title } }),
         },
         skip: (page - 1) * limit,
+        take: limit
       }),
       await this.nationalCuisineService.count({
         where: { ...(title && { title: { contains: title } }) },

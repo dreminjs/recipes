@@ -4,10 +4,17 @@ import { Prisma } from 'prisma/prisma-client';
 import { nationalCuisineService } from '../services/national-cuisine.service';
 import { useCharacteristics } from '../../model/hooks/use-characteristics';
 
-export const useGetNationalCuisines = ({ title,page,limit }: { title?: string,page:number,limit: number }) => {
+export const useGetNationalCuisines = ({
+  title,
+  page,
+  limit,
+}: {
+  title?: string;
+  page: number;
+  limit: number;
+}) => {
+  const { onSetCharacterstics } = useCharacteristics();
 
-    const { onSetCharacterstics } = useCharacteristics()
-    
   const {
     data: nationalCuisines,
     isLoading: nationalCuisinesIsLoading,
@@ -15,9 +22,8 @@ export const useGetNationalCuisines = ({ title,page,limit }: { title?: string,pa
     isError: nationalCuisinesIsError,
     refetch: refetchNationalCuisines,
   } = useQuery({
-    queryKey: [QUERY_KEYS.nationalCuisine],
-    queryFn: () =>
-      nationalCuisineService.findMany({ limit, page, title }),
+    queryKey: [QUERY_KEYS.nationalCuisine, limit, page, title],
+    queryFn: () => nationalCuisineService.findMany({ limit, page, title }),
     onSuccess: (data) =>
       onSetCharacterstics({
         items: [...data.items],
@@ -74,7 +80,7 @@ export const useDeleteNationalCuisine = () => {
 };
 
 export const useDeleteManyNationalCuisine = () => {
-  const { onSetCharacterstics,onSelectCharacteristic } = useCharacteristics();
+  const { onSetCharacterstics, onSelectCharacteristic } = useCharacteristics();
   const {
     mutate: deleteManyNationalCuisines,
     isLoading: deleteManyNationalCuisinesIsLoading,
@@ -83,7 +89,6 @@ export const useDeleteManyNationalCuisine = () => {
   } = useMutation({
     mutationFn: (ids: string[]) => nationalCuisineService.deleteMany(ids),
     mutationKey: [QUERY_KEYS.nationalCuisine],
-
   });
   return {
     deleteManyNationalCuisinesIsSuccess,
@@ -109,9 +114,9 @@ export const usePutNationalCuisine = () => {
       id: string;
     }) => nationalCuisineService.updateOne({ id }, data),
     mutationKey: [QUERY_KEYS.nationalCuisine],
-    onSuccess:() => {
-      onHideInputCell()
-    }
+    onSuccess: () => {
+      onHideInputCell();
+    },
   });
 
   return {

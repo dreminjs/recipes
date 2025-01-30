@@ -21,7 +21,7 @@ export const useGetHolidays = ({
     isError: holidaysIsError,
     refetch: refetchHolidays,
   } = useQuery({
-    queryKey: [QUERY_KEYS.holiday],
+    queryKey: [QUERY_KEYS.holiday,page,title],
     queryFn: () => holidayService.findMany({ limit, page, title }),
     onSuccess: (data) =>
       onSetCharacterstics({

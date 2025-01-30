@@ -25,11 +25,10 @@ export const AdminCharacteristictsBodyTable: FC = ({}) => {
               <Checkbox
                 onClick={() => onSelectCharacteristic(el.id)}
                 checked={isChecked}
-                tabIndex={-1}
                 color="primary"
               />
             </TableCell>
-            <TableCell>{el.id}</TableCell>
+            <TableCell className='w-[45%]'>{el.id}</TableCell>
             <AdminCharacteristicCell
               id={el.id}
               cellCoordinates={{ rowIdx: 1, coloumnIdx: idx }}

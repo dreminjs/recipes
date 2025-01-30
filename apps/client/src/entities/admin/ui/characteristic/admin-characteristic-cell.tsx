@@ -78,7 +78,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
           />
         ) : (
           <input
-            className="border-b-2 text-xl w-full"
+            className="border-b-2 text-sm"
             type="text"
             onChange={onChangeCharactersticValue}
             defaultValue={String(payload)}
