@@ -3,11 +3,9 @@ import { useCharacteristics } from 'apps/client/src/shared';
 import { FC } from 'react';
 
 
-interface IProps {
-  limit: number
-}
 
-export const AdminCharacteristicHeadTable: FC<IProps> = ({limit}) => {
+
+export const AdminCharacteristicHeadTable: FC = () => {
   const { isHeadCheckboxChecked, onToggleAllCharacteristics,selectedCharacteristics } =
     useCharacteristics();
   return (

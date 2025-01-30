@@ -79,7 +79,7 @@ export const AdminNationalCuisinesPage: FC = () => {
         }
         isSuccess={
           nationalCuisinesProps.postNationalCuisineIsSuccess ||
-          nationalCuisinesProps.nationalCuisinesIsSuccess ||
+          nationalCuisinesProps.deleteManyNationalCuisinesIsSuccess ||
           nationalCuisinesProps.putNationalCuisineIsSuccess
         }
       />
