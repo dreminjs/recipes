@@ -1,29 +1,33 @@
-import { useMutation, useInfiniteQuery } from '@tanstack/react-query';
+import { useMutation, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../../model/constants';
 import { ingredientService } from '../services/ingredient.service';
 import { IIngredientForm } from '../../model/interfaces/ingredient.interface';
 
-const queryKey = QUERY_KEYS.ingredient;
+const queryKey = [QUERY_KEYS.ingredient]
 
-export const useGetIngredients = ({ title }: { title?: string }) => {
+export const useGetIngredients = ({
+  title,
+  page,
+  limit,
+}: {
+  title?: string;
+  page: number;
+  limit: number;
+}) => {
   const {
     data: ingredients,
     isLoading: ingredientsIsLoading,
     isSuccess: ingredientsIsSuccess,
-    fetchNextPage,
-    hasNextPage,
     isError: ingredientsIsError,
     refetch: refetchIngredients,
-  } = useInfiniteQuery({
+  } = useQuery({
     queryKey: [queryKey],
-    queryFn: ({ pageParam }) =>
-      ingredientService.findMany({ limit: 10, cursor: pageParam, title }),
+    queryFn: () =>
+      ingredientService.findMany({ limit, page, title }),
   });
 
   return {
     ingredients,
-    fetchNextPage,
-    hasNextPage,
     ingredientsIsLoading,
     ingredientsIsError,
     ingredientsIsSuccess,

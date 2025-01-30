@@ -25,9 +25,8 @@ export class NationalCuisineController {
     private readonly nationalCuisineService: NationalCuisineService
   ) {}
 
-  
   @AllowedRoles(Roles.ADMIN)
-  @UseGuards(AccessTokenGuard,RolesGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @Post()
   public async createOne(
     @Body() body: CreateNationalCuisineDto
@@ -72,10 +71,10 @@ export class NationalCuisineController {
   }
 
   @AllowedRoles(Roles.ADMIN)
-  @UseGuards(RolesGuard, AccessTokenGuard)
+  @UseGuards(AccessTokenGuard,RolesGuard)
   @Delete()
   public async deleteMany(@Query('id') id: string[] | string): Promise<void> {
-    await this.nationalCuisineService.deleteMany({
+   return await this.nationalCuisineService.deleteMany({
       where: { id: { in: id instanceof Array ? [...id] : [id] } },
     });
   }

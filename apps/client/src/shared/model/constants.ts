@@ -6,6 +6,7 @@ export const QUERY_KEYS = {
     auth: 'auth',
     signup: 'signup',
     signin: 'signin',
+    signout: 'signout',
     recipe: 'recipe',
     characteristic: "characteristic",
     user: "user",
@@ -13,6 +14,7 @@ export const QUERY_KEYS = {
     type: "type",
     holiday: "holiday",
     ingredient: "ingredient",
+
 }
 
 export const SERVICE_KEYS = {
@@ -26,8 +28,11 @@ export const SERVICE_KEYS = {
 }
 
 export const PAGE_KEYS = {
+    main: '/',
     signup: 'signup',
     signin: 'signin',
     emailConfirm: 'email-confirm',
     recipe: 'recipe',
+    admin: 'admin',
+    profile: 'profile'
 }

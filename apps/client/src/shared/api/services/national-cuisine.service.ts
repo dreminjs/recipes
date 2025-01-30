@@ -41,12 +41,12 @@ export const nationalCuisineService = {
     return await this.axios.delete(`${this.root}/${where.id}`);
   },
 
-  async deleteMany(ids: string[]) {
+  async deleteMany(ids: string[]): Promise<void> {
     const queryParameters = new URLSearchParams();
 
     ids.forEach((id) => queryParameters.append('id', id.toString()));
     return await this.axios.delete(
-      `${this.root}/${queryParameters.toString()}`
+      `${this.root}?${queryParameters.toString()}`
     );
   },
 };

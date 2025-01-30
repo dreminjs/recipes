@@ -74,6 +74,7 @@ export const useDeleteNationalCuisine = () => {
 };
 
 export const useDeleteManyNationalCuisine = () => {
+  const { onSetCharacterstics,onSelectCharacteristic } = useCharacteristics();
   const {
     mutate: deleteManyNationalCuisines,
     isLoading: deleteManyNationalCuisinesIsLoading,
@@ -82,6 +83,7 @@ export const useDeleteManyNationalCuisine = () => {
   } = useMutation({
     mutationFn: (ids: string[]) => nationalCuisineService.deleteMany(ids),
     mutationKey: [QUERY_KEYS.nationalCuisine],
+
   });
   return {
     deleteManyNationalCuisinesIsSuccess,
@@ -92,6 +94,7 @@ export const useDeleteManyNationalCuisine = () => {
 };
 
 export const usePutNationalCuisine = () => {
+  const { onHideInputCell } = useCharacteristics();
   const {
     mutate: putNationalCuisine,
     isLoading: putNationalCuisineIsLoading,
@@ -106,6 +109,9 @@ export const usePutNationalCuisine = () => {
       id: string;
     }) => nationalCuisineService.updateOne({ id }, data),
     mutationKey: [QUERY_KEYS.nationalCuisine],
+    onSuccess:() => {
+      onHideInputCell()
+    }
   });
 
   return {

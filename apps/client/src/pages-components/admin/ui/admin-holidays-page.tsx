@@ -1,115 +1,64 @@
-import {
-  InputSearch,
-  useDeleteHoliday,
-  useGetHolidays,
-  usePostHoliday,
-  usePutHoliday,
-} from '../../../shared';
-import {
-  AdminCharacteristicsList,
-  AdminPostCharacteristic,
-} from '../../../features/admin';
+'use client';
+
+import { InputSearch, useCharacteristics } from '../../../shared';
+import { AdminCharacteristicsTable } from '../../../widgets/admin';
+import { AdminPostCharacteristic } from '../../../features/admin';
 import { MessageModal } from '../../../features/message';
-import { useEffect, useState } from 'react';
-import { useDebounce } from 'use-debounce';
-import { Prisma } from 'prisma/prisma-client';
+import { FC } from 'react';
+import { useHolidays } from '../model/use-holidays';
+import { CharactersticsLayout } from 'apps/client/src/application';
+export const AdminHolidaysPage: FC = () => {
+  const { newCharacteristicValue, selectedCharacteristics } =
+    useCharacteristics();
 
-export const AdminHolidaysPage = () => {
-  const [title, setTitle] = useState('');
-
-  const [isVisible, setIsVisible] = useState(false);
-
-  const [currentCharacteristicIdx, setCurrentCharacteristicIdx] = useState<
-    number | null
-  >(null);
-
-  const [value] = useDebounce(title, 500);
-
-  const {
-    postHoliday,
-    postHolidayIsLoading,
-    postHolidayIsError,
-    postHolidayIsSuccess,
-  } = usePostHoliday();
-
-  const {
-    putHoliday,
-    putHolidayIsLoading,
-    putHolidayIsError,
-    putHolidayIsSuccess,
-  } = usePutHoliday();
-
-  const {
-    deleteHoliday,
-    deleteHolidayIsLoading,
-    deleteHolidayIsError,
-    deleteHolidayIsSuccess,
-  } = useDeleteHoliday();
-
-  const {
-    fetchNextPage,
-    hasNextPage,
-    holidays,
-    holidaysIsError,
-    holidaysIsSuccess,
-    holidaysIsLoading,
-    refetchHolidays,
-  } = useGetHolidays({
-    title: value,
+  const holidaysProps = useHolidays({
+    initialLimit: 5,
+    initialPage: 0,
+    initialTitle: '',
   });
 
-  const handleShowInput = (idx: number) => {
-    setCurrentCharacteristicIdx(idx);
-    setIsVisible((prev) => !prev);
-  };
-
-  const handleHideInput = () => {
-    setCurrentCharacteristicIdx(null);
-    setIsVisible((prev) => !prev);
-  };
-
-  const handlePutHoliday = (data: Prisma.HolidayUpdateInput, id: string) => {
-    handleHideInput();
-    putHoliday({ data, id });
-  };
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-  useEffect(() => {
-    if (postHolidayIsSuccess || deleteHolidayIsSuccess || putHolidayIsSuccess) {
-      refetchHolidays();
+  const handlePutType = () => {
+    if (newCharacteristicValue) {
+      if (typeof newCharacteristicValue.payload === 'boolean') {
+        holidaysProps.putHoliday({
+          data: { isVisible: newCharacteristicValue.payload },
+          id: newCharacteristicValue.id,
+        });
+      } else {
+        holidaysProps.putHoliday({
+          data: { title: newCharacteristicValue.payload },
+          id: newCharacteristicValue.id,
+        });
+      }
     }
-  }, [
-    postHolidayIsSuccess,
-    deleteHolidayIsSuccess,
-    putHolidayIsSuccess,
-    refetchHolidays,
-    value,
-  ]);
+  };
+
+  const handleDeleteTypes = () =>
+    selectedCharacteristics
+      ? holidaysProps.deleteManyHoliday(selectedCharacteristics)
+      : alert('Wait!');
 
   return (
     <>
-      <div className="flex flex-col items-center">
+      <CharactersticsLayout>
         <AdminPostCharacteristic
-          onPost={(data) => postHoliday(data)}
-          label="holiday"
+          onPost={(data) => holidaysProps.postHoliday(data)}
+          label="type"
         />
-        <InputSearch value={title} onChange={handleTitleChange} />
-        <AdminCharacteristicsList
-          onShowInput={handleShowInput}
-          onHideInput={handleHideInput}
-          visibleIdx={currentCharacteristicIdx}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          characteristicsIsError={holidaysIsError}
-          characteristicsIsLoading={holidaysIsError}
-          characteristicIsSuccess={holidaysIsError}
-          onDelete={deleteHoliday}
-          onPut={handlePutHoliday}
-          characteristics={holidays}
+        <InputSearch
+          value={holidaysProps.title}
+          onChange={holidaysProps.handleChangeTitle}
         />
-      </div>
+        <AdminCharacteristicsTable
+          onDeleteMany={handleDeleteTypes}
+          onPut={handlePutType}
+          onChangePage={(e, newPage) => holidaysProps.handleChangePage(e, newPage)}
+          count={holidaysProps.holidays?.countItems}
+          limit={holidaysProps.limit}
+          currentPage={holidaysProps.currentPage}
+          onChangeLimit={holidaysProps.handleChangeLimit}
+        />
+      </CharactersticsLayout>
       <MessageModal
         message={{
           isSuccess: 'Успешно',
@@ -117,15 +66,19 @@ export const AdminHolidaysPage = () => {
           isLoading: 'Загрузка...',
         }}
         isLoading={
-          postHolidayIsLoading ||
-          deleteHolidayIsLoading ||
-          putHolidayIsLoading
+          holidaysProps.postHolidayIsLoading ||
+          holidaysProps.deleteManyHolidayIsLoading ||
+          holidaysProps.putHolidayIsLoading
         }
         isError={
-          postHolidayIsError || deleteHolidayIsError || putHolidayIsError
+          holidaysProps.putHolidayIsError ||
+          holidaysProps.postHolidayIsError ||
+          holidaysProps.deleteManyHolidayIsError
         }
         isSuccess={
-          postHolidayIsSuccess || deleteHolidayIsSuccess || putHolidayIsSuccess
+          holidaysProps.postHolidayIsSuccess ||
+          holidaysProps.deleteManyHolidayIsSuccess ||
+          holidaysProps.putHolidayIsSuccess
         }
       />
     </>

@@ -1,7 +1,6 @@
-import { InfiniteScrollResponse } from 'interfaces';
+import { IItemsPaginationResponse } from 'interfaces';
 import { QUERY_KEYS } from '../../model/constants';
 import { instance } from '../api.instance';
-
 import { Holiday, Prisma } from 'prisma/prisma-client';
 import { IGetCharacteristicsQueryParameters } from '../../model/interfaces/characteristic.interface';
 
@@ -12,12 +11,13 @@ export const holidayService = {
 
   async findMany(
     query: IGetCharacteristicsQueryParameters
-  ): Promise<InfiniteScrollResponse<Holiday>> {
+  ): Promise<IItemsPaginationResponse<Holiday>> {
     const urlSearchParams = new URLSearchParams();
 
     if (query.title) urlSearchParams.append('title', query.title);
 
-    if (query.cursor) urlSearchParams.append('cursor', query.cursor.toString());
+    if (query.page === 0 ? true : query.page)
+      urlSearchParams.append('page', (query.page + 1).toString());
 
     if (query.limit) urlSearchParams.append('limit', query.limit.toString());
 
@@ -38,5 +38,15 @@ export const holidayService = {
 
   async deleteOne(where: Prisma.HolidayWhereUniqueInput) {
     return await this.axios.delete(`${this.root}/${where.id}`);
+  },
+
+  async deleteMany(ids: string[]): Promise<void> {
+    const queryParameters = new URLSearchParams();
+
+    ids.forEach((id) => queryParameters.append('id', id.toString()));
+
+    return await this.axios.delete(
+      `${this.root}?${queryParameters.toString()}`
+    );
   },
 };

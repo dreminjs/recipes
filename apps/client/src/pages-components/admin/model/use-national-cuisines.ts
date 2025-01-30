@@ -59,7 +59,7 @@ export const useNationalCuisines = ({
   useEffect(() => {
     if (
       postNationalCuisineIsSuccess ||
-      deleteManyNationalCuisinesIsError ||
+      deleteManyNationalCuisinesIsSuccess ||
       putNationalCuisineIsSuccess
     ) {
       refetchNationalCuisines();

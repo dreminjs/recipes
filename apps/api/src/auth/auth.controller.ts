@@ -21,6 +21,7 @@ import { SignupGuard } from './guards/signup.guard';
 import { AccessTokenGuard } from '../token';
 import { User } from '@prisma/client';
 import * as crypto from 'node:crypto';
+import { SigninGuard } from './guards/signin.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -79,6 +80,7 @@ export class AuthController {
     };
   }
 
+  @UseGuards(SigninGuard)
   @Post('/signin')
   public async signin(
     @Body() body: SigninDto,
@@ -113,8 +115,6 @@ export class AuthController {
   @Render('thank-you.ejs')
   @Get(`/active-account/:link`)
   public async activeAccount(@Param('link') link: string) {
-    this.logger.log(link, 'LINK');
-
     const user = await this.userService.findOne({
       link,
     });

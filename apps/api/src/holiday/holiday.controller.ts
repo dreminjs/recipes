@@ -7,12 +7,17 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { Holiday } from '@prisma/client';
+import { Holiday, Roles } from '@prisma/client';
 import { HolidayService } from './holiday.service';
 import { UpdateHolidayDto } from './dto/update-holiday.dto';
 import { GetCharacteristicsQueryParameters } from '../shared';
 import { IItemsPaginationResponse } from 'interfaces';
+import { AccessTokenGuard } from '../token';
+import { AllowedRoles } from '../user/decorators/roles.decorator';
+import { RolesGuard } from '../user/guards/roles.guard';
+import { CreateHolidayDto } from './dto/create-holiday.dto';
 
 @Controller('holiday')
 export class HolidayController {
@@ -38,7 +43,8 @@ export class HolidayController {
       countItems: count,
     };
   }
-
+  @AllowedRoles(Roles.ADMIN)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @Put(':id')
   public async updateOne(
     @Param('id') id: string,
@@ -46,9 +52,10 @@ export class HolidayController {
   ): Promise<Holiday> {
     return await this.holidayService.updateOne({ id }, body);
   }
-
+  @AllowedRoles(Roles.ADMIN)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @Post()
-  public async createOne(@Body() body: UpdateHolidayDto): Promise<Holiday> {
+  public async createOne(@Body() body: CreateHolidayDto): Promise<Holiday> {
     return await this.holidayService.createOne(body);
   }
 
@@ -57,6 +64,8 @@ export class HolidayController {
     return await this.holidayService.findOne({ where: { id } });
   }
 
+  @AllowedRoles(Roles.ADMIN)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @Delete()
   public async deleteMany(@Query('id') id: string[] | string): Promise<void> {
     return await this.holidayService.deleteMany({

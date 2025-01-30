@@ -1,5 +1,10 @@
 import Link from 'next/link';
-import { useGetMyProfile } from 'apps/client/src/shared';
+import {
+  PAGE_KEYS,
+  QUERY_KEYS,
+  SERVICE_KEYS,
+  useGetMyProfile,
+} from 'apps/client/src/shared';
 export const Header = () => {
   const { userInfo } = useGetMyProfile();
 
@@ -8,21 +13,50 @@ export const Header = () => {
       <Link href={'/'} className="text-[32px]">
         Recipes :)
       </Link>
-
-      <Link href="admin"></Link>
       <div className="flex gap-5 items-center">
-        {userInfo?.role === 'ADMIN' && (
-          <Link className="text-[20px]" href={'admin'}>
-            Админ Панель
-          </Link>
-        )}
+        {userInfo ? (
+          <>
+            <>
+              {userInfo.role === 'ADMIN' && (
+                <Link className="text-[20px]" href={`/${PAGE_KEYS.admin}`}>
+                  Админ Панель
+                </Link>
+              )}
+            </>
 
-        <Link className="text-[20px]" href={'/recipe/post'}>
-          Добавить рецепт
-        </Link>
-        <Link href="/profile">
-          Профиль
-        </Link>
+            <>
+              {userInfo.isActived && (
+                <Link
+                  className="text-[20px]"
+                  href={`${PAGE_KEYS.recipe}/${SERVICE_KEYS.post}`}
+                >
+                  Добавить рецепт
+                </Link>
+              )}
+            </>
+            <Link href={PAGE_KEYS.profile} className="text-[20px]">
+              Профиль
+            </Link>
+            <Link className="text-[20px]" href={QUERY_KEYS.signout}>
+              выйти
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              className="text-[20px]"
+              href={`${SERVICE_KEYS.auth}/${PAGE_KEYS.signin}`}
+            >
+              войти
+            </Link>
+            <Link
+              className="text-[20px]"
+              href={`/${SERVICE_KEYS.auth}/${PAGE_KEYS.signup}`}
+            >
+              зарегистрироаваться
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

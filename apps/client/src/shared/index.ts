@@ -56,6 +56,7 @@ export {
   useGetHolidays,
   usePostHoliday,
   usePutHoliday,
+  useDeleteManyHolidays
 } from './api/queries/holiday.queries';
 
 export { ingredientFormSchema } from './model/schemas/ingredient.schema';
