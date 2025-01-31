@@ -19,6 +19,11 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
 
   const [isHeadCheckboxChecked, setIsHeadCheckboxChecked] = useState(false);
 
+  const [
+    isPostCharacteristicModalVisible,
+    setIsPostCharaceteresticModalVisible,
+  ] = useState(false);
+
   const [activeCell, setActiveCell] =
     useState<ICharacteristicsTableCoordinats>(null);
 
@@ -26,6 +31,11 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
     payload: string | boolean;
     id: string;
   } | null>(null);
+
+  const handleTogglePostCharacteristicModalVisibility = () => {
+
+    setIsPostCharaceteresticModalVisible((prev) => !prev);
+  }
 
   const handleSetCharacteristicValue = ({
     payload,
@@ -60,7 +70,7 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
       setSelectedCharacteristics(
         (prev) => prev && prev.filter((selectedId) => selectedId !== id)
       );
-      false;
+      setIsHeadCheckboxChecked(false);
     } else {
       setSelectedCharacteristics((prev) => prev && [...prev, id]);
       setIsHeadCheckboxChecked(false);
@@ -87,8 +97,8 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
   };
 
   const handleUnSelectedCharaceteristics = () => {
-    setSelectedCharacteristics([])
-    setIsHeadCheckboxChecked(false)
+    setSelectedCharacteristics([]);
+    setIsHeadCheckboxChecked(false);
   };
 
   return (
@@ -106,7 +116,10 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
         onChangeCharactersticValue: onChangeCharacteristicValue,
         onSetCharactersticValue: handleSetCharacteristicValue,
         onHideInputCell: handelHideInput,
-        onUnSelectedCharaceteristics: handleUnSelectedCharaceteristics
+        onUnSelectedCharaceteristics: handleUnSelectedCharaceteristics,
+        onTogglePostCharacteristicModalVisibility:
+          handleTogglePostCharacteristicModalVisibility,
+        isPostCharacteristicModalVisible,
       }}
     >
       {children}

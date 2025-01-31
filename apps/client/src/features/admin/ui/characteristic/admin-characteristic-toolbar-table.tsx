@@ -14,13 +14,16 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
   onPut,
   onDeleteMany,
 }) => {
-  const { activeCell,selectedCharacteristics } =
-    useCharacteristics();
+  const {
+    activeCell,
+    selectedCharacteristics,
+    onTogglePostCharacteristicModalVisibility,
+  } = useCharacteristics();
 
   const handleConfirmClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation()
-      onPut()
-  }
+    event.stopPropagation();
+    onPut();
+  };
 
   return (
     <Toolbar>
@@ -49,6 +52,16 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
           Confirm
         </button>
       )}
+
+      <button
+        onClick={(event) => {
+          event.preventDefault()
+          onTogglePostCharacteristicModalVisibility()
+        }}
+        className="text-[20px] px-7 py-2 rounded-xl border-2 mx-5"
+      >
+        post
+      </button>
 
       {numSelected > 0 && (
         <Tooltip title="Delete">

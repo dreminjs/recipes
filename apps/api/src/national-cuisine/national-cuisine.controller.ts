@@ -38,9 +38,7 @@ export class NationalCuisineController {
   public async findMany(
     @Query() { title, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<NationalCuisine>> {
-
-    console.log(limit)
-
+    
     const [items, count] = await Promise.all([
       await this.nationalCuisineService.findMany({
         where: {

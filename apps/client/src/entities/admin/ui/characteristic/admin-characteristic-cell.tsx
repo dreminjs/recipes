@@ -11,6 +11,7 @@ import {
 import {
   CharacteristicsContext,
   ICharacteristicsTableCoordinats,
+  useCharacteristics,
 } from 'apps/client/src/shared';
 
 interface IProps {
@@ -34,7 +35,8 @@ export const AdminCharacteristicCell: FC<IProps> = ({
     onChangeCharactersticValue,
     onSetCharactersticValue,
     onHideInputCell,
-  } = useContext(CharacteristicsContext);
+    isPostCharacteristicModalVisible
+  } = useCharacteristics()
 
   const isActiveCell =
     cellCoordinates &&
@@ -44,7 +46,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-        if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        if ( inputRef.current && !inputRef.current.contains(event.target as Node)) {
           const clickedElement = event.target as HTMLElement;
           if (clickedElement.id !== 'confirm-btn') {
             onHideInputCell();
@@ -52,14 +54,14 @@ export const AdminCharacteristicCell: FC<IProps> = ({
         }
       };
   
-      if (isActiveCell) {
+      if (isActiveCell && !isPostCharacteristicModalVisible) {
         document.addEventListener('mousedown', handleClickOutside);
       }
   
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
-    }, [isActiveCell, onHideInputCell]);
+    }, [isActiveCell, onHideInputCell,isPostCharacteristicModalVisible]);
 
   return (
     <TableCell

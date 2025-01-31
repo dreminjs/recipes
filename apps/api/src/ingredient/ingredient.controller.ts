@@ -3,7 +3,7 @@ import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { IngredientService } from './ingredient.service';
 import { Ingredient, IngredientRequest } from '@prisma/client';
 import { GetIngredientsQueryParameters } from './dto/get-ingredients-query-parameters';
-import { IInfiniteScrollResponse } from 'interfaces';
+import { IItemsPaginationResponse } from 'interfaces';
 
 @Controller('ingredient')
 export class IngredientController {
@@ -18,21 +18,24 @@ export class IngredientController {
 
   @Get()
   public async findMany(
-    @Query() { title, cursor, limit }: GetIngredientsQueryParameters
-  ): Promise<IInfiniteScrollResponse<Ingredient>> {
-    const ingredients = await this.ingredientService.findMany({
-      where: {
-        ...(title ? { title } : {}),
-      },
-      skip: cursor,
-      take: limit,
-    });
-
-    const nextCursor = ingredients.length > 0 ? limit : null;
-
+    @Query() { title, page, limit }: GetIngredientsQueryParameters
+  ): Promise<IItemsPaginationResponse<Ingredient>> {
+    const [items, count] = await Promise.all([
+      await this.ingredientService.findMany({
+        where: {
+          ...(title ? { title } : {}),
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      await this.ingredientService.count({
+        where: { ...(title ? { title: { contains: title } } : {}) },
+      }),
+    ]);
     return {
-      nextCursor,
-      data: ingredients,
+      items,
+      countItems: count,
+      currentPage: page,
     };
   }
 

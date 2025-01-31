@@ -1,34 +1,24 @@
 import Link from 'next/link';
+import { AdminIngredientsTable } from '../../../widgets/admin';
 import {
-  AdminPostIngredient,
-  AdminIngredientsTable,
-} from '../../../widgets/admin';
-import { useState } from 'react';
-import { useGetIngredients } from '../../../shared';
-import { useDebounce } from 'use-debounce';
+  AdminIngredientBodyTable,
+  AdminIngredientHeadTable,
+} from 'apps/client/src/features/admin';
+import { useIngredients } from '../model/use-ingredients';
+import { CharactersticsLayout } from 'apps/client/src/application';
 
 export const AdminIngredientPage = () => {
-  const [title, setTitle] = useState('');
-
-  const [value] = useDebounce(title, 500);
-
-  const {
-    ingredients,
-    fetchNextPage,
-    hasNextPage,
-    ingredientsIsLoading,
-    ingredientsIsError,
-    ingredientsIsSuccess,
-    refetchIngredients,
-  } = useGetIngredients({ title: value });
+  const { ingredients } = useIngredients();
 
   return (
-    <div className="flex flex-col items-center">
+    <CharactersticsLayout>
       <Link className="mb-5 underline" href="ingredient/requests">
         Заявки
       </Link>
-      <AdminPostIngredient refetch={refetchIngredients} />
-      <AdminIngredientsTable ingredients={ingredients} />
-    </div>
+      <AdminIngredientsTable
+        head={<AdminIngredientHeadTable />}
+        body={<AdminIngredientBodyTable items={ingredients?.items || []} />}
+      />
+    </CharactersticsLayout>
   );
 };

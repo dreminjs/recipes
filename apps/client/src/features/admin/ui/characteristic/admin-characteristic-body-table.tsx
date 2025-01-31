@@ -31,13 +31,13 @@ export const AdminCharacteristictsBodyTable: FC = ({}) => {
             <TableCell className='w-[45%]'>{el.id}</TableCell>
             <AdminCharacteristicCell
               id={el.id}
-              cellCoordinates={{ rowIdx: 1, coloumnIdx: idx }}
+              cellCoordinates={{ rowIdx: idx, coloumnIdx: 1 }}
               type={'text'}
               payload={el.title}
             />
             <AdminCharacteristicCell
               id={el.id}
-              cellCoordinates={{ rowIdx: 2, coloumnIdx: idx }}
+              cellCoordinates={{ rowIdx: idx, coloumnIdx: 2 }}
               type={'checkbox'}
               payload={el.isVisible}
             />

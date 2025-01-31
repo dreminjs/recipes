@@ -38,14 +38,15 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   limit,
   currentPage,
 }) => {
-  const { selectedCharacteristics,onUnSelectedCharaceteristics } = useCharacteristics();
-            
+  const { selectedCharacteristics, onUnSelectedCharaceteristics } =
+    useCharacteristics();
+
   return (
     <Paper>
       <AdminCharacteristicToolBarTable
         onDeleteMany={() => {
-          onDeleteMany()
-          onUnSelectedCharaceteristics()
+          onDeleteMany();
+          onUnSelectedCharaceteristics();
         }}
         onPut={onPut}
         numSelected={
@@ -54,7 +55,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
       />
       <TableContainer sx={{ height: 440, width: 900 }}>
         <Table stickyHeader>
-          <AdminCharacteristicHeadTable  />
+          <AdminCharacteristicHeadTable />
           <AdminCharacteristictsBodyTable />
         </Table>
       </TableContainer>

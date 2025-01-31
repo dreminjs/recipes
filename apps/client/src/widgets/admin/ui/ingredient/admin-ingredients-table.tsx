@@ -1,16 +1,25 @@
-import { Ingredient } from 'prisma/prisma-client';
-import { AdminIngredientItem } from '../../../../entities/admin';
-import { FC } from 'react';
-import { IInfiniteScrollResponse } from 'interfaces';
-import { InfiniteData } from '@tanstack/react-query';
+import {} from 'apps/client/src/shared';
 
-import {} from '../../../../shared';
-import { optionsObj } from '../../../../features/measure/model/measure-options';
+import { Paper, Table, TableContainer } from '@mui/material';
+
+import { FC, ReactNode } from 'react';
+import { AdminIngredientToolbarTable } from 'apps/client/src/features/admin';
 
 interface IProps {
-  ingredients?: InfiniteData<IInfiniteScrollResponse<Ingredient>> | undefined;
+  head: ReactNode;
+  body: ReactNode;
 }
 
-export const AdminIngredientsTable: FC<IProps> = ({ ingredients }) => {
-  return 123;
+export const AdminIngredientsTable: FC<IProps> = ({ body, head }) => {
+  return (
+    <Paper>
+      <TableContainer sx={{ height: 440, width: 900 }}>
+        <AdminIngredientToolbarTable />
+        <Table>
+          {head}
+          {body}
+        </Table>
+      </TableContainer>
+    </Paper>
+  );
 };

@@ -1,14 +1,14 @@
-'use client';
-
-import { InputSearch, useCharacteristics } from '../../../shared';
-import { AdminCharacteristicsTable } from '../../../widgets/admin';
-import { AdminPostCharacteristic } from '../../../features/admin';
-import { MessageModal } from '../../../features/message';
+import { InputSearch, IPostCharacteristicForm, useCharacteristics } from 'apps/client/src/shared';
+import {
+  AdminCharacteristicsTable,
+  PostCharaceteristicModal,
+} from 'apps/client/src/widgets/admin';
+import { MessageModal } from 'apps/client/src/features/message';
 import { FC } from 'react';
 import { useTypes } from '../model/use-types';
 import { CharactersticsLayout } from 'apps/client/src/application';
 export const AdminTypesPage: FC = () => {
-  const { newCharacteristicValue, selectedCharacteristics } =
+  const { newCharacteristicValue, selectedCharacteristics,onTogglePostCharacteristicModalVisibility } =
     useCharacteristics();
 
   const typesProps = useTypes({
@@ -37,16 +37,16 @@ export const AdminTypesPage: FC = () => {
     selectedCharacteristics
       ? typesProps.deleteTypes(selectedCharacteristics)
       : alert('Wait!');
-      
   };
+
+  const handlePostType = (data: IPostCharacteristicForm) => {
+    typesProps.postType(data)
+    onTogglePostCharacteristicModalVisibility()
+  }
 
   return (
     <>
       <CharactersticsLayout>
-        <AdminPostCharacteristic
-          onPost={(data) => typesProps.postType(data)}
-          label="type"
-        />
         <InputSearch
           value={typesProps.title}
           onChange={typesProps.handleChangeTitle}
@@ -83,6 +83,7 @@ export const AdminTypesPage: FC = () => {
           typesProps.putTypeIsSuccess
         }
       />
+      <PostCharaceteristicModal onPost={handlePostType}  />
     </>
   );
 };

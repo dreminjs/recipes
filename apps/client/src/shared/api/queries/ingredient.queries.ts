@@ -3,7 +3,7 @@ import { QUERY_KEYS } from '../../model/constants';
 import { ingredientService } from '../services/ingredient.service';
 import { IIngredientForm } from '../../model/interfaces/ingredient.interface';
 
-const queryKey = [QUERY_KEYS.ingredient]
+const queryKey = QUERY_KEYS.ingredient
 
 export const useGetIngredients = ({
   title,
@@ -14,6 +14,8 @@ export const useGetIngredients = ({
   page: number;
   limit: number;
 }) => {
+  console.log({ title, page, limit });
+
   const {
     data: ingredients,
     isLoading: ingredientsIsLoading,
@@ -21,9 +23,8 @@ export const useGetIngredients = ({
     isError: ingredientsIsError,
     refetch: refetchIngredients,
   } = useQuery({
-    queryKey: [queryKey],
-    queryFn: () =>
-      ingredientService.findMany({ limit, page, title }),
+    queryKey: [queryKey, limit, page, title],
+    queryFn: () => ingredientService.findMany({ limit, page, title }),
   });
 
   return {

@@ -20,8 +20,9 @@ export const ingredientService = {
     const urlSearchParams = new URLSearchParams();
 
     if (query.title) urlSearchParams.append('title', query.title);
-
-    if (query.page) urlSearchParams.append('page', query.page.toString());
+    
+    if (query.page === 0 ? true : query.page)
+      urlSearchParams.append('page', (query.page + 1).toString());
 
     if (query.limit) urlSearchParams.append('limit', query.limit.toString());
 

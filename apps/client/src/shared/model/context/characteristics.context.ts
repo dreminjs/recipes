@@ -27,6 +27,8 @@ export const CharacteristicsContext = createContext<{
   }) => void;
   onHideInputCell: () => void;
   onUnSelectedCharaceteristics: () => void;
+  onTogglePostCharacteristicModalVisibility: () => void
+  isPostCharacteristicModalVisible: boolean
 }>({
   characteristics: { items: [], countItems: 0, currentPage: 0 },
   onSetCharacterstics(payload) {},
@@ -41,4 +43,6 @@ export const CharacteristicsContext = createContext<{
   onSetCharactersticValue: (payload) => {},
   onHideInputCell() {},
   onUnSelectedCharaceteristics() {},
+  onTogglePostCharacteristicModalVisibility:() => {},
+  isPostCharacteristicModalVisible: false
 });
