@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import {
   AdminCharacteristicsTable,
-  AdminIngredientsTable,
   AdminPostIngredientModal,
 } from 'apps/client/src/widgets/admin';
 import { useIngredients } from '../model/hooks/use-ingredients';
@@ -29,10 +28,9 @@ export const AdminIngredientPage = () => {
 
   const handlePutIngredient = () => {
     
+    console.log(newCharacteristicValue)
+
     if (newCharacteristicValue) {
-
-      console.log('hello')
-
       if (typeof newCharacteristicValue.payload === 'boolean') {
         ingredientsProps.put({
           data: { isVisible: newCharacteristicValue.payload },

@@ -17,7 +17,7 @@ export const CharacteristicsContext = createContext<{
     id: string;
     payload: boolean | string;
   } | null;
-  onChangeCharactersticValue: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChangeCharactersticValue: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
   onSetCharactersticValue: ({
     payload,
     id,

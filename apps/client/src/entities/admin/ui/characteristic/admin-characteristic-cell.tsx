@@ -74,7 +74,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
             ref={inputRef as React.RefObject<HTMLInputElement>}
           />
         ) : type === 'options' ? (
-          <select defaultValue={String(payload)} autoFocus id={id}>
+          <select onChange={onChangeCharactersticValue} defaultValue={String(payload)} autoFocus id={id}>
             {measuresArray.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
