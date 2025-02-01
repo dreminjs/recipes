@@ -1,29 +1,27 @@
 import { IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FC } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useCharacteristics } from 'apps/client/src/shared';
-import { ICharacteristic, ICharacteristicsTableCoordinats } from 'apps/client/src/shared/model/interfaces/characteristic.interface';
+import { ICharacteristicsTableCoordinats } from 'apps/client/src/shared/model/interfaces/characteristic.interface';
 
 interface IProps {
   numSelected: number;
   onPut: () => void;
   onDeleteMany: () => void;
-  activeCell: ICharacteristicsTableCoordinats
+
   onTogglePostCharacteristicModalVisibility:() => void,
   selectedCharacteristics?: string[]
+  hasNewCharacteristicValue: boolean
 }
 
 export const AdminCharacteristicToolBarTable: FC<IProps> = ({
   numSelected,
   onPut,
   onDeleteMany,
-  activeCell,
+
   onTogglePostCharacteristicModalVisibility,
   selectedCharacteristics,
+  hasNewCharacteristicValue
 }) => {
-  const {
- 
-  } = useCharacteristics();
 
   const handleConfirmClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -51,7 +49,7 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
           Characteristics
         </Typography>
       )}
-      {(activeCell ||
+      {(hasNewCharacteristicValue ||
         (selectedCharacteristics && selectedCharacteristics.length > 0)) && (
         <button
           className="text-[20px] px-7 py-2 rounded-xl border-2 mx-5"

@@ -43,15 +43,16 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
     onTogglePostCharacteristicModalVisibility,
     isHeadCheckboxChecked,
     onToggleAllCharacteristics,
+    newCharacteristicValue,
   } = useCharacteristics();
   return (
     <Paper>
       <AdminCharacteristicToolBarTable
+        hasNewCharacteristicValue={newCharacteristicValue ? true : false}
         selectedCharacteristics={selectedCharacteristics}
         onTogglePostCharacteristicModalVisibility={
           onTogglePostCharacteristicModalVisibility
         }
-        activeCell={activeCell}
         onDeleteMany={() => {
           onDeleteMany();
           onUnSelectedCharaceteristics();
