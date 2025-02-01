@@ -32,4 +32,9 @@ export class IngredientService {
   public async count(args: Prisma.IngredientCountArgs): Promise<number> {
     return await this.prisma.ingredient.count(args);
   }
+
+  public async updateOne(data:Prisma.IngredientUpdateInput,where:Prisma.IngredientWhereUniqueInput): Promise<Ingredient> {
+    return await this.prisma.ingredient.update({data,where})
+  }
+
 }
