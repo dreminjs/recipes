@@ -29,12 +29,12 @@ export const AdminNationalCuisinesPage: FC = () => {
   const handlePutNationalCuisine = () => {
     if (newCharacteristicValue) {
       if (typeof newCharacteristicValue.payload === 'boolean') {
-        nationalCuisinesProps.putNationalCuisine({
+        nationalCuisinesProps.put({
           data: { isVisible: newCharacteristicValue.payload },
           id: newCharacteristicValue.id,
         });
       } else {
-        nationalCuisinesProps.putNationalCuisine({
+        nationalCuisinesProps.put({
           data: { title: newCharacteristicValue.payload },
           id: newCharacteristicValue.id,
         });
@@ -44,13 +44,13 @@ export const AdminNationalCuisinesPage: FC = () => {
 
   const handleDeleteNationalCuisines = () =>
     selectedCharacteristics
-      ? nationalCuisinesProps.deleteManyNationalCuisines(
+      ? nationalCuisinesProps.deleteMany(
           selectedCharacteristics
         )
       : alert('Wait!');
 
   const handlePostNationalCuisine = (data: IPostCharacteristicForm) => {
-    nationalCuisinesProps.postNationalCuisine(data);
+    nationalCuisinesProps.post(data);
     onTogglePostCharacteristicModalVisibility();
   };
 
@@ -59,18 +59,18 @@ export const AdminNationalCuisinesPage: FC = () => {
       <CharactersticsLayout>
         <InputSearch
           value={nationalCuisinesProps.title}
-          onChange={nationalCuisinesProps.handleChangeTitle}
+          onChange={nationalCuisinesProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteNationalCuisines}
           onPut={handlePutNationalCuisine}
           onChangePage={(e, newPage) =>
-            nationalCuisinesProps.handleChangePage(e, newPage)
+            nationalCuisinesProps.onChangePage(e, newPage)
           }
-          count={nationalCuisinesProps.nationalCuisines?.countItems}
+          count={nationalCuisinesProps.items?.countItems}
           limit={nationalCuisinesProps.limit}
           currentPage={nationalCuisinesProps.currentPage}
-          onChangeLimit={nationalCuisinesProps.handleChangeLimit}
+          onChangeLimit={nationalCuisinesProps.onChangeLimit}
         />
       </CharactersticsLayout>
       <MessageModal
@@ -80,19 +80,19 @@ export const AdminNationalCuisinesPage: FC = () => {
           isLoading: 'Загрузка...',
         }}
         isLoading={
-          nationalCuisinesProps.postNationalCuisineIsLoading ||
-          nationalCuisinesProps.deleteManyNationalCuisinesIsLoading ||
-          nationalCuisinesProps.nationalCuisinesIsLoading
+          nationalCuisinesProps.postIsLoading ||
+          nationalCuisinesProps.deleteManyIsLoading ||
+          nationalCuisinesProps.itemsIsLoading
         }
         isError={
-          nationalCuisinesProps.nationalCuisinesIsError ||
-          nationalCuisinesProps.postNationalCuisineIsError ||
-          nationalCuisinesProps.deleteManyNationalCuisinesIsError
+          nationalCuisinesProps.itemsIsError ||
+          nationalCuisinesProps.postIsError ||
+          nationalCuisinesProps.deleteManyIsError
         }
         isSuccess={
-          nationalCuisinesProps.postNationalCuisineIsSuccess ||
-          nationalCuisinesProps.deleteManyNationalCuisinesIsSuccess ||
-          nationalCuisinesProps.putNationalCuisineIsSuccess
+          nationalCuisinesProps.postIsSuccess ||
+          nationalCuisinesProps.deleteManyIsSuccess ||
+          nationalCuisinesProps.putIsSuccess
         }
       />
       <AdminPostCharaceteristicModal onPost={handlePostNationalCuisine} />

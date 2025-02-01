@@ -72,13 +72,10 @@ export const useTypes = ({
     limit,
     setLimit,
     put: putType,
-
     putIsLoading: putTypeIsLoading,
     putIsError: putTypeIsError,
     putIsSuccess: putTypeIsSuccess,
-
     deleteOne: deleteType,
-
     deleteIsLoading: deleteTypeIsLoading,
     deleteIsError: deleteTypeIsError,
     deleteIsSuccess: deleteTypeIsSuccess,
@@ -86,20 +83,15 @@ export const useTypes = ({
     deleteManyIsSuccess: deleteTypesIsSuccess,
     deleteManyIsLoading: deleteTypesIsLoading,
     deleteManyIsError: deleteTypesIsError,
-
     items: types,
-
     itemsIsLoading: typesIsLoading,
     itemsIsError: typesIsError,
     itemsIsSuccess: typesIsSuccess,
-
     refetch: refetchTypes,
     post: postType,
-
     postIsLoading: postTypeIsLoading,
     postIsError: postTypeIsError,
     postIsSuccess: postTypeIsSuccess,
-
     onChangeTitle: handleChangeTitle,
     onChangeLimit: handleChangeLimit,
   };
