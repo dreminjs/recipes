@@ -2,7 +2,6 @@ import { FileStrategyUseCase, Options } from 'apps/api/src/file/file.config';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import * as crypto from 'node:crypto';
-import { Express } from 'express'
 
 @Injectable()
 export class S3FileStrategy implements FileStrategyUseCase {

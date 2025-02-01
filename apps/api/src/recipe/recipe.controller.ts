@@ -28,7 +28,7 @@ export class RecipeController {
   @UseInterceptors(FileInterceptor('file'))
   public async createOne(
     @Body() body: CreateRecipeDto,
-    @CurrentUser() user: User,
+    @CurrentUser("id") userId: string,
     @RecipePhoto() photo: string
   ): Promise<Recipe> {
     const recipe = await this.recipeService.createOne({
@@ -42,7 +42,7 @@ export class RecipeController {
         },
       },
       user: {
-        connect: { id: user.id },
+        connect: { id: userId },
       },
       holiday: {
         connect: { id: body.holidayId },
