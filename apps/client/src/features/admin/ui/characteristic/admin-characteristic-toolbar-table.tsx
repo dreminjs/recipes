@@ -48,15 +48,19 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
       )}
       {(activeCell ||
         (selectedCharacteristics && selectedCharacteristics.length > 0)) && (
-        <button id="confirm-btn" onClick={handleConfirmClick}>
+        <button
+          className="text-[20px] px-7 py-2 rounded-xl border-2 mx-5"
+          id="confirm-btn"
+          onClick={handleConfirmClick}
+        >
           Confirm
         </button>
       )}
 
       <button
         onClick={(event) => {
-          event.preventDefault()
-          onTogglePostCharacteristicModalVisibility()
+          event.preventDefault();
+          onTogglePostCharacteristicModalVisibility();
         }}
         className="text-[20px] px-7 py-2 rounded-xl border-2 mx-5"
       >

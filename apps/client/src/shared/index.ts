@@ -59,9 +59,9 @@ export {
   useDeleteManyHolidays
 } from './api/queries/holiday.queries';
 
-export { ingredientFormSchema } from './model/schemas/ingredient.schema';
+export { IngredientFormSchema } from './model/schemas/ingredient.schema';
 
-export type { IIngredientForm } from './model/interfaces/ingredient.interface';
+export type { IPostIngredientForm } from './model/interfaces/ingredient.interface';
 
 export {
   usePostIngredient,

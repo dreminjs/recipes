@@ -4,8 +4,7 @@ import { FC } from 'react';
 
 
 
-
-export const AdminCharacteristicHeadTable: FC = () => {
+export const AdminCharacteristicHeadTable: FC= () => {
   const { isHeadCheckboxChecked, onToggleAllCharacteristics,selectedCharacteristics } =
     useCharacteristics();
   return (

@@ -1,6 +1,14 @@
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
+import { FC } from 'react';
 
-export const AdminIngredientHeadTable = () => {
+interface IProps {
+  onSelectAllItems: () => void
+  isHeadcheckboxChecked: boolean
+}
+
+
+export const AdminIngredientHeadTable: FC<IProps> = ({onSelectAllItems,isHeadcheckboxChecked}) => {
+  
   return (
     <TableHead>
       <TableRow>
@@ -10,6 +18,8 @@ export const AdminIngredientHeadTable = () => {
             inputProps={{
               'aria-label': 'select all desserts',
             }}
+            onChange={onSelectAllItems}
+            checked={isHeadcheckboxChecked}
           />
         </TableCell>
         {['id', 'title', 'measure', 'is visible'].map((item) => (

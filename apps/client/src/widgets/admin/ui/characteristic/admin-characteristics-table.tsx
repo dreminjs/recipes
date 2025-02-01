@@ -1,12 +1,10 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC} from 'react';
 import {
   AdminCharacteristicHeadTable,
   AdminCharacteristicToolBarTable,
   AdminCharacteristictsBodyTable,
 } from 'apps/client/src/features/admin';
-import { Type } from 'prisma/prisma-client';
 import {
-  CharacteristicsContext,
   useCharacteristics,
 } from 'apps/client/src/shared';
 import TableContainer from '@mui/material/TableContainer';

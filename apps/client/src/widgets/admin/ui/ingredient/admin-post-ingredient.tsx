@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { AdminIngredientInput } from '../../../../features/admin';
-import { MeasureOptions } from '../../../../features/measure';
+// import { MeasureOptions } from '../../../../features/measure';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  ingredientFormSchema,
-  IIngredientForm,
+  IngredientFormSchema,
+  IPostIngredientForm,
   usePostIngredient,
 } from '../../../../shared';
 import { FC, useEffect } from 'react';
@@ -27,8 +27,8 @@ export const AdminPostIngredient: FC<IProps> = ({ refetch }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<IIngredientForm>({
-    resolver: zodResolver(ingredientFormSchema),
+  } = useForm<IPostIngredientForm>({
+    resolver: zodResolver(IngredientFormSchema),
   });
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const AdminPostIngredient: FC<IProps> = ({ refetch }) => {
       >
         <div className="mb-2 flex gap-4">
           <AdminIngredientInput register={register} error={errors.title} />
-          <MeasureOptions register={register} error={errors.measure} />
+          {/* <MeasureOptions register={register} error={errors.measure} /> */}
         </div>
         <button type="submit" className="border-2 px-4 py-2 rounded-md">
           submit

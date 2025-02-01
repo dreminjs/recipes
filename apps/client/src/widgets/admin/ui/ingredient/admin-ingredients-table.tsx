@@ -1,24 +1,40 @@
 import {} from 'apps/client/src/shared';
 
-import { Paper, Table, TableContainer } from '@mui/material';
+import { Paper, Table, TableContainer, TablePagination } from '@mui/material';
 
 import { FC, ReactNode } from 'react';
-import { AdminIngredientToolbarTable } from 'apps/client/src/features/admin';
+import {
+  AdminIngredientHeadTable,
+  AdminIngredientToolbarTable,
+} from 'apps/client/src/features/admin';
 
-interface IProps {
-  head: ReactNode;
-  body: ReactNode;
-}
-
-export const AdminIngredientsTable: FC<IProps> = ({ body, head }) => {
+export const AdminIngredientsTable = () => {
   return (
     <Paper>
       <TableContainer sx={{ height: 440, width: 900 }}>
-        <AdminIngredientToolbarTable />
+        <AdminIngredientToolbarTable
+          onToggleIngredientModalVisibility={onToggleIngredientModalVisibility}
+        />
         <Table>
-          {head}
-          {body}
+          <AdminIngredientHeadTable
+            isHeadcheckboxChecked={isHeadcheckboxChecked}
+            onSelectAllItems={onSelectAllItems}
+          />
+          <AdminIngredientBodyTable
+            onSelectItemId={onSelectItemId}
+            selectedItems={selectedItems}
+            items={ingredients?.items || []}
+          />
         </Table>
+        <TablePagination
+          count={count || 0}
+          rowsPerPage={limit}
+          component={'div'}
+          page={currentPage}
+          onPageChange={onChangePage}
+          onRowsPerPageChange={onChangeLimit}
+          rowsPerPageOptions={[5, 10, 15, 25]}
+        />
       </TableContainer>
     </Paper>
   );

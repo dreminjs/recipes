@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ingredientFormSchema } from "../schemas/ingredient.schema";
+import { IngredientFormSchema } from "../schemas/ingredient.schema";
 
 
-export type IIngredientForm = z.infer<typeof ingredientFormSchema>;
+export type IPostIngredientForm = z.infer<typeof IngredientFormSchema>;

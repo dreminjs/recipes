@@ -1,6 +1,6 @@
-import { IOption } from "./measure.interface";
+import { IOption } from "./interfaces/measure.interface";
 
-export const options: IOption[] = [
+export const measureOptions: IOption[] = [
   { value: 'KG', label: 'кг' },
   { value: 'N', label: 'шт' },
   { value: 'G', label: 'грамм' },

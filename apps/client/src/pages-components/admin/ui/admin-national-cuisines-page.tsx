@@ -1,17 +1,24 @@
 import {
   InputSearch,
+  IPostCharacteristicForm,
   useCharacteristics,
 } from '../../../shared';
-import { AdminCharacteristicsTable } from '../../../widgets/admin';
-import { AdminPostCharacteristic } from '../../../features/admin';
+import {
+  AdminCharacteristicsTable,
+  AdminPostCharaceteristicModal,
+} from 'apps/client/src/widgets/admin';
+import { AdminPostCharacteristic } from 'apps/client/src/features/admin';
 import { MessageModal } from '../../../features/message';
-import { useNationalCuisines } from '../model/use-national-cuisines';
+import { useNationalCuisines } from '../model/hooks/use-national-cuisines';
 import { FC } from 'react';
 import { CharactersticsLayout } from 'apps/client/src/application';
 
 export const AdminNationalCuisinesPage: FC = () => {
-  const { newCharacteristicValue, selectedCharacteristics } =
-    useCharacteristics();
+  const {
+    newCharacteristicValue,
+    selectedCharacteristics,
+    onTogglePostCharacteristicModalVisibility,
+  } = useCharacteristics();
 
   const nationalCuisinesProps = useNationalCuisines({
     initialLimit: 5,
@@ -37,16 +44,19 @@ export const AdminNationalCuisinesPage: FC = () => {
 
   const handleDeleteNationalCuisines = () =>
     selectedCharacteristics
-      ? nationalCuisinesProps.deleteManyNationalCuisines(selectedCharacteristics)
+      ? nationalCuisinesProps.deleteManyNationalCuisines(
+          selectedCharacteristics
+        )
       : alert('Wait!');
+
+  const handlePostNationalCuisine = (data: IPostCharacteristicForm) => {
+    nationalCuisinesProps.postNationalCuisine(data);
+    onTogglePostCharacteristicModalVisibility();
+  };
 
   return (
     <>
       <CharactersticsLayout>
-        <AdminPostCharacteristic
-          onPost={(data) => nationalCuisinesProps.postNationalCuisine(data)}
-          label="national cuisines"
-        />
         <InputSearch
           value={nationalCuisinesProps.title}
           onChange={nationalCuisinesProps.handleChangeTitle}
@@ -54,7 +64,9 @@ export const AdminNationalCuisinesPage: FC = () => {
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteNationalCuisines}
           onPut={handlePutNationalCuisine}
-          onChangePage={(e, newPage) => nationalCuisinesProps.handleChangePage(e, newPage)}
+          onChangePage={(e, newPage) =>
+            nationalCuisinesProps.handleChangePage(e, newPage)
+          }
           count={nationalCuisinesProps.nationalCuisines?.countItems}
           limit={nationalCuisinesProps.limit}
           currentPage={nationalCuisinesProps.currentPage}
@@ -83,6 +95,7 @@ export const AdminNationalCuisinesPage: FC = () => {
           nationalCuisinesProps.putNationalCuisineIsSuccess
         }
       />
+      <AdminPostCharaceteristicModal onPost={handlePostNationalCuisine} />
     </>
   );
 };

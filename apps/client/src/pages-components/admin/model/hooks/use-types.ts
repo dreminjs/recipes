@@ -65,35 +65,42 @@ export const useTypes = ({
     setLimit(parseInt(event.target.value, 10));
     setCurrentPage(0);
   };
-
   return {
     title,
     currentPage,
-    handleChangePage,
+    onChangePage: handleChangePage,
     limit,
     setLimit,
-    putType,
-    putTypeIsLoading,
-    putTypeIsError,
-    putTypeIsSuccess,
-    deleteType,
-    deleteTypeIsLoading,
-    deleteTypeIsError,
-    deleteTypeIsSuccess,
-    deleteTypesIsSuccess,
-    deleteTypes,
-    deleteTypesIsLoading,
-    deleteTypesIsError,
-    types,
-    typesIsLoading,
-    typesIsError,
-    typesIsSuccess,
-    refetchTypes,
-    postType,
-    postTypeIsLoading,
-    postTypeIsError,
-    postTypeIsSuccess,
-    handleChangeTitle,
-    handleChangeLimit
+    put: putType,
+
+    putIsLoading: putTypeIsLoading,
+    putIsError: putTypeIsError,
+    putIsSuccess: putTypeIsSuccess,
+
+    deleteOne: deleteType,
+
+    deleteIsLoading: deleteTypeIsLoading,
+    deleteIsError: deleteTypeIsError,
+    deleteIsSuccess: deleteTypeIsSuccess,
+    deleteMany:deleteTypes,
+    deleteManyIsSuccess: deleteTypesIsSuccess,
+    deleteManyIsLoading: deleteTypesIsLoading,
+    deleteManyIsError: deleteTypesIsError,
+
+    items: types,
+
+    itemsIsLoading: typesIsLoading,
+    itemsIsError: typesIsError,
+    itemsIsSuccess: typesIsSuccess,
+
+    refetch: refetchTypes,
+    post: postType,
+
+    postIsLoading: postTypeIsLoading,
+    postIsError: postTypeIsError,
+    postIsSuccess: postTypeIsSuccess,
+
+    onChangeTitle: handleChangeTitle,
+    onChangeLimit: handleChangeLimit,
   };
 };
