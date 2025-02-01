@@ -72,6 +72,8 @@ export type { IPostIngredientForm } from './model/interfaces/ingredient.interfac
 export {
   usePostIngredient,
   useGetIngredients,
+  useDeleteManyIngredients,
+  usePutIngredient
 } from './api/queries/ingredient.queries';
 
 export { useCharacteristics } from './model/hooks/use-characteristics';

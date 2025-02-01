@@ -5,7 +5,7 @@ import { IPostIngredientForm } from '../../model/interfaces/ingredient.interface
 import { Prisma } from 'prisma/prisma-client';
 import { useCharacteristics } from '../../model/hooks/use-characteristics';
 
-const queryKey = QUERY_KEYS.ingredient
+const queryKey = QUERY_KEYS.ingredient;
 
 export const useGetIngredients = ({
   title,
@@ -16,8 +16,7 @@ export const useGetIngredients = ({
   page: number;
   limit: number;
 }) => {
-
-    const { onSetCharacterstics } = useCharacteristics()
+  const { onSetCharacterstics } = useCharacteristics();
 
   const {
     data: ingredients,
@@ -33,7 +32,7 @@ export const useGetIngredients = ({
         items: [...data.items],
         countItems: data.countItems,
         currentPage: data.currentPage,
-      })
+      });
     },
   });
 
@@ -84,16 +83,43 @@ export const useDeleteIngredient = () => {
   };
 };
 
+export const useDeleteManyIngredients = () => {
+  const {
+    mutate: deleteManyIngredients,
+    isLoading: deleteManyIngredientsIsLoading,
+    isError: deleteManyIngredientsIsError,
+    isSuccess: deleteManyIngredientsIsSuccess,
+  } = useMutation({
+    mutationFn: (ids: string[]) => ingredientService.deleteMany(ids),
+    mutationKey: [queryKey],
+  });
+  return {
+    deleteManyIngredients,
+    deleteManyIngredientsIsLoading,
+    deleteManyIngredientsIsError,
+    deleteManyIngredientsIsSuccess,
+  };
+};
+
 export const usePutIngredient = () => {
+  const { onHideInputCell } = useCharacteristics();
   const {
     mutate: putIngredient,
     isLoading: putIngredientIsLoading,
     isError: putIngredientIsError,
     isSuccess: putIngredientIsSuccess,
   } = useMutation({
-    mutationFn: ({ data, id }: { data: Prisma.IngredientUpdateInput; id: string }) =>
-      ingredientService.updateOne({ id }, data),
+    mutationFn: ({
+      data,
+      id,
+    }: {
+      data: Partial<IPostIngredientForm>;
+      id: string;
+    }) => ingredientService.updateOne({ id }, data),
     mutationKey: [queryKey],
+    onSuccess: () => {
+      onHideInputCell();
+    },
   });
   return {
     putIngredient,

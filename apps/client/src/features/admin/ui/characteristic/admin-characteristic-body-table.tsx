@@ -35,7 +35,7 @@ export const AdminCharacteristictsBodyTable: FC = ({}) => {
 
             <AdminCharacteristicCell
               id={el.id}
-              cellCoordinates={{ rowIdx: idx, coloumnIdx: 3 }}
+              cellCoordinates={{ rowIdx: idx, coloumnIdx: 2 }}
               type={'checkbox'}
               payload={el.isVisible}
             />
@@ -44,7 +44,7 @@ export const AdminCharacteristictsBodyTable: FC = ({}) => {
                 type={'options'}
                 payload={el.measure}
                 id={el.id}
-                cellCoordinates={{ rowIdx: idx, coloumnIdx: 2 }}
+                cellCoordinates={{ rowIdx: idx, coloumnIdx: 3 }}
               />
             )}
           </TableRow>

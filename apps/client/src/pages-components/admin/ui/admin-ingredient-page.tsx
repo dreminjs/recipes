@@ -27,8 +27,6 @@ export const AdminIngredientPage = () => {
   });
 
   const handlePutIngredient = () => {
-    
-    console.log(newCharacteristicValue)
 
     if (newCharacteristicValue) {
       if (typeof newCharacteristicValue.payload === 'boolean') {

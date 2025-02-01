@@ -32,8 +32,8 @@ export const usePostSignIn = () => {
       console.log(data);
       if (!data.isActived) {
         navigate(PAGE_KEYS.emailConfirm);
-      }else {
-        navigate("/")
+      } else {
+        navigate('/');
       }
     },
   });

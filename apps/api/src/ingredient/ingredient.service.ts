@@ -37,4 +37,8 @@ export class IngredientService {
     return await this.prisma.ingredient.update({data,where})
   }
 
+  public async deleteMany(args:Prisma.IngredientDeleteManyArgs): Promise<void> {
+    await this.prisma.ingredient.delete(args)
+  }
+
 }

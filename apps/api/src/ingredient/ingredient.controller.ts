@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { IngredientService } from './ingredient.service';
 import { Ingredient, IngredientRequest, Roles } from '@prisma/client';
@@ -24,13 +34,13 @@ export class IngredientController {
 
   @AllowedRoles(Roles.ADMIN)
   @UseGuards(AccessTokenGuard, RolesGuard)
-  @Put(":id")
+  @Put(':id')
   public async updateOne(
     @Body() body: UpdateIngredientDto,
-    @Param("id") id: string
+    @Param('id') id: string
   ): Promise<Ingredient> {
-    return await this.ingredientService.updateOne({...body},{id});
-  }   
+    return await this.ingredientService.updateOne({ ...body }, { id });
+  }
 
   @Get()
   public async findMany(
@@ -62,6 +72,12 @@ export class IngredientController {
     return await this.ingredientService.createRequest({ ...body });
   }
 
-
-
+  @AllowedRoles(Roles.ADMIN)
+  @UseGuards(AccessTokenGuard, RolesGuard)
+  @Delete()
+  public async deleteMany(@Query('id') id: string[] | string): Promise<void> {
+    return await this.ingredientService.deleteMany({
+      where: { id: { in: id instanceof Array ? [...id] : [id] } },
+    });
+  }
 }
