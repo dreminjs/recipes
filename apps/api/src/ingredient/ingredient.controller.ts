@@ -7,6 +7,7 @@ import { IItemsPaginationResponse } from 'interfaces';
 import { AllowedRoles } from '../user/decorators/roles.decorator';
 import { AccessTokenGuard } from '../token';
 import { RolesGuard } from '../user/guards/roles.guard';
+import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 
 @Controller('ingredient')
 export class IngredientController {
@@ -25,7 +26,7 @@ export class IngredientController {
   @UseGuards(AccessTokenGuard, RolesGuard)
   @Put(":id")
   public async updateOne(
-    @Body() body: CreateIngredientDto,
+    @Body() body: UpdateIngredientDto,
     @Param("id") id: string
   ): Promise<Ingredient> {
     return await this.ingredientService.updateOne({...body},{id});
