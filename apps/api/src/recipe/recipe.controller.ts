@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { FavoriteRecipe, Recipe, User } from '@prisma/client';
@@ -16,11 +17,7 @@ import { RecipePhoto } from './recipe-photo.decorator';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
 import { IInfiniteScrollResponse } from 'interfaces';
-import { HolidayService } from '../holiday/holiday.service';
-import { NationalCuisineService } from '../national-cuisine/national-cuisine.service';
-import { GetRecipesSelectionQueryParameters } from './dto/get-recipes-selection-query-parameters.ts';
-import { TypeService } from '../type/type.service';
-import { create } from 'domain';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('recipe')
 export class RecipeController {
@@ -28,6 +25,7 @@ export class RecipeController {
 
   @UseGuards(AccessTokenGuard)
   @Post()
+  @UseInterceptors(FileInterceptor('file'))
   public async createOne(
     @Body() body: CreateRecipeDto,
     @CurrentUser() user: User,

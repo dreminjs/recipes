@@ -1,11 +1,11 @@
 import { FC, MutableRefObject, useRef, useState } from 'react';
 import { IPostRecipeForm } from '../../../shared';
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import { FieldError, FieldErrorsImpl, Merge, UseFormRegister } from 'react-hook-form';
 import Image from 'next/image';
 
 interface IProps {
   register: UseFormRegister<IPostRecipeForm>;
-  error?: FieldError;
+  error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined
 }
 
 export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
@@ -32,8 +32,8 @@ export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
     <div className="mb-3">
       {imagePreview && (
         <Image
-          width={280}
-          height={280}
+          width={480}
+          height={300}
           src={imagePreview}
           alt="Recipe Preview"
         />
@@ -48,7 +48,7 @@ export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
         accept="image/*"
         style={{ display: 'none' }} 
       />
-      {error && <p>{error.message}</p>}
+      {error?.message && <p>{error.message.toString()}</p>}
     </div>
   );
 };

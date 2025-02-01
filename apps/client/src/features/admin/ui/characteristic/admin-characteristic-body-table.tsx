@@ -32,7 +32,6 @@ export const AdminCharacteristictsBodyTable: FC = ({}) => {
               type={'text'}
               payload={el.title}
             />
-
             <AdminCharacteristicCell
               id={el.id}
               cellCoordinates={{ rowIdx: idx, coloumnIdx: 2 }}

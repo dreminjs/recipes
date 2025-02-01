@@ -39,7 +39,6 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   const {
     selectedCharacteristics,
     onUnSelectedCharaceteristics,
-    activeCell,
     onTogglePostCharacteristicModalVisibility,
     isHeadCheckboxChecked,
     onToggleAllCharacteristics,

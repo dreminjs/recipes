@@ -28,16 +28,16 @@ export const Header = () => {
               {userInfo.isActived && (
                 <Link
                   className="text-[20px]"
-                  href={`${PAGE_KEYS.recipe}/${SERVICE_KEYS.post}`}
+                  href={`/${PAGE_KEYS.recipe}/${SERVICE_KEYS.post}`}
                 >
                   Добавить рецепт
                 </Link>
               )}
             </>
-            <Link href={PAGE_KEYS.profile} className="text-[20px]">
+            <Link href={`/${PAGE_KEYS.profile}`} className="text-[20px]">
               Профиль
             </Link>
-            <Link className="text-[20px]" href={QUERY_KEYS.signout}>
+            <Link className="text-[20px]" href={`/${QUERY_KEYS.signout}`}>
               выйти
             </Link>
           </>
@@ -45,7 +45,7 @@ export const Header = () => {
           <>
             <Link
               className="text-[20px]"
-              href={`${SERVICE_KEYS.auth}/${PAGE_KEYS.signin}`}
+              href={`/${SERVICE_KEYS.auth}/${PAGE_KEYS.signin}`}
             >
               войти
             </Link>
