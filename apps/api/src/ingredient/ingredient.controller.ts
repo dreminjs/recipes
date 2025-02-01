@@ -49,7 +49,7 @@ export class IngredientController {
     const [items, count] = await Promise.all([
       await this.ingredientService.findMany({
         where: {
-          ...(title ? { title } : {}),
+          ...(title && { title: { contains: title } }),
         },
         skip: (page - 1) * limit,
         take: limit,
