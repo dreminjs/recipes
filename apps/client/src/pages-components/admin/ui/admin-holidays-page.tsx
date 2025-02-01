@@ -23,12 +23,12 @@ export const AdminHolidaysPage: FC = () => {
   const handlePutType = () => {
     if (newCharacteristicValue) {
       if (typeof newCharacteristicValue.payload === 'boolean') {
-        holidaysProps.putHoliday({
+        holidaysProps.put({
           data: { isVisible: newCharacteristicValue.payload },
           id: newCharacteristicValue.id,
         });
       } else {
-        holidaysProps.putHoliday({
+        holidaysProps.put({
           data: { title: newCharacteristicValue.payload },
           id: newCharacteristicValue.id,
         });
@@ -38,11 +38,11 @@ export const AdminHolidaysPage: FC = () => {
 
   const handleDeleteHolidays = () =>
     selectedCharacteristics
-      ? holidaysProps.deleteManyHoliday(selectedCharacteristics)
+      ? holidaysProps.deleteMany(selectedCharacteristics)
       : alert('Wait!');
 
   const handlePostHoliday = (data: IPostCharacteristicForm) => {
-    holidaysProps.postHoliday(data)
+    holidaysProps.post(data)
     onTogglePostCharacteristicModalVisibility()
   }
 
@@ -51,18 +51,18 @@ export const AdminHolidaysPage: FC = () => {
       <CharactersticsLayout>
         <InputSearch
           value={holidaysProps.title}
-          onChange={holidaysProps.handleChangeTitle}
+          onChange={holidaysProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteHolidays}
           onPut={handlePutType}
           onChangePage={(e, newPage) =>
-            holidaysProps.handleChangePage(e, newPage)
+            holidaysProps.onChangePage(e, newPage)
           }
-          count={holidaysProps.holidays?.countItems}
+          count={holidaysProps.items?.countItems}
           limit={holidaysProps.limit}
           currentPage={holidaysProps.currentPage}
-          onChangeLimit={holidaysProps.handleChangeLimit}
+          onChangeLimit={holidaysProps.onChangeTitle}
         />
       </CharactersticsLayout>
       <MessageModal
@@ -72,19 +72,19 @@ export const AdminHolidaysPage: FC = () => {
           isLoading: 'Загрузка...',
         }}
         isLoading={
-          holidaysProps.postHolidayIsLoading ||
-          holidaysProps.deleteManyHolidayIsLoading ||
-          holidaysProps.putHolidayIsLoading
+          holidaysProps.postIsLoading ||
+          holidaysProps.deleteManyIsLoading ||
+          holidaysProps.putIsLoading
         }
         isError={
-          holidaysProps.putHolidayIsError ||
-          holidaysProps.postHolidayIsError ||
-          holidaysProps.deleteManyHolidayIsError
+          holidaysProps.putIsError ||
+          holidaysProps.postIsError ||
+          holidaysProps.deleteManyIsError
         }
         isSuccess={
-          holidaysProps.postHolidayIsSuccess ||
-          holidaysProps.deleteManyHolidayIsSuccess ||
-          holidaysProps.putHolidayIsSuccess
+          holidaysProps.postIsSuccess ||
+          holidaysProps.deleteManyIsSuccess ||
+          holidaysProps.putIsSuccess
         }
       />
       <AdminPostCharaceteristicModal onPost={handlePostHoliday} />

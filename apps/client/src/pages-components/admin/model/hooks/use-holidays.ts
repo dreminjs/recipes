@@ -32,9 +32,9 @@ export const useHolidays = ({
     }
   }, [refetchHolidays, postHolidayIsSuccess, deleteManyHolidayIsSuccess, putHolidayIsSuccess]);
 
-  const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => setTitle(event.target.value);
-  const onChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => setCurrentPage(newPage);
-  const onChangeLimit = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement  | HTMLTextAreaElement> ) => setTitle(event.target.value);
+  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => setCurrentPage(newPage);
+  const handleChangeLimit = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setLimit(parseInt(event.target.value, 10));
     setCurrentPage(0);
   };
@@ -42,7 +42,7 @@ export const useHolidays = ({
   return {
     title,
     currentPage,
-    onChangePage,
+    onChangePage:handleChangePage,
     limit,
     setLimit,
     put: putHoliday,
@@ -62,7 +62,7 @@ export const useHolidays = ({
     postIsLoading: postHolidayIsLoading,
     postIsError: postHolidayIsError,
     postIsSuccess: postHolidayIsSuccess,
-    onChangeTitle,
-    onChangeLimit,
+    onChangeTitle: handleChangeTitle,
+    onChangeLimit: handleChangeLimit
   };
 };
