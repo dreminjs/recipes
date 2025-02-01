@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Ingredient, Prisma } from '@prisma/client';
+import { Ingredient, IngredientRequest, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class IngredientService {
 
   public async createRequest(
     dto: Prisma.IngredientRequestCreateInput
-  ): Promise<Ingredient> {
+  ): Promise<IngredientRequest> {
     return await this.prisma.ingredientRequest.create({ data: dto });
   }
   public async count(args: Prisma.IngredientCountArgs): Promise<number> {

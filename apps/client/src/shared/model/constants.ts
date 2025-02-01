@@ -36,3 +36,19 @@ export const PAGE_KEYS = {
     admin: 'admin',
     profile: 'profile'
 }
+
+export const measuresObj = {
+    "ML":"мл",
+    "L":"л",
+    "KG":"кг",
+    "G":"гр",
+    "N":"шт"
+}
+
+export const measuresArray = [
+    { label: "мл", value: "ML" },
+    { label: "л", value: "L" },
+    { label: "кг", value: "KG" },
+    { label: "гр", value: "G" },
+    { label: "шт", value: "N" }
+  ];

@@ -1,6 +1,10 @@
 'use client';
 
-import { InputSearch, IPostCharacteristicForm, useCharacteristics } from 'apps/client/src/shared';
+import {
+  InputSearch,
+  IPostCharacteristicForm,
+  useCharacteristics,
+} from 'apps/client/src/shared';
 import {
   AdminCharacteristicsTable,
   AdminPostCharaceteristicModal,
@@ -11,8 +15,11 @@ import { FC } from 'react';
 import { useHolidays } from '../model/hooks/use-holidays';
 import { CharactersticsLayout } from 'apps/client/src/application';
 export const AdminHolidaysPage: FC = () => {
-  const { newCharacteristicValue, selectedCharacteristics, onTogglePostCharacteristicModalVisibility } =
-    useCharacteristics();
+  const {
+    newCharacteristicValue,
+    selectedCharacteristics,
+    onTogglePostCharacteristicModalVisibility,
+  } = useCharacteristics();
 
   const holidaysProps = useHolidays({
     initialLimit: 5,
@@ -42,9 +49,9 @@ export const AdminHolidaysPage: FC = () => {
       : alert('Wait!');
 
   const handlePostHoliday = (data: IPostCharacteristicForm) => {
-    holidaysProps.post(data)
-    onTogglePostCharacteristicModalVisibility()
-  }
+    holidaysProps.post(data);
+    onTogglePostCharacteristicModalVisibility();
+  };
 
   return (
     <>
@@ -56,13 +63,12 @@ export const AdminHolidaysPage: FC = () => {
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteHolidays}
           onPut={handlePutType}
-          onChangePage={(e, newPage) =>
-            holidaysProps.onChangePage(e, newPage)
-          }
+          onChangePage={(e, newPage) => holidaysProps.onChangePage(e, newPage)}
           count={holidaysProps.items?.countItems}
           limit={holidaysProps.limit}
           currentPage={holidaysProps.currentPage}
           onChangeLimit={holidaysProps.onChangeTitle}
+          hasMeasure={false}
         />
       </CharactersticsLayout>
       <MessageModal

@@ -1,30 +1,58 @@
-import {} from 'apps/client/src/shared';
+import { useCharacteristics } from 'apps/client/src/shared';
 
 import { Paper, Table, TableContainer, TablePagination } from '@mui/material';
 
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 import {
+  AdminCharacteristicHeadTable,
+  AdminCharacteristictsBodyTable,
+  AdminIngredientBodyTable,
   AdminIngredientHeadTable,
   AdminIngredientToolbarTable,
 } from 'apps/client/src/features/admin';
 
-export const AdminIngredientsTable = () => {
+interface IProps {
+  onPut: () => void;
+  onDeleteMany: () => void;
+  count?: number | null;
+  limit: number;
+  currentPage: number;
+  onChangePage: (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    page: number
+  ) => void;
+  onChangeLimit: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+}
+
+export const AdminIngredientsTable: FC<IProps> = ({
+  limit,
+  currentPage,
+  count,
+  onChangeLimit,
+  onChangePage,
+}) => {
+  const {
+    onTogglePostCharacteristicModalVisibility,
+    isHeadCheckboxChecked,
+    onToggleAllCharacteristics,
+    onSelectCharacteristic,
+    selectedCharacteristics,
+    characteristics,
+  } = useCharacteristics();
+
   return (
     <Paper>
+      <AdminIngredientToolbarTable
+        onToggleIngredientModalVisibility={
+          onTogglePostCharacteristicModalVisibility
+        }
+      />
       <TableContainer sx={{ height: 440, width: 900 }}>
-        <AdminIngredientToolbarTable
-          onToggleIngredientModalVisibility={onToggleIngredientModalVisibility}
-        />
-        <Table>
-          <AdminIngredientHeadTable
-            isHeadcheckboxChecked={isHeadcheckboxChecked}
-            onSelectAllItems={onSelectAllItems}
-          />
-          <AdminIngredientBodyTable
-            onSelectItemId={onSelectItemId}
-            selectedItems={selectedItems}
-            items={ingredients?.items || []}
-          />
+        <Table stickyHeader>
+          <AdminCharacteristicHeadTable hasMeasure={true} />
+          <AdminCharacteristictsBodyTable />
         </Table>
         <TablePagination
           count={count || 0}

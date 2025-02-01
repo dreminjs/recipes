@@ -1,13 +1,10 @@
 import { AdminCharacteristicCell } from '../../../../entities/admin';
 import { FC } from 'react';
 import { Checkbox, TableBody, TableCell, TableRow } from '@mui/material';
-import {
-  useCharacteristics,
-} from 'apps/client/src/shared';
-
+import { useCharacteristics } from 'apps/client/src/shared';
 
 export const AdminCharacteristictsBodyTable: FC = ({}) => {
-  const { characteristics, selectedCharacteristics,onSelectCharacteristic } =
+  const { characteristics, selectedCharacteristics, onSelectCharacteristic } =
     useCharacteristics();
 
   return (
@@ -28,19 +25,28 @@ export const AdminCharacteristictsBodyTable: FC = ({}) => {
                 color="primary"
               />
             </TableCell>
-            <TableCell className='w-[45%]'>{el.id}</TableCell>
+            <TableCell className="w-[45%]">{el.id}</TableCell>
             <AdminCharacteristicCell
               id={el.id}
               cellCoordinates={{ rowIdx: idx, coloumnIdx: 1 }}
               type={'text'}
               payload={el.title}
             />
+
             <AdminCharacteristicCell
               id={el.id}
-              cellCoordinates={{ rowIdx: idx, coloumnIdx: 2 }}
+              cellCoordinates={{ rowIdx: idx, coloumnIdx: 3 }}
               type={'checkbox'}
               payload={el.isVisible}
             />
+            {el.measure && (
+              <AdminCharacteristicCell
+                type={'options'}
+                payload={el.measure}
+                id={el.id}
+                cellCoordinates={{ rowIdx: idx, coloumnIdx: 2 }}
+              />
+            )}
           </TableRow>
         );
       })}

@@ -2,11 +2,22 @@ import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import { useCharacteristics } from 'apps/client/src/shared';
 import { FC } from 'react';
 
+interface IProps {
+  hasMeasure?: boolean;
+  isHeadCheckboxChecked: boolean;
+  onToggleAllCharacteristics: () => void;
+}
 
+export const AdminCharacteristicHeadTable: FC<IProps> = ({
+  hasMeasure,
+  isHeadCheckboxChecked,
+  onToggleAllCharacteristics,
+}) => {
+  const headers = ['id', 'title', 'is visible'];
+  if (hasMeasure) {
+    headers.push('measure');
+  }
 
-export const AdminCharacteristicHeadTable: FC= () => {
-  const { isHeadCheckboxChecked, onToggleAllCharacteristics,selectedCharacteristics } =
-    useCharacteristics();
   return (
     <TableHead>
       <TableRow>
@@ -20,8 +31,10 @@ export const AdminCharacteristicHeadTable: FC= () => {
             }}
           />
         </TableCell>
-        {['id', 'title', 'is visible'].map((item) => (
-          <TableCell align='left' key={item}>{item}</TableCell>
+        {headers.map((item) => (
+          <TableCell align="left" key={item}>
+            {item}
+          </TableCell>
         ))}
       </TableRow>
     </TableHead>

@@ -1,80 +1,69 @@
-import { IPostIngredientForm, useGetIngredients, usePostIngredient } from 'apps/client/src/shared';
-import { useState } from 'react';
+import {  useDeleteManyNationalCuisine, useGetIngredients, usePostIngredient, usePostNationalCuisine } from 'apps/client/src/shared';
+import { useDeleteIngredient, usePutIngredient } from 'apps/client/src/shared/api/queries/ingredient.queries';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
-export const useIngredients = () => {
-  const [title, setTitle] = useState('');
-
-  const [limit,setLimit] = useState(5)
-
+export const useIngredients = ({
+  initialTitle,
+  initialPage,
+  initialLimit,
+}: {
+  initialTitle: string;
+  initialPage: number;
+  initialLimit: number;
+}) => {
+  const [title, setTitle] = useState(initialTitle);
   const [value] = useDebounce(title, 500);
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [limit, setLimit] = useState(initialLimit);
 
-  const { ingredients } = useGetIngredients({ page: 0, limit: 5 });
+  const { putIngredient,putIngredientIsError,putIngredientIsLoading,putIngredientIsSuccess } = usePutIngredient();
+  const { deleteIngredient,deleteIngredientIsError,deleteIngredientIsLoading,deleteIngredientIsSuccess } = useDeleteIngredient();
+  const { deleteManyNationalCuisines, deleteManyNationalCuisinesIsError, deleteManyNationalCuisinesIsLoading, deleteManyNationalCuisinesIsSuccess } = useDeleteManyNationalCuisine();
+  const { ingredients,ingredientsIsError,ingredientsIsLoading,ingredientsIsSuccess,refetchIngredients } = useGetIngredients({ title: value, page: currentPage, limit });
+  const { postIngredient, postIngredientIsError, postIngredientIsLoading, postIngredientIsSuccess } = usePostIngredient();
 
-  const [selectedItems,setSelectedItems] = useState<string[]>([])
-
-  const [isModalVisible, setIsModalVisible] =
-    useState(false);
-
-    const [isHeadcheckboxChecked,setIsHeadCheckboxChecked] = useState(false)
-
-  const handleSelectItemId = (selectedId: string) => {
-    if(selectedItems.includes(selectedId)){
-      setSelectedItems(prev => prev.filter(id => id != selectedId))
-      setIsHeadCheckboxChecked(false)
-    }else {
-      setSelectedItems(prev => [...prev,selectedId])
-      setIsHeadCheckboxChecked(false)
+  useEffect(() => {
+    if (postIngredientIsSuccess || deleteManyNationalCuisinesIsSuccess || putIngredientIsSuccess) {
+      refetchIngredients();
     }
-    const totalSelected = selectedItems?.includes(selectedId)
-      ? selectedItems.length - 1
-      : selectedItems && selectedItems.length + 1;
+  }, [refetchIngredients, postIngredientIsSuccess, deleteManyNationalCuisinesIsSuccess, putIngredientIsSuccess]);
 
-    if (
-      totalSelected === limit ||
-      totalSelected === ingredients?.items.length
-    ) {
-      setIsHeadCheckboxChecked(true);
-    }
-  }
-
-  const handleSelectAllItems = () => {
-    if(ingredients?.items.length && selectedItems.length !== ingredients?.items.length){
-      setSelectedItems([...ingredients?.items.map(el => el.id)])
-      setIsHeadCheckboxChecked(true)
-    }else {
-      setSelectedItems([])
-      setIsHeadCheckboxChecked(false)
-    }
-  }
-
-  const handleToggleModalVisibility = () =>
-    setIsModalVisible((prev) => !prev);
-
-  const {
-    postIngredient,
-    postIngredientIsError,
-    postIngredientIsLoading,
-    postIngredientIsSuccess,
-  } = usePostIngredient();
-
-  const handlePost = (data:IPostIngredientForm) => {
-    setIsModalVisible(true)
-    postIngredient(data)
-  }
+  const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => setTitle(event.target.value);
+  const onChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => setCurrentPage(newPage);
+  const onChangeLimit = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setLimit(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
 
   return {
     title,
-    ingredients,
-    onToggleModalVisibility: handleToggleModalVisibility,
-    isModalVisible,
-    handlePost,
+    currentPage,
+    onChangePage,
+    limit,
+    setLimit,
+    put: putIngredient,
+    putIsLoading: putIngredientIsLoading,
+    putIsError: putIngredientIsError,
+    putIsSuccess: putIngredientIsSuccess,
+    deleteOne: deleteIngredient,
+    deleteIsLoading: deleteIngredientIsLoading,
+    deleteIsError: deleteIngredientIsError,
+    deleteIsSuccess: deleteIngredientIsSuccess,
+    deleteMany: deleteManyNationalCuisines,
+    deleteManyIsLoading: deleteManyNationalCuisinesIsLoading,
+    deleteManyIsError: deleteManyNationalCuisinesIsError,
+    deleteManyIsSuccess: deleteManyNationalCuisinesIsSuccess,
+    items: ingredients,
+    itemsIsLoading: ingredientsIsLoading,
+    itemsIsError: ingredientsIsError,
+    itemsIsSuccess: ingredientsIsSuccess,
+    refetch: refetchIngredients,
+    post: postIngredient,
+    postIsLoading:  postIngredientIsLoading,
     postIsError: postIngredientIsError,
-    postIsLoading: postIngredientIsLoading,
     postIsSuccess: postIngredientIsSuccess,
-    onSelectItemId: handleSelectItemId,
-    onSelectAllItems:handleSelectAllItems,
-    isHeadcheckboxChecked,
-    selectedItems,
-  };
-};
+    onChangeTitle,
+    onChangeLimit,
+  }
+}

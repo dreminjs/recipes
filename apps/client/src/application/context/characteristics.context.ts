@@ -2,7 +2,7 @@ import { ChangeEvent, createContext, Dispatch, SetStateAction } from 'react';
 import {
   CharacteristicsPayload,
   ICharacteristicsTableCoordinats,
-} from '../interfaces/characteristic.interface';
+} from '../../shared/model/interfaces/characteristic.interface';
 
 export const CharacteristicsContext = createContext<{
   characteristics?: CharacteristicsPayload | null;

@@ -1,21 +1,13 @@
-import { TableCell, TextField, Checkbox } from '@mui/material';
+import { TableCell } from '@mui/material';
+import { FC, useEffect, useRef } from 'react';
 import {
-  useState,
-  useContext,
-  FC,
-  ChangeEvent,
-  useEffect,
-  use,
-  useRef,
-} from 'react';
-import {
-  CharacteristicsContext,
   ICharacteristicsTableCoordinats,
+  measuresArray,
   useCharacteristics,
 } from 'apps/client/src/shared';
 
 interface IProps {
-  type: 'checkbox' | 'text';
+  type: 'checkbox' | 'text' | 'options';
   payload: string | boolean;
   id: string;
   cellCoordinates: ICharacteristicsTableCoordinats;
@@ -25,6 +17,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
   cellCoordinates,
   payload,
   id,
+  type,
 }) => {
   const cellRef = useRef<HTMLTableCellElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,10 +26,9 @@ export const AdminCharacteristicCell: FC<IProps> = ({
     activeCell,
     onShowInputCell,
     onChangeCharactersticValue,
-    onSetCharactersticValue,
     onHideInputCell,
-    isPostCharacteristicModalVisible
-  } = useCharacteristics()
+    isPostCharacteristicModalVisible,
+  } = useCharacteristics();
 
   const isActiveCell =
     cellCoordinates &&
@@ -44,40 +36,51 @@ export const AdminCharacteristicCell: FC<IProps> = ({
     cellCoordinates.rowIdx === activeCell.rowIdx &&
     cellCoordinates.coloumnIdx === activeCell.coloumnIdx;
 
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if ( inputRef.current && !inputRef.current.contains(event.target as Node)) {
-          const clickedElement = event.target as HTMLElement;
-          if (clickedElement.id !== 'confirm-btn') {
-            onHideInputCell();
-          }
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        const clickedElement = event.target as HTMLElement;
+        if (clickedElement.id !== 'confirm-btn') {
+          onHideInputCell();
         }
-      };
-  
-      if (isActiveCell && !isPostCharacteristicModalVisible) {
-        document.addEventListener('mousedown', handleClickOutside);
       }
-  
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [isActiveCell, onHideInputCell,isPostCharacteristicModalVisible]);
+    };
+
+    if (isActiveCell && !isPostCharacteristicModalVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isActiveCell, onHideInputCell, isPostCharacteristicModalVisible]);
 
   return (
     <TableCell
       ref={cellRef}
       onClick={() => cellCoordinates && onShowInputCell({ ...cellCoordinates })}
-      align='left'
+      align="left"
     >
       {isActiveCell ? (
-        typeof payload === 'boolean' ? (
+        type === 'checkbox' ? (
           <input
             type="checkbox"
             onChange={onChangeCharactersticValue}
-            defaultChecked={payload}
+            defaultChecked={Boolean(payload)}
             id={id}
-            ref={inputRef}
+            ref={inputRef as React.RefObject<HTMLInputElement>}
           />
+        ) : type === 'options' ? (
+          <select defaultValue={String(payload)} autoFocus id={id}>
+            {measuresArray.map((option, index) => (
+              <option key={index} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         ) : (
           <input
             className="border-b-2 text-sm"
@@ -86,12 +89,19 @@ export const AdminCharacteristicCell: FC<IProps> = ({
             defaultValue={String(payload)}
             autoFocus
             id={id}
-            ref={inputRef}
+            ref={inputRef as React.RefObject<HTMLInputElement>}
           />
         )
       ) : (
         <>
-          {typeof payload === 'boolean' ? (payload ? 'yes' : 'no') : payload}
+          {type === 'checkbox'
+            ? payload
+              ? 'yes'
+              : 'no'
+            : type === 'options'
+            ? measuresArray.find((option) => option.value === payload)?.label ||
+              payload
+            : payload}
         </>
       )}
     </TableCell>

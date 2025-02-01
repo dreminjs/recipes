@@ -1,8 +1,14 @@
-import { IItemsPaginationResponse } from "interfaces";
-import { NationalCuisine, Holiday, Type } from "prisma/prisma-client";
-import { PostCharacteristicFormSchema  } from "../schemas/characteristic.schema";
+import { IItemsPaginationResponse } from 'interfaces';
+import {
+  NationalCuisine,
+  Holiday,
+  Type,
+  Ingredient,
+  Measure,
+} from 'prisma/prisma-client';
+import { PostCharacteristicFormSchema } from '../schemas/characteristic.schema';
 
-import { z } from "zod";
+import { z } from 'zod';
 
 export interface IGetCharacteristicsQueryParameters {
   title?: string;
@@ -10,12 +16,21 @@ export interface IGetCharacteristicsQueryParameters {
   limit: number;
 }
 
+export type IPostCharacteristicForm = z.infer<
+  typeof PostCharacteristicFormSchema
+>;
 
-export type IPostCharacteristicForm =  z.infer<typeof PostCharacteristicFormSchema>;
+export interface ICharacteristic {
+  createdAt: Date
+  title: string
+  id: string
+  isVisible: boolean
+  measure?: Measure
+} 
 
-export type CharacteristicsPayload = IItemsPaginationResponse<Type> | IItemsPaginationResponse<NationalCuisine> | IItemsPaginationResponse<Holiday> | undefined
+export type CharacteristicsPayload = IItemsPaginationResponse<ICharacteristic> | undefined;
 
 export type ICharacteristicsTableCoordinats = {
-  coloumnIdx: number 
-  rowIdx: number 
-} | null
+  coloumnIdx: number;
+  rowIdx: number;
+} | null;

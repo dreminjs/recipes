@@ -1,9 +1,12 @@
 import { ChangeEvent, FC, ReactNode, useState } from 'react';
 import {
-  CharacteristicsContext,
+  
   CharacteristicsPayload,
   ICharacteristicsTableCoordinats,
 } from 'apps/client/src/shared';
+
+import { CharacteristicsContext } from "../context/characteristics.context"
+import { Measure } from 'prisma/prisma-client';
 
 interface IProps {
   children: ReactNode;
@@ -30,6 +33,7 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
   const [newCharacteristicValue, setNewCharacteristicValue] = useState<{
     payload: string | boolean;
     id: string;
+    measure?: Measure
   } | null>(null);
 
   const handleTogglePostCharacteristicModalVisibility = () => {
@@ -40,11 +44,13 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
   const handleSetCharacteristicValue = ({
     payload,
     id,
+    measure, 
   }: {
     payload: string | boolean;
     id: string;
+    measure?: Measure; 
   }) => {
-    setNewCharacteristicValue({ payload, id });
+    setNewCharacteristicValue({ payload, id, measure });
   };
 
   const handleShowInput = (payload: ICharacteristicsTableCoordinats) => {

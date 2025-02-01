@@ -127,6 +127,7 @@ model Ingredient {
   @@map("ingredients")
   id               String             @id @default(uuid())
   title            String
+  isVisible        Boolean            @default(true) @map("is_visible")
   measure          Measure
   RecipeIngredient RecipeIngredient[]
   createdAt        DateTime           @default(now()) @map("created_at")

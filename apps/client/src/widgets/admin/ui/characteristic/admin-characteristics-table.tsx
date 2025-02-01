@@ -1,12 +1,10 @@
-import { FC} from 'react';
+import { FC } from 'react';
 import {
   AdminCharacteristicHeadTable,
   AdminCharacteristicToolBarTable,
   AdminCharacteristictsBodyTable,
 } from 'apps/client/src/features/admin';
-import {
-  useCharacteristics,
-} from 'apps/client/src/shared';
+import { useCharacteristics } from 'apps/client/src/shared';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { Paper, TableFooter, TableRow } from '@mui/material';
@@ -25,6 +23,7 @@ interface IProps {
   onChangeLimit: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  hasMeasure?: boolean;
 }
 
 export const AdminCharacteristicsTable: FC<IProps> = ({
@@ -35,13 +34,24 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   count,
   limit,
   currentPage,
+  hasMeasure,
 }) => {
-  const { selectedCharacteristics, onUnSelectedCharaceteristics } =
-    useCharacteristics();
-
+  const {
+    selectedCharacteristics,
+    onUnSelectedCharaceteristics,
+    activeCell,
+    onTogglePostCharacteristicModalVisibility,
+    isHeadCheckboxChecked,
+    onToggleAllCharacteristics,
+  } = useCharacteristics();
   return (
     <Paper>
       <AdminCharacteristicToolBarTable
+        selectedCharacteristics={selectedCharacteristics}
+        onTogglePostCharacteristicModalVisibility={
+          onTogglePostCharacteristicModalVisibility
+        }
+        activeCell={activeCell}
         onDeleteMany={() => {
           onDeleteMany();
           onUnSelectedCharaceteristics();
@@ -53,7 +63,11 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
       />
       <TableContainer sx={{ height: 440, width: 900 }}>
         <Table stickyHeader>
-          <AdminCharacteristicHeadTable />
+          <AdminCharacteristicHeadTable
+            isHeadCheckboxChecked={isHeadCheckboxChecked}
+            hasMeasure={hasMeasure}
+            onToggleAllCharacteristics={onToggleAllCharacteristics}
+          />
           <AdminCharacteristictsBodyTable />
         </Table>
       </TableContainer>

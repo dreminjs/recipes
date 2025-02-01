@@ -3,7 +3,7 @@ import { QUERY_KEYS } from '../../model/constants';
 import { typeService } from '../services/type.service';
 import { Prisma } from 'prisma/prisma-client';
 import { useContext } from 'react';
-import { CharacteristicsContext } from '../../model/context/characteristics.context';
+import { CharacteristicsContext } from '../../../application/context/characteristics.context';
 import { useCharacteristics } from '../../model/hooks/use-characteristics';
 
 export const useGetTypes = ({
