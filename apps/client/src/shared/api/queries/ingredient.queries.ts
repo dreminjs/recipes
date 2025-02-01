@@ -113,7 +113,7 @@ export const usePutIngredient = () => {
       data,
       id,
     }: {
-      data: Partial<IPostIngredientForm>;
+      data: Prisma.IngredientUpdateInput;
       id: string;
     }) => ingredientService.updateOne({ id }, data),
     mutationKey: [queryKey],

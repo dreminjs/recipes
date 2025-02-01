@@ -32,7 +32,7 @@ export const ingredientService = {
 
   async updateOne(
     where: Prisma.IngredientWhereUniqueInput,
-    data: Partial<IPostIngredientForm>
+    data: Prisma.IngredientUpdateInput
   ): Promise<Ingredient> {
     return this.axios.put(`${this.root}/${where.id}`, data);
   },
