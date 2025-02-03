@@ -18,10 +18,12 @@ export const AdminIngredientPage = () => {
     selectedCharacteristics,
     onTogglePostCharacteristicModalVisibility,
     isPostCharacteristicModalVisible,
+    limit,
+    onChangeLimit
   } = useCharacteristics();
 
   const ingredientsProps = useIngredients({
-    initialLimit: 5,
+    limit,
     initialPage: 0,
     initialTitle: '',
   });
@@ -75,13 +77,13 @@ export const AdminIngredientPage = () => {
           onChange={ingredientsProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
-          hasMeasure
+          addiotionalColoumns={["measure"]}
           onPut={handlePutIngredient}
           onDeleteMany={handleDeleteIngredients}
-          limit={ingredientsProps.limit}
+          limit={limit}
           currentPage={ingredientsProps.currentPage}
           onChangePage={ingredientsProps.onChangePage}
-          onChangeLimit={ingredientsProps.onChangeLimit}
+          onChangeLimit={onChangeLimit}
           count={ingredientsProps.items?.countItems}
         />
       </CharactersticsLayout>

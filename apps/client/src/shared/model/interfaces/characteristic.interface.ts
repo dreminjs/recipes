@@ -1,9 +1,5 @@
 import { IItemsPaginationResponse } from 'interfaces';
 import {
-  NationalCuisine,
-  Holiday,
-  Type,
-  Ingredient,
   Measure,
 } from 'prisma/prisma-client';
 import { PostCharacteristicFormSchema } from '../schemas/characteristic.schema';
@@ -28,9 +24,10 @@ export interface ICharacteristic {
   measure?: Measure
 } 
 
-export type CharacteristicsPayload = IItemsPaginationResponse<ICharacteristic> | undefined;
+export type CharacteristicsPayload = IItemsPaginationResponse<ICharacteristic>
 
 export type ICharacteristicsTableCoordinats = {
   coloumnIdx: number;
   rowIdx: number;
 } | null;
+

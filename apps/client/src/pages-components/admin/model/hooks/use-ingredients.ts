@@ -12,16 +12,15 @@ import { useDebounce } from 'use-debounce';
 export const useIngredients = ({
   initialTitle,
   initialPage,
-  initialLimit,
+  limit,
 }: {
   initialTitle: string;
   initialPage: number;
-  initialLimit: number;
+  limit: number;
 }) => {
   const [title, setTitle] = useState(initialTitle);
   const [value] = useDebounce(title, 500);
   const [currentPage, setCurrentPage] = useState(initialPage);
-  const [limit, setLimit] = useState(initialLimit);
 
   const {
     putIngredient,
@@ -29,12 +28,7 @@ export const useIngredients = ({
     putIngredientIsLoading,
     putIngredientIsSuccess,
   } = usePutIngredient();
-  const {
-    deleteManyNationalCuisines,
-    deleteManyNationalCuisinesIsError,
-    deleteManyNationalCuisinesIsLoading,
-    deleteManyNationalCuisinesIsSuccess,
-  } = useDeleteManyNationalCuisine();
+
   const {
     ingredients,
     ingredientsIsError,
@@ -57,8 +51,7 @@ export const useIngredients = ({
 
   useEffect(() => {
     if (
-      postIngredientIsSuccess ||
-      deleteManyNationalCuisinesIsSuccess ||
+      postIngredientIsSuccess || deleteManyIngredientsIsSuccess ||
       putIngredientIsSuccess
     ) {
       refetchIngredients();
@@ -66,8 +59,8 @@ export const useIngredients = ({
   }, [
     refetchIngredients,
     postIngredientIsSuccess,
-    deleteManyNationalCuisinesIsSuccess,
     putIngredientIsSuccess,
+    deleteManyIngredientsIsSuccess
   ]);
 
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
@@ -76,19 +69,11 @@ export const useIngredients = ({
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => setCurrentPage(newPage);
-  const onChangeLimit = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setLimit(parseInt(event.target.value, 10));
-    setCurrentPage(0);
-  };
 
   return {
     title,
     currentPage,
     onChangePage,
-    limit,
-    setLimit,
     put: putIngredient,
     putIsLoading: putIngredientIsLoading,
     putIsError: putIngredientIsError,
@@ -107,6 +92,5 @@ export const useIngredients = ({
     postIsError: postIngredientIsError,
     postIsSuccess: postIngredientIsSuccess,
     onChangeTitle,
-    onChangeLimit,
   };
 };

@@ -3,20 +3,22 @@ import { useCharacteristics } from 'apps/client/src/shared';
 import { FC } from 'react';
 
 interface IProps {
-  hasMeasure?: boolean;
   isHeadCheckboxChecked: boolean;
   onToggleAllCharacteristics: () => void;
+  addiotionalColoumns?: string[];
 }
 
 export const AdminCharacteristicHeadTable: FC<IProps> = ({
-  hasMeasure,
   isHeadCheckboxChecked,
   onToggleAllCharacteristics,
+  addiotionalColoumns,
 }) => {
-  const headers = ['id', 'title', 'is visible'];
-  if (hasMeasure) {
-    headers.push('measure');
-  }
+  const headers = [
+    'id',
+    'title',
+    'is visible',
+    ...(addiotionalColoumns ? addiotionalColoumns : []),
+  ];
 
   return (
     <TableHead>

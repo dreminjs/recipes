@@ -19,6 +19,7 @@ export const AdminHolidaysPage: FC = () => {
     newCharacteristicValue,
     selectedCharacteristics,
     onTogglePostCharacteristicModalVisibility,
+    onChangeLimit
   } = useCharacteristics();
 
   const holidaysProps = useHolidays({
@@ -67,8 +68,8 @@ export const AdminHolidaysPage: FC = () => {
           count={holidaysProps.items?.countItems}
           limit={holidaysProps.limit}
           currentPage={holidaysProps.currentPage}
-          onChangeLimit={holidaysProps.onChangeTitle}
-          hasMeasure={false}
+          onChangeLimit={onChangeLimit}
+      
         />
       </CharactersticsLayout>
       <MessageModal

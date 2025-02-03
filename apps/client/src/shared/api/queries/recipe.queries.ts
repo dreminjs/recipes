@@ -3,7 +3,10 @@ import { QUERY_KEYS } from '../../model/constants';
 import { recipeService } from '../services/recipe.service';
 import { IGetRecipesQueryParameters } from '../../model/interfaces/recipe.interface';
 
-export const useGetRecipes = (queryParams: IGetRecipesQueryParameters) => {
+export const useGetRecipes = (
+  queryParams: IGetRecipesQueryParameters,
+  { enabled }: { enabled?: boolean } = {}
+) => {
   const {
     data: recipes,
     hasNextPage,
@@ -16,6 +19,7 @@ export const useGetRecipes = (queryParams: IGetRecipesQueryParameters) => {
     queryFn: async ({ pageParam }) =>
       recipeService.findMany({ take: 10, cursor: pageParam, ...queryParams }),
     getNextPageParam: (lastPage, allPages) => lastPage.nextCursor,
+    enabled: enabled !== undefined && enabled
   });
 
   return {

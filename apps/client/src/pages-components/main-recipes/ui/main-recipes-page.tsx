@@ -1,12 +1,18 @@
 import { RecipeSelection } from '../../../features/recipe';
+import { Characteristics } from 'interfaces';
+
+const characteristics: [
+    Characteristics,
+    Characteristics,
+    Characteristics
+] = ["type","national-cuisine","holiday"];
 
 export const MainRecipesPage = () => {
   return (
     <div>
-      {[1, 2, 3].map((el) => (
-        <RecipeSelection key={el} idx={el} />
+      {characteristics.map((type, idx) => (
+        <RecipeSelection idx={idx} key={idx} type={type} />
       ))}
     </div>
   );
 };
-    

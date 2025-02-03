@@ -18,6 +18,7 @@ export const AdminNationalCuisinesPage: FC = () => {
     newCharacteristicValue,
     selectedCharacteristics,
     onTogglePostCharacteristicModalVisibility,
+    onChangeLimit
   } = useCharacteristics();
 
   const nationalCuisinesProps = useNationalCuisines({
@@ -70,7 +71,7 @@ export const AdminNationalCuisinesPage: FC = () => {
           count={nationalCuisinesProps.items?.countItems}
           limit={nationalCuisinesProps.limit}
           currentPage={nationalCuisinesProps.currentPage}
-          onChangeLimit={nationalCuisinesProps.onChangeLimit}
+          onChangeLimit={onChangeLimit}
         />
       </CharactersticsLayout>
       <MessageModal

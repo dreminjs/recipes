@@ -23,7 +23,7 @@ interface IProps {
   onChangeLimit: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  hasMeasure?: boolean;
+  addiotionalColoumns?: string[]
 }
 
 export const AdminCharacteristicsTable: FC<IProps> = ({
@@ -34,7 +34,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   count,
   limit,
   currentPage,
-  hasMeasure,
+  addiotionalColoumns,
 }) => {
   const {
     selectedCharacteristics,
@@ -65,7 +65,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
         <Table stickyHeader>
           <AdminCharacteristicHeadTable
             isHeadCheckboxChecked={isHeadCheckboxChecked}
-            hasMeasure={hasMeasure}
+            addiotionalColoumns={addiotionalColoumns}
             onToggleAllCharacteristics={onToggleAllCharacteristics}
           />
           <AdminCharacteristictsBodyTable />

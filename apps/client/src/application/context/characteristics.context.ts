@@ -4,6 +4,7 @@ import {
   ICharacteristicsTableCoordinats,
 } from '../../shared/model/interfaces/characteristic.interface';
 
+
 export const CharacteristicsContext = createContext<{
   characteristics?: CharacteristicsPayload | null;
   onSetCharacterstics: Dispatch<SetStateAction<CharacteristicsPayload | null>>;
@@ -17,7 +18,9 @@ export const CharacteristicsContext = createContext<{
     id: string;
     payload: boolean | string;
   } | null;
-  onChangeCharactersticValue: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void;
+  onChangeCharactersticValue: (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+  ) => void;
   onSetCharactersticValue: ({
     payload,
     id,
@@ -27,8 +30,10 @@ export const CharacteristicsContext = createContext<{
   }) => void;
   onHideInputCell: () => void;
   onUnSelectedCharaceteristics: () => void;
-  onTogglePostCharacteristicModalVisibility: () => void
-  isPostCharacteristicModalVisible: boolean
+  onTogglePostCharacteristicModalVisibility: () => void;
+  isPostCharacteristicModalVisible: boolean;
+  onChangeLimit: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  limit: number;
 }>({
   characteristics: { items: [], countItems: 0, currentPage: 0 },
   onSetCharacterstics(payload) {},
@@ -43,6 +48,8 @@ export const CharacteristicsContext = createContext<{
   onSetCharactersticValue: (payload) => {},
   onHideInputCell() {},
   onUnSelectedCharaceteristics() {},
-  onTogglePostCharacteristicModalVisibility:() => {},
-  isPostCharacteristicModalVisible: false
+  onTogglePostCharacteristicModalVisibility: () => {},
+  isPostCharacteristicModalVisible: false,
+  onChangeLimit(payload) {},
+  limit: 5
 });

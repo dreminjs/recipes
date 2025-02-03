@@ -1,6 +1,7 @@
 import { ICharacteristic } from 'interfaces';
 import { QUERY_KEYS, SERVICE_KEYS } from '../../model/constants';
 import { instance } from '../api.instance';
+import { CharacteristicType } from '../../model/interfaces/characteristic.interface';
 
 
 export const characteristicService = {
@@ -8,8 +9,8 @@ export const characteristicService = {
 
   axios: instance,
 
-  async findRandom(): Promise<ICharacteristic> {
-    // const urlSearchParams = new URLSearchParams();
+  async findRandom({type}:{type: CharacteristicType}): Promise<ICharacteristic> {
+    const urlSearchParams = new URLSearchParams();
     // if (dto.limit) urlSearchParams.append('limit', dto.limit.toString());
     // if (dto.cursor) urlSearchParams.append('cursor', dto.cursor.toString());
     // if (dto.isType) urlSearchParams.append('isType', dto.isType.toString());
@@ -21,6 +22,8 @@ export const characteristicService = {
     // if (dto.isHoliday)
     //   urlSearchParams.append('isHoliday', dto.isHoliday.toString());
 
-    return (await this.axios.get(`${this.root}/${SERVICE_KEYS.random}`)).data
+    if(type) urlSearchParams.append("type",type)
+
+    return (await this.axios.get(`${this.root}/${SERVICE_KEYS.random}?${urlSearchParams.toString()}`)).data
   },
 };

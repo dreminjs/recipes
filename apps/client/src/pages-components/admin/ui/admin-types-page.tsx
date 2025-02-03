@@ -16,6 +16,7 @@ export const AdminTypesPage: FC = () => {
     newCharacteristicValue,
     selectedCharacteristics,
     onTogglePostCharacteristicModalVisibility,
+    onChangeLimit
   } = useCharacteristics();
 
   const typesProps = useTypes({
@@ -65,7 +66,7 @@ export const AdminTypesPage: FC = () => {
           count={typesProps.items?.countItems}
           limit={typesProps.limit}
           currentPage={typesProps.currentPage}
-          onChangeLimit={typesProps.onChangeLimit}
+          onChangeLimit={onChangeLimit}
         />
       </CharactersticsLayout>
       <MessageModal

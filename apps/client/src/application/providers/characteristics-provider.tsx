@@ -16,8 +16,10 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
   const [characteristics, setCharacteristics] =
     useState<CharacteristicsPayload | null>(null);
 
+  const [limit,setLimit] = useState(5)
+
   const [selectedCharacteristics, setSelectedCharacteristics] = useState<
-    string[] | undefined
+    string[]
   >([]);
 
   const [isHeadCheckboxChecked, setIsHeadCheckboxChecked] = useState(false);
@@ -35,6 +37,10 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
     id: string;
     measure?: Measure
   } | null>(null);
+
+  const handleChangeLimit = (event:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setLimit(+event.target.value)
+  } 
 
   const handleTogglePostCharacteristicModalVisibility = () => {
 
@@ -65,7 +71,7 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
     if (selectedCharacteristics?.length === characteristics?.items.length) {
       setSelectedCharacteristics([]);
       setIsHeadCheckboxChecked(false);
-    } else {
+    } else if(characteristics && selectedCharacteristics?.length !== characteristics?.items.length ) {
       setSelectedCharacteristics(characteristics?.items.map((el) => el.id));
       setIsHeadCheckboxChecked(true);
     }
@@ -87,7 +93,7 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
       : selectedCharacteristics && selectedCharacteristics.length + 1;
 
     if (
-      totalSelected === 5 ||
+      totalSelected === limit ||
       totalSelected === characteristics?.items.length
     ) {
       setIsHeadCheckboxChecked(true);
@@ -95,10 +101,10 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
   };
 
   const onChangeCharacteristicValue = (
-    event: ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
   ) => {
-    const { type, value, checked, id } = event.target;
-    const newValue = type === 'checkbox' ? checked : value;
+    const { type, value, id } = event.target;
+    const newValue = type === 'checkbox' ? event.target.checked : value;
     setNewCharacteristicValue({ payload: newValue, id });
   };
 
@@ -126,6 +132,8 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
         onTogglePostCharacteristicModalVisibility:
           handleTogglePostCharacteristicModalVisibility,
         isPostCharacteristicModalVisible,
+        onChangeLimit: handleChangeLimit,
+        limit
       }}
     >
       {children}

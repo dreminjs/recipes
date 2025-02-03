@@ -4,52 +4,57 @@ import { ICharacteristic } from 'interfaces';
 
 interface IProps {
   idx: number;
+  type: 'national-cuisine' | 'type' | 'holiday';
 }
 
-export const RecipeSelection: FC<IProps> = ({ idx }) => {
+export const RecipeSelection: FC<IProps> = ({ idx, type }) => {
   const obj = {
     type: 'тип рецептов',
     holiday: 'праздник рецептов:',
     'national-cuisine': 'национальная кухня рецептов: ',
   };
 
-  const { characteristic } = useGetRandomCharacteristic({ idx });
+  const { characteristic } = useGetRandomCharacteristic({ idx, type });
 
-  const { recipes } = useGetRecipes({
-    ...(characteristic &&
-      characteristic.type === 'type' && { typeId: characteristic.id }),
-    ...(characteristic &&
-      characteristic.type === 'national-cuisine' && {
-        nationalCuisineId: characteristic.id,
-      }),
-    ...(characteristic &&
-      characteristic.type === 'holiday' && { holidayId: characteristic.id }),
-  });
+  const { recipes } = useGetRecipes(
+    {
+      ...(characteristic && type === 'type' && { typeId: characteristic.id }),
+      ...(characteristic &&
+        type === 'national-cuisine' && {
+          nationalCuisineId: characteristic.id,
+        }),
+      ...(characteristic &&
+        type === 'holiday' && { holidayId: characteristic.id }),
+    },
+    { enabled: characteristic !== undefined }
+  );
 
-  const [characteristicState, setCharateristicState] = useState<
-    Omit<ICharacteristic, 'id' | 'isVisible'>
-  >({
-    title: '',
-    type: 'type',
-  });
+  // const [characteristicState, setCharateristicState] = useState<
+  //   Omit<ICharacteristic, 'id' | 'isVisible'>
+  // >({
+  //   title: '',
+  //   type: 'type',
+  // });
 
   useEffect(() => {
-    if (characteristic) {
-      setCharateristicState({
-        title: characteristic.title,
-        type: characteristic.type || "",
-      });
-    }
+    console.log(characteristic);
   }, [characteristic]);
+
+  // useEffect(() => {
+  //   if (characteristic) {
+  //     setCharateristicState({
+  //       title: characteristic.title,
+  //       type: characteristic.type || "",
+  //     });
+  //   }
+  // }, [characteristic]);
 
   /// ДЕЛАТЬ ОБЫЧНЫЙ ЗАПРОС НО НА ЭНДПОИНТ КОТОРЫЙ БУДЕТ ОТДАВАТЬ ТОЛЬКО ОДИН ТИП ИЛИ ПРАЗДНИК И ТД и БРАТЬ ПЕРВЫЙ ЭЛЕМЕНТ ИЗ МАССИВА И БРАТЬ ОТТУДА Т
 
   return (
-    <div className="border-2 mx-auto w-[90%] px-5 py-2 rounded-lg mb-2">
-      <h1>
-        {obj[characteristicState.type]} {characteristic?.title}
-      </h1>
+    <section className="border-2 mx-auto w-[90%] px-5 py-2 rounded-lg mb-2">
+      <h1>{characteristic?.title}</h1>
       <ul></ul>
-    </div>
+    </section>
   );
 };

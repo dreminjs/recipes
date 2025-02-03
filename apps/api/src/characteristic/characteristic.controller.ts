@@ -1,8 +1,9 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger, NotFoundException, Query } from '@nestjs/common';
 import { TypeService } from '../type/type.service';
 import { NationalCuisineService } from '../national-cuisine/national-cuisine.service';
 import { HolidayService } from '../holiday/holiday.service';
-import { ICharacteristic } from 'interfaces';
+import { Characteristics, ICharacteristic } from 'interfaces';
+import { GetCharacteristicsQueryParameters } from './dto/get-characteristics-query-parameters';
 
 @Controller('characteristic')
 export class CharacteristicController {
@@ -11,27 +12,17 @@ export class CharacteristicController {
     private readonly nationalCuisineService: NationalCuisineService,
     private readonly typeService: TypeService
   ) {}
-  @Get('random')
-  async findRandom(): Promise<ICharacteristic> {
-    const characteristicIdx = Math.floor(Math.random() * 3);
-    if (characteristicIdx === 0) {
-      const res = await this.holidayService.findOne({
-        select: { id: true, title: true },
-      });
-      return { isVisible: undefined, ...res, type:"holiday" };
-    }
-    if (characteristicIdx === 1) {
-      const res = await this.nationalCuisineService.findOne({
-        select: { id: true, title: true },
-      });
-      return { isVisible: undefined, ...res, type:"national-cuisine" };
-    }
-    if (characteristicIdx === 2) {
-      const res = await this.typeService.findOne({
-        select: { id: true, title: true },
-      });
-      return { isVisible: undefined, ...res, type:"type" };
-    }
 
+  @Get('random')
+  public async findRandom(@Query('type') type: Characteristics) {
+    if (type === 'type') {
+      return await this.typeService.findOne();
+    } else if (type === 'holiday') {
+      return await this.holidayService.findOne();
+    } else if (type === 'national-cuisine') {
+      return await this.nationalCuisineService.findOne();
+    }else {
+      throw new NotFoundException("404")
+    }
   }
 }
