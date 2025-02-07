@@ -11,10 +11,10 @@ export const UserInfo = () => {
 
   return (
     <div>
-      <h3 className="text-5xl">Ваша информация</h3>
+      <h3 className="text-2xl">Ваша информация</h3>
       <div>
-        <p className='text-[45px]'>Ваш nickname: {userInfo?.nickname}</p>
-        <p className='text-[45px]'>Ваш email: {userInfo?.email}</p>
+        <p className='text-[25px]'>Ваш nickname: {userInfo?.nickname}</p>
+        <p className='text-[25px]'>Ваш email: {userInfo?.email}</p>
       </div>
     </div>
   );

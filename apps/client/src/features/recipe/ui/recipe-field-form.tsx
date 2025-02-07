@@ -8,7 +8,7 @@ interface IProps {
 
 export const RecipeFieldForm: FC<IProps> = ({ register }) => {
   return (
-    <div>
+    <label>
       <input
         {...register('title')}
         placeholder='заголовок'
@@ -16,6 +16,6 @@ export const RecipeFieldForm: FC<IProps> = ({ register }) => {
         type="text"
       />
       {}
-    </div>
+    </label>
   );
 };

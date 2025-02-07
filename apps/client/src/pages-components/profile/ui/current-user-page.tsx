@@ -7,7 +7,6 @@ export const CurrentUserPage = () => {
     <>
     <div>
       <UserInfo />
-  
       <CurrentUserOwnRecipes />
     </div>
     </>

@@ -28,7 +28,7 @@ export const AdminPostCharacteristic: FC<IProps> = ({ label, onPost }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-5 mb-5">
-      <div>
+      <label>
         <input
           {...register('title')}
           type="text"
@@ -36,7 +36,7 @@ export const AdminPostCharacteristic: FC<IProps> = ({ label, onPost }) => {
           placeholder={label}
         />
         {errors.title && <p>{errors.title.message?.toString()}</p>}
-      </div>
+      </label>
       <button type="submit" className=" text-[25px] border-2 rounded-xl">
         Post {label}
       </button>
