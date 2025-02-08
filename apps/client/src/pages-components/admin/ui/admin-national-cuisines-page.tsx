@@ -65,10 +65,10 @@ export const AdminNationalCuisinesPage: FC = () => {
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteNationalCuisines}
           onPut={handlePutNationalCuisine}
-          onChangePage={(e, newPage) =>
-            nationalCuisinesProps.onChangePage(e, newPage)
+          onChangePage={(_, newPage) =>
+            nationalCuisinesProps.onChangePage(newPage)
           }
-          count={nationalCuisinesProps.items?.countItems}
+          count={nationalCuisinesProps.items?.countItems || 0}
           limit={nationalCuisinesProps.limit}
           currentPage={nationalCuisinesProps.currentPage}
           onChangeLimit={onChangeLimit}

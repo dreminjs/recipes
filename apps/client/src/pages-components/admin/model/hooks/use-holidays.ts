@@ -33,7 +33,7 @@ export const useHolidays = ({
   }, [refetchHolidays, postHolidayIsSuccess, deleteManyHolidayIsSuccess, putHolidayIsSuccess]);
 
   const handleChangeTitle = (event: ChangeEvent<HTMLInputElement  | HTMLTextAreaElement> ) => setTitle(event.target.value);
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => setCurrentPage(newPage);
+  const handleChangePage = (newPage: number) => setCurrentPage(newPage);
   const handleChangeLimit = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setLimit(parseInt(event.target.value, 10));
     setCurrentPage(0);

@@ -13,7 +13,7 @@ import { Roles, Type } from 'prisma/prisma-client';
 import { TypeService } from './type.service';
 import { CreateTypeDto } from './dto/create-type.dto';
 import { UpdateHolidayDto } from '../holiday/dto/update-holiday.dto';
-import { GetCharacteristicsQueryParameters } from '../shared';
+import { GetCharacteristicsQueryParameters, } from '../shared';
 import { IInfiniteScrollResponse, IItemsPaginationResponse } from 'interfaces';
 import { AllowedRoles } from '../user/decorators/roles.decorator';
 import { RolesGuard } from '../user/guards/roles.guard';

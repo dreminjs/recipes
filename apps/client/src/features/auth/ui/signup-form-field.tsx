@@ -15,10 +15,15 @@ interface IProps {
     | undefined;
   register: UseFormRegister<ISignUp>;
   type: 'email' | 'nickname' | 'password';
-  className?: string
+  className?: string;
 }
 
-export const SignupFormField: FC<IProps> = ({ register, error, type, className }) => {
+export const SignupFormField: FC<IProps> = ({
+  register,
+  error,
+  type,
+  className,
+}) => {
   const placeholder = {
     email: 'Email',
     nickname: 'Nickname',
@@ -27,12 +32,14 @@ export const SignupFormField: FC<IProps> = ({ register, error, type, className }
 
   return (
     <label className={`pb-2 mb-3 4 ${className} relative`}>
-    <input
-      placeholder={placeholder[type]}
-      {...register(type)}
-      className="text-[24px] bg-transparent placeholder:text-white text-white outline-none border-b-2 w-full"
-    />
-    {error && <p className='text-[24px] text-white underline'>{error.toString()}</p>}
-  </label>
+      <input
+        placeholder={placeholder[type]}
+        {...register(type)}
+        className="text-[24px] bg-transparent placeholder:text-white text-white outline-none border-b-2 w-full"
+      />
+      {error && (
+        <p className="text-[24px] text-white underline">{error.toString()}</p>
+      )}
+    </label>
   );
 };

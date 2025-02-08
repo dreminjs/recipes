@@ -74,7 +74,12 @@ export const AdminCharacteristicCell: FC<IProps> = ({
             ref={inputRef as React.RefObject<HTMLInputElement>}
           />
         ) : type === 'options' ? (
-          <select onChange={onChangeCharactersticValue} defaultValue={String(payload)} autoFocus id={id}>
+          <select
+            onChange={onChangeCharactersticValue}
+            defaultValue={String(payload)}
+            autoFocus
+            id={id}
+          >
             {measuresArray.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
@@ -94,14 +99,17 @@ export const AdminCharacteristicCell: FC<IProps> = ({
         )
       ) : (
         <>
-          {type === 'checkbox'
-            ? payload
-              ? 'yes'
-              : 'no'
-            : type === 'options'
-            ? measuresArray.find((option) => option.value === payload)?.label ||
-              payload
-            : payload}
+          {(() => {
+            if (type === 'checkbox') {
+              return Boolean(payload) ? 'yes' : 'no';
+            } else if (type === 'options') {
+              return (
+                measuresArray.find((option) => option.value === payload)
+                  ?.label || payload
+              );
+            }
+            return payload;
+          })()}
         </>
       )}
     </TableCell>

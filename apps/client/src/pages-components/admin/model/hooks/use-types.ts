@@ -43,21 +43,28 @@ export const useTypes = ({
   const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
     usePostType();
 
+
+
+  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
+    setTitle(event.target.value);
+
+  const handleChangePage = (newPage: number) => {
+    if (newPage >= 0 && newPage < Math.ceil((types?.countItems || 0) / limit)) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  useEffect(() => {
+    if (typesIsSuccess && types?.countItems === 0 && currentPage > 0) {
+      setCurrentPage(0);
+    }
+  }, [types, typesIsSuccess, currentPage]);
+
   useEffect(() => {
     if (postTypeIsSuccess || deleteTypesIsSuccess || putTypeIsSuccess) {
       refetchTypes();
     }
   }, [refetchTypes, postTypeIsSuccess, deleteTypesIsSuccess, putTypeIsSuccess]);
-
-  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
-    setTitle(event.target.value);
-
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setCurrentPage(newPage);
-  };
 
   const handleChangeLimit = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -67,7 +74,7 @@ export const useTypes = ({
   };
   return {
     title,
-    currentPage,
+    currentPage: Math.min(currentPage, Math.max(0, Math.ceil((types?.countItems || 0) / limit) - 1)),
     onChangePage: handleChangePage,
     limit,
     setLimit,

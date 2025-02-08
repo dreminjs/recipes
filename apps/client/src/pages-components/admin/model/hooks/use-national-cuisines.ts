@@ -35,7 +35,7 @@ export const useNationalCuisines = ({
   }, [refetchNationalCuisines, postNationalCuisineIsSuccess, deleteManyNationalCuisinesIsSuccess, putNationalCuisineIsSuccess]);
 
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => setTitle(event.target.value);
-  const onChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => setCurrentPage(newPage);
+  const onChangePage = (newPage: number) => setCurrentPage(newPage);
   const onChangeLimit = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setLimit(parseInt(event.target.value, 10));
     setCurrentPage(0);

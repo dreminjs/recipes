@@ -4,13 +4,20 @@ import {
   useCharacteristics,
 } from 'apps/client/src/shared';
 import {
-  AdminCharacteristicsTable,
+
   AdminPostCharaceteristicModal,
 } from 'apps/client/src/widgets/admin';
 import { MessageModal } from 'apps/client/src/features/message';
 import { FC } from 'react';
 import { useTypes } from '../model/hooks/use-types';
 import { CharactersticsLayout } from 'apps/client/src/application';
+import dynamic from 'next/dynamic';
+
+const AdminCharacteristicsTable = dynamic(
+  () => import('apps/client/src/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
+  { ssr: false }
+);
+
 export const AdminTypesPage: FC = () => {
   const {
     newCharacteristicValue,
@@ -25,6 +32,7 @@ export const AdminTypesPage: FC = () => {
     initialTitle: '',
   });
 
+  
   const handlePutType = () => {
     if (newCharacteristicValue) {
       if (typeof newCharacteristicValue.payload === 'boolean') {
@@ -62,8 +70,10 @@ export const AdminTypesPage: FC = () => {
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteTypes}
           onPut={handlePutType}
-          onChangePage={(e, newPage) => typesProps.onChangePage(e, newPage)}
-          count={typesProps.items?.countItems}
+          onChangePage={(_, newPage) => {
+            typesProps.onChangePage(newPage)
+          }}
+          count={typesProps.items?.countItems ? typesProps.items?.countItems: 1}
           limit={typesProps.limit}
           currentPage={typesProps.currentPage}
           onChangeLimit={onChangeLimit}

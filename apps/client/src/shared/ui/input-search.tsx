@@ -12,6 +12,7 @@ export const InputSearch: FC<IProps> = ({ value, onChange }) => {
       onChange={onChange}
       type="text"
       placeholder="Search..."
+      id="search-input"
     />
   );
 };

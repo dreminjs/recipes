@@ -84,7 +84,7 @@ export const AdminIngredientPage = () => {
           currentPage={ingredientsProps.currentPage}
           onChangePage={ingredientsProps.onChangePage}
           onChangeLimit={onChangeLimit}
-          count={ingredientsProps.items?.countItems}
+          count={ingredientsProps.items?.countItems || 0}
         />
       </CharactersticsLayout>
       <AdminPostIngredientModal

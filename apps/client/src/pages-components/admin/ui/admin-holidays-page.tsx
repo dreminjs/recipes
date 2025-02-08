@@ -64,8 +64,8 @@ export const AdminHolidaysPage: FC = () => {
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteHolidays}
           onPut={handlePutType}
-          onChangePage={(e, newPage) => holidaysProps.onChangePage(e, newPage)}
-          count={holidaysProps.items?.countItems}
+          onChangePage={(_, newPage) => holidaysProps.onChangePage(newPage)}
+          count={holidaysProps.items?.countItems || 0}
           limit={holidaysProps.limit}
           currentPage={holidaysProps.currentPage}
           onChangeLimit={onChangeLimit}

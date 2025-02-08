@@ -3,17 +3,19 @@ import {
   AdminCharacteristicHeadTable,
   AdminCharacteristicToolBarTable,
   AdminCharacteristictsBodyTable,
+  // AdminCharacteristictsBodyTable,
 } from 'apps/client/src/features/admin';
 import { useCharacteristics } from 'apps/client/src/shared';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { Paper, TableFooter, TableRow } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
+import dynamic from 'next/dynamic';
 
 interface IProps {
   onPut: () => void;
   onDeleteMany: () => void;
-  count?: number | null;
+  count: number
   limit: number;
   currentPage: number;
   onChangePage: (
@@ -25,6 +27,7 @@ interface IProps {
   ) => void;
   addiotionalColoumns?: string[];
 }
+
 
 export const AdminCharacteristicsTable: FC<IProps> = ({
   onPut,
@@ -74,13 +77,14 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
         </Table>
       </TableContainer>
       <TablePagination
-        count={count || 0}
+        page={currentPage}
+        count={count}
         rowsPerPage={limit}
         component={'div'}
-        page={currentPage}
         onPageChange={onChangePage}
         onRowsPerPageChange={onChangeLimit}
         rowsPerPageOptions={[5, 10, 15, 25]}
+        id='table-pagination'
       />
     </Paper>
   );

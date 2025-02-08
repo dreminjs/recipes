@@ -1,5 +1,4 @@
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
-import { useCharacteristics } from 'apps/client/src/shared';
 import { FC } from 'react';
 
 interface IProps {
@@ -31,6 +30,7 @@ export const AdminCharacteristicHeadTable: FC<IProps> = ({
             inputProps={{
               'aria-label': 'select all desserts',
             }}
+            id="head-checkbox"
           />
         </TableCell>
         {headers.map((item) => (
