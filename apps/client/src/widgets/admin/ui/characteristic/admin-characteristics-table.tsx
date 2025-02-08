@@ -23,7 +23,7 @@ interface IProps {
   onChangeLimit: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  addiotionalColoumns?: string[]
+  addiotionalColoumns?: string[];
 }
 
 export const AdminCharacteristicsTable: FC<IProps> = ({
@@ -43,10 +43,12 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
     isHeadCheckboxChecked,
     onToggleAllCharacteristics,
     newCharacteristicValue,
+    onSetCharactersticValue,
   } = useCharacteristics();
   return (
     <Paper>
       <AdminCharacteristicToolBarTable
+        onSetCharactersticValue={onSetCharactersticValue}
         hasNewCharacteristicValue={newCharacteristicValue ? true : false}
         selectedCharacteristics={selectedCharacteristics}
         onTogglePostCharacteristicModalVisibility={

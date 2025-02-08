@@ -1,11 +1,10 @@
 import { ChangeEvent, FC, ReactNode, useState } from 'react';
 import {
-  
   CharacteristicsPayload,
   ICharacteristicsTableCoordinats,
 } from 'apps/client/src/shared';
 
-import { CharacteristicsContext } from "../context/characteristics.context"
+import { CharacteristicsContext } from '../context/characteristics.context';
 import { Measure } from 'prisma/prisma-client';
 
 interface IProps {
@@ -16,7 +15,7 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
   const [characteristics, setCharacteristics] =
     useState<CharacteristicsPayload | null>(null);
 
-  const [limit,setLimit] = useState(5)
+  const [limit, setLimit] = useState(5);
 
   const [selectedCharacteristics, setSelectedCharacteristics] = useState<
     string[]
@@ -35,28 +34,32 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
   const [newCharacteristicValue, setNewCharacteristicValue] = useState<{
     payload: string | boolean;
     id: string;
-    measure?: Measure
+    measure?: Measure;
   } | null>(null);
 
-  const handleChangeLimit = (event:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setLimit(+event.target.value)
-  } 
+  const handleChangeLimit = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setLimit(+event.target.value);
+  };
 
   const handleTogglePostCharacteristicModalVisibility = () => {
-
     setIsPostCharaceteresticModalVisible((prev) => !prev);
-  }
+  };
 
-  const handleSetCharacteristicValue = ({
-    payload,
-    id,
-    measure, 
-  }: {
-    payload: string | boolean;
-    id: string;
-    measure?: Measure; 
-  }) => {
-    setNewCharacteristicValue({ payload, id, measure });
+  const handleSetCharacteristicValue = (
+    args: {
+      payload: string | boolean;
+      id: string;
+      measure?: Measure;
+    } | null
+  ) => {
+    if (args !== null && args.measure) {
+      const { payload, id, measure } = args;
+      setNewCharacteristicValue({ payload, id, measure });
+    } else {
+      setNewCharacteristicValue(args);
+    }
   };
 
   const handleShowInput = (payload: ICharacteristicsTableCoordinats) => {
@@ -71,7 +74,10 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
     if (selectedCharacteristics?.length === characteristics?.items.length) {
       setSelectedCharacteristics([]);
       setIsHeadCheckboxChecked(false);
-    } else if(characteristics && selectedCharacteristics?.length !== characteristics?.items.length ) {
+    } else if (
+      characteristics &&
+      selectedCharacteristics?.length !== characteristics?.items.length
+    ) {
       setSelectedCharacteristics(characteristics?.items.map((el) => el.id));
       setIsHeadCheckboxChecked(true);
     }
@@ -133,7 +139,7 @@ export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
           handleTogglePostCharacteristicModalVisibility,
         isPostCharacteristicModalVisible,
         onChangeLimit: handleChangeLimit,
-        limit
+        limit,
       }}
     >
       {children}

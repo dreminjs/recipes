@@ -3,7 +3,7 @@ import {
   CharacteristicsPayload,
   ICharacteristicsTableCoordinats,
 } from '../../shared/model/interfaces/characteristic.interface';
-
+import { Measure } from 'prisma/prisma-client';
 
 export const CharacteristicsContext = createContext<{
   characteristics?: CharacteristicsPayload | null;
@@ -21,18 +21,18 @@ export const CharacteristicsContext = createContext<{
   onChangeCharactersticValue: (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
   ) => void;
-  onSetCharactersticValue: ({
-    payload,
-    id,
-  }: {
+  onSetCharactersticValue: ({}: {
     payload: string | boolean;
     id: string;
-  }) => void;
+    measure?: Measure;
+  } | null) => void;
   onHideInputCell: () => void;
   onUnSelectedCharaceteristics: () => void;
   onTogglePostCharacteristicModalVisibility: () => void;
   isPostCharacteristicModalVisible: boolean;
-  onChangeLimit: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChangeLimit: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   limit: number;
 }>({
   characteristics: { items: [], countItems: 0, currentPage: 0 },
@@ -51,5 +51,5 @@ export const CharacteristicsContext = createContext<{
   onTogglePostCharacteristicModalVisibility: () => {},
   isPostCharacteristicModalVisible: false,
   onChangeLimit(payload) {},
-  limit: 5
+  limit: 5,
 });
