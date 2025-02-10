@@ -46,18 +46,19 @@ export class IngredientController {
   public async findMany(
     @Query() { title, page, limit }: GetIngredientsQueryParameters
   ): Promise<IItemsPaginationResponse<Ingredient>> {
-    const [items, count] = await Promise.all([
-      await this.ingredientService.findMany({
-        where: {
-          ...(title && { title: { contains: title } }),
-        },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      await this.ingredientService.count({
-        where: { ...(title ? { title: { contains: title } } : {}) },
-      }),
-    ]);
+    const itemsQuery = this.ingredientService.findMany({
+      where: {
+        ...(title && { title: { contains: title } }),
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const countQuery = this.ingredientService.count({
+      where: { ...(title ? { title: { contains: title } } : {}) },
+    });
+
+    const [items, count] = await Promise.all([itemsQuery, countQuery]);
     return {
       items,
       countItems: count,

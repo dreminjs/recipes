@@ -1,4 +1,4 @@
-import { FileStrategyUseCase, Options } from 'apps/api/src/file/file.config';
+import { FileStrategyUseCase, Options } from '../file.config';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import * as crypto from 'node:crypto';

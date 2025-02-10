@@ -12,9 +12,8 @@ import {
 import { Roles, Type } from 'prisma/prisma-client';
 import { TypeService } from './type.service';
 import { CreateTypeDto } from './dto/create-type.dto';
-import { UpdateHolidayDto } from '../holiday/dto/update-holiday.dto';
-import { GetCharacteristicsQueryParameters, } from '../shared';
-import { IInfiniteScrollResponse, IItemsPaginationResponse } from 'interfaces';
+import { GetCharacteristicsQueryParameters } from '../shared';
+import { IItemsPaginationResponse } from 'interfaces';
 import { AllowedRoles } from '../user/decorators/roles.decorator';
 import { RolesGuard } from '../user/guards/roles.guard';
 import { AccessTokenGuard } from '../token';
@@ -28,18 +27,19 @@ export class TypeController {
   public async findMany(
     @Query() { title, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<Type>> {
-    const [items, count] = await Promise.all([
-      await this.typeService.findMany({
-        where: {
-          ...(title && { title: { contains: title } }),
-        },
-        skip: page === 0 ? 0 : (page - 1) * limit,
-        take: limit,
-      }),
-      await this.typeService.count({
-        where: { ...(title && { title: { contains: title } }) },
-      }),
-    ]);
+    const itemsQuery = this.typeService.findMany({
+      where: {
+        ...(title && { title: { contains: title } }),
+      },
+      skip: page === 0 ? 0 : (page - 1) * limit,
+      take: limit,
+    });
+
+    const countQuery = this.typeService.count({
+      where: { ...(title && { title: { contains: title } }) },
+    });
+
+    const [items, count] = await Promise.all([itemsQuery, countQuery]);
 
     return {
       items,

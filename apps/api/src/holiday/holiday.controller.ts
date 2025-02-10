@@ -27,15 +27,22 @@ export class HolidayController {
   public async findMany(
     @Query() { title, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<Holiday>> {
+
+    const itemsQuery = this.holidayService.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: {
+        ...(title && { title: { contains: title } }),
+      },
+    })
+
+    const countQuery = this.holidayService.count({where: {
+      ...(title && { title: { contains: title } }),
+    },})
+
     const [items, count] = await Promise.all([
-      await this.holidayService.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-        where: {
-          ...(title && { title: { contains: title } }),
-        },
-      }),
-      await this.holidayService.count(),
+      itemsQuery,
+      countQuery,
     ]);
     return {
       items,

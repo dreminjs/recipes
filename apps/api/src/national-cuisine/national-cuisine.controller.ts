@@ -38,19 +38,19 @@ export class NationalCuisineController {
   public async findMany(
     @Query() { title, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<NationalCuisine>> {
-    
-    const [items, count] = await Promise.all([
-      await this.nationalCuisineService.findMany({
-        where: {
-          ...(title && { title: { contains: title } }),
-        },
-        skip: (page - 1) * limit,
-        take: limit
-      }),
-      await this.nationalCuisineService.count({
-        where: { ...(title && { title: { contains: title } }) },
-      }),
-    ]);
+    const itemsQuery = this.nationalCuisineService.findMany({
+      where: {
+        ...(title && { title: { contains: title } }),
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const countQuery = this.nationalCuisineService.count({
+      where: { ...(title && { title: { contains: title } }) },
+    });
+
+    const [items, count] = await Promise.all([itemsQuery, countQuery]);
 
     return { items: items, currentPage: page, countItems: count };
   }
@@ -73,10 +73,10 @@ export class NationalCuisineController {
   }
 
   @AllowedRoles(Roles.ADMIN)
-  @UseGuards(AccessTokenGuard,RolesGuard)
+  @UseGuards(AccessTokenGuard, RolesGuard)
   @Delete()
   public async deleteMany(@Query('id') id: string[] | string): Promise<void> {
-   return await this.nationalCuisineService.deleteMany({
+    return await this.nationalCuisineService.deleteMany({
       where: { id: { in: id instanceof Array ? [...id] : [id] } },
     });
   }
