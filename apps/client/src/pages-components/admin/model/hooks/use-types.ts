@@ -6,7 +6,7 @@ import {
   useDeleteManyTypes,
   useGetTypes,
   usePostType,
-} from 'apps/client/src/shared';
+} from '@/shared';
 
 export const useTypes = ({
   initialTitle,

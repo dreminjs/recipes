@@ -1,5 +1,5 @@
-import { CurrentUserOwnRecipes } from '../../../widgets/recipe';
-import { UserInfo } from '../../../widgets/user';
+import { CurrentUserOwnRecipes } from '@/widgets/recipe';
+import { UserInfo } from '@/widgets/user';
 
 export const CurrentUserPage = () => {
 

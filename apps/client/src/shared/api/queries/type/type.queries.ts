@@ -1,10 +1,8 @@
-import { useMutation, useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '../../model/constants';
-import { typeService } from '../services/type.service';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from '../../../model/constants';
+import { typeService } from './type.service';
 import { Prisma } from 'prisma/prisma-client';
-import { useContext } from 'react';
-import { CharacteristicsContext } from '../../../application/context/characteristics.context';
-import { useCharacteristics } from '../../model/hooks/use-characteristics';
+import { useCharacteristics } from '../../../model/hooks/use-characteristics';
 
 export const useGetTypes = ({
   title,

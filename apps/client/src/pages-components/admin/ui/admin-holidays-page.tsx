@@ -1,19 +1,19 @@
-'use client';
 
 import {
   InputSearch,
   IPostCharacteristicForm,
   useCharacteristics,
-} from 'apps/client/src/shared';
+} from '@/shared';
 import {
   AdminCharacteristicsTable,
   AdminPostCharaceteristicModal,
-} from 'apps/client/src/widgets/admin';
-import { AdminPostCharacteristic } from 'apps/client/src/features/admin';
-import { MessageModal } from 'apps/client/src/features/message';
+} from '@/widgets/admin';
+
+import { MessageModal } from '@/features/message';
 import { FC } from 'react';
 import { useHolidays } from '../model/hooks/use-holidays';
-import { CharactersticsLayout } from 'apps/client/src/application';
+import { CharactersticsLayout } from '@/application/';
+
 export const AdminHolidaysPage: FC = () => {
   const {
     newCharacteristicValue,

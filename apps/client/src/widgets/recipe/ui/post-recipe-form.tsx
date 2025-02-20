@@ -1,12 +1,12 @@
-import { RecipeFieldForm, RecipeTextareaForm } from '../../../features/recipe';
+import { RecipeFieldForm, RecipeTextareaForm } from '@/features/recipe';
 
 import { useForm } from 'react-hook-form';
 
-import { IPostRecipeForm, PostRecipeFormSchema } from '../../../shared';
+import { IPostRecipeForm, PostRecipeFormSchema } from '@/shared';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { UploadRecipePhoto } from '../../../features/recipe/';
+import { UploadRecipePhoto } from '@/features/recipe/';
 import { useEffect } from 'react';
 
 export const PostRecipeForm = () => {
@@ -20,17 +20,17 @@ export const PostRecipeForm = () => {
   });
 
   useEffect(() => {
-    if(watch().photo){
-      console.log(watch().photo)
+    if (watch().photo) {
+      console.log(watch().photo);
     }
-  },[watch().photo])
+  }, [watch().photo]);
 
   return (
-    <form className=''>
+    <form className="">
       <RecipeFieldForm register={register} />
       <RecipeTextareaForm register={register} />
       <UploadRecipePhoto register={register} error={errors.photo} />
-      <button className='px-9 py-2'>Submit</button>
+      <button className="px-9 py-2">Submit</button>
     </form>
   );
 };

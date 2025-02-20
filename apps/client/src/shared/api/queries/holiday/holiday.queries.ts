@@ -1,8 +1,8 @@
-import { useMutation, useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '../../model/constants';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from '../../../model/constants';
 import { Prisma } from 'prisma/prisma-client';
-import { holidayService } from '../services/holiday.service';
-import { useCharacteristics } from '../../model/hooks/use-characteristics';
+import { holidayService } from './holiday.service';
+import { useCharacteristics } from '../../../model/hooks/use-characteristics';
 
 export const useGetHolidays = ({
   title,

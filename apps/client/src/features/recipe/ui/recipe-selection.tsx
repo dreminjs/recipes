@@ -1,7 +1,12 @@
-import { FC, useEffect, useState } from 'react';
-import { useGetRandomCharacteristic, useGetRecipes } from '../../../shared/';
-import { ICharacteristic } from 'interfaces';
+import { FC } from 'react';
+import { useGetRandomCharacteristic, useGetRecipes } from '@/shared/';
 import Link from 'next/link';
+
+// const obj = {
+//   type: 'тип рецептов',
+//   holiday: 'праздник рецептов:',
+//   'national-cuisine': 'национальная кухня рецептов: ',
+// };
 
 interface IProps {
   idx: number;
@@ -9,12 +14,6 @@ interface IProps {
 }
 
 export const RecipeSelection: FC<IProps> = ({ idx, type }) => {
-  const obj = {
-    type: 'тип рецептов',
-    holiday: 'праздник рецептов:',
-    'national-cuisine': 'национальная кухня рецептов: ',
-  };
-
   const { characteristic } = useGetRandomCharacteristic({ idx, type });
 
   const { recipes } = useGetRecipes(
@@ -32,7 +31,9 @@ export const RecipeSelection: FC<IProps> = ({ idx, type }) => {
 
   return (
     <section className="border-2 mx-auto w-[90%] px-5 py-2 rounded-lg mb-2">
-      <Link href={`recipes?${type}=${characteristic?.title}`}>{characteristic?.title}</Link>
+      <Link href={`recipes?${type}=${characteristic?.title}`}>
+        {characteristic?.title}
+      </Link>
       <ul></ul>
     </section>
   );

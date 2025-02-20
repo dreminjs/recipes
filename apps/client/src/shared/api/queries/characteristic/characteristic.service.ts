@@ -1,15 +1,13 @@
-import { ICharacteristic } from 'interfaces';
-import { QUERY_KEYS, SERVICE_KEYS } from '../../model/constants';
-import { instance } from '../api.instance';
-import { CharacteristicType } from '../../model/interfaces/characteristic.interface';
-
+import { Characteristics, ICharacteristic } from '@/interfaces';
+import { SERVICE_KEYS } from '@/shared';
+import { instance } from '../../api.instance';
 
 export const characteristicService = {
-  root: QUERY_KEYS.characteristic,
+  root: SERVICE_KEYS.characteristic,
 
   axios: instance,
 
-  async findRandom({type}:{type: CharacteristicType}): Promise<ICharacteristic> {
+  async findRandom({type}:{type: Characteristics}): Promise<ICharacteristic> {
     const urlSearchParams = new URLSearchParams();
     // if (dto.limit) urlSearchParams.append('limit', dto.limit.toString());
     // if (dto.cursor) urlSearchParams.append('cursor', dto.cursor.toString());

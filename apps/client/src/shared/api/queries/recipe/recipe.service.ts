@@ -1,13 +1,13 @@
 import { Recipe } from 'prisma/prisma-client';
-import { QUERY_KEYS } from '../../model/constants';
-import { IGetRecipesQueryParameters } from '../../model/interfaces/recipe.interface';
-import { instance } from '../api.instance';
-import { IInfiniteScrollResponse } from 'interfaces';
+import { SERVICE_KEYS } from '../../../model/constants';
+import { IGetRecipesQueryParameters } from '../../../model/interfaces/recipe.interface';
+import { instance } from '../../api.instance';
+import { IInfiniteScrollResponse } from '@/interfaces';
 
 export const recipeService = {
   axios: instance,
 
-  root: `${QUERY_KEYS.recipe}`,
+  root: SERVICE_KEYS.recipe,
 
   async findMany(
     queryParams: IGetRecipesQueryParameters

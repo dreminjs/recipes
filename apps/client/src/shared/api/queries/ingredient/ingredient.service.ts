@@ -1,21 +1,26 @@
+import { Ingredient, Prisma } from 'prisma/prisma-client';
+import { SERVICE_KEYS } from '../../../model/constants';
+import { instance } from '../../api.instance';
 import { IItemsPaginationResponse } from 'interfaces';
-import { QUERY_KEYS } from '../../model/constants';
-import { instance } from '../api.instance';
-import { Holiday, Prisma } from 'prisma/prisma-client';
-import { IGetCharacteristicsQueryParameters } from '../../model/interfaces/characteristic.interface';
+import { IGetCharacteristicsQueryParameters } from '../../../model/interfaces/characteristic.interface';
+import { IPostIngredientForm } from '../../../model/interfaces/ingredient.interface';
 
-export const holidayService = {
-  root: QUERY_KEYS.holiday,
+export const ingredientService = {
+  root: SERVICE_KEYS.ingredient,
 
   axios: instance,
 
+  async createOne(data: IPostIngredientForm): Promise<Ingredient> {
+    return this.axios.post(`${this.root}`, data);
+  },
+
   async findMany(
     query: IGetCharacteristicsQueryParameters
-  ): Promise<IItemsPaginationResponse<Holiday>> {
+  ): Promise<IItemsPaginationResponse<Ingredient>> {
     const urlSearchParams = new URLSearchParams();
 
     if (query.title) urlSearchParams.append('title', query.title);
-
+    
     if (query.page === 0 ? true : query.page)
       urlSearchParams.append('page', (query.page + 1).toString());
 
@@ -25,18 +30,14 @@ export const holidayService = {
       .data;
   },
 
-  async createOne(dto: Prisma.HolidayCreateInput): Promise<Holiday> {
-    return await this.axios.post(`${this.root}`, dto);
-  },
-
   async updateOne(
-    where: Prisma.HolidayWhereUniqueInput,
-    dto: Prisma.HolidayUpdateInput
-  ): Promise<Holiday> {
-    return await this.axios.put(`${this.root}/${where.id}`, dto);
+    where: Prisma.IngredientWhereUniqueInput,
+    data: Prisma.IngredientUpdateInput
+  ): Promise<Ingredient> {
+    return this.axios.put(`${this.root}/${where.id}`, data);
   },
 
-  async deleteOne(where: Prisma.HolidayWhereUniqueInput) {
+  async deleteOne(where: Prisma.IngredientWhereUniqueInput): Promise<void> {
     return await this.axios.delete(`${this.root}/${where.id}`);
   },
 
@@ -44,9 +45,9 @@ export const holidayService = {
     const queryParameters = new URLSearchParams();
 
     ids.forEach((id) => queryParameters.append('id', id.toString()));
-
     return await this.axios.delete(
       `${this.root}?${queryParameters.toString()}`
     );
   },
+
 };

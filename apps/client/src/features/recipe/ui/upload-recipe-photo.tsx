@@ -1,4 +1,4 @@
-import { FC, MutableRefObject, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { IPostRecipeForm } from '../../../shared';
 import { FieldError, FieldErrorsImpl, Merge, UseFormRegister } from 'react-hook-form';
 import Image from 'next/image';

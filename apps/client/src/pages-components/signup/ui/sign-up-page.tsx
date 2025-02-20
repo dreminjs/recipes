@@ -1,5 +1,5 @@
 
-import { SignUpForm } from '../../../widgets/signup';
+import { SignUpForm } from '@/widgets/signup';
 
 export const SignUpPage = () => {
   return (

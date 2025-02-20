@@ -1,12 +1,11 @@
-import { IInfiniteScrollResponse, IItemsPaginationResponse } from 'interfaces';
-import { QUERY_KEYS } from '../../model/constants';
-import { IGetCharacteristicsQueryParameters } from '../../model/interfaces/characteristic.interface';
-import { instance } from '../api.instance';
+import { IItemsPaginationResponse } from '@/interfaces';
+import { IGetCharacteristicsQueryParameters, SERVICE_KEYS } from '@/shared';
+import { instance } from '../.././api.instance';
 
 import { NationalCuisine, Prisma, Type } from 'prisma/prisma-client';
 
 export const nationalCuisineService = {
-  root: QUERY_KEYS.nationalCuisine,
+  root: SERVICE_KEYS['national-cuisine'],
 
   axios: instance,
 

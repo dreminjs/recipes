@@ -12,7 +12,7 @@ import {
 import { RecipeCommentService } from './recipe-comment.service';
 import { CreateRecipeCommentDto } from './dto/create-recipe-comment.dto';
 import { CurrentUser } from '../user';
-import { Recipe, RecipeComment, User } from '@prisma/client';
+import { RecipeComment, User } from '@prisma/client';
 import { IInfiniteScrollResponse } from 'interfaces';
 import { UpdateRecipeCommentDto } from './dto/update-recipe-comment.dto';
 import { AccessTokenGuard } from '../token';
@@ -42,14 +42,14 @@ export class RecipeCommentController {
     @Query('cursor', ParseIntPipe) cursor: number,
     @Query('take', ParseIntPipe) take: number
   ): Promise<IInfiniteScrollResponse<RecipeComment>> {
-    const comments = await this.recipeCommentService.findMany({
+    const items = await this.recipeCommentService.findMany({
       where: { recipe: { id: recipeId } },
     });
 
-    const nextCursor = comments.length > 0 ? cursor + take : null;
+    const nextCursor = items.length > 0 ? cursor + take : null;
 
     return {
-      data: comments,
+      items,
       nextCursor,
     };
   }

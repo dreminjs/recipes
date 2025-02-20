@@ -2,7 +2,7 @@ import { ChangeEvent, FC, ReactNode, useState } from 'react';
 import {
   CharacteristicsPayload,
   ICharacteristicsTableCoordinats,
-} from 'apps/client/src/shared';
+} from '@/shared';
 
 import { CharacteristicsContext } from '../context/characteristics.context';
 import { Measure } from 'prisma/prisma-client';

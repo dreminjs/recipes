@@ -1,9 +1,9 @@
-import { useMutation, useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '../../model/constants';
-import { ingredientService } from '../services/ingredient.service';
-import { IPostIngredientForm } from '../../model/interfaces/ingredient.interface';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from '../../../model/constants';
+import { ingredientService } from './ingredient.service';
+import { IPostIngredientForm } from '../../../model/interfaces/ingredient.interface';
 import { Prisma } from 'prisma/prisma-client';
-import { useCharacteristics } from '../../model/hooks/use-characteristics';
+import { useCharacteristics } from '../../../model/hooks/use-characteristics';
 
 const queryKey = QUERY_KEYS.ingredient;
 

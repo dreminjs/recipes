@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IPostRecipeForm } from '../../../shared';
+import { IPostRecipeForm } from '@/shared';
 import { UseFormRegister } from 'react-hook-form';
 
 interface IProps {

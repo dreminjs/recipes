@@ -6,7 +6,7 @@ import {
   useDeleteManyNationalCuisine,
   useGetNationalCuisines,
   usePostNationalCuisine,
-} from 'apps/client/src/shared';
+} from '@/shared';
 
 export const useNationalCuisines = ({
   initialTitle,

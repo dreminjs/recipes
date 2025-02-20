@@ -1,8 +1,10 @@
+/* eslint-disable no-empty-pattern */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { ChangeEvent, createContext, Dispatch, SetStateAction } from 'react';
 import {
   CharacteristicsPayload,
   ICharacteristicsTableCoordinats,
-} from '../../shared/model/interfaces/characteristic.interface';
+} from '@/shared/model/interfaces/characteristic.interface';
 import { Measure } from 'prisma/prisma-client';
 
 export const CharacteristicsContext = createContext<{

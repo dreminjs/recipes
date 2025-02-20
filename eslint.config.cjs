@@ -19,6 +19,8 @@ module.exports = [
             {
               sourceTag: '*',
               onlyDependOnLibsWithTags: ['*'],
+              // sourceTag: 'type:app',
+              // onlyDependOnLibsWithTags: ['type:lib'],
             },
           ],
         },
@@ -35,6 +37,8 @@ module.exports = [
       '**/*.mjs',
     ],
     // Override or add rules here
-    rules: {},
+    rules: {
+
+    },
   },
 ];

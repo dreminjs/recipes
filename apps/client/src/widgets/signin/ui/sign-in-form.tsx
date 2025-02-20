@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
-import { AuthButton, ISignIn, SignInSchema } from '../../../shared/';
+import { AuthButton, ISignIn, SignInSchema } from '@/shared/';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SigninFormField } from '../../../features/auth';
-import { usePostSignIn } from '../../../shared/api/queries/auth.queries';
-import { MessageModal } from '../../../features/message';
+import { SigninFormField } from '@/features/auth';
+import { usePostSignIn } from '@/shared/api/queries/auth.queries';
+import { MessageModal } from '@/features/message';
 
 export const SignInForm = () => {
   const {

@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '../../model/constants';
-import { recipeService } from '../services/recipe.service';
-import { IGetRecipesQueryParameters } from '../../model/interfaces/recipe.interface';
+import { QUERY_KEYS } from '../../../model/constants';
+import { recipeService } from './recipe.service';
+import { IGetRecipesQueryParameters } from '../../../model/interfaces/recipe.interface';
 
 export const useGetRecipes = (
   queryParams: IGetRecipesQueryParameters,

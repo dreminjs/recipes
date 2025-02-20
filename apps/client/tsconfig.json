@@ -20,7 +20,16 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/interfaces*": ["../../interfaces"],
+      "@/application*": ["./src/application/*"],
+      "@/widgets*": ["./src/widgets/*"],
+      "@/features*": ["./src/features/*"],
+      "@/entities*": ["./src/entities/*"],
+      "@/shared*": ["./src/shared/"],
+    }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],
   "exclude": ["node_modules", "jest.config.ts", "**/*.spec.ts", "**/*.test.ts"]

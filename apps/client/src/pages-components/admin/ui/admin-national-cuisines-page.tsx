@@ -2,16 +2,16 @@ import {
   InputSearch,
   IPostCharacteristicForm,
   useCharacteristics,
-} from '../../../shared';
+} from '@/shared';
 import {
   AdminCharacteristicsTable,
   AdminPostCharaceteristicModal,
-} from 'apps/client/src/widgets/admin';
-import { AdminPostCharacteristic } from 'apps/client/src/features/admin';
-import { MessageModal } from '../../../features/message';
+} from '@/widgets/admin';
+
+import { MessageModal } from '@/features/message';
 import { useNationalCuisines } from '../model/hooks/use-national-cuisines';
 import { FC } from 'react';
-import { CharactersticsLayout } from 'apps/client/src/application';
+import { CharactersticsLayout } from '@/application/';
 
 export const AdminNationalCuisinesPage: FC = () => {
   const {

@@ -4,7 +4,7 @@ import {
   QUERY_KEYS,
   SERVICE_KEYS,
   useGetMyProfile,
-} from 'apps/client/src/shared';
+} from '@/shared';
 export const Header = () => {
   const { userInfo } = useGetMyProfile();
 

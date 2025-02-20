@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { AuthButton, ISignUp, SignUpSchema } from '../../../shared/';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SignupFormField } from '../../../features/auth';
-import { usePostSignUp } from '../../../shared/api/queries/auth.queries';
-import { MessageModal } from '../../../features/message';
+import { SignupFormField } from '@/features/auth';
+import { usePostSignUp } from '@/shared/api/queries/auth.queries';
+import { MessageModal } from '@/features/message';
 
 
 export const SignUpForm = () => {
@@ -16,7 +16,6 @@ export const SignUpForm = () => {
   const {
     signup,
     signupIsLoading,
-    signupData,
     signupIsSuccess,
     signupIsError,
   } = usePostSignUp();

@@ -1,16 +1,10 @@
-import { useGetMyProfile } from '../../../shared';
-
-import { useForm } from 'react-hook-form';
-import { UserSchema } from '../modal/schemas/user.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { IUserForm } from '../modal/user.interface';
-import { useEffect } from 'react';
+import { useGetMyProfile } from '@/shared';
 
 export const UserInfo = () => {
   const { userInfo } = useGetMyProfile();
 
   return (
-    <div>
+    <div itemProp='user'>
       <h3 className="text-2xl">Ваша информация</h3>
       <div>
         <p className='text-[25px]'>Ваш nickname: {userInfo?.nickname}</p>

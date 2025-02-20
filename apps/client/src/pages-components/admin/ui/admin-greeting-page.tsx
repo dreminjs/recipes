@@ -1,4 +1,4 @@
-import { AdminLinksList } from '../../../features/admin';
+import { AdminLinksList } from '@/features/admin';
 
 export const AdminGreetingPage = () => {
   return (

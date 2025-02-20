@@ -2,15 +2,14 @@ import Link from 'next/link';
 import {
   AdminCharacteristicsTable,
   AdminPostIngredientModal,
-} from 'apps/client/src/widgets/admin';
+} from '@/widgets/admin';
 import { useIngredients } from '../model/hooks/use-ingredients';
-import { CharactersticsLayout } from 'apps/client/src/application';
+import { CharactersticsLayout } from '@/application/';
 import {
   InputSearch,
-  IPostCharacteristicForm,
   IPostIngredientForm,
   useCharacteristics,
-} from 'apps/client/src/shared';
+} from '@/shared';
 
 export const AdminIngredientPage = () => {
   const {

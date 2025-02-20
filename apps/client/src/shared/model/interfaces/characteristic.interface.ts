@@ -1,4 +1,4 @@
-import { IItemsPaginationResponse } from 'interfaces';
+import { IItemsPaginationResponse } from '@/interfaces';
 import {
   Measure,
 } from 'prisma/prisma-client';

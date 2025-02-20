@@ -2,13 +2,14 @@ import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import { FC } from 'react';
 
 interface IProps {
-  onSelectAllItems: () => void
-  isHeadcheckboxChecked: boolean
+  onSelectAllItems: () => void;
+  isHeadcheckboxChecked: boolean;
 }
 
-
-export const AdminIngredientHeadTable: FC<IProps> = ({onSelectAllItems,isHeadcheckboxChecked}) => {
-  
+export const AdminIngredientHeadTable: FC<IProps> = ({
+  onSelectAllItems,
+  isHeadcheckboxChecked,
+}) => {
   return (
     <TableHead>
       <TableRow>

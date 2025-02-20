@@ -1,5 +1,5 @@
-import { BasicModal } from '../../../shared';
-import { FC, memo, useEffect, useState } from 'react';
+import { BasicModal } from '@/shared';
+import { FC,useEffect, useState } from 'react';
 
 interface IProps {
   message: {

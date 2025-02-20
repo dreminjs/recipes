@@ -1,4 +1,4 @@
-import { ISignUp } from '../../../shared';
+import { ISignUp } from '@/shared';
 import { FC } from 'react';
 import {
   UseFormRegister,

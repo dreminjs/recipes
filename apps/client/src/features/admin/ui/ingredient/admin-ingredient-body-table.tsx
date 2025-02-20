@@ -1,9 +1,7 @@
 import { Checkbox, TableBody, TableCell, TableRow } from '@mui/material';
-import { ICharacteristic } from 'apps/client/src/shared/model/interfaces/characteristic.interface';
+import { ICharacteristic,measuresObj } from '@/shared/';
 import { FC } from 'react';
-import { measuresObj } from 'apps/client/src/shared';
-import { Ingredient } from 'prisma/prisma-client';
-import { AdminCharacteristicCell } from 'apps/client/src/entities/admin';
+import { AdminCharacteristicCell } from '@/entities/admin';
 
 interface IProps {
   items?: ICharacteristic[];

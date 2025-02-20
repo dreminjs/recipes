@@ -1,11 +1,9 @@
 import {
-  useDeleteManyNationalCuisine,
   useGetIngredients,
   usePostIngredient,
-  usePostNationalCuisine,
   useDeleteManyIngredients,
   usePutIngredient,
-} from 'apps/client/src/shared';
+} from '@/shared';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 

@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { AuthService } from '../services/auth.service';
-import { ISignIn, ISignUp } from '../../model/interfaces/auth.interface';
+import { AuthService } from './auth.service';
+import { ISignIn, ISignUp } from '../../../model/interfaces/auth.interface';
 import { useRouter } from 'next/router';
-import { PAGE_KEYS } from '../../model/constants';
+import { PAGE_KEYS } from '../../../model/constants';
 
 export const usePostSignUp = () => {
   const { push: navigate } = useRouter();

@@ -87,7 +87,7 @@ export class RecipeController {
     const nextCursor = recipes.length > 0 ? cursor + take : null;
 
     return {
-      data: recipes,
+      items: recipes,
       nextCursor,
     };
   }

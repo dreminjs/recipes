@@ -2,19 +2,16 @@ import {
   InputSearch,
   IPostCharacteristicForm,
   useCharacteristics,
-} from 'apps/client/src/shared';
-import {
-
-  AdminPostCharaceteristicModal,
-} from 'apps/client/src/widgets/admin';
-import { MessageModal } from 'apps/client/src/features/message';
+} from '@/shared';
+import { AdminPostCharaceteristicModal } from '@/widgets/admin';
+import { MessageModal } from '@/features/message';
 import { FC } from 'react';
 import { useTypes } from '../model/hooks/use-types';
-import { CharactersticsLayout } from 'apps/client/src/application';
+import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
 
 const AdminCharacteristicsTable = dynamic(
-  () => import('apps/client/src/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
+  () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
   { ssr: false }
 );
 
@@ -23,7 +20,7 @@ export const AdminTypesPage: FC = () => {
     newCharacteristicValue,
     selectedCharacteristics,
     onTogglePostCharacteristicModalVisibility,
-    onChangeLimit
+    onChangeLimit,
   } = useCharacteristics();
 
   const typesProps = useTypes({
@@ -32,7 +29,6 @@ export const AdminTypesPage: FC = () => {
     initialTitle: '',
   });
 
-  
   const handlePutType = () => {
     if (newCharacteristicValue) {
       if (typeof newCharacteristicValue.payload === 'boolean') {
@@ -71,9 +67,11 @@ export const AdminTypesPage: FC = () => {
           onDeleteMany={handleDeleteTypes}
           onPut={handlePutType}
           onChangePage={(_, newPage) => {
-            typesProps.onChangePage(newPage)
+            typesProps.onChangePage(newPage);
           }}
-          count={typesProps.items?.countItems ? typesProps.items?.countItems: 1}
+          count={
+            typesProps.items?.countItems ? typesProps.items?.countItems : 1
+          }
           limit={typesProps.limit}
           currentPage={typesProps.currentPage}
           onChangeLimit={onChangeLimit}

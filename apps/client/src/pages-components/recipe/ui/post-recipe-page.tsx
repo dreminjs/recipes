@@ -1,4 +1,4 @@
-import { PostRecipeForm } from '../../../widgets/recipe';
+import { PostRecipeForm } from '@/widgets/recipe';
 
 export const PostRecipePage = () => {
   return (

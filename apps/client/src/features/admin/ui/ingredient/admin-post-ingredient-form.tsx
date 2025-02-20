@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   IPostIngredientForm,
   IngredientFormSchema,
-} from 'apps/client/src/shared';
+} from '@/shared';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { measureOptions } from '../../model/constants';

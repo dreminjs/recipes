@@ -9,6 +9,7 @@ interface IProps {
   onDeleteMany: () => void;
   selectedCharacteristics?: string[];
   hasNewCharacteristicValue: boolean;
+  // eslint-disable-next-line no-empty-pattern
   onSetCharactersticValue: ({}: {
     payload: string | boolean;
     id: string;

@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import { characteristicService } from '../services/characteristic.service';
-import { QUERY_KEYS, SERVICE_KEYS } from '../../model/constants';
-import { CharacteristicType } from '../../model/interfaces/characteristic.interface';
+import { characteristicService } from './characteristic.service';
+import { QUERY_KEYS, SERVICE_KEYS } from '../../../model/constants';
+import { Characteristics } from '@/interfaces';
 
 export const useGetRandomCharacteristic = ({
   idx,
   type
 }: {
   idx: number;
-  type: CharacteristicType;
+  type: Characteristics;
 }) => {
   const { isLoading: characteristicIsLoading, data: characteristic } = useQuery(
     {

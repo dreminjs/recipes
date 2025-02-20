@@ -1,4 +1,4 @@
-import { SignInForm } from '../../../widgets/signin';
+import { SignInForm } from '@/widgets/signin';
 
 export const SignInPage = () => {
   return (
