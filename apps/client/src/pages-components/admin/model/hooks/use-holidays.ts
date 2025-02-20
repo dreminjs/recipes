@@ -5,7 +5,7 @@ import {
   useDeleteManyHolidays,
   useGetHolidays,
   usePostHoliday,
-} from '@/shared';
+} from '../../api/holiday/queries';
 
 export const useHolidays = ({
   initialTitle,

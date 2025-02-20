@@ -1,6 +1,5 @@
 
 import { SignUpForm } from '@/widgets/signup';
-
 export const SignUpPage = () => {
   return (
     <div className="flex justify-center items-center">

@@ -1,8 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '../../../model/constants';
-import { Prisma } from 'prisma/prisma-client';
-import { nationalCuisineService } from './national-cuisine.service';
-import { useCharacteristics } from '../../../model/hooks/use-characteristics';
+
+import { QUERY_KEYS, useCharacteristics } from '@/shared';
+
+import { Prisma,  } from 'prisma/prisma-client';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { nationalCuisineService } from './service';
+
+const MUTATION_KEY = QUERY_KEYS['national-cuisine']
 
 export const useGetNationalCuisines = ({
   title,
@@ -22,7 +25,7 @@ export const useGetNationalCuisines = ({
     isError: nationalCuisinesIsError,
     refetch: refetchNationalCuisines,
   } = useQuery({
-    queryKey: [QUERY_KEYS.nationalCuisine, limit, page, title],
+    queryKey: [MUTATION_KEY, limit, page, title],
     queryFn: () => nationalCuisineService.findMany({ limit, page, title }),
     onSuccess: (data) =>
       onSetCharacterstics({
@@ -50,7 +53,7 @@ export const usePostNationalCuisine = () => {
   } = useMutation({
     mutationFn: (data: Prisma.NationalCuisineCreateInput) =>
       nationalCuisineService.createOne({ ...data }),
-    mutationKey: [QUERY_KEYS.nationalCuisine],
+    mutationKey: [MUTATION_KEY],
   });
 
   return {
@@ -69,7 +72,7 @@ export const useDeleteNationalCuisine = () => {
     isSuccess: deleteNationalCuisineIsSuccess,
   } = useMutation({
     mutationFn: (id: string) => nationalCuisineService.deleteOne({ id }),
-    mutationKey: [QUERY_KEYS.nationalCuisine],
+    mutationKey: [MUTATION_KEY],
   });
   return {
     deleteNationalCuisineIsSuccess,
@@ -80,7 +83,6 @@ export const useDeleteNationalCuisine = () => {
 };
 
 export const useDeleteManyNationalCuisine = () => {
-  const { onSetCharacterstics, onSelectCharacteristic } = useCharacteristics();
   const {
     mutate: deleteManyNationalCuisines,
     isLoading: deleteManyNationalCuisinesIsLoading,
@@ -88,7 +90,7 @@ export const useDeleteManyNationalCuisine = () => {
     isSuccess: deleteManyNationalCuisinesIsSuccess,
   } = useMutation({
     mutationFn: (ids: string[]) => nationalCuisineService.deleteMany(ids),
-    mutationKey: [QUERY_KEYS.nationalCuisine],
+    mutationKey: [MUTATION_KEY],
   });
   return {
     deleteManyNationalCuisinesIsSuccess,
@@ -113,7 +115,7 @@ export const usePutNationalCuisine = () => {
       data: Prisma.NationalCuisineUpdateInput;
       id: string;
     }) => nationalCuisineService.updateOne({ id }, data),
-    mutationKey: [QUERY_KEYS.nationalCuisine],
+    mutationKey: [MUTATION_KEY],
     onSuccess: () => {
       onHideInputCell();
     },

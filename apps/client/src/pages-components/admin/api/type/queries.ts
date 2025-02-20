@@ -1,8 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '../../../model/constants';
-import { typeService } from './type.service';
-import { Prisma } from 'prisma/prisma-client';
-import { useCharacteristics } from '../../../model/hooks/use-characteristics';
+import { useCharacteristics, QUERY_KEYS } from "@/shared*";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { Prisma } from "prisma/prisma-client";
+import { typeService } from "./service";
+
+const QUERY_KEY = QUERY_KEYS.type
 
 export const useGetTypes = ({
   title,
@@ -14,16 +15,14 @@ export const useGetTypes = ({
   limit: number;
 }) => {
   const { onSetCharacterstics } = useCharacteristics()
-
   const {
     data: types,
     isLoading: typesIsLoading,
     isSuccess: typesIsSuccess,
-
     isError: typesIsError,
     refetch: refetchTypes,
   } = useQuery({
-    queryKey: [QUERY_KEYS.type, page, title, limit],
+    queryKey: [QUERY_KEY, page, title, limit],
     queryFn: () => typeService.findMany({ limit, page, title }),
     onSuccess: (data) =>
       onSetCharacterstics({
@@ -51,7 +50,7 @@ export const usePostType = () => {
   } = useMutation({
     mutationFn: (data: Prisma.TypeCreateInput) =>
       typeService.createOne({ ...data }),
-    mutationKey: [QUERY_KEYS.type],
+    mutationKey: [QUERY_KEY],
   });
 
   return { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess };
@@ -65,7 +64,7 @@ export const useDeleteType = () => {
     isSuccess: deleteTypeIsSuccess,
   } = useMutation({
     mutationFn: (id: string) => typeService.deleteOne({ id }),
-    mutationKey: [QUERY_KEYS.type],
+    mutationKey: [QUERY_KEY],
   });
   return {
     deleteTypeIsSuccess,
@@ -86,7 +85,7 @@ export const usePutType = () => {
   } = useMutation({
     mutationFn: ({ data, id }: { data: Prisma.TypeUpdateInput; id: string }) =>
       typeService.updateOne({ id }, data),
-    mutationKey: [QUERY_KEYS.type],
+    mutationKey: [QUERY_KEY],
     onSuccess: () => onHideInputCell(),
   });
 
@@ -103,7 +102,7 @@ export const useDeleteManyTypes = () => {
     isError: deleteTypesIsError,
   } = useMutation({
     mutationFn: (ids: string[]) => typeService.deleteMany(ids),
-    mutationKey: [QUERY_KEYS.type],
+    mutationKey: [QUERY_KEY],
     onSuccess:() => {
       // onToggleAllCharacteristics()
     }

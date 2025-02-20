@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Checkbox, TableBody, TableCell, TableRow } from '@mui/material';
-import { useCharacteristics } from '@/shared';
 import { AdminCharacteristicCell } from '@/entities/admin';
+import { useCharacteristics } from '@/shared';
 
 export const AdminCharacteristictsBodyTable: FC = () => {
   const { characteristics, selectedCharacteristics, onSelectCharacteristic } =

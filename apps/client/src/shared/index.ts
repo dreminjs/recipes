@@ -22,8 +22,6 @@ export { BasicModal } from './ui/basic-modal';
 
 export { useGetMyProfile } from './api/queries/user/user.queries';
 
-export {  }
-
 export { useGetRandomCharacteristic } from './api/queries/characteristic/characteristic.queries';
 
 export { PostRecipeFormSchema } from './model/schemas/recipe.schema';
@@ -81,3 +79,4 @@ export {
 
 export { useCharacteristics } from './model/hooks/use-characteristics';
 
+export { instance } from "./api/api.instance"

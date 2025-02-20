@@ -1,9 +1,7 @@
-import { Ingredient, Prisma } from 'prisma/prisma-client';
-import { SERVICE_KEYS } from '../../../model/constants';
-import { instance } from '../../api.instance';
-import { IItemsPaginationResponse } from 'interfaces';
-import { IGetCharacteristicsQueryParameters } from '../../../model/interfaces/characteristic.interface';
-import { IPostIngredientForm } from '../../../model/interfaces/ingredient.interface';
+import { IItemsPaginationResponse } from "@/interfaces*";
+import { SERVICE_KEYS, IPostIngredientForm, IGetCharacteristicsQueryParameters } from "@/shared*";
+import { Ingredient, Prisma } from "prisma/prisma-client";
+import { instance } from "src/shared/api/api.instance";
 
 export const ingredientService = {
   root: SERVICE_KEYS.ingredient,

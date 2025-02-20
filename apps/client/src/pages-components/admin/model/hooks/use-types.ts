@@ -6,7 +6,7 @@ import {
   useDeleteManyTypes,
   useGetTypes,
   usePostType,
-} from '@/shared';
+} from '../../api/type/queries';
 
 export const useTypes = ({
   initialTitle,
@@ -42,9 +42,7 @@ export const useTypes = ({
 
   const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
     usePostType();
-
-
-
+    
   const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
     setTitle(event.target.value);
 

@@ -1,4 +1,4 @@
-import { useGetMyProfile } from '@/shared';
+import { useGetMyProfile } from '../api/queries';
 
 export const UserInfo = () => {
   const { userInfo } = useGetMyProfile();

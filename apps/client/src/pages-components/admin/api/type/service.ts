@@ -1,17 +1,15 @@
-import { IItemsPaginationResponse } from '@/interfaces';
-import { IGetCharacteristicsQueryParameters, SERVICE_KEYS } from '@/shared';
-import { instance } from '../.././api.instance';
+import { IItemsPaginationResponse } from "@/interfaces*";
+import { SERVICE_KEYS, IGetCharacteristicsQueryParameters, instance } from "@/shared*";
+import { Prisma,Type } from "prisma/prisma-client";
 
-import { NationalCuisine, Prisma, Type } from 'prisma/prisma-client';
-
-export const nationalCuisineService = {
-  root: SERVICE_KEYS['national-cuisine'],
+export const typeService = {
+  root: SERVICE_KEYS.type,
 
   axios: instance,
 
   async findMany(
     query: IGetCharacteristicsQueryParameters
-  ): Promise<IItemsPaginationResponse<NationalCuisine>> {
+  ): Promise<IItemsPaginationResponse<Type>> {
     const urlSearchParams = new URLSearchParams();
 
     if (query.title) urlSearchParams.append('title', query.title);
@@ -25,18 +23,18 @@ export const nationalCuisineService = {
       .data;
   },
 
-  async createOne(dto: Prisma.NationalCuisineCreateInput): Promise<Type> {
+  async createOne(dto: Prisma.TypeCreateInput): Promise<Type> {
     return await this.axios.post(`${this.root}`, dto);
   },
 
   async updateOne(
-    where: Prisma.NationalCuisineWhereUniqueInput,
-    dto: Prisma.NationalCuisineUpdateInput
-  ): Promise<NationalCuisine> {
+    where: Prisma.TypeWhereUniqueInput,
+    dto: Prisma.TypeUpdateInput
+  ): Promise<Type> {
     return await this.axios.put(`${this.root}/${where.id}`, dto);
   },
 
-  async deleteOne(where: Prisma.NationalCuisineWhereUniqueInput) {
+  async deleteOne(where: Prisma.TypeWhereUniqueInput) {
     return await this.axios.delete(`${this.root}/${where.id}`);
   },
 
@@ -44,8 +42,7 @@ export const nationalCuisineService = {
     const queryParameters = new URLSearchParams();
 
     ids.forEach((id) => queryParameters.append('id', id.toString()));
-    return await this.axios.delete(
-      `${this.root}?${queryParameters.toString()}`
-    );
+
+    await this.axios.delete(`${this.root}?${queryParameters.toString()}`);
   },
 };

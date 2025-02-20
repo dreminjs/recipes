@@ -1,17 +1,16 @@
-import { IItemsPaginationResponse } from '@/interfaces';
-import { SERVICE_KEYS } from '../../../model/constants';
-import { instance } from '../../api.instance';
-import { Holiday, Prisma } from 'prisma/prisma-client';
-import { IGetCharacteristicsQueryParameters } from '../../../model/interfaces/characteristic.interface';
+import { IItemsPaginationResponse } from "@/interfaces*";
+import { SERVICE_KEYS, IGetCharacteristicsQueryParameters,instance } from "@/shared*";
+import { NationalCuisine, Prisma } from "prisma/prisma-client";
+import { Type } from "typescript";
 
-export const holidayService = {
-  root: SERVICE_KEYS.holiday,
+export const nationalCuisineService = {
+  root: SERVICE_KEYS['national-cuisine'],
 
   axios: instance,
 
   async findMany(
     query: IGetCharacteristicsQueryParameters
-  ): Promise<IItemsPaginationResponse<Holiday>> {
+  ): Promise<IItemsPaginationResponse<NationalCuisine>> {
     const urlSearchParams = new URLSearchParams();
 
     if (query.title) urlSearchParams.append('title', query.title);
@@ -25,18 +24,18 @@ export const holidayService = {
       .data;
   },
 
-  async createOne(dto: Prisma.HolidayCreateInput): Promise<Holiday> {
+  async createOne(dto: Prisma.NationalCuisineCreateInput): Promise<Type> {
     return await this.axios.post(`${this.root}`, dto);
   },
 
   async updateOne(
-    where: Prisma.HolidayWhereUniqueInput,
-    dto: Prisma.HolidayUpdateInput
-  ): Promise<Holiday> {
+    where: Prisma.NationalCuisineWhereUniqueInput,
+    dto: Prisma.NationalCuisineUpdateInput
+  ): Promise<NationalCuisine> {
     return await this.axios.put(`${this.root}/${where.id}`, dto);
   },
 
-  async deleteOne(where: Prisma.HolidayWhereUniqueInput) {
+  async deleteOne(where: Prisma.NationalCuisineWhereUniqueInput) {
     return await this.axios.delete(`${this.root}/${where.id}`);
   },
 
@@ -44,7 +43,6 @@ export const holidayService = {
     const queryParameters = new URLSearchParams();
 
     ids.forEach((id) => queryParameters.append('id', id.toString()));
-
     return await this.axios.delete(
       `${this.root}?${queryParameters.toString()}`
     );

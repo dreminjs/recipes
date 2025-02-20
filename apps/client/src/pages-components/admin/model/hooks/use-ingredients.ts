@@ -3,7 +3,7 @@ import {
   usePostIngredient,
   useDeleteManyIngredients,
   usePutIngredient,
-} from '@/shared';
+} from '../../api/ingredient/queries';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
