@@ -3,15 +3,18 @@ import {
   PAGE_KEYS,
   QUERY_KEYS,
   SERVICE_KEYS,
-  useGetMyProfile,
+
 } from '@/shared';
+
+import { useGetMyProfile } from '@/features/user/';
+
 export const Header = () => {
   const { userInfo } = useGetMyProfile();
 
   return (
     <header className="border-2 py-5 px-5 mx-auto flex justify-between items-center mb-[40px] rounded-2xl">
       <Link href={'/'} className="text-[32px]">
-        Recipes :)
+        {"Recipes :)"}
       </Link>
       <div className="flex gap-5 items-center">
         {userInfo ? (
@@ -19,7 +22,7 @@ export const Header = () => {
             <>
               {userInfo.role === 'ADMIN' && (
                 <Link className="text-[20px]" href={`/${PAGE_KEYS.admin}`}>
-                  Админ Панель
+                  {"Админ Панель"}
                 </Link>
               )}
             </>
@@ -30,15 +33,15 @@ export const Header = () => {
                   className="text-[20px]"
                   href={`/${PAGE_KEYS.recipe}/${SERVICE_KEYS.post}`}
                 >
-                  Добавить рецепт
+                  {"Добавить рецепт"}
                 </Link>
               )}
             </>
             <Link href={`/${PAGE_KEYS.profile}`} className="text-[20px]">
-              Профиль
+              {"Профиль"}
             </Link>
             <Link className="text-[20px]" href={`/${QUERY_KEYS.signout}`}>
-              выйти
+              {"выйти"}
             </Link>
           </>
         ) : (
@@ -47,13 +50,13 @@ export const Header = () => {
               className="text-[20px]"
               href={`/${SERVICE_KEYS.auth}/${PAGE_KEYS.signin}`}
             >
-              войти
+              {"войти"}
             </Link>
             <Link
               className="text-[20px]"
               href={`/${SERVICE_KEYS.auth}/${PAGE_KEYS.signup}`}
             >
-              зарегистрироаваться
+              {"зарегистрироаваться"}
             </Link>
           </>
         )}

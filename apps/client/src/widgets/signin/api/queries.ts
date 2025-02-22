@@ -2,13 +2,13 @@ import { useRouter } from "next/router";
 import { ISignIn } from "../model/interface";
 import { useMutation } from "@tanstack/react-query";
 import { PAGE_KEYS } from "@/shared*";
-import { AuthService } from "./service";
+import { signin } from "./service";
 
 export const usePostSignIn = () => {
   const { push: navigate } = useRouter();
 
   const { mutate, isLoading, data, isSuccess, isError } = useMutation({
-    mutationFn: (data: ISignIn) => AuthService.signin(data),
+    mutationFn: (data: ISignIn) => signin(data),
     onSuccess: (data) => {
       console.log(data);
       if (!data.isActived) {
@@ -18,7 +18,7 @@ export const usePostSignIn = () => {
       }
     },
   });
-
+ 
   return {
     signin: mutate,
     signinIsLoading: isLoading,

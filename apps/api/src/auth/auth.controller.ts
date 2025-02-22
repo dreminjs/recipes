@@ -32,8 +32,6 @@ export class AuthController {
     private readonly mailService: MailService
   ) {}
 
-  private logger = new Logger(AuthController.name);
-
   @UseGuards(SignupGuard)
   @Post('/signup')
   public async signup(
@@ -45,7 +43,7 @@ export class AuthController {
 
     const link = crypto.randomUUID();
 
-    const user = await this.userService.createOne({
+    const userQuery = this.userService.createOne({
       hashPassword: hashPassword,
       email: body.email,
       nickname: body.nickname,
@@ -55,19 +53,23 @@ export class AuthController {
       link,
     });
 
-    await this.mailService.sendMail({ user, urlConfirmAddress: link });
+    const mailQuery = this.mailService.sendMail({
+      user: { email: body.email, nickname: body.nickname },
+      urlConfirmAddress: link,
+    });
 
-    const { accessToken, refreshToken } =
-      await this.tokenService.generateTokens(user);
+    const tokensQuery = this.tokenService.generateTokens({ email: body.email });
 
-    res.cookie('accessToken', accessToken, {
+    const [tokens, user] = await Promise.all([tokensQuery, userQuery, mailQuery]);
+
+    res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000,
       path: '/',
     });
 
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -86,19 +88,20 @@ export class AuthController {
     @Body() body: SigninDto,
     @Res({ passthrough: true }) res: Response
   ): Promise<IAuthResponse> {
-    const user = await this.userService.findOne({ email: body.email });
+    const userQuery = this.userService.findOne({ email: body.email });
 
-    const { accessToken, refreshToken } =
-      await this.tokenService.generateTokens(user);
+    const tokensQuery = this.tokenService.generateTokens({ email: body.email });
+    
+    const [user,tokens] = await Promise.all([userQuery,tokensQuery])
 
-    res.cookie('accessToken', accessToken, {
+    res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000,
       path: '/',
     });
 
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -113,16 +116,9 @@ export class AuthController {
   }
 
   @Render('thank-you.ejs')
-  @Get(`/active-account/:link`)
-  public async activeAccount(@Param('link') link: string) {
-    const user = await this.userService.findOne({
-      link,
-    });
-
-    await this.userService.updateOne(
-      { link, email: user.email, id: user.id },
-      { isActived: true }
-    );
+  @Get(`/activate-account/:link`)
+  public async activeAccount(@Param('link') link: string): Promise<void> {
+    await this.userService.updateOne({ link }, { isActived: true });
   }
 
   @UseGuards(AccessTokenGuard)

@@ -3,7 +3,6 @@ import {
   Measure,
 } from 'prisma/prisma-client';
 import { PostCharacteristicFormSchema } from '../schemas/characteristic.schema';
-
 import { z } from 'zod';
 
 export interface IGetCharacteristicsQueryParameters {

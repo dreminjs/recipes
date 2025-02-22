@@ -8,10 +8,10 @@ export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
   async sendMail({
-    user: { email, id, nickname },
+    user: { email, nickname },
     urlConfirmAddress,
   }: {
-    user: User;
+    user: Pick<User,"email" | "nickname">;
     urlConfirmAddress: string;
   }) {
     return await this.mailerService
@@ -23,7 +23,6 @@ export class MailService {
           '../../../apps/api/templates/email-confirm.ejs'
         ),
         context: {
-          id: id,
           username: nickname,
           urlConfirmAddress,
         },

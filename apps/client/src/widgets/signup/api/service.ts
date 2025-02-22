@@ -1,16 +1,13 @@
-import { IAuthResponse } from "@/interfaces*";
-import { instance, SERVICE_KEYS, QUERY_KEYS, ISignUp } from "@/shared*";
+import { IAuthResponse } from '@/interfaces*';
+import { instance, SERVICE_KEYS, QUERY_KEYS, ISignUp } from '@/shared*';
 
-export const AuthService = {
-  axios: instance,
+const axios = instance;
 
-  root: SERVICE_KEYS.auth,
+const root = SERVICE_KEYS.auth;
 
-  queryKeys: QUERY_KEYS,
+const queryKeys = QUERY_KEYS;
 
-  async signup(data: ISignUp): Promise<IAuthResponse> {
-    return (
-      await this.axios.post(`/${this.root}/${this.queryKeys.signup}`, data)
-    ).data;
-  },
-};
+export async function signup(data: ISignUp): Promise<IAuthResponse> {
+  return (await axios.post(`/${root}/${queryKeys.signup}`, data))
+    .data;
+}

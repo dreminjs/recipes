@@ -2,7 +2,7 @@ import { FileStrategyUseCase, Options } from '../file.config';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import * as crypto from 'node:crypto';
-
+ 
 @Injectable()
 export class S3FileStrategy implements FileStrategyUseCase {
   public async execute(file: Express.Multer.File, options: Required<Options>): Promise<string> {
