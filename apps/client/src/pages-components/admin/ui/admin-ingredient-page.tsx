@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import {
-  AdminCharacteristicsTable,
   AdminPostIngredientModal,
 } from '@/widgets/admin';
 import { useIngredients } from '../model/hooks/use-ingredients';
@@ -10,6 +9,12 @@ import {
   IPostIngredientForm,
   useCharacteristics,
 } from '@/shared';
+import dynamic from 'next/dynamic';
+
+const AdminCharacteristicsTable = dynamic(
+  () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
+  { ssr: false }
+);
 
 export const AdminIngredientPage = () => {
   const {

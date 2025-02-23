@@ -13,8 +13,8 @@ export const AuthButton: FC<IProps> = ({ className }) => {
   return (
     <div className="flex items-center">
       <button
-        className={`${className} mr-2 text-[24px] bg-transparent rounded-xl px-5 py-2 text-[white] border-2 border-[white]`}
         type="submit"
+        className={`${className} mr-2 text-[24px] bg-transparent rounded-xl px-5 py-2 text-[white] border-2 border-[white]`}
       >
         Submit
       </button>

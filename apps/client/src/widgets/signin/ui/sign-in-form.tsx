@@ -36,7 +36,7 @@ export const SignInForm = () => {
           error={errors.password?.message}
           type={'password'}
         />
-        <AuthButton className="text-[24px] rounded-xl px-5 py-2 text-[white] border-2 border-[white]" />
+        <AuthButton className="text-[24px] rounded-xl px-5 py-2 text-[white] border-2 border-[white] mt-5" />
       </form>
       <MessageModal
         isError={signinIsError}

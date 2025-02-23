@@ -29,6 +29,7 @@
       "@/features*": ["./src/features/*"],
       "@/entities*": ["./src/entities/*"],
       "@/shared*": ["./src/shared/"],
+      "@/pages*": ["./src/pages-components/*"],
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],

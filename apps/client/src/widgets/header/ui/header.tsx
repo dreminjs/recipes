@@ -31,7 +31,7 @@ export const Header = () => {
               {userInfo.isActived && (
                 <Link
                   className="text-[20px]"
-                  href={`/${PAGE_KEYS.recipe}/${SERVICE_KEYS.post}`}
+                  href={`/${PAGE_KEYS.recipes}/${QUERY_KEYS.post}`}
                 >
                   {"Добавить рецепт"}
                 </Link>

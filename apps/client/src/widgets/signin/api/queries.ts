@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
-import { ISignIn } from "../model/interface";
 import { useMutation } from "@tanstack/react-query";
-import { PAGE_KEYS } from "@/shared*";
+import { PAGE_KEYS, ISignIn } from "@/shared*";
 import { signin } from "./service";
 
 export const usePostSignIn = () => {
@@ -12,7 +11,7 @@ export const usePostSignIn = () => {
     onSuccess: (data) => {
       console.log(data);
       if (!data.isActived) {
-        navigate(PAGE_KEYS.emailConfirm);
+        navigate(PAGE_KEYS.emailConfirm)
       } else {
         navigate('/');
       }

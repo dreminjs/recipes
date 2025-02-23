@@ -5,9 +5,7 @@ const axios = instance;
 
 const root = SERVICE_KEYS.auth;
 
-const queryKeys = QUERY_KEYS;
-
 export async function signin(data: ISignIn): Promise<IAuthResponse> {
-  return (await axios.post(`/${root}/${queryKeys.signin}`, data))
+  return (await axios.post(`/${root}/${QUERY_KEYS.signin}`, data))
     .data;
 }

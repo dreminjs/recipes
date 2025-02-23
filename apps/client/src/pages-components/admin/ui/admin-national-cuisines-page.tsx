@@ -4,7 +4,6 @@ import {
   useCharacteristics,
 } from '@/shared';
 import {
-  AdminCharacteristicsTable,
   AdminPostCharaceteristicModal,
 } from '@/widgets/admin';
 
@@ -12,6 +11,13 @@ import { MessageModal } from '@/features/message';
 import { useNationalCuisines } from '../model/hooks/use-national-cuisines';
 import { FC } from 'react';
 import { CharactersticsLayout } from '@/application/';
+import dynamic from 'next/dynamic';
+
+
+const AdminCharacteristicsTable = dynamic(
+  () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
+  { ssr: false }
+);
 
 export const AdminNationalCuisinesPage: FC = () => {
   const {

@@ -1,6 +1,11 @@
 import { ReactNode } from 'react';
-import { CommonProvider } from '../src/application/providers/common-provider';
-import { Header } from '../src/widgets/header';
+import { CommonProvider } from '@/application/providers/common-provider';
+import dynamic from 'next/dynamic';
+
+const Header = dynamic(
+  () => import('@/widgets/header/').then((mod) => mod.Header),
+  { ssr: false }
+);
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

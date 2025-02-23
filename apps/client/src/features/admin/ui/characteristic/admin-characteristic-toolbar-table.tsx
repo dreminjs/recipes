@@ -4,7 +4,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Measure } from 'prisma/prisma-client';
 
 interface IProps {
-  numSelected: number;
   onPut: () => void;
   onDeleteMany: () => void;
   selectedCharacteristics?: string[];
@@ -19,7 +18,6 @@ interface IProps {
 }
 
 export const AdminCharacteristicToolBarTable: FC<IProps> = ({
-  numSelected,
   onPut,
   onDeleteMany,
   onTogglePostCharacteristicModalVisibility,
@@ -35,14 +33,14 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
 
   return (
     <Toolbar>
-      {numSelected > 0 ? (
+      {selectedCharacteristics?.length && selectedCharacteristics?.length + 1 > 0 ? (
         <Typography
           sx={{ flex: '1 1 100%' }}
           color="inherit"
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {selectedCharacteristics?.length + 1} selected
         </Typography>
       ) : (
         <Typography
@@ -75,7 +73,7 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
         post
       </button>
 
-      {numSelected > 0 && (
+      {selectedCharacteristics?.length && selectedCharacteristics?.length + 1 > 0 && (
         <Tooltip title="Delete">
           <IconButton onClick={onDeleteMany}>
             <DeleteIcon />

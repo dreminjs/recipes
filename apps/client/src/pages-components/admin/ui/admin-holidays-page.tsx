@@ -5,7 +5,6 @@ import {
   useCharacteristics,
 } from '@/shared';
 import {
-  AdminCharacteristicsTable,
   AdminPostCharaceteristicModal,
 } from '@/widgets/admin';
 
@@ -13,6 +12,12 @@ import { MessageModal } from '@/features/message';
 import { FC } from 'react';
 import { useHolidays } from '../model/hooks/use-holidays';
 import { CharactersticsLayout } from '@/application/';
+import dynamic from 'next/dynamic';
+
+const AdminCharacteristicsTable = dynamic(
+  () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
+  { ssr: false }
+);
 
 export const AdminHolidaysPage: FC = () => {
   const {

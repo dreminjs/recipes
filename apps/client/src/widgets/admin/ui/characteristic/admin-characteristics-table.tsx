@@ -4,13 +4,12 @@ import {
   AdminCharacteristicToolBarTable,
   AdminCharacteristictsBodyTable,
   // AdminCharacteristictsBodyTable,
-} from 'apps/client/src/features/admin';
-import { useCharacteristics } from 'apps/client/src/shared';
+} from '@/features/admin';
+import { useCharacteristics } from '@/shared';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
-import { Paper, TableFooter, TableRow } from '@mui/material';
+import { Paper } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
-import dynamic from 'next/dynamic';
 
 interface IProps {
   onPut: () => void;
@@ -62,9 +61,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
           onUnSelectedCharaceteristics();
         }}
         onPut={onPut}
-        numSelected={
-          selectedCharacteristics ? selectedCharacteristics?.length : 0
-        }
+
       />
       <TableContainer sx={{ height: 440, width: 900 }}>
         <Table stickyHeader>
