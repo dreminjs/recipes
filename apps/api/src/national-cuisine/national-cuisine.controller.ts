@@ -19,7 +19,7 @@ import { RolesGuard } from '../user/guards/roles.guard';
 import { AllowedRoles } from '../user/decorators/roles.decorator';
 import { AccessTokenGuard } from '../token';
 
-@Controller('national-cuisine')
+@Controller('national-cuisines')
 export class NationalCuisineController {
   constructor(
     private readonly nationalCuisineService: NationalCuisineService

@@ -18,7 +18,7 @@ import { UpdateRecipeCommentDto } from './dto/update-recipe-comment.dto';
 import { AccessTokenGuard } from '../token';
 import { RecipeCommentGuard } from './guards/recipe-comment.guard';
 
-@Controller('recipe-comment')
+@Controller('recipe-comments')
 export class RecipeCommentController {
   constructor(private readonly recipeCommentService: RecipeCommentService) {}
 

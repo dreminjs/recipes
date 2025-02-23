@@ -1,11 +1,11 @@
-import { Controller, Get, Logger, NotFoundException, Query } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Query } from '@nestjs/common';
 import { TypeService } from '../type/type.service';
 import { NationalCuisineService } from '../national-cuisine/national-cuisine.service';
 import { HolidayService } from '../holiday/holiday.service';
-import { Characteristics, ICharacteristic } from 'interfaces';
-import { GetCharacteristicsQueryParameters } from './dto/get-characteristics-query-parameters';
+import { Characteristics } from 'interfaces';
+import { } from './dto/get-characteristics-query-parameters';
 
-@Controller('characteristic')
+@Controller('characteristics')
 export class CharacteristicController {
   constructor(
     private readonly holidayService: HolidayService,

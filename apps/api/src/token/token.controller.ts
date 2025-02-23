@@ -6,7 +6,7 @@ import { ITokens } from './token.interface';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
 import { Response } from 'express';
 
-@Controller('token')
+@Controller('tokens')
 export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 

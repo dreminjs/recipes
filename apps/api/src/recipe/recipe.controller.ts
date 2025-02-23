@@ -19,7 +19,7 @@ import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
 import { IInfiniteScrollResponse } from 'interfaces';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('recipe')
+@Controller('recipes')
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
 

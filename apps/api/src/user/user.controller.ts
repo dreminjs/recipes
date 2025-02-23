@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 
 import { AccessTokenGuard } from '../token';
 
@@ -7,7 +7,7 @@ import { User } from '@prisma/client';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { IUserResponse } from 'interfaces';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   @Get()
   @UseGuards(AccessTokenGuard)

@@ -19,7 +19,7 @@ import { RolesGuard } from '../user/guards/roles.guard';
 import { AccessTokenGuard } from '../token';
 import { UpdateTypeDto } from './dto/update-type.dto';
 
-@Controller('type')
+@Controller('types')
 export class TypeController {
   constructor(private readonly typeService: TypeService) {}
 

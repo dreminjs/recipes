@@ -19,7 +19,7 @@ import { AllowedRoles } from '../user/decorators/roles.decorator';
 import { RolesGuard } from '../user/guards/roles.guard';
 import { CreateHolidayDto } from './dto/create-holiday.dto';
 
-@Controller('holiday')
+@Controller('holidays')
 export class HolidayController {
   constructor(private readonly holidayService: HolidayService) {}
 
