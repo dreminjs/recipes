@@ -1,11 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { AuthButton } from '@/shared/';
+import { AuthButton, ISignUp, SignUpSchema } from '@/shared/';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SignupFormField } from '@/features/auth';
 import { usePostSignUp } from '../api/queries';
 import { MessageModal } from '@/features/message';
-import { ISignUp } from "../model/interface"
-import { SignUpSchema } from "../model/schema"
+
 
 export const SignUpForm = () => {
   const {

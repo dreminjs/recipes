@@ -28,31 +28,33 @@ export const QUERY_KEYS = {
 
 export const SERVICE_KEYS = {
   auth: 'auth',
-  signup: '/',
+  signup: 'signup',
   signin: 'signin',
-  user: 'user',
   selection: 'selection',
   random: 'random',
+  users: 'users',
   post: 'post',
   signout: 'signout',
-  characteristic: 'characteristic',
-  'national-cuisine': 'national-cuisine',
-  ingredient: 'ingredient',
+  characteristics: 'characteristics',
+  'national-cuisines': 'national-cuisines',
+  ingredients: 'ingredients',
+  types: 'types',
+  recipes: 'recipes',
+  holidays: 'holidays',
 } as {
-  characteristic: 'characteristic';
   signout: 'signout';
-  recipe: 'recipe';
+  recipes: 'recipes';
   auth: 'auth';
-  signup: '/';
+  signup: 'signup';
   signin: 'signin';
-  user: 'user';
+  users: 'users';
   selection: 'selection';
   random: 'random';
   post: 'post';
-  type: 'type';
-  holiday: 'holiday';
-  'national-cuisine': 'national-cuisine';
-  ingredient: 'ingredient';
+  types: 'types';
+  holidays: 'holidays';
+  'national-cuisines': 'national-cuisines';
+  ingredients: 'ingredients';
 };
 
 export const PAGE_KEYS = {
@@ -60,7 +62,7 @@ export const PAGE_KEYS = {
   signup: 'signup',
   signin: 'signin',
   emailConfirm: 'email-confirm',
-  recipe: 'recipe',
+  recipes: 'recipes',
   admin: 'admin',
   profile: 'profile',
 } as {
@@ -68,7 +70,7 @@ export const PAGE_KEYS = {
   signup: 'signup';
   signin: 'signin';
   emailConfirm: 'email-confirm';
-  recipe: 'recipe';
+  recipes: 'recipes';
   admin: 'admin';
   profile: 'profile';
 };

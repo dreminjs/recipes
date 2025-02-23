@@ -40,3 +40,7 @@ export type { IPostIngredientForm } from './model/interfaces/ingredient.interfac
 export { useCharacteristics } from './model/hooks/use-characteristics';
 
 export { instance } from './api/api.instance';
+
+export type { ISignIn,ISignUp } from "./model/interfaces/auth.interface"
+
+export { SignInSchema,SignUpSchema } from "./model/schemas/auth.schema"
