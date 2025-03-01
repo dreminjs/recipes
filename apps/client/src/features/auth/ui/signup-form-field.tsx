@@ -31,7 +31,7 @@ export const SignupFormField: FC<IProps> = ({
   };
 
   return (
-    <label className={`pb-2 mb-3 4 ${className} relative`}>
+    <fieldset className={`pb-2 mb-3 ${className} relative`}>
       <input
         placeholder={placeholder[type]}
         {...register(type)}
@@ -40,6 +40,6 @@ export const SignupFormField: FC<IProps> = ({
       {error && (
         <p className="text-[24px] text-white underline">{error.toString()}</p>
       )}
-    </label>
+    </fieldset>
   );
 };

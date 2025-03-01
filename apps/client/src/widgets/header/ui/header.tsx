@@ -3,10 +3,9 @@ import {
   PAGE_KEYS,
   QUERY_KEYS,
   SERVICE_KEYS,
-
 } from '@/shared';
-
 import { useGetMyProfile } from '@/features/user/';
+
 
 export const Header = () => {
   const { userInfo } = useGetMyProfile();
@@ -26,7 +25,6 @@ export const Header = () => {
                 </Link>
               )}
             </>
-
             <>
               {userInfo.isActived && (
                 <Link

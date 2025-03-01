@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
+
 interface IProps {
   id: string;
 }
@@ -8,7 +9,9 @@ interface IProps {
 export const RecipeItem: FC<IProps> = ({ id }) => {
   return (
     <li>
-      <Link href={`recipe/${id}`}></Link>
+      <Link href={`recipe/${id}`}>
+        
+      </Link>
     </li>
   );
 };

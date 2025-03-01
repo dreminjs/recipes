@@ -30,13 +30,13 @@ export const SigninFormField: FC<IProps> = ({
   };
 
   return (
-    <label className={`pb-2 mb-3 4 ${className} relative`}>
+    <fieldset className={`pb-2 mb-3 4 ${className} relative`}>
       <input
         placeholder={placeholder[type]}
         {...register(type)}
         className="text-[24px] bg-transparent placeholder:text-white text-white outline-none border-b-2 w-full"
       />
         {error && <p className='text-[24px] text-white underline'>{error.toString()}</p>}
-    </label>
+    </fieldset>
   );
 };

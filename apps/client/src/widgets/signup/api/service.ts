@@ -5,9 +5,7 @@ const axios = instance;
 
 const root = SERVICE_KEYS.auth;
 
-const queryKeys = QUERY_KEYS;
-
 export async function signup(data: ISignUp): Promise<IAuthResponse> {
-  return (await axios.post(`/${root}/${queryKeys.signup}`, data))
+  return (await axios.post(`/${root}/${QUERY_KEYS.signup}`, data))
     .data;
 }

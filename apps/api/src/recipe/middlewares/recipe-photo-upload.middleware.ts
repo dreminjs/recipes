@@ -2,7 +2,6 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 
-
 @Injectable()
 export class UploadPhotoMiddleware implements NestMiddleware {
   private upload = multer({

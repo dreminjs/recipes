@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useGetRandomCharacteristic, useGetRecipes } from '@/shared/';
 import Link from 'next/link';
-
+import Image from "next/image"
 // const obj = {
 //   type: 'тип рецептов',
 //   holiday: 'праздник рецептов:',
@@ -34,7 +34,9 @@ export const RecipeSelection: FC<IProps> = ({ idx, type }) => {
       <Link href={`recipes?${type}=${characteristic?.title}`}>
         {characteristic?.title}
       </Link>
-      <ul></ul>
+      <ul>
+      <Image width={100} height={100} src={'http://localhost:9000/recipes/f909b02ff87c3cb34a2782890ce866e2.jpg'} alt={'1'}/>
+      </ul>
     </section>
   );
 };

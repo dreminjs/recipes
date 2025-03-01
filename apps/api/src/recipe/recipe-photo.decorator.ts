@@ -2,6 +2,6 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const RecipePhoto = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    return ctx.switchToHttp().getRequest().file;
+    return ctx.switchToHttp().getRequest().file as string
   }
 );

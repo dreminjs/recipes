@@ -16,11 +16,14 @@ body {
   line-height: inherit;
   margin: 0;
 }
+
+fieldset,
 h1,
 h2,
 p,
 pre {
   margin: 0;
+  padding: 0;
 }
 *,
 ::before,

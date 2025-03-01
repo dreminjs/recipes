@@ -11,6 +11,7 @@ import { CharacteristicModule } from '../characteristic/characteristic.module';
 import { RecipeModule } from '../recipe/recipe.module';
 import { ConfigModule } from '@nestjs/config';
 import { IngredientModule } from '../ingredient/ingredient.module';
+import { MinioClientModule } from '../minio-client/minio-client.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { IngredientModule } from '../ingredient/ingredient.module';
     IngredientModule,
     RecipeModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    MinioClientModule
   ],
 })
 export class AppModule {}

@@ -123,7 +123,7 @@ export class AuthController {
 
   @UseGuards(AccessTokenGuard)
   @Get()
-  public async index(@CurrentUser() user: User): Promise<IAuthResponse> {
+  public async findMySelf(@CurrentUser() user: User): Promise<IAuthResponse> {
     return {
       email: user.email,
       nickname: user.nickname,
