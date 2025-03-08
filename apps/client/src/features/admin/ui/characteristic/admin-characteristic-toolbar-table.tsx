@@ -6,7 +6,7 @@ import { Measure } from 'prisma/prisma-client';
 interface IProps {
   onPut: () => void;
   onDeleteMany: () => void;
-  selectedCharacteristics?: string[];
+  selectedCharacteristics: string[];
   hasNewCharacteristicValue: boolean;
   // eslint-disable-next-line no-empty-pattern
   onSetCharactersticValue: ({}: {
@@ -73,7 +73,7 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
         post
       </button>
 
-      {selectedCharacteristics?.length && selectedCharacteristics?.length + 1 > 0 && (
+      {selectedCharacteristics.length + 1 > 0 && (
         <Tooltip title="Delete">
           <IconButton onClick={onDeleteMany}>
             <DeleteIcon />

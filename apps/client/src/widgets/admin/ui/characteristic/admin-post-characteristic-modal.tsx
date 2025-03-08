@@ -1,9 +1,9 @@
-import { AdminPostCharacteristic } from 'apps/client/src/features/admin';
+import { AdminPostCharacteristic } from '@/features/admin';
 import {
   BasicModal,
   IPostCharacteristicForm,
   useCharacteristics,
-} from 'apps/client/src/shared';
+} from '@/shared';
 import { FC } from 'react';
 
 interface IProps {

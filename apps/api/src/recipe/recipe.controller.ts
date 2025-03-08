@@ -13,11 +13,12 @@ import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { FavoriteRecipe, Recipe, User } from '@prisma/client';
 import { RecipeService } from './recipe.service';
 import { CurrentUser } from '../user';
-import { RecipePhoto } from './recipe-photo.decorator';
+import { MinioFileName } from '../minio-client/minio-file-name.decorator';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
 import { IInfiniteScrollResponse } from 'interfaces';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { MinioFileUploadInterceptor } from '../minio-client/minio-file-upload.interceptor';
 
 @Controller('recipes')
 export class RecipeController {
@@ -25,16 +26,16 @@ export class RecipeController {
 
   @UseGuards(AccessTokenGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file'),MinioFileUploadInterceptor)
   public async createOne(
     @Body() body: CreateRecipeDto,
     @CurrentUser('id') userId: string,
-    @RecipePhoto() photo: string
+    @MinioFileName() fileName: string
   ): Promise<Recipe> {
     const recipe = await this.recipeService.createOne({
       title: body.title,
       description: body.description,
-      photo,
+      photo: fileName,
       recipeIngredient: { createMany: { data: body.recipeIngredients } },
       steps: {
         createMany: {

@@ -4,7 +4,7 @@ import { Holiday, Prisma } from "prisma/prisma-client";
 import { instance } from "src/shared/api/api.instance";
 
 export const holidayService = {
-  root: SERVICE_KEYS.holiday,
+  root: SERVICE_KEYS.holidays,
 
   axios: instance,
 

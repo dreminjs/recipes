@@ -4,7 +4,7 @@ import { Ingredient, Prisma } from "prisma/prisma-client";
 import { instance } from "src/shared/api/api.instance";
 
 export const ingredientService = {
-  root: SERVICE_KEYS.ingredient,
+  root: SERVICE_KEYS.ingredients,
 
   axios: instance,
 

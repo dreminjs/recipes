@@ -25,7 +25,6 @@ export class MinioClientService {
   private readonly minioBucket = this.configService.get<string>('MINIO_BUCKET');
 
   public async uploadOne(file: BufferedFile) {
-    console.log({ file });
     const temp_filename = Date.now().toString();
     const hashedFileName = crypto
       .createHash('md5')

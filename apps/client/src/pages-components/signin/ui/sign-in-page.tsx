@@ -1,5 +1,6 @@
 import { SignInForm } from '@/widgets/signin';
 
+
 export const SignInPage = () => {
   return (
     <div className="flex justify-center items-center">

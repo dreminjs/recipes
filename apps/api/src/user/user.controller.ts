@@ -9,9 +9,9 @@ import { IUserResponse } from 'interfaces';
 
 @Controller('users')
 export class UserController {
-  @Get()
+  @Get('me')
   @UseGuards(AccessTokenGuard)
-  public async index(
+  public async findMySelf(
     @CurrentUser() { email, role, isActived, nickname }: User
   ): Promise<IUserResponse> {
     return { email, role, isActived, nickname };

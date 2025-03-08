@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { CommonProvider } from '@/application/providers/common-provider';
+import { CommonProvider } from '@/application/';
 import dynamic from 'next/dynamic';
 
 const Header = dynamic(

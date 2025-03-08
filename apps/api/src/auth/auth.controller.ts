@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Logger,
   Param,
   Post,
   Render,
@@ -12,21 +11,19 @@ import {
 import { SignupDto } from './dto/signup.dto';
 import { IAuthResponse } from 'interfaces';
 import { SigninDto } from './dto/signin.dto';
-import { PasswordService } from '../password/password.service';
-import { CurrentUser, UserService } from '../user/';
+import { UserService } from '../user/';
 import { TokenService } from '../token/token.service';
 import { Response } from 'express';
 import { MailService } from '../mail/mail.service';
 import { SignupGuard } from './guards/signup.guard';
-import { AccessTokenGuard } from '../token';
-import { User } from '@prisma/client';
+import { Roles } from '@prisma/client';
 import * as crypto from 'node:crypto';
 import { SigninGuard } from './guards/signin.guard';
+import { generateHashPassword } from './helpers/password.helperst';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly passwordService: PasswordService,
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
     private readonly mailService: MailService
@@ -35,32 +32,35 @@ export class AuthController {
   @UseGuards(SignupGuard)
   @Post('/signup')
   public async signup(
-    @Body() body: SignupDto,
+    @Body() { email, nickname, ...body }: SignupDto,
     @Res({ passthrough: true }) res
   ): Promise<IAuthResponse> {
-    const { hashPassword, salt } =
-      await this.passwordService.generateHashPassword(body.password);
+    const { hashPassword, salt } = await generateHashPassword(body.password);
 
     const link = crypto.randomUUID();
 
     const userQuery = this.userService.createOne({
-      hashPassword: hashPassword,
-      email: body.email,
-      nickname: body.nickname,
-      salt: salt,
+      hashPassword,
+      email,
+      nickname,
+      salt,
       isActived: false,
-      role: 'USER',
+      role: Roles.USER,
       link,
     });
 
     const mailQuery = this.mailService.sendMail({
-      user: { email: body.email, nickname: body.nickname },
+      user: { email, nickname },
       urlConfirmAddress: link,
     });
 
-    const tokensQuery = this.tokenService.generateTokens({ email: body.email });
+    const tokensQuery = this.tokenService.generateTokens({ email });
 
-    const [tokens, user] = await Promise.all([tokensQuery, userQuery, mailQuery]);
+    const [tokens, user] = await Promise.all([
+      tokensQuery,
+      userQuery,
+      mailQuery,
+    ]);
 
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
@@ -85,14 +85,17 @@ export class AuthController {
   @UseGuards(SigninGuard)
   @Post('/signin')
   public async signin(
-    @Body() body: SigninDto,
+    @Body() { email }: SigninDto,
     @Res({ passthrough: true }) res: Response
   ): Promise<IAuthResponse> {
-    const userQuery = this.userService.findOne({ email: body.email });
+    const userQuery = this.userService.findOne({ email });
 
-    const tokensQuery = this.tokenService.generateTokens({ email: body.email });
-    
-    const [user,tokens] = await Promise.all([userQuery,tokensQuery])
+    const tokensQuery = this.tokenService.generateTokens({ email });
+
+    const [{ nickname, isActived }, tokens] = await Promise.all([
+      userQuery,
+      tokensQuery,
+    ]);
 
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
@@ -109,9 +112,9 @@ export class AuthController {
     });
 
     return {
-      email: body.email,
-      nickname: user.nickname,
-      isActived: user.isActived,
+      email: email,
+      nickname,
+      isActived,
     };
   }
 
@@ -119,15 +122,5 @@ export class AuthController {
   @Get(`/activate-account/:link`)
   public async activeAccount(@Param('link') link: string): Promise<void> {
     await this.userService.updateOne({ link }, { isActived: true });
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Get()
-  public async findMySelf(@CurrentUser() user: User): Promise<IAuthResponse> {
-    return {
-      email: user.email,
-      nickname: user.nickname,
-      isActived: user.isActived,
-    };
   }
 }

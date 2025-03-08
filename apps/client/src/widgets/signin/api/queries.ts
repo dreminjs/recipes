@@ -9,7 +9,6 @@ export const usePostSignIn = () => {
   const { mutate, isLoading, data, isSuccess, isError } = useMutation({
     mutationFn: (data: ISignIn) => signin(data),
     onSuccess: (data) => {
-      console.log(data);
       if (!data.isActived) {
         navigate(PAGE_KEYS.emailConfirm)
       } else {

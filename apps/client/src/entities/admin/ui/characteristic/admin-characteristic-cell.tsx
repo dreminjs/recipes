@@ -4,7 +4,7 @@ import {
   ICharacteristicsTableCoordinats,
   measuresArray,
   useCharacteristics,
-} from 'apps/client/src/shared';
+} from '@/shared';
 
 interface IProps {
   type: 'checkbox' | 'text' | 'options';
@@ -101,7 +101,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
         <>
           {(() => {
             if (type === 'checkbox') {
-              return Boolean(payload) ? 'yes' : 'no';
+              return payload ? 'yes' : 'no';
             } else if (type === 'options') {
               return (
                 measuresArray.find((option) => option.value === payload)

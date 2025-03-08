@@ -44,6 +44,7 @@ export class HolidayController {
       itemsQuery,
       countQuery,
     ]);
+    
     return {
       items,
       currentPage: page,

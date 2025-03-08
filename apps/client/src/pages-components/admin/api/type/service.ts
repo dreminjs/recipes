@@ -3,7 +3,7 @@ import { SERVICE_KEYS, IGetCharacteristicsQueryParameters, instance } from "@/sh
 import { Prisma,Type } from "prisma/prisma-client";
 
 export const typeService = {
-  root: SERVICE_KEYS.type,
+  root: SERVICE_KEYS.types,
 
   axios: instance,
 

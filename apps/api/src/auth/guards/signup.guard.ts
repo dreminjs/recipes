@@ -4,16 +4,13 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  Logger,
 } from '@nestjs/common';
 import { UserService } from '../../user';
 import { SignupDto } from '../dto/signup.dto';
 
 @Injectable()
 export class SignupGuard implements CanActivate {
-  constructor(private readonly userService: UserService) {}
-
-  private logger = new Logger(SignupGuard.name);
+  constructor(private readonly userService: UserService) {};
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const { email } = context.switchToHttp().getRequest().body as SignupDto;

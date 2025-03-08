@@ -1,4 +1,4 @@
-import { QUERY_KEYS } from "@/shared*";
+import { QUERY_KEYS, SERVICE_KEYS } from "@/shared*";
 import { useQuery } from "@tanstack/react-query";
 import { findMySelf } from "./service";
 
@@ -9,7 +9,7 @@ export const useGetMyProfile = () => {
     isSuccess: userInfoIsSuccess,
   } = useQuery({
     queryFn: () => findMySelf(),
-    queryKey: [QUERY_KEYS.user],
+    queryKey: [SERVICE_KEYS.user,QUERY_KEYS.me],
   });
 
   return { userInfo, userInfoIsLoading, userInfoIsSuccess };

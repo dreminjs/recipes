@@ -13,7 +13,8 @@ export const QUERY_KEYS = {
   holiday: 'holiday',
   ingredient: 'ingredient',
   post: 'post',
-  random: 'random'
+  random: 'random',
+  me:"me"
 } as {
   auth: 'auth';
   signup: 'signup';
@@ -28,6 +29,7 @@ export const QUERY_KEYS = {
   ingredient: 'ingredient';
   post: 'post',
   random: 'random';
+  me:"me"
 };
 
 export const SERVICE_KEYS = {
@@ -44,6 +46,8 @@ export const SERVICE_KEYS = {
   types: 'types',
   recipes: 'recipes',
   holidays: 'holidays',
+  user: "user"
+  
 } as {
   signout: 'signout';
   recipes: 'recipes';
@@ -56,6 +60,8 @@ export const SERVICE_KEYS = {
   holidays: 'holidays';
   'national-cuisines': 'national-cuisines';
   ingredients: 'ingredients';
+  user: "user"
+  characteristics:"characteristics"
 };
 
 export const PAGE_KEYS = {

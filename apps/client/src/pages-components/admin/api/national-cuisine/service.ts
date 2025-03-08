@@ -4,7 +4,7 @@ import { NationalCuisine, Prisma } from "prisma/prisma-client";
 import { Type } from "typescript";
 
 export const nationalCuisineService = {
-  root: SERVICE_KEYS['national-cuisine'],
+  root: SERVICE_KEYS['national-cuisines'],
 
   axios: instance,
 

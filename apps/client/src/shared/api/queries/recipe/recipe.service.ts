@@ -7,7 +7,7 @@ import { IInfiniteScrollResponse } from '@/interfaces';
 export const recipeService = {
   axios: instance,
 
-  root: SERVICE_KEYS.recipe,
+  root: SERVICE_KEYS.recipes,
 
   async findMany(
     queryParams: IGetRecipesQueryParameters

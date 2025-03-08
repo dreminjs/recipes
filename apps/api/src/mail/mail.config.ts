@@ -5,7 +5,6 @@ import { MailerOptions } from '@nestjs-modules/mailer';
 export const getMailConfig = async (
   configService: ConfigService
 ): Promise<MailerOptions> => {
-
   return {
     transport:{
       host: configService.get<string>("MAIL_HOST") || "smtp.gmail.com",

@@ -23,7 +23,7 @@ export class RecipeCommentController {
   constructor(private readonly recipeCommentService: RecipeCommentService) {}
 
   @UseGuards(AccessTokenGuard)
-  @Post(':/id')
+  @Post(':id')
   public async createOne(
     @Param('id') recipeId: string,
     @Body() body: CreateRecipeCommentDto,

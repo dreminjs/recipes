@@ -1,5 +1,5 @@
-import { AdminPostIngredientForm } from 'apps/client/src/features/admin';
-import { BasicModal, IPostIngredientForm } from 'apps/client/src/shared';
+import { AdminPostIngredientForm } from '@/features/admin';
+import { BasicModal, IPostIngredientForm } from '@/shared';
 import { FC } from 'react';
 
 interface IProps {

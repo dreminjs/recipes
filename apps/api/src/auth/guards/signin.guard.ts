@@ -20,6 +20,7 @@ export class SigninGuard implements CanActivate {
       .body as SigninDto;
 
     const user = await this.userService.findOne({ email });
+    
     if (!user) {
       throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
     }

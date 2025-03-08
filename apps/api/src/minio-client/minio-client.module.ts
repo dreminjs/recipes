@@ -5,7 +5,6 @@ import { getMinioClientConfig } from './minio-client.config';
 import { MinioClientService } from './minio-client.service';
 import { MinioClientController } from './minio-client.contoller';
 
-
 @Module({
     imports: [MinioModule.registerAsync({
         imports: [ConfigModule],
@@ -13,8 +12,7 @@ import { MinioClientController } from './minio-client.contoller';
         useFactory: getMinioClientConfig
     })],
     providers: [MinioClientService],
-    controllers: [MinioClientController]
+    controllers: [MinioClientController],
+    exports: [MinioClientService]
 })
-export class MinioClientModule {
-s
-}
+export class MinioClientModule {}

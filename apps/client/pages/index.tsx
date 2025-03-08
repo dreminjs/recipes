@@ -1,4 +1,6 @@
-import { MainRecipesPage } from '../src/pages-components/main-recipes/ui/main-recipes-page';
+'use client'
+import { MainRecipesPage } from '../src/pages-components/main-recipes';
+
 
 export default function Index() {
   return <MainRecipesPage />;

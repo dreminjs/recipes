@@ -1,11 +1,16 @@
 import { FC, useRef, useState } from 'react';
-import { IPostRecipeForm } from '../../../shared';
-import { FieldError, FieldErrorsImpl, Merge, UseFormRegister } from 'react-hook-form';
+import { IPostRecipeForm } from '@/shared';
+import {
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  UseFormRegister,
+} from 'react-hook-form';
 import Image from 'next/image';
 
 interface IProps {
   register: UseFormRegister<IPostRecipeForm>;
-  error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined
+  error: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
 }
 
 export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
@@ -38,18 +43,25 @@ export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
           alt="Recipe Preview"
         />
       )}
-      <button className='block border-2 px-5 py-2' type="button" onClick={onClick}>Выбрать превью для рецепта</button>
+      <button
+        className="block border-2 px-5 py-2"
+        type="button"
+        onClick={onClick}
+      >
+        Выбрать превью для рецепта
+      </button>
       <input
-        {...register('photo', {
-          onChange: handleImageChange,
-        })}
-        ref={inputRef}
+        {...register('photo')}
+        ref={(e) => {
+          register('photo').ref(e)
+          inputRef.current = e;
+        }}
         type="file"
         accept="image/*"
-        style={{ display: 'none' }} 
+        onChange={handleImageChange}
+        style={{ display: 'none' }}
       />
       {error?.message && <p>{error.message.toString()}</p>}
     </div>
   );
 };
-

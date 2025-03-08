@@ -7,12 +7,11 @@ import {
 import {
   AdminPostCharaceteristicModal,
 } from '@/widgets/admin';
-
 import { MessageModal } from '@/features/message';
 import { FC } from 'react';
 import { useHolidays } from '../model/hooks/use-holidays';
-import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
+import { CharactersticsLayout } from '@/application/';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),

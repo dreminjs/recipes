@@ -24,7 +24,7 @@
     "baseUrl": ".",
     "paths": {
       "@/interfaces*": ["../../interfaces"],
-      "@/application*": ["./src/application/*"],
+      "@/application*": ["./src/application/"],
       "@/widgets*": ["./src/widgets/*"],
       "@/features*": ["./src/features/*"],
       "@/entities*": ["./src/entities/*"],
