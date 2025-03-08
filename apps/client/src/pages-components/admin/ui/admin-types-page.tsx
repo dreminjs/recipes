@@ -9,13 +9,17 @@ import { FC } from 'react';
 import { useTypes } from '../model/hooks/use-types';
 import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
+import { Characteristics } from '@/interfaces*';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
   { ssr: false }
 );
 
-export const AdminTypesPage: FC = () => {
+
+
+export const AdminTypesPage: FC= () => {
+  
   const {
     newCharacteristicValue,
     selectedCharacteristics,
@@ -69,6 +73,7 @@ export const AdminTypesPage: FC = () => {
           onChangePage={(_, newPage) => {
             typesProps.onChangePage(newPage);
           }}
+          type='type'
           count={
             typesProps.items?.countItems ? typesProps.items?.countItems : 1
           }

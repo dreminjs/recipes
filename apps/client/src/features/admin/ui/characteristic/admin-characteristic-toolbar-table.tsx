@@ -2,6 +2,7 @@ import { IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
 import { FC } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Measure } from 'prisma/prisma-client';
+import { Characteristics } from '@/interfaces*';
 
 interface IProps {
   onPut: () => void;
@@ -15,6 +16,7 @@ interface IProps {
     measure?: Measure;
   } | null) => void;
   onTogglePostCharacteristicModalVisibility: () => void;
+  type: Characteristics
 }
 
 export const AdminCharacteristicToolBarTable: FC<IProps> = ({
@@ -24,6 +26,7 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
   selectedCharacteristics,
   hasNewCharacteristicValue,
   onSetCharactersticValue,
+  type
 }) => {
   const handleConfirmClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -49,7 +52,7 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = ({
           id="tableTitle"
           component="div"
         >
-          Characteristics
+          {type}
         </Typography>
       )}
       {(hasNewCharacteristicValue ||

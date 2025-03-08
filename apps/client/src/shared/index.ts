@@ -27,6 +27,7 @@ export type {
   ICharacteristicsTableCoordinats,
   IGetCharacteristicsQueryParameters,
   ICharacteristic,
+  ICharacteristicPayload
 } from './model/interfaces/characteristic.interface';
 
 export { PostCharacteristicFormSchema } from './model/schemas/characteristic.schema';

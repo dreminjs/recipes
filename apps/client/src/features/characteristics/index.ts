@@ -1,3 +1,5 @@
 
+export { ChooseCharacteristicTabPanel } from "./ui/choose-characteristic-tab-panel"
 
-export { CharacteristicsTabs } from "./ui/characteristics-tabs"
+export { ChoosedCharacteristicTabPanel } from "./ui/choosed-characteristic-tab-panel"
+

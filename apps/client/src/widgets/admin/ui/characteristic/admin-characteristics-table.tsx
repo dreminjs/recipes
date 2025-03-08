@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { Paper } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
+import { Characteristics } from '@/interfaces*';
 
 interface IProps {
   onPut: () => void;
@@ -25,6 +26,7 @@ interface IProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   addiotionalColoumns?: string[];
+  type: Characteristics
 }
 
 
@@ -37,6 +39,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   limit,
   currentPage,
   addiotionalColoumns,
+  type
 }) => {
   const {
     selectedCharacteristics,
@@ -50,6 +53,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   return (
     <Paper>
       <AdminCharacteristicToolBarTable
+        type={type}
         onSetCharactersticValue={onSetCharactersticValue}
         hasNewCharacteristicValue={newCharacteristicValue ? true : false}
         selectedCharacteristics={selectedCharacteristics}

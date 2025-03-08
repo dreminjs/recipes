@@ -69,6 +69,7 @@ export const AdminNationalCuisinesPage: FC = () => {
           onChange={nationalCuisinesProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
+          type='national-cuisine'
           onDeleteMany={handleDeleteNationalCuisines}
           onPut={handlePutNationalCuisine}
           onChangePage={(_, newPage) =>

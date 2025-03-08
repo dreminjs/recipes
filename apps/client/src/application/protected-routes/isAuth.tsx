@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
-import { useGetMyProfile } from '../../shared';
+
 import { useRouter } from 'next/router';
+import { useGetMyProfile } from '@/featuresuser';
 
 export const IsAuth: FC<PropsWithChildren> = ({ children }) => {
   const { userInfo, userInfoIsLoading, userInfoIsSuccess } = useGetMyProfile();

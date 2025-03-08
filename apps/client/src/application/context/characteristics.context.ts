@@ -7,10 +7,10 @@ import {
 } from '@/shared/model/interfaces/characteristic.interface';
 import { Measure } from 'prisma/prisma-client';
 
-export const CharacteristicsContext = createContext<{
+interface IContext {
   characteristics?: CharacteristicsPayload | null;
   onSetCharacterstics: Dispatch<SetStateAction<CharacteristicsPayload | null>>;
-  selectedCharacteristics: string[] | undefined;
+  selectedCharacteristics: string[]
   onToggleAllCharacteristics: () => void;
   onSelectCharacteristic: (id: string) => void;
   isHeadCheckboxChecked: boolean;
@@ -36,7 +36,10 @@ export const CharacteristicsContext = createContext<{
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   limit: number;
-}>({
+}
+
+
+export const CharacteristicsContext = createContext<IContext>({
   characteristics: { items: [], countItems: 0, currentPage: 0 },
   onSetCharacterstics(payload) {},
   selectedCharacteristics: [],

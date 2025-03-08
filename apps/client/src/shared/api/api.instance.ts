@@ -26,7 +26,7 @@ instance.interceptors.response.use(
 			originalRequest._isRetry = true
 			retryCount += 1
 			try {
-				return instance.get("token")
+				return instance.get("tokens")
 			} catch (error: any) {
 				if (errorCatch(error) === 'jwt expired') {
 					// set auth false

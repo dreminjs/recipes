@@ -66,6 +66,7 @@ export const AdminHolidaysPage: FC = () => {
           onChange={holidaysProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
+          type='holiday'
           onDeleteMany={handleDeleteHolidays}
           onPut={handlePutType}
           onChangePage={(_, newPage) => holidaysProps.onChangePage(newPage)}

@@ -23,6 +23,8 @@ export interface ICharacteristic {
   measure?: Measure
 } 
 
+export type ICharacteristicPayload = Omit<ICharacteristic, 'createdAt' | 'isVisible'>
+
 export type CharacteristicsPayload = IItemsPaginationResponse<ICharacteristic>
 
 export type ICharacteristicsTableCoordinats = {
