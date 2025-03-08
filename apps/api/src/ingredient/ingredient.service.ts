@@ -29,6 +29,15 @@ export class IngredientService {
   ): Promise<IngredientRequest> {
     return await this.prisma.ingredientRequest.create({ data: dto });
   }
+
+  public async deleteRequest(args: Prisma.IngredientRequestDeleteArgs): Promise<void> {
+    await this.prisma.ingredientRequest.delete(args)
+  }
+
+  public async findRequest(args: Prisma.IngredientRequestFindFirstArgs) {
+    return await this.prisma.ingredientRequest.findFirst(args)
+  }
+
   public async count(args: Prisma.IngredientCountArgs): Promise<number> {
     return await this.prisma.ingredient.count(args);
   }

@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
@@ -12,6 +7,10 @@ import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
 
+  const validationPipe = new ValidationPipe({
+    transform: true,
+  })
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const globalPrefix = 'api';
@@ -20,11 +19,7 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-    })
-  );
+  app.useGlobalPipes(validationPipe);
 
   app.enableCors({ origin: "http://localhost:4200", credentials: true });
 

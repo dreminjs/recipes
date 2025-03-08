@@ -19,7 +19,8 @@ import { SignupGuard } from './guards/signup.guard';
 import { Roles } from '@prisma/client';
 import * as crypto from 'node:crypto';
 import { SigninGuard } from './guards/signin.guard';
-import { generateHashPassword } from './helpers/password.helperst';
+import { generateHashPassword } from './helpers/password.helper';
+
 
 @Controller('auth')
 export class AuthController {
@@ -33,7 +34,7 @@ export class AuthController {
   @Post('/signup')
   public async signup(
     @Body() { email, nickname, ...body }: SignupDto,
-    @Res({ passthrough: true }) res
+    @Res({ passthrough: true }) res: Response
   ): Promise<IAuthResponse> {
     const { hashPassword, salt } = await generateHashPassword(body.password);
 
@@ -56,7 +57,7 @@ export class AuthController {
 
     const tokensQuery = this.tokenService.generateTokens({ email });
 
-    const [tokens, user] = await Promise.all([
+    const [tokens, { isActived }] = await Promise.all([
       tokensQuery,
       userQuery,
       mailQuery,
@@ -76,9 +77,9 @@ export class AuthController {
       path: '/',
     });
     return {
-      nickname: user.nickname,
-      email: user.email,
-      isActived: user.isActived,
+      nickname,
+      email,
+      isActived,
     };
   }
 

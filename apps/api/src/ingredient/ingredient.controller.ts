@@ -23,18 +23,18 @@ import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 export class IngredientController {
   constructor(private readonly ingredientService: IngredientService) {}
 
+  @Post()
   @AllowedRoles(Roles.ADMIN)
   @UseGuards(AccessTokenGuard, RolesGuard)
-  @Post()
   public async createOne(
     @Body() body: CreateIngredientDto
   ): Promise<Ingredient> {
     return await this.ingredientService.createOne(body);
   }
 
+  @Put(':id')
   @AllowedRoles(Roles.ADMIN)
   @UseGuards(AccessTokenGuard, RolesGuard)
-  @Put(':id')
   public async updateOne(
     @Body() body: UpdateIngredientDto,
     @Param('id') id: string
@@ -58,19 +58,41 @@ export class IngredientController {
       where: { ...(title ? { title: { contains: title } } : {}) },
     });
 
-    const [items, count] = await Promise.all([itemsQuery, countQuery]);
+    const [items, countItems] = await Promise.all([itemsQuery, countQuery]);
     return {
       items,
-      countItems: count,
+      countItems,
       currentPage: page,
     };
   }
 
+  @UseGuards(AccessTokenGuard)
   @Post('request')
   public async createRequest(
     @Body() body: CreateIngredientDto
   ): Promise<IngredientRequest> {
     return await this.ingredientService.createRequest({ ...body });
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Delete('request/:id')
+  public async deleteRequest(@Param('id') id: string): Promise<void> {
+    await this.ingredientService.deleteRequest({ where: { id } });
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('request/aprove/:id')
+  public async aproveRequest(@Param('id') id: string): Promise<Ingredient> {
+    const { measure, title } = await this.ingredientService.findRequest({
+      where: { id },
+    });
+    const ingredientQuery = this.ingredientService.createOne({
+      measure,
+      title,
+    });
+    const deleteIngredientQuery = this.ingredientService.deleteRequest({ where: { id } });
+    const [ingredient] = await Promise.all([ingredientQuery,deleteIngredientQuery])
+    return ingredient
   }
 
   @AllowedRoles(Roles.ADMIN)
