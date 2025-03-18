@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Render,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body,Controller,Get,Param,Post,Render,Res,UseGuards } from '@nestjs/common';
 import { SignupDto } from './dto/signup.dto';
 import { IAuthResponse } from 'interfaces';
 import { SigninDto } from './dto/signin.dto';
@@ -17,10 +8,9 @@ import { Response } from 'express';
 import { MailService } from '../mail/mail.service';
 import { SignupGuard } from './guards/signup.guard';
 import { Roles } from '@prisma/client';
-import * as crypto from 'node:crypto';
 import { SigninGuard } from './guards/signin.guard';
 import { generateHashPassword } from './helpers/password.helper';
-
+import * as crypto from 'node:crypto';
 
 @Controller('auth')
 export class AuthController {
@@ -57,20 +47,20 @@ export class AuthController {
 
     const tokensQuery = this.tokenService.generateTokens({ email });
 
-    const [tokens, { isActived }] = await Promise.all([
+    const [{ accessToken, refreshToken }, { isActived }] = await Promise.all([
       tokensQuery,
       userQuery,
       mailQuery,
     ]);
 
-    res.cookie('accessToken', tokens.accessToken, {
+    res.cookie('accessToken', accessToken, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000,
       path: '/',
     });
 
-    res.cookie('refreshToken', tokens.refreshToken, {
+    res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -93,19 +83,17 @@ export class AuthController {
 
     const tokensQuery = this.tokenService.generateTokens({ email });
 
-    const [{ nickname, isActived }, tokens] = await Promise.all([
-      userQuery,
-      tokensQuery,
-    ]);
+    const [{ nickname, isActived }, { accessToken, refreshToken }] =
+      await Promise.all([userQuery, tokensQuery]);
 
-    res.cookie('accessToken', tokens.accessToken, {
+    res.cookie('accessToken', accessToken, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000,
       path: '/',
     });
 
-    res.cookie('refreshToken', tokens.refreshToken, {
+    res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -113,7 +101,7 @@ export class AuthController {
     });
 
     return {
-      email: email,
+      email,
       nickname,
       isActived,
     };

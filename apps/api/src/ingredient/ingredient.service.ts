@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma';
 
 @Injectable()
 export class IngredientService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService,) {}
 
   public async findMany(
     args: Prisma.IngredientFindManyArgs = {}

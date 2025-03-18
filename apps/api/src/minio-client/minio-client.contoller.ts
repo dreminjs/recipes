@@ -10,7 +10,7 @@ import { MinioFileName } from './minio-file-name.decorator';
 @Controller('minio')
 export class MinioClientController {
   @UseInterceptors(FileInterceptor('file'), MinioFileUploadInterceptor)
-  @Post('test')
+  @Post()
   public async uploadOne(@MinioFileName() fileName: string) {
     console.log(`File name: ${fileName}`);
     return 'Ok!';

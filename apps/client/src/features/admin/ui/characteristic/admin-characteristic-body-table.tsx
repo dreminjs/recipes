@@ -1,16 +1,24 @@
 import { FC } from 'react';
 import { Checkbox, TableBody, TableCell, TableRow } from '@mui/material';
 import { AdminCharacteristicCell } from '@/entities/admin';
-import { useCharacteristics } from '@/shared';
+import {  ICharacteristic,  } from '@/shared';
 
-export const AdminCharacteristictsBodyTable: FC = () => {
-  const { characteristics, selectedCharacteristics, onSelectCharacteristic } =
-    useCharacteristics();
+interface IProps {
+  items?: ICharacteristic[];
+  selectedItems: string[];
+  onSelectItem: (id: string) => void;
+}
+
+export const AdminCharacteristictsBodyTable: FC<IProps> = ({
+  items,
+  selectedItems,
+  onSelectItem,
+}) => {
 
   return (
     <TableBody>
-      {characteristics?.items.map((el, rowIdx) => {
-        const isChecked = selectedCharacteristics?.some((id) => el.id === id);
+      {items?.map((el, rowIdx) => {
+        const isChecked = selectedItems?.some((id) => el.id === id);
         return (
           <TableRow
             hover
@@ -20,7 +28,7 @@ export const AdminCharacteristictsBodyTable: FC = () => {
           >
             <TableCell padding="checkbox">
               <Checkbox
-                onClick={() => onSelectCharacteristic(el.id)}
+                onClick={() => onSelectItem(el.id)}
                 checked={isChecked}
                 color="primary"
                 id={el.id}

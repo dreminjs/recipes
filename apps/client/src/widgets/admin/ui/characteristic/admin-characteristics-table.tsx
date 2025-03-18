@@ -15,7 +15,7 @@ import { Characteristics } from '@/interfaces*';
 interface IProps {
   onPut: () => void;
   onDeleteMany: () => void;
-  count: number
+  count: number;
   limit: number;
   currentPage: number;
   onChangePage: (
@@ -26,9 +26,8 @@ interface IProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   addiotionalColoumns?: string[];
-  type: Characteristics
+  type: Characteristics;
 }
-
 
 export const AdminCharacteristicsTable: FC<IProps> = ({
   onPut,
@@ -39,7 +38,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
   limit,
   currentPage,
   addiotionalColoumns,
-  type
+  type,
 }) => {
   const {
     selectedCharacteristics,
@@ -49,6 +48,8 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
     onToggleAllCharacteristics,
     newCharacteristicValue,
     onSetCharactersticValue,
+    onSelectCharacteristic,
+    ...props
   } = useCharacteristics();
   return (
     <Paper>
@@ -65,7 +66,6 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
           onUnSelectedCharaceteristics();
         }}
         onPut={onPut}
-
       />
       <TableContainer sx={{ height: 440, width: 900 }}>
         <Table stickyHeader>
@@ -74,7 +74,11 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
             addiotionalColoumns={addiotionalColoumns}
             onToggleAllCharacteristics={onToggleAllCharacteristics}
           />
-          <AdminCharacteristictsBodyTable />
+          <AdminCharacteristictsBodyTable
+            items={props.characteristics?.items}
+            selectedItems={selectedCharacteristics}
+            onSelectItem={onSelectCharacteristic}
+          />
         </Table>
       </TableContainer>
       <TablePagination
@@ -85,7 +89,7 @@ export const AdminCharacteristicsTable: FC<IProps> = ({
         onPageChange={onChangePage}
         onRowsPerPageChange={onChangeLimit}
         rowsPerPageOptions={[5, 10, 15, 25]}
-        id='table-pagination'
+        id="table-pagination"
       />
     </Paper>
   );
