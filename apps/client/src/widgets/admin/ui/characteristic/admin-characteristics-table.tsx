@@ -3,7 +3,6 @@ import {
   AdminCharacteristicHeadTable,
   AdminCharacteristicToolBarTable,
   AdminCharacteristictsBodyTable,
-  // AdminCharacteristictsBodyTable,
 } from '@/features/admin';
 import { useCharacteristics } from '@/shared';
 import TableContainer from '@mui/material/TableContainer';
