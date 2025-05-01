@@ -2,6 +2,8 @@ import { useCharacteristics, QUERY_KEYS } from "@/shared*";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Prisma } from "prisma/prisma-client";
 import { typeService } from "./service";
+import { useSetAtom } from "jotai";
+import { characteristicsAtom } from "src/application/providers/characteristics-provider";
 
 const QUERY_KEY = QUERY_KEYS.type
 
@@ -14,7 +16,9 @@ export const useGetTypes = ({
   page: number;
   limit: number;
 }) => {
-  const { onSetCharacterstics } = useCharacteristics()
+
+  const setCharacterstics = useSetAtom(characteristicsAtom) 
+
   const {
     data: types,
     isLoading: typesIsLoading,
@@ -25,11 +29,7 @@ export const useGetTypes = ({
     queryKey: [QUERY_KEY, page, title, limit],
     queryFn: () => typeService.findMany({ limit, page, title }),
     onSuccess: (data) =>
-      onSetCharacterstics({
-        items: [...data.items],
-        countItems: data.countItems,
-        currentPage: data.currentPage,
-      }),
+      setCharacterstics(data.items),
   });
 
   return {
@@ -93,7 +93,6 @@ export const usePutType = () => {
 };
 
 export const useDeleteManyTypes = () => {
-  const { onToggleAllCharacteristics } = useCharacteristics()
 
   const {
     mutate: deleteTypes,
@@ -103,9 +102,6 @@ export const useDeleteManyTypes = () => {
   } = useMutation({
     mutationFn: (ids: string[]) => typeService.deleteMany(ids),
     mutationKey: [QUERY_KEY],
-    onSuccess:() => {
-      // onToggleAllCharacteristics()
-    }
   });
 
   return {

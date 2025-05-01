@@ -15,22 +15,7 @@ export const QUERY_KEYS = {
   post: 'post',
   random: 'random',
   me:"me"
-} as {
-  auth: 'auth';
-  signup: 'signup';
-  signin: 'signin';
-  signout: 'signout';
-  recipe: 'recipe';
-  characteristic: 'characteristic';
-  user: 'user';
-  'national-cuisine': 'national-cuisine';
-  type: 'type';
-  holiday: 'holiday';
-  ingredient: 'ingredient';
-  post: 'post',
-  random: 'random';
-  me:"me"
-};
+} as const
 
 export const SERVICE_KEYS = {
   auth: 'auth',
@@ -48,21 +33,7 @@ export const SERVICE_KEYS = {
   holidays: 'holidays',
   user: "user"
   
-} as {
-  signout: 'signout';
-  recipes: 'recipes';
-  auth: 'auth';
-  signup: 'signup';
-  signin: 'signin';
-  users: 'users';
-  selection: 'selection';
-  types: 'types';
-  holidays: 'holidays';
-  'national-cuisines': 'national-cuisines';
-  ingredients: 'ingredients';
-  user: "user"
-  characteristics:"characteristics"
-};
+} as const
 
 export const PAGE_KEYS = {
   main: '/',
@@ -72,16 +43,7 @@ export const PAGE_KEYS = {
   recipes: 'recipes',
   admin: 'admin',
   profile: 'profile',
-} as {
-  main: '/';
-  signup: 'signup';
-  signin: 'signin';
-  emailConfirm: 'email-confirm';
-  recipes: 'recipes';
-  admin: 'admin';
-  profile: 'profile';
-};
-
+} as const
 export const measuresObj = {
   ML: 'мл',
   L: 'л',

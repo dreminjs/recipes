@@ -74,6 +74,8 @@ export class TypeController {
     return await this.typeService.updateOne({ id }, { ...body });
   }
 
+  
+
   @AllowedRoles(Roles.ADMIN)
   @UseGuards(AccessTokenGuard, RolesGuard)
   @Get(':id')

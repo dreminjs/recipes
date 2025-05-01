@@ -43,6 +43,4 @@ export class RecipeService {
   ): Promise<FavoriteRecipe> {
     return await this.prisma.favoriteRecipe.delete({ where: data });
   }
-
-  
 }

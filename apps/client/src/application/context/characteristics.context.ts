@@ -2,14 +2,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { ChangeEvent, createContext, Dispatch, SetStateAction } from 'react';
 import {
-  CharacteristicsPayload,
+  ICharacteristicPayload,
   ICharacteristicsTableCoordinats,
 } from '@/shared/model/interfaces/characteristic.interface';
 import { Measure } from 'prisma/prisma-client';
 
 interface IContext {
-  characteristics?: CharacteristicsPayload | null;
-  onSetCharacterstics: Dispatch<SetStateAction<CharacteristicsPayload | null>>;
+  characteristics?: ICharacteristicPayload| null;
+  onSetCharacterstics: Dispatch<SetStateAction<ICharacteristicPayload | null>>;
   selectedCharacteristics: string[]
   onToggleAllCharacteristics: () => void;
   onSelectCharacteristic: (id: string) => void;
@@ -40,7 +40,7 @@ interface IContext {
 
 
 export const CharacteristicsContext = createContext<IContext>({
-  characteristics: { items: [], countItems: 0, currentPage: 0 },
+  //characteristics: { items: [], countItems: 0, currentPage: 0 },
   onSetCharacterstics(payload) {},
   selectedCharacteristics: [],
   onSelectCharacteristic(id) {},

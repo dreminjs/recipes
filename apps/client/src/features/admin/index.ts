@@ -10,10 +10,6 @@ export { AdminCharacteristictsBodyTable } from './ui/characteristic/admin-charac
 
 export { AdminCharacteristicToolBarTable } from './ui/characteristic/admin-characteristic-toolbar-table';
 
-export { AdminIngredientHeadTable } from './ui/ingredient/admin-ingredient-head-table';
-
-export { AdminIngredientBodyTable } from './ui/ingredient/admin-ingredient-body-table';
-
 export { AdminIngredientToolbarTable } from './ui/ingredient/admin-ingredient-toolbar-table';
 
 export { AdminPostIngredientForm } from './ui/ingredient/admin-post-ingredient-form';

@@ -1,10 +1,12 @@
 import { TableCell } from '@mui/material';
-import { FC, useEffect, useRef } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { ICharacteristicsTableCoordinats, measuresArray } from '@/shared';
+import { useAtom, useSetAtom } from 'jotai';
 import {
-  ICharacteristicsTableCoordinats,
-  measuresArray,
-  useCharacteristics,
-} from '@/shared';
+  activeCellAtom,
+  newCharacteristicAtom,
+} from 'src/application/providers/characteristics-provider';
+import { Measure } from 'prisma/prisma-client';
 
 interface IProps {
   type: 'checkbox' | 'text' | 'options';
@@ -21,14 +23,19 @@ export const AdminCharacteristicCell: FC<IProps> = ({
 }) => {
   const cellRef = useRef<HTMLTableCellElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [activeCell, setActiveCell] = useAtom(activeCellAtom);
 
-  const {
-    activeCell,
-    onShowInputCell,
-    onChangeCharactersticValue,
-    onHideInputCell,
-    isPostCharacteristicModalVisible,
-  } = useCharacteristics();
+  const setNewCharacteristic = useSetAtom(
+    newCharacteristicAtom
+  );
+
+  const onChangeCharacteristicValue = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { type, value, id } = event.target;
+    const newValue = type === 'checkbox' ? event.target.checked : value;
+    setNewCharacteristic({ payload: newValue, id });
+  };
 
   const isActiveCell =
     cellCoordinates &&
@@ -44,41 +51,40 @@ export const AdminCharacteristicCell: FC<IProps> = ({
       ) {
         const clickedElement = event.target as HTMLElement;
         if (clickedElement.id !== 'confirm-btn') {
-          onHideInputCell();
+          setActiveCell(null);
         }
       }
     };
 
-    if (isActiveCell && !isPostCharacteristicModalVisible) {
+    if (isActiveCell) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      setNewCharacteristic(null)
     };
-  }, [isActiveCell, onHideInputCell, isPostCharacteristicModalVisible]);
+  }, [isActiveCell, setActiveCell,setNewCharacteristic]);
 
   return (
     <TableCell
       ref={cellRef}
-      onClick={() => cellCoordinates && onShowInputCell({ ...cellCoordinates })}
+      onClick={() => setActiveCell({ ...cellCoordinates })}
       align="left"
     >
       {isActiveCell ? (
         type === 'checkbox' ? (
           <input
             type="checkbox"
-            onChange={onChangeCharactersticValue}
+            onChange={onChangeCharacteristicValue}
             defaultChecked={Boolean(payload)}
-            id={id}
             ref={inputRef as React.RefObject<HTMLInputElement>}
           />
         ) : type === 'options' ? (
           <select
-            onChange={onChangeCharactersticValue}
+            onChange={() => console.log('hello')}
             defaultValue={String(payload)}
             autoFocus
-            id={id}
           >
             {measuresArray.map((option, index) => (
               <option key={index} value={option.value}>
@@ -90,10 +96,9 @@ export const AdminCharacteristicCell: FC<IProps> = ({
           <input
             className="border-b-2 text-sm"
             type="text"
-            onChange={onChangeCharactersticValue}
+            onChange={onChangeCharacteristicValue}
             defaultValue={String(payload)}
             autoFocus
-            id={id}
             ref={inputRef as React.RefObject<HTMLInputElement>}
           />
         )

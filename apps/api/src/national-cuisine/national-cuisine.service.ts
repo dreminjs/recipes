@@ -18,6 +18,20 @@ export class NationalCuisineService {
     return this.prisma.nationalCuisine.findMany(args);
   }
 
+
+
+async updateMany(
+  updates: Array<{ id: string; data: Prisma.NationalCuisineUpdateInput }>,
+): Promise<NationalCuisine[]> {
+  return this.prisma.$transaction(
+    updates.map(({ id, data }) =>
+      this.prisma.nationalCuisine.update({
+        where: { id },
+        data,
+      }),
+    ),
+  );
+}
   async updateOne(
     where: Prisma.NationalCuisineWhereUniqueInput,
     dto: Prisma.NationalCuisineUpdateInput

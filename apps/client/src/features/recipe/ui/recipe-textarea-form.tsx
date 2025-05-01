@@ -13,7 +13,6 @@ export const RecipeTextareaForm: FC<IProps> = ({ register }) => {
         {...register('description')}
         placeholder='описание'
         className="text-[24px] outline-none border-b-2 mb-6"
-        
       />
       {}
     </div>

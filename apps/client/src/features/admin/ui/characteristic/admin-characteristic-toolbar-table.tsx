@@ -1,88 +1,90 @@
-import { IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
-import { FC } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Measure } from 'prisma/prisma-client';
-import { Characteristics } from '@/interfaces*';
-
 interface IProps {
   onPut: () => void;
   onDeleteMany: () => void;
-  selectedCharacteristics: string[];
-  hasNewCharacteristicValue: boolean;
-  // eslint-disable-next-line no-empty-pattern
-  onSetCharactersticValue: ({}: {
-    payload: string | boolean;
-    id: string;
-    measure?: Measure;
-  } | null) => void;
-  onTogglePostCharacteristicModalVisibility: () => void;
-  type: Characteristics
+  type: Characteristics;
 }
 
-export const AdminCharacteristicToolBarTable: FC<IProps> = ({
-  onPut,
-  onDeleteMany,
-  onTogglePostCharacteristicModalVisibility,
-  selectedCharacteristics,
-  hasNewCharacteristicValue,
-  onSetCharactersticValue,
-  type
-}) => {
-  const handleConfirmClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    onPut();
-    onSetCharactersticValue(null);
-  };
+import { FC, memo } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import {
+  Toolbar,
+  Typography,
+  IconButton,
+  Tooltip,
+  Button,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Characteristics } from '@/interfaces*';
+import {
+  isPostCharacteristicModalVisibleAtom,
+  newCharacteristicAtom,
+  selectedCharacteristicsIdsAtom,
+} from 'src/application/providers/characteristics-provider';
 
-  return (
-    <Toolbar>
-      {selectedCharacteristics?.length && selectedCharacteristics?.length + 1 > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {selectedCharacteristics?.length + 1} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          {type}
-        </Typography>
-      )}
-      {(hasNewCharacteristicValue ||
-        (selectedCharacteristics && selectedCharacteristics.length > 0)) && (
-        <button
-          className="text-[20px] px-7 py-2 rounded-xl border-2 mx-5"
-          id="confirm-btn"
-          onClick={handleConfirmClick}
-        >
-          Confirm
-        </button>
-      )}
+export const AdminCharacteristicToolBarTable: FC<IProps> = memo(
+  function AdminCharacteristicToolBarTable({ onPut, onDeleteMany, type }) {
+    const selectedCharacteristicsIds = useAtomValue(
+      selectedCharacteristicsIdsAtom
+    );
+    const newCharacteristic = useAtomValue(newCharacteristicAtom);
+    const setIsPostModalVisible = useSetAtom(
+      isPostCharacteristicModalVisibleAtom
+    );
+    const hasSelected = selectedCharacteristicsIds.length > 0;
+    return (
+      <Toolbar>
+        {hasSelected ? (
+          <Typography
+            sx={{ flex: '1 1 100%' }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {selectedCharacteristicsIds.length} selected
+          </Typography>
+        ) : (
+          <Typography
+            sx={{ flex: '1 1 100%' }}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+          >
+            {type}
+          </Typography>
+        )}
 
-      <button
-        onClick={(event) => {
-          event.preventDefault();
-          onTogglePostCharacteristicModalVisibility();
-        }}
-        className="text-[20px] px-7 py-2 rounded-xl border-2 mx-5"
-      >
-        post
-      </button>
+        {newCharacteristic?.payload && (
+          <Button
+            onClick={(event) => {
+              event.preventDefault();
+              onPut();
+            }}
+            variant="outlined"
+            sx={{ mx: 2 }}
+          >
+            Confirm
+          </Button>
+        )}
 
-      {selectedCharacteristics.length + 1 > 0 && (
-        <Tooltip title="Delete">
-          <IconButton onClick={onDeleteMany}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
+        <Button
+          onClick={(event) => {
+            event.preventDefault();
+            setIsPostModalVisible(true);
+          }}
+          variant="outlined"
+          sx={{ mx: 1 }}
+        >
+          Post
+        </Button>
+
+        {hasSelected && (
+          <Tooltip title="Delete">
+            <IconButton onClick={onDeleteMany}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Toolbar>
+    );
+  }
+);

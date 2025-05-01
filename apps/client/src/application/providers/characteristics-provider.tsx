@@ -1,148 +1,138 @@
-import { ChangeEvent, FC, ReactNode, useState } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import {
-  CharacteristicsPayload,
+  ICharacteristic,
+  ICharacteristicPayload,
   ICharacteristicsTableCoordinats,
 } from '@/shared';
+import { atom, createStore, Provider } from "jotai"
+import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 
-import { CharacteristicsContext } from '../context/characteristics.context';
-import { Measure } from 'prisma/prisma-client';
+const store = createStore()
 
-interface IProps {
-  children: ReactNode;
+export const limitAtom = atom(0)
+
+export const characteristicsAtom = atom<ICharacteristic[]>([])
+
+export const selectedCharacteristicsIdsAtom = atom<string[]>([])
+ 
+export const isHeadCheckboxCheckedAtom = atom(false)
+
+export const isPostCharacteristicModalVisibleAtom = atom(false)
+
+export const activeCellAtom = atom<ICharacteristicsTableCoordinats | null>(null)
+
+export const updatedCharacteristicsAtom = atom<ICharacteristicPayload[]>([])
+
+export const newCharacteristicAtom = atom<UpdateCharacteristicDto | null>(null)
+
+export const CharacteristicsProvider: FC<PropsWithChildren> = ({children}) => {
+    return (
+      <Provider store={store}>{children}</Provider>
+    )
 }
 
-export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
-  const [characteristics, setCharacteristics] =
-    useState<CharacteristicsPayload | null>(null);
+// export const CharacteristicsProvider: FC<IProps> = ({ children }) => {
 
-  const [limit, setLimit] = useState(5);
+//   const handleTogglePostCharacteristicModalVisibility = () => {
+//     setIsPostCharaceteresticModalVisible((prev) => !prev);
+//   };
 
-  const [selectedCharacteristics, setSelectedCharacteristics] = useState<
-    string[]
-  >([]);
+//   const handleSetCharacteristicValue = (
+//     args: {
+//       payload: string | boolean;
+//       id: string;
+//       measure?: Measure;
+//     } | null
+//   ) => {
+//     if (args !== null && args.measure) {
+//       const { payload, id, measure } = args;
+//       setNewCharacteristicValue({ payload, id, measure });
+//     } else {
+//       setNewCharacteristicValue(args);
+//     }
+//   };
 
-  const [isHeadCheckboxChecked, setIsHeadCheckboxChecked] = useState(false);
+//   const handleShowInput = (payload: ICharacteristicsTableCoordinats) => {
+//     setActiveCell(payload);
+//   };
 
-  const [
-    isPostCharacteristicModalVisible,
-    setIsPostCharaceteresticModalVisible,
-  ] = useState(false);
+//   const handelHideInput = () => {
+//     setActiveCell(null);
+//   };
 
-  const [activeCell, setActiveCell] =
-    useState<ICharacteristicsTableCoordinats>(null);
+//   const handleSelectAllCharacteristics = () => {
+//     if (selectedCharacteristics?.length === characteristics?.items.length) {
+//       setSelectedCharacteristics([]);
+//       setIsHeadCheckboxChecked(false);
+//     } else if (
+//       characteristics &&
+//       selectedCharacteristics?.length !== characteristics?.items.length
+//     ) {
+//       setSelectedCharacteristics(characteristics?.items.map((el) => el.id));
+//       setIsHeadCheckboxChecked(true);
+//     }
+//   };
 
-  const [newCharacteristicValue, setNewCharacteristicValue] = useState<{
-    payload: string | boolean;
-    id: string;
-    measure?: Measure;
-  } | null>(null);
+//   const handleSelectCharacteristic = (id: string) => {
+//     if (selectedCharacteristics?.includes(id)) {
+//       setSelectedCharacteristics(
+//         (prev) => prev && prev.filter((selectedId) => selectedId !== id)
+//       );
+//       setIsHeadCheckboxChecked(false);
+//     } else {
+//       setSelectedCharacteristics((prev) => prev && [...prev, id]);
+//       setIsHeadCheckboxChecked(false);
+//     }
 
-  const handleChangeLimit = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setLimit(+event.target.value);
-  };
+//     const totalSelected = selectedCharacteristics?.includes(id)
+//       ? selectedCharacteristics.length - 1
+//       : selectedCharacteristics && selectedCharacteristics.length + 1;
 
-  const handleTogglePostCharacteristicModalVisibility = () => {
-    setIsPostCharaceteresticModalVisible((prev) => !prev);
-  };
+//     if (
+//       totalSelected === limit ||
+//       totalSelected === characteristics?.items.length
+//     ) {
+//       setIsHeadCheckboxChecked(true);
+//     }
+//   };
 
-  const handleSetCharacteristicValue = (
-    args: {
-      payload: string | boolean;
-      id: string;
-      measure?: Measure;
-    } | null
-  ) => {
-    if (args !== null && args.measure) {
-      const { payload, id, measure } = args;
-      setNewCharacteristicValue({ payload, id, measure });
-    } else {
-      setNewCharacteristicValue(args);
-    }
-  };
+//   const onChangeCharacteristicValue = (
+//     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+//   ) => {
+//     const { type, value, id } = event.target;
+//     const newValue = type === 'checkbox' ? event.target.checked : value;
+//     setNewCharacteristicValue({ payload: newValue, id });
+//   };
 
-  const handleShowInput = (payload: ICharacteristicsTableCoordinats) => {
-    setActiveCell(payload);
-  };
+//   const handleUnSelectedCharaceteristics = () => {
+//     setSelectedCharacteristics([]);
+//     setIsHeadCheckboxChecked(false);
+//   };
 
-  const handelHideInput = () => {
-    setActiveCell(null);
-  };
-
-  const handleSelectAllCharacteristics = () => {
-    if (selectedCharacteristics?.length === characteristics?.items.length) {
-      setSelectedCharacteristics([]);
-      setIsHeadCheckboxChecked(false);
-    } else if (
-      characteristics &&
-      selectedCharacteristics?.length !== characteristics?.items.length
-    ) {
-      setSelectedCharacteristics(characteristics?.items.map((el) => el.id));
-      setIsHeadCheckboxChecked(true);
-    }
-  };
-
-  const handleSelectCharacteristic = (id: string) => {
-    if (selectedCharacteristics?.includes(id)) {
-      setSelectedCharacteristics(
-        (prev) => prev && prev.filter((selectedId) => selectedId !== id)
-      );
-      setIsHeadCheckboxChecked(false);
-    } else {
-      setSelectedCharacteristics((prev) => prev && [...prev, id]);
-      setIsHeadCheckboxChecked(false);
-    }
-
-    const totalSelected = selectedCharacteristics?.includes(id)
-      ? selectedCharacteristics.length - 1
-      : selectedCharacteristics && selectedCharacteristics.length + 1;
-
-    if (
-      totalSelected === limit ||
-      totalSelected === characteristics?.items.length
-    ) {
-      setIsHeadCheckboxChecked(true);
-    }
-  };
-
-  const onChangeCharacteristicValue = (
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { type, value, id } = event.target;
-    const newValue = type === 'checkbox' ? event.target.checked : value;
-    setNewCharacteristicValue({ payload: newValue, id });
-  };
-
-  const handleUnSelectedCharaceteristics = () => {
-    setSelectedCharacteristics([]);
-    setIsHeadCheckboxChecked(false);
-  };
-
-  return (
-    <CharacteristicsContext.Provider
-      value={{
-        characteristics,
-        onSetCharacterstics: setCharacteristics,
-        selectedCharacteristics,
-        onSelectCharacteristic: handleSelectCharacteristic,
-        onToggleAllCharacteristics: handleSelectAllCharacteristics,
-        isHeadCheckboxChecked: isHeadCheckboxChecked,
-        activeCell,
-        onShowInputCell: handleShowInput,
-        newCharacteristicValue: newCharacteristicValue,
-        onChangeCharactersticValue: onChangeCharacteristicValue,
-        onSetCharactersticValue: handleSetCharacteristicValue,
-        onHideInputCell: handelHideInput,
-        onUnSelectedCharaceteristics: handleUnSelectedCharaceteristics,
-        onTogglePostCharacteristicModalVisibility:
-          handleTogglePostCharacteristicModalVisibility,
-        isPostCharacteristicModalVisible,
-        onChangeLimit: handleChangeLimit,
-        limit,
-      }}
-    >
-      {children}
-    </CharacteristicsContext.Provider>
-  );
-};
+//   return (
+//     <CharacteristicsContext.Provider
+//       value={{
+//         characteristics,
+//         onSetCharacterstics: setCharacteristics, // TODO: its useless
+//         selectedCharacteristics,
+//         onSelectCharacteristic: handleSelectCharacteristic,
+//         onToggleAllCharacteristics: handleSelectAllCharacteristics,
+//         isHeadCheckboxChecked: isHeadCheckboxChecked,
+//         activeCell,
+//         onShowInputCell: handleShowInput,
+//         newCharacteristicValue: newCharacteristicValue,
+//         onChangeCharactersticValue: onChangeCharacteristicValue,
+//         onSetCharactersticValue: handleSetCharacteristicValue,
+//         onHideInputCell: handelHideInput,
+//         onUnSelectedCharaceteristics: handleUnSelectedCharaceteristics,
+//         onTogglePostCharacteristicModalVisibility:
+//           handleTogglePostCharacteristicModalVisibility,
+//         isPostCharacteristicModalVisible,
+//         onChangeLimit: handleChangeLimit,
+//         limit,
+//       }}
+//     >
+//       {children}
+//     </CharacteristicsContext.Provider>
+//   );
+// };

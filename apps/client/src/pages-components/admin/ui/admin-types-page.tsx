@@ -1,52 +1,51 @@
-import {
-  InputSearch,
-  IPostCharacteristicForm,
-  useCharacteristics,
-} from '@/shared';
+import { InputSearch, IPostCharacteristicForm } from '@/shared';
 import { AdminPostCharaceteristicModal } from '@/widgets/admin';
 import { MessageModal } from '@/features/message';
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { useTypes } from '../model/hooks/use-types';
 import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
-import { Characteristics } from '@/interfaces*';
+import { useAtomValue, useSetAtom } from 'jotai';
+import {
+  isPostCharacteristicModalVisibleAtom,
+  selectedCharacteristicsIdsAtom,
+} from 'src/application/providers/characteristics-provider';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
   { ssr: false }
 );
 
-
-
-export const AdminTypesPage: FC= () => {
-  
-  const {
-    newCharacteristicValue,
-    selectedCharacteristics,
-    onTogglePostCharacteristicModalVisibility,
-    onChangeLimit,
-  } = useCharacteristics();
-
+export const AdminTypesPage: FC = () => {
   const typesProps = useTypes({
     initialLimit: 5,
     initialPage: 0,
     initialTitle: '',
   });
 
+  const selectedCharacteristics = useAtomValue(selectedCharacteristicsIdsAtom);
+
+  const setIsPostModalVisible = useSetAtom(
+    isPostCharacteristicModalVisibleAtom
+  );
+
+  const handleTogglePostModalVisible = () =>
+    setIsPostModalVisible((prev) => !prev);
+
   const handlePutType = () => {
-    if (newCharacteristicValue) {
-      if (typeof newCharacteristicValue.payload === 'boolean') {
-        typesProps.put({
-          data: { isVisible: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
-        });
-      } else {
-        typesProps.put({
-          data: { title: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
-        });
-      }
-    }
+    // if (newCharacteristicValue) {
+    //   if (typeof newCharacteristicValue.payload === 'boolean') {
+    //     typesProps.put({
+    //       data: { isVisible: newCharacteristicValue.payload },
+    //       id: newCharacteristicValue.id,
+    //     });
+    //   } else {
+    //     typesProps.put({
+    //       data: { title: newCharacteristicValue.payload },
+    //       id: newCharacteristicValue.id,
+    //     });
+    //   }
+    // }
   };
 
   const handleDeleteTypes = () => {
@@ -57,7 +56,7 @@ export const AdminTypesPage: FC= () => {
 
   const handlePostType = (data: IPostCharacteristicForm) => {
     typesProps.post(data);
-    onTogglePostCharacteristicModalVisibility();
+    handleTogglePostModalVisible();
   };
 
   return (
@@ -70,16 +69,17 @@ export const AdminTypesPage: FC= () => {
         <AdminCharacteristicsTable
           onDeleteMany={handleDeleteTypes}
           onPut={handlePutType}
-          onChangePage={(_, newPage) => {
-            typesProps.onChangePage(newPage);
-          }}
-          type='type'
-          count={
-            typesProps.items?.countItems ? typesProps.items?.countItems : 1
-          }
+          onChangePage={useCallback(
+            (_, newPage) => {
+              typesProps.onChangePage(newPage);
+            },
+            [typesProps]
+          )}
+          type="type"
+          count={typesProps.items?.countItems ? typesProps.items.countItems : 0}
           limit={typesProps.limit}
           currentPage={typesProps.currentPage}
-          onChangeLimit={onChangeLimit}
+          onChangeLimit={typesProps.onChangeLimit}
         />
       </CharactersticsLayout>
       <MessageModal
@@ -88,23 +88,14 @@ export const AdminTypesPage: FC= () => {
           isError: 'Ошибка! проверте данные',
           isLoading: 'Загрузка...',
         }}
-        isLoading={
-          typesProps.postIsLoading ||
-          typesProps.deleteIsLoading ||
-          typesProps.itemsIsLoading
-        }
-        isError={
-          typesProps.postIsError ||
-          typesProps.putIsError ||
-          typesProps.deleteIsError
-        }
-        isSuccess={
-          typesProps.postIsSuccess ||
-          typesProps.deleteManyIsSuccess ||
-          typesProps.putIsSuccess
-        }
+        isLoading={typesProps.isLoading}
+        isError={typesProps.isError}
+        isSuccess={typesProps.isSuccess}
       />
-      <AdminPostCharaceteristicModal onPost={handlePostType} />
+      <AdminPostCharaceteristicModal
+        onToggleVisible={handleTogglePostModalVisible}
+        onPost={handlePostType}
+      />
     </>
   );
 };

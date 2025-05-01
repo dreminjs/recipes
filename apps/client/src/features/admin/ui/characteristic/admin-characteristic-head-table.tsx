@@ -1,15 +1,12 @@
+import { useAdminCharacteristicHeadTableLogic } from '../../model/hooks/use-admin-characteristic-head-table-logic';
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import { FC } from 'react';
 
 interface IProps {
-  isHeadCheckboxChecked: boolean;
-  onToggleAllCharacteristics: () => void;
   addiotionalColoumns?: string[];
 }
 
 export const AdminCharacteristicHeadTable: FC<IProps> = ({
-  isHeadCheckboxChecked,
-  onToggleAllCharacteristics,
   addiotionalColoumns,
 }) => {
   const headers = [
@@ -19,6 +16,9 @@ export const AdminCharacteristicHeadTable: FC<IProps> = ({
     ...(addiotionalColoumns ? addiotionalColoumns : []),
   ];
 
+  const { isHeadCheckboxChecked, onSelectAllCharacteristics } =
+    useAdminCharacteristicHeadTableLogic();
+
   return (
     <TableHead>
       <TableRow>
@@ -26,10 +26,7 @@ export const AdminCharacteristicHeadTable: FC<IProps> = ({
           <Checkbox
             color="primary"
             checked={isHeadCheckboxChecked}
-            onClick={() => onToggleAllCharacteristics()}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
+            onClick={onSelectAllCharacteristics}
             id="head-checkbox"
           />
         </TableCell>

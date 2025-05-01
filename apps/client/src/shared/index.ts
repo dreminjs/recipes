@@ -23,7 +23,7 @@ export { useGetRecipes } from './api/queries/recipe/recipe.queries';
 
 export type {
   IPostCharacteristicForm,
-  CharacteristicsPayload,
+  // CharacteristicsPayload,
   ICharacteristicsTableCoordinats,
   IGetCharacteristicsQueryParameters,
   ICharacteristic,
