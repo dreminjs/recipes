@@ -26,7 +26,7 @@ export const AdminCharacteristicHeadTable: FC<IProps> = ({
           <Checkbox
             color="primary"
             checked={isHeadCheckboxChecked}
-            onClick={onSelectAllCharacteristics}
+            onChange={onSelectAllCharacteristics}
             id="head-checkbox"
           />
         </TableCell>

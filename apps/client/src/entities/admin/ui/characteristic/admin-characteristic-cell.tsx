@@ -77,9 +77,8 @@ export const AdminCharacteristicCell: FC<IProps> = ({
             type="checkbox"
             onChange={onChangeCharacteristicValue}
             defaultChecked={Boolean(payload)}
-            id={id}
-
             ref={inputRef as React.RefObject<HTMLInputElement>}
+            id={id}
           />
         ) : type === 'options' ? (
           <select

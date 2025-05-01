@@ -53,7 +53,7 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = memo(
           </Typography>
         )}
 
-        {newCharacteristic?.payload && (
+        {newCharacteristic?.payload !== undefined && (
           <Button
             onClick={(event) => {
               event.preventDefault();

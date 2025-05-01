@@ -1,5 +1,4 @@
 import { useAtom, useAtomValue } from 'jotai';
-import { useCallback } from 'react';
 import {
   isHeadCheckboxCheckedAtom,
   selectedCharacteristicsIdsAtom,
@@ -17,23 +16,16 @@ export const useAdminCharacteristicHeadTableLogic = () => {
 
   const characteristics = useAtomValue(characteristicsAtom);
 
-  const handleSelectAllCharacteristics = useCallback(() => {
-    if (selectedCharacteristics?.length === selectedCharacteristics.length) {
-      setSelectedCharacteristics([]);
-      setIsHeadCheckboxChecked(false);
-    } else if (
-      characteristics &&
-      selectedCharacteristics?.length !== characteristics.length
-    ) {
+  const handleSelectAllCharacteristics = () => {
+    
+    if (characteristics?.length !== selectedCharacteristics.length) {
       setSelectedCharacteristics(characteristics.map((el) => el.id));
       setIsHeadCheckboxChecked(true);
+    } else {
+      setSelectedCharacteristics([]);
+      setIsHeadCheckboxChecked(false);
     }
-  }, [
-    characteristics,
-    selectedCharacteristics.length,
-    setIsHeadCheckboxChecked,
-    setSelectedCharacteristics,
-  ]);
+  };
 
   return {
     isHeadCheckboxChecked,
