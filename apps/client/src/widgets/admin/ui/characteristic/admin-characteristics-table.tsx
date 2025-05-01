@@ -46,11 +46,11 @@ export const AdminCharacteristicsTable: FC<IProps> = memo(
       <Paper>
         <AdminCharacteristicToolBarTable
           type={type}
+          onPut={onPut}
           onDeleteMany={useCallback(() => {
             onDeleteMany();
             setSelectedCharacteristicsIds([]);
           }, [onDeleteMany, setSelectedCharacteristicsIds])}
-          onPut={onPut}
         />
         <TableContainer sx={{ height: 440, width: 900 }}>
           <Table stickyHeader>

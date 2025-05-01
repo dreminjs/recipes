@@ -1,12 +1,11 @@
 import { TableCell } from '@mui/material';
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef } from 'react';
 import { ICharacteristicsTableCoordinats, measuresArray } from '@/shared';
 import { useAtom, useSetAtom } from 'jotai';
 import {
   activeCellAtom,
   newCharacteristicAtom,
 } from 'src/application/providers/characteristics-provider';
-import { Measure } from 'prisma/prisma-client';
 
 interface IProps {
   type: 'checkbox' | 'text' | 'options';
@@ -78,6 +77,8 @@ export const AdminCharacteristicCell: FC<IProps> = ({
             type="checkbox"
             onChange={onChangeCharacteristicValue}
             defaultChecked={Boolean(payload)}
+            id={id}
+
             ref={inputRef as React.RefObject<HTMLInputElement>}
           />
         ) : type === 'options' ? (
@@ -99,6 +100,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
             onChange={onChangeCharacteristicValue}
             defaultValue={String(payload)}
             autoFocus
+            id={id}
             ref={inputRef as React.RefObject<HTMLInputElement>}
           />
         )

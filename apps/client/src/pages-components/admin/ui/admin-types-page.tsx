@@ -7,7 +7,9 @@ import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
 import { useAtomValue, useSetAtom } from 'jotai';
 import {
+  activeCellAtom,
   isPostCharacteristicModalVisibleAtom,
+  newCharacteristicAtom,
   selectedCharacteristicsIdsAtom,
 } from 'src/application/providers/characteristics-provider';
 
@@ -23,7 +25,11 @@ export const AdminTypesPage: FC = () => {
     initialTitle: '',
   });
 
+  const setActiveCell = useSetAtom(activeCellAtom) 
+
   const selectedCharacteristics = useAtomValue(selectedCharacteristicsIdsAtom);
+
+  const newCharacteristic = useAtomValue(newCharacteristicAtom)
 
   const setIsPostModalVisible = useSetAtom(
     isPostCharacteristicModalVisibleAtom
@@ -33,19 +39,20 @@ export const AdminTypesPage: FC = () => {
     setIsPostModalVisible((prev) => !prev);
 
   const handlePutType = () => {
-    // if (newCharacteristicValue) {
-    //   if (typeof newCharacteristicValue.payload === 'boolean') {
-    //     typesProps.put({
-    //       data: { isVisible: newCharacteristicValue.payload },
-    //       id: newCharacteristicValue.id,
-    //     });
-    //   } else {
-    //     typesProps.put({
-    //       data: { title: newCharacteristicValue.payload },
-    //       id: newCharacteristicValue.id,
-    //     });
-    //   }
-    // }
+    if (newCharacteristic) {
+      setActiveCell(null)
+      if (typeof newCharacteristic.payload === 'boolean') {
+        typesProps.put({
+          data: { isVisible: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
+      } else {
+        typesProps.put({
+          data: { title: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
+      }
+    }
   };
 
   const handleDeleteTypes = () => {

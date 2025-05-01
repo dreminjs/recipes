@@ -1,9 +1,3 @@
-interface IProps {
-  onPut: () => void;
-  onDeleteMany: () => void;
-  type: Characteristics;
-}
-
 import { FC, memo } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import {
@@ -20,6 +14,12 @@ import {
   newCharacteristicAtom,
   selectedCharacteristicsIdsAtom,
 } from 'src/application/providers/characteristics-provider';
+
+interface IProps {
+  onPut: () => void;
+  onDeleteMany: () => void;
+  type: Characteristics;
+}
 
 export const AdminCharacteristicToolBarTable: FC<IProps> = memo(
   function AdminCharacteristicToolBarTable({ onPut, onDeleteMany, type }) {
@@ -60,6 +60,7 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = memo(
               onPut();
             }}
             variant="outlined"
+            id="confirm-btn"
             sx={{ mx: 2 }}
           >
             Confirm
