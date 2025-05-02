@@ -1,15 +1,11 @@
 import Link from 'next/link';
-import {
-  AdminPostIngredientModal,
-} from '@/widgets/admin';
+import { AdminPostIngredientModal } from '@/widgets/admin';
 import { useIngredients } from '../model/hooks/use-ingredients';
 import { CharactersticsLayout } from '@/application/';
-import {
-  InputSearch,
-  IPostIngredientForm,
-  useCharacteristics,
-} from '@/shared';
+import { InputSearch, IPostIngredientForm } from '@/shared';
 import dynamic from 'next/dynamic';
+import { useCharacteristicActions } from '../model/hooks/use-characteristic-actions';
+import { MessageModal } from '@/featuresmessage';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
@@ -18,56 +14,42 @@ const AdminCharacteristicsTable = dynamic(
 
 export const AdminIngredientPage = () => {
   const {
-    newCharacteristicValue,
+    newCharacteristic,
     selectedCharacteristics,
-    onTogglePostCharacteristicModalVisibility,
-    isPostCharacteristicModalVisible,
-    limit,
-    onChangeLimit
-  } = useCharacteristics();
+    onToggleModalVisibility,
+  } = useCharacteristicActions();
 
   const ingredientsProps = useIngredients({
-    limit,
+    initialLimit: 5,
     initialPage: 0,
     initialTitle: '',
   });
 
   const handlePutIngredient = () => {
-
-    if (newCharacteristicValue) {
-      if (typeof newCharacteristicValue.payload === 'boolean') {
+    if (newCharacteristic) {
+      if (typeof newCharacteristic.payload === 'boolean') {
         ingredientsProps.put({
-          data: { isVisible: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
+          data: { isVisible: newCharacteristic.payload },
+          id: newCharacteristic.id,
         });
       } else if (
-        newCharacteristicValue.payload === 'ML' ||
-        newCharacteristicValue.payload === 'L' ||
-        newCharacteristicValue.payload === 'KG' ||
-        newCharacteristicValue.payload === 'G' ||
-        newCharacteristicValue.payload === 'N'
+        newCharacteristic.payload === 'ML' ||
+        newCharacteristic.payload === 'L' ||
+        newCharacteristic.payload === 'KG' ||
+        newCharacteristic.payload === 'G' ||
+        newCharacteristic.payload === 'N'
       ) {
         ingredientsProps.put({
-          data: { measure: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
+          data: { measure: newCharacteristic.payload },
+          id: newCharacteristic.id,
         });
       } else {
         ingredientsProps.put({
-          data: { title: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
+          data: { title: newCharacteristic.payload },
+          id: newCharacteristic.id,
         });
       }
     }
-  };
-
-  const handleDeleteIngredients = () =>
-    selectedCharacteristics
-      ? ingredientsProps.deleteMany(selectedCharacteristics)
-      : alert('Wait!');
-
-  const handlePostIngredient = (data: IPostIngredientForm) => {
-    ingredientsProps.post(data);
-    onTogglePostCharacteristicModalVisibility();
   };
 
   return (
@@ -81,20 +63,35 @@ export const AdminIngredientPage = () => {
           onChange={ingredientsProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
-          addiotionalColoumns={["measure"]}
+          addiotionalColoumns={['measure']}
           onPut={handlePutIngredient}
-          onDeleteMany={handleDeleteIngredients}
-          limit={limit}
+          onDeleteMany={() =>
+            ingredientsProps.deleteMany(selectedCharacteristics)
+          }
+          limit={ingredientsProps.limit}
           currentPage={ingredientsProps.currentPage}
           onChangePage={ingredientsProps.onChangePage}
-          onChangeLimit={onChangeLimit}
+          onChangeLimit={ingredientsProps.onChangeLimit}
           count={ingredientsProps.items?.countItems || 0}
+          type={'ingredient'}
         />
       </CharactersticsLayout>
       <AdminPostIngredientModal
-        onToggleVisibility={onTogglePostCharacteristicModalVisibility}
-        onPost={handlePostIngredient}
-        isOpen={isPostCharacteristicModalVisible}
+        onToggleVisibility={onToggleModalVisibility}
+        onPost={(data: IPostIngredientForm) => {
+          ingredientsProps.post(data);
+          onToggleModalVisibility();
+        }}
+      />
+      <MessageModal
+        message={{
+          isSuccess: 'Успешно',
+          isError: 'Ошибка! проверте данные',
+          isLoading: 'Загрузка...',
+        }}
+        isLoading={ingredientsProps.isLoading}
+        isError={ingredientsProps.isError}
+        isSuccess={ingredientsProps.isSuccess}
       />
     </>
   );

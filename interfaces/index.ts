@@ -12,7 +12,7 @@ export interface IInfiniteScrollResponse<T> {
   nextCursor: number | null;
 }
 
-export type Characteristics = 'holiday' | 'type' | 'national-cuisine';
+export type Characteristics = 'holiday' | 'type' | 'national-cuisine' | 'ingredient'
 
 export interface ICharacteristic {
   id: string;

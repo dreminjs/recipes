@@ -1,17 +1,14 @@
-
 import {
   InputSearch,
   IPostCharacteristicForm,
-  useCharacteristics,
 } from '@/shared';
-import {
-  AdminPostCharaceteristicModal,
-} from '@/widgets/admin';
+import { AdminPostCharaceteristicModal } from '@/widgets/admin';
 import { MessageModal } from '@/features/message';
 import { FC } from 'react';
 import { useHolidays } from '../model/hooks/use-holidays';
 import dynamic from 'next/dynamic';
 import { CharactersticsLayout } from '@/application/';
+import { useCharacteristicActions } from '../model/hooks/use-characteristic-actions';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
@@ -20,11 +17,10 @@ const AdminCharacteristicsTable = dynamic(
 
 export const AdminHolidaysPage: FC = () => {
   const {
-    newCharacteristicValue,
+    newCharacteristic,
     selectedCharacteristics,
-    onTogglePostCharacteristicModalVisibility,
-    onChangeLimit
-  } = useCharacteristics();
+    onToggleModalVisibility,
+  } = useCharacteristicActions();
 
   const holidaysProps = useHolidays({
     initialLimit: 5,
@@ -33,16 +29,16 @@ export const AdminHolidaysPage: FC = () => {
   });
 
   const handlePutType = () => {
-    if (newCharacteristicValue) {
-      if (typeof newCharacteristicValue.payload === 'boolean') {
+    if (newCharacteristic) {
+      if (typeof newCharacteristic.payload === 'boolean') {
         holidaysProps.put({
-          data: { isVisible: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
+          data: { isVisible: newCharacteristic.payload },
+          id: newCharacteristic.id,
         });
       } else {
         holidaysProps.put({
-          data: { title: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
+          data: { title: newCharacteristic.payload },
+          id: newCharacteristic.id,
         });
       }
     }
@@ -55,7 +51,7 @@ export const AdminHolidaysPage: FC = () => {
 
   const handlePostHoliday = (data: IPostCharacteristicForm) => {
     holidaysProps.post(data);
-    onTogglePostCharacteristicModalVisibility();
+    onToggleModalVisibility();
   };
 
   return (
@@ -66,15 +62,14 @@ export const AdminHolidaysPage: FC = () => {
           onChange={holidaysProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
-          type='holiday'
+          type="holiday"
           onDeleteMany={handleDeleteHolidays}
           onPut={handlePutType}
           onChangePage={(_, newPage) => holidaysProps.onChangePage(newPage)}
           count={holidaysProps.items?.countItems || 0}
           limit={holidaysProps.limit}
           currentPage={holidaysProps.currentPage}
-          onChangeLimit={onChangeLimit}
-      
+          onChangeLimit={holidaysProps.onChangeLimit}
         />
       </CharactersticsLayout>
       <MessageModal
@@ -83,23 +78,14 @@ export const AdminHolidaysPage: FC = () => {
           isError: 'Ошибка! проверте данные',
           isLoading: 'Загрузка...',
         }}
-        isLoading={
-          holidaysProps.postIsLoading ||
-          holidaysProps.deleteManyIsLoading ||
-          holidaysProps.putIsLoading
-        }
-        isError={
-          holidaysProps.putIsError ||
-          holidaysProps.postIsError ||
-          holidaysProps.deleteManyIsError
-        }
-        isSuccess={
-          holidaysProps.postIsSuccess ||
-          holidaysProps.deleteManyIsSuccess ||
-          holidaysProps.putIsSuccess
-        }
+        isLoading={holidaysProps.isLoading}
+        isError={holidaysProps.isError}
+        isSuccess={holidaysProps.isSuccess}
       />
-      <AdminPostCharaceteristicModal onPost={handlePostHoliday} />
+      <AdminPostCharaceteristicModal
+        onPost={handlePostHoliday}
+        onToggleVisible={onToggleModalVisibility}
+      />
     </>
   );
 };

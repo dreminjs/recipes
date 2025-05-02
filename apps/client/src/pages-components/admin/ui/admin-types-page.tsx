@@ -5,13 +5,7 @@ import { FC, useCallback } from 'react';
 import { useTypes } from '../model/hooks/use-types';
 import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
-import { useAtomValue, useSetAtom } from 'jotai';
-import {
-  activeCellAtom,
-  isPostCharacteristicModalVisibleAtom,
-  newCharacteristicAtom,
-  selectedCharacteristicsIdsAtom,
-} from 'src/application/providers/characteristics-provider';
+import { useCharacteristicActions } from '../model/hooks/use-characteristic-actions';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
@@ -25,22 +19,16 @@ export const AdminTypesPage: FC = () => {
     initialTitle: '',
   });
 
-  const setActiveCell = useSetAtom(activeCellAtom) 
-
-  const selectedCharacteristics = useAtomValue(selectedCharacteristicsIdsAtom);
-
-  const newCharacteristic = useAtomValue(newCharacteristicAtom)
-
-  const setIsPostModalVisible = useSetAtom(
-    isPostCharacteristicModalVisibleAtom
-  );
-
-  const handleTogglePostModalVisible = () =>
-    setIsPostModalVisible((prev) => !prev);
+  const {
+    newCharacteristic,
+    setActiveCell,
+    onToggleModalVisibility,
+    selectedCharacteristics,
+  } = useCharacteristicActions();
 
   const handlePutType = () => {
     if (newCharacteristic) {
-      setActiveCell(null)
+      setActiveCell(null);
       if (typeof newCharacteristic.payload === 'boolean') {
         typesProps.put({
           data: { isVisible: newCharacteristic.payload },
@@ -56,14 +44,14 @@ export const AdminTypesPage: FC = () => {
   };
 
   const handleDeleteTypes = () => {
-    selectedCharacteristics
-      ? typesProps.deleteMany(selectedCharacteristics)
-      : alert('Wait!');
+    setActiveCell(null);
+
+    typesProps.deleteMany(selectedCharacteristics);
   };
 
   const handlePostType = (data: IPostCharacteristicForm) => {
     typesProps.post(data);
-    handleTogglePostModalVisible();
+    onToggleModalVisibility();
   };
 
   return (
@@ -100,7 +88,7 @@ export const AdminTypesPage: FC = () => {
         isSuccess={typesProps.isSuccess}
       />
       <AdminPostCharaceteristicModal
-        onToggleVisible={handleTogglePostModalVisible}
+        onToggleVisible={onToggleModalVisibility}
         onPost={handlePostType}
       />
     </>

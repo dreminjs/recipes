@@ -75,7 +75,7 @@ export const useTypes = ({
 
   const isSuccess = deleteTypeIsSuccess || putTypeIsSuccess || postTypeIsSuccess || deleteTypesIsSuccess
 
-  const isError = deleteTypeIsSuccess || putTypeIsSuccess || postTypeIsSuccess || deleteTypeIsError || postTypeIsError || putTypeIsError
+  const isError =  deleteTypeIsError || postTypeIsError || putTypeIsError
 
   return {
     title,

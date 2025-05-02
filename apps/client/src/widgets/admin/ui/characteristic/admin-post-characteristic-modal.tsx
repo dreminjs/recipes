@@ -14,9 +14,7 @@ interface IProps {
 
 export const AdminPostCharaceteristicModal: FC<IProps> = ({ onPost, onToggleVisible }) => {
 
-
   const isPostCharacteristicModalVisible = useAtomValue(isPostCharacteristicModalVisibleAtom)
-
 
   return (
     <BasicModal

@@ -4,21 +4,22 @@ import {
   useDeleteManyIngredients,
   usePutIngredient,
 } from '../../api/ingredient/queries';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
 export const useIngredients = ({
   initialTitle,
   initialPage,
-  limit,
+  initialLimit,
 }: {
   initialTitle: string;
   initialPage: number;
-  limit: number;
+  initialLimit: number;
 }) => {
   const [title, setTitle] = useState(initialTitle);
   const [value] = useDebounce(title, 500);
   const [currentPage, setCurrentPage] = useState(initialPage);
+  const [limit, setLimit] = useState(initialLimit);
 
   const {
     putIngredient,
@@ -49,7 +50,8 @@ export const useIngredients = ({
 
   useEffect(() => {
     if (
-      postIngredientIsSuccess || deleteManyIngredientsIsSuccess ||
+      postIngredientIsSuccess ||
+      deleteManyIngredientsIsSuccess ||
       putIngredientIsSuccess
     ) {
       refetchIngredients();
@@ -58,7 +60,7 @@ export const useIngredients = ({
     refetchIngredients,
     postIngredientIsSuccess,
     putIngredientIsSuccess,
-    deleteManyIngredientsIsSuccess
+    deleteManyIngredientsIsSuccess,
   ]);
 
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
@@ -68,27 +70,37 @@ export const useIngredients = ({
     newPage: number
   ) => setCurrentPage(newPage);
 
+  const handleChangeLimit = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setLimit(parseInt(event.target.value, 10));
+      setCurrentPage(0);
+    },
+    []
+  );
+
+  const isLoading = deleteManyIngredientsIsLoading || putIngredientIsLoading || postIngredientIsLoading
+
+  const isSuccess = deleteManyIngredientsIsSuccess || putIngredientIsSuccess || postIngredientIsSuccess 
+
+  const isError =  deleteManyIngredientsIsError || postIngredientIsError || putIngredientIsError
+
   return {
     title,
     currentPage,
     onChangePage,
     put: putIngredient,
-    putIsLoading: putIngredientIsLoading,
-    putIsError: putIngredientIsError,
-    putIsSuccess: putIngredientIsSuccess,
     deleteMany: deleteManyIngredients,
-    deleteManyIsLoading: deleteManyIngredientsIsLoading,
-    deleteManyIsError: deleteManyIngredientsIsError,
-    deleteManyIsSuccess: deleteManyIngredientsIsSuccess,
     items: ingredients,
     itemsIsLoading: ingredientsIsLoading,
     itemsIsError: ingredientsIsError,
     itemsIsSuccess: ingredientsIsSuccess,
     refetch: refetchIngredients,
     post: postIngredient,
-    postIsLoading: postIngredientIsLoading,
-    postIsError: postIngredientIsError,
-    postIsSuccess: postIngredientIsSuccess,
     onChangeTitle,
+    onChangeLimit: handleChangeLimit,
+    limit,
+    isLoading,
+    isSuccess,
+    isError
   };
 };

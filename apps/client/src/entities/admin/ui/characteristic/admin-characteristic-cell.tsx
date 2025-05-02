@@ -79,6 +79,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
             defaultChecked={Boolean(payload)}
             ref={inputRef as React.RefObject<HTMLInputElement>}
             id={id}
+            className='text-[30px]'
           />
         ) : type === 'options' ? (
           <select
