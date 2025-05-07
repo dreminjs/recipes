@@ -19,12 +19,12 @@ export async function comparePassword({
 
 export async function generateHashPassword(
   password: string
-): Promise<{ salt: string; hashPassword: string }> {
+): Promise<{ salt: string; hashedPassword: string }> {
   const salt = await bcrypt.genSalt(10);
-  const hashPassword = await this.hashPassword(password, salt);
+  const hashedPassword = await hashPassword(password, salt);
 
   return {
     salt,
-    hashPassword,
+    hashedPassword: hashedPassword,
   };
 }

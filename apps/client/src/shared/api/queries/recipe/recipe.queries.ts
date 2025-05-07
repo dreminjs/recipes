@@ -1,12 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '../../../model/constants';
 import { recipeService } from './recipe.service';
-import { IGetRecipesQueryParameters } from '../../../model/interfaces/recipe.interface';
+import { IGetRecipesQueryParameters } from 'src/shared/model/interfaces/recipe.interface';
+import { QUERY_KEYS } from 'src/shared/model/constants';
 
 export const useGetRecipes = (
   queryParams: IGetRecipesQueryParameters,
   { enabled }: { enabled?: boolean } = {}
 ) => {
+  
   const {
     data: recipes,
     hasNextPage,

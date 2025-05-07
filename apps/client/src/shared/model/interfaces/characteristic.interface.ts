@@ -1,6 +1,6 @@
-import { IItemsPaginationResponse } from '@/interfaces';
 import {
   Measure,
+  Type,
 } from 'prisma/prisma-client';
 import { PostCharacteristicFormSchema } from '../schemas/characteristic.schema';
 import { z } from 'zod';
@@ -15,20 +15,21 @@ export type IPostCharacteristicForm = z.infer<
   typeof PostCharacteristicFormSchema
 >;
 
-export interface ICharacteristic {
-  createdAt: Date
-  title: string
-  id: string
-  isVisible: boolean
+export interface ICharacteristic extends Type {
   measure?: Measure
-} 
+}
+
+
+export interface UpdateCharacteristicDto {
+  payload: string | boolean
+  id: string 
+}
 
 export type ICharacteristicPayload = Omit<ICharacteristic, 'createdAt' | 'isVisible'>
 
-export type CharacteristicsPayload = IItemsPaginationResponse<ICharacteristic>
 
 export type ICharacteristicsTableCoordinats = {
   coloumnIdx: number;
   rowIdx: number;
-} | null;
+}
 

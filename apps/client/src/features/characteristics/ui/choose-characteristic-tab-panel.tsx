@@ -1,25 +1,25 @@
-import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Tab } from '@mui/material';
 import { FC, useState } from 'react';
+import { ChooseItemListTab } from '../model/ui/choose-item-list-tab';
+import { CHOOSE_ITEM_TAB_LIST } from '../model/tab-data';
+import { CustomTabList } from '../model/ui/custom-tab-list';
+import { TabsLayout } from '../model/ui/tabs-layout';
 
 interface IProps {
-  tabNumber: string;
+  parentNumber: string;
 }
 
-export const ChooseCharacteristicTabPanel: FC<IProps> = ({ tabNumber }) => {
-  const [tab, setTab] = useState('1');
-  const handleChange = (event: React.SyntheticEvent, newTab: string) => {
+export const ChooseCharacteristicTabPanel: FC<IProps> = ({ parentNumber }) => {
+  const [tab, setTab] = useState('0');
+  const handleChange = (_: unknown, newTab: string) => {
     setTab(newTab);
   };
+
   return (
-    <TabPanel value={tabNumber}>
-      <TabContext value={tab}>
-        <TabList onChange={handleChange}>
-          <Tab label="типы" value="1" />
-          <Tab label="праздники" value="2" />
-          <Tab label="нацинональные кухни" value="3" />
-        </TabList>
-      </TabContext>
-    </TabPanel>
+    <TabsLayout currentNumber={tab} parentNumber={parentNumber}>
+      <CustomTabList tabs={CHOOSE_ITEM_TAB_LIST} onChange={handleChange} />
+      {CHOOSE_ITEM_TAB_LIST.map(({ endpoint }, idx) => (
+        <ChooseItemListTab type={endpoint} value={idx.toString()} key={idx} />
+      ))}
+    </TabsLayout>
   );
 };

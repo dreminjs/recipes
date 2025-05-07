@@ -42,12 +42,12 @@ export class AuthController {
       throw new BadRequestException('Такой пользователь уже существует!');
     }
 
-    const { hashPassword, salt } = await generateHashPassword(body.password);
+    const { hashedPassword, salt } = await generateHashPassword(body.password);
 
     const link = crypto.randomUUID();
 
     const userQuery = this.userService.createOne({
-      hashPassword,
+      hashPassword: hashedPassword,
       email,
       nickname,
       salt,

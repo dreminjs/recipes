@@ -12,19 +12,12 @@ export interface IInfiniteScrollResponse<T> {
   nextCursor: number | null;
 }
 
-export type Characteristics = 'holiday' | 'type' | 'national-cuisine';
-
-export interface ICharacteristic {
-  id: string;
-  title: string;
-  type: Characteristics;
-  isVisible: boolean;
-}
+export type Characteristics = 'holidays' | 'types' | 'national-cuisines' | 'ingredients'
 
 export interface IItemsPaginationResponse<T> {
   items: T[];
   currentPage: number;
-  countItems: number | null;
+  countItems: number;
 }
 
 export interface IUserResponse {

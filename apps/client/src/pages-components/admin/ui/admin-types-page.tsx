@@ -1,64 +1,29 @@
-import {
-  InputSearch,
-  IPostCharacteristicForm,
-  useCharacteristics,
-} from '@/shared';
+import { InputSearch, IPostCharacteristicForm } from '@/shared';
 import { AdminPostCharaceteristicModal } from '@/widgets/admin';
 import { MessageModal } from '@/features/message';
 import { FC } from 'react';
 import { useTypes } from '../model/hooks/use-types';
 import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
-import { Characteristics } from '@/interfaces*';
+import { useAdminCharacteristicActions } from '../model/hooks/use-admin-characteristic-actions';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
   { ssr: false }
 );
 
-
-
-export const AdminTypesPage: FC= () => {
-  
-  const {
-    newCharacteristicValue,
-    selectedCharacteristics,
-    onTogglePostCharacteristicModalVisibility,
-    onChangeLimit,
-  } = useCharacteristics();
-
+export const AdminTypesPage: FC = () => {
   const typesProps = useTypes({
     initialLimit: 5,
     initialPage: 0,
     initialTitle: '',
   });
 
-  const handlePutType = () => {
-    if (newCharacteristicValue) {
-      if (typeof newCharacteristicValue.payload === 'boolean') {
-        typesProps.put({
-          data: { isVisible: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
-        });
-      } else {
-        typesProps.put({
-          data: { title: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
-        });
-      }
-    }
-  };
-
-  const handleDeleteTypes = () => {
-    selectedCharacteristics
-      ? typesProps.deleteMany(selectedCharacteristics)
-      : alert('Wait!');
-  };
-
-  const handlePostType = (data: IPostCharacteristicForm) => {
-    typesProps.post(data);
-    onTogglePostCharacteristicModalVisibility();
-  };
+  const {
+    newCharacteristic,
+    onToggleModalVisibility,
+    selectedCharacteristics,
+  } = useAdminCharacteristicActions();
 
   return (
     <>
@@ -68,18 +33,18 @@ export const AdminTypesPage: FC= () => {
           onChange={typesProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
-          onDeleteMany={handleDeleteTypes}
-          onPut={handlePutType}
+          onDeleteMany={() => {
+            typesProps.deleteMany(selectedCharacteristics);
+          }}
+          onPut={() => newCharacteristic && typesProps.onPut(newCharacteristic)}
           onChangePage={(_, newPage) => {
             typesProps.onChangePage(newPage);
           }}
-          type='type'
-          count={
-            typesProps.items?.countItems ? typesProps.items?.countItems : 1
-          }
+          type="types"
+          count={typesProps.items?.countItems ? typesProps.items.countItems : 0}
           limit={typesProps.limit}
           currentPage={typesProps.currentPage}
-          onChangeLimit={onChangeLimit}
+          onChangeLimit={typesProps.onChangeLimit}
         />
       </CharactersticsLayout>
       <MessageModal
@@ -88,23 +53,17 @@ export const AdminTypesPage: FC= () => {
           isError: 'Ошибка! проверте данные',
           isLoading: 'Загрузка...',
         }}
-        isLoading={
-          typesProps.postIsLoading ||
-          typesProps.deleteIsLoading ||
-          typesProps.itemsIsLoading
-        }
-        isError={
-          typesProps.postIsError ||
-          typesProps.putIsError ||
-          typesProps.deleteIsError
-        }
-        isSuccess={
-          typesProps.postIsSuccess ||
-          typesProps.deleteManyIsSuccess ||
-          typesProps.putIsSuccess
-        }
+        isLoading={typesProps.isLoading}
+        isError={typesProps.isError}
+        isSuccess={typesProps.isSuccess}
       />
-      <AdminPostCharaceteristicModal onPost={handlePostType} />
+      <AdminPostCharaceteristicModal
+        onToggleVisible={onToggleModalVisibility}
+        onPost={(data: IPostCharacteristicForm) => {
+          typesProps.post(data);
+          onToggleModalVisibility();
+        }}
+      />
     </>
   );
 };

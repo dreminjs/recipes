@@ -18,6 +18,7 @@ import { IItemsPaginationResponse } from 'interfaces';
 import { RolesGuard } from '../user/guards/roles.guard';
 import { AllowedRoles } from '../user/decorators/roles.decorator';
 import { AccessTokenGuard } from '../token';
+import { UpdateManyNationalCuisinesDto } from './dtos/update-national-cuisines.dto';
 
 @Controller('national-cuisines')
 export class NationalCuisineController {
@@ -63,6 +64,17 @@ export class NationalCuisineController {
     @Param('id') id: string
   ): Promise<NationalCuisine> {
     return await this.nationalCuisineService.updateOne({ id }, { ...body });
+  }
+
+  @AllowedRoles(Roles.ADMIN)
+  @UseGuards(AccessTokenGuard, RolesGuard)
+  @Put()
+  public async updateMany(
+    @Body() body: UpdateManyNationalCuisinesDto
+  ):  Promise<NationalCuisine[]> {
+    return await this.nationalCuisineService.updateMany(
+      body.updates.map(({ id, title }) => ({ id, data: { title } }))
+    );
   }
 
   @AllowedRoles(Roles.ADMIN)

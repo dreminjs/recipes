@@ -12,12 +12,8 @@ export const SignInForm = () => {
     formState: { errors },
   } = useForm<ISignIn>({ resolver: zodResolver(SignInSchema) });
 
-  const {
-    signin,
-    signinIsLoading,
-    signinIsSuccess,
-    signinIsError,
-  } = usePostSignIn();
+  const { signin, signinIsLoading, signinIsSuccess, signinIsError } =
+    usePostSignIn();
 
   return (
     <>

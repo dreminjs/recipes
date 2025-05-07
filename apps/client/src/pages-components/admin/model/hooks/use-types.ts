@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import {
   usePutType,
@@ -7,6 +7,7 @@ import {
   useGetTypes,
   usePostType,
 } from '../../api/type/queries';
+import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 
 export const useTypes = ({
   initialTitle,
@@ -43,14 +44,14 @@ export const useTypes = ({
   const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
     usePostType();
     
-  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
-    setTitle(event.target.value);
+  const handleChangeTitle = useCallback((event: ChangeEvent<HTMLInputElement>) =>
+    setTitle(event.target.value),[])
 
-  const handleChangePage = (newPage: number) => {
+  const handleChangePage = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < Math.ceil((types?.countItems || 0) / limit)) {
       setCurrentPage(newPage);
     }
-  };
+  },[limit, types?.countItems])
 
   useEffect(() => {
     if (typesIsSuccess && types?.countItems === 0 && currentPage > 0) {
@@ -64,29 +65,44 @@ export const useTypes = ({
     }
   }, [refetchTypes, postTypeIsSuccess, deleteTypesIsSuccess, putTypeIsSuccess]);
 
-  const handleChangeLimit = (
+  const handleChangeLimit = useCallback((
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setLimit(parseInt(event.target.value, 10));
     setCurrentPage(0);
-  };
+  },[])
+
+    const handlePutType = (newCharacteristic: UpdateCharacteristicDto) => {
+      if (newCharacteristic) {
+        if (typeof newCharacteristic.payload === 'boolean') {
+          putType({
+            data: { isVisible: newCharacteristic.payload },
+            id: newCharacteristic.id,
+          });
+        } else {
+          putType({
+            data: { title: newCharacteristic.payload },
+            id: newCharacteristic.id,
+          });
+        }
+      }
+    };
+
+  const isLoading = deleteTypeIsLoading || putTypeIsLoading || postTypeIsLoading || deleteTypesIsLoading
+
+  const isSuccess = deleteTypeIsSuccess || putTypeIsSuccess || postTypeIsSuccess || deleteTypesIsSuccess
+
+  const isError =  deleteTypeIsError || postTypeIsError || putTypeIsError
+
   return {
     title,
     currentPage: Math.min(currentPage, Math.max(0, Math.ceil((types?.countItems || 0) / limit) - 1)),
     onChangePage: handleChangePage,
     limit,
     setLimit,
-    put: putType,
-    putIsLoading: putTypeIsLoading,
-    putIsError: putTypeIsError,
-    putIsSuccess: putTypeIsSuccess,
+    onPut: handlePutType,
     deleteOne: deleteType,
-    deleteIsLoading: deleteTypeIsLoading,
-    deleteIsError: deleteTypeIsError,
-    deleteIsSuccess: deleteTypeIsSuccess,
     deleteMany:deleteTypes,
-    deleteManyIsSuccess: deleteTypesIsSuccess,
-    deleteManyIsLoading: deleteTypesIsLoading,
     deleteManyIsError: deleteTypesIsError,
     items: types,
     itemsIsLoading: typesIsLoading,
@@ -94,10 +110,10 @@ export const useTypes = ({
     itemsIsSuccess: typesIsSuccess,
     refetch: refetchTypes,
     post: postType,
-    postIsLoading: postTypeIsLoading,
-    postIsError: postTypeIsError,
-    postIsSuccess: postTypeIsSuccess,
     onChangeTitle: handleChangeTitle,
     onChangeLimit: handleChangeLimit,
+    isLoading,
+    isSuccess,
+    isError
   };
 };

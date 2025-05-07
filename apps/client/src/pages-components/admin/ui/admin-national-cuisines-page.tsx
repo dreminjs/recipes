@@ -1,18 +1,11 @@
-import {
-  InputSearch,
-  IPostCharacteristicForm,
-  useCharacteristics,
-} from '@/shared';
-import {
-  AdminPostCharaceteristicModal,
-} from '@/widgets/admin';
-
+import { InputSearch, IPostCharacteristicForm } from '@/shared';
+import { AdminPostCharaceteristicModal } from '@/widgets/admin';
 import { MessageModal } from '@/features/message';
 import { useNationalCuisines } from '../model/hooks/use-national-cuisines';
 import { FC } from 'react';
 import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
-
+import { useAdminCharacteristicActions } from '../model/hooks/use-admin-characteristic-actions';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
@@ -20,46 +13,17 @@ const AdminCharacteristicsTable = dynamic(
 );
 
 export const AdminNationalCuisinesPage: FC = () => {
-  const {
-    newCharacteristicValue,
-    selectedCharacteristics,
-    onTogglePostCharacteristicModalVisibility,
-    onChangeLimit
-  } = useCharacteristics();
-
   const nationalCuisinesProps = useNationalCuisines({
     initialLimit: 5,
     initialPage: 0,
     initialTitle: '',
   });
 
-  const handlePutNationalCuisine = () => {
-    if (newCharacteristicValue) {
-      if (typeof newCharacteristicValue.payload === 'boolean') {
-        nationalCuisinesProps.put({
-          data: { isVisible: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
-        });
-      } else {
-        nationalCuisinesProps.put({
-          data: { title: newCharacteristicValue.payload },
-          id: newCharacteristicValue.id,
-        });
-      }
-    }
-  };
-
-  const handleDeleteNationalCuisines = () =>
-    selectedCharacteristics
-      ? nationalCuisinesProps.deleteMany(
-          selectedCharacteristics
-        )
-      : alert('Wait!');
-
-  const handlePostNationalCuisine = (data: IPostCharacteristicForm) => {
-    nationalCuisinesProps.post(data);
-    onTogglePostCharacteristicModalVisibility();
-  };
+  const {
+    newCharacteristic,
+    onToggleModalVisibility,
+    selectedCharacteristics,
+  } = useAdminCharacteristicActions();
 
   return (
     <>
@@ -69,16 +33,20 @@ export const AdminNationalCuisinesPage: FC = () => {
           onChange={nationalCuisinesProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
-          type='national-cuisine'
-          onDeleteMany={handleDeleteNationalCuisines}
-          onPut={handlePutNationalCuisine}
+          type="national-cuisines"
+          onDeleteMany={() =>
+            nationalCuisinesProps.deleteMany(selectedCharacteristics)
+          }
+          onPut={() =>
+            newCharacteristic && nationalCuisinesProps.onPut(newCharacteristic)
+          }
           onChangePage={(_, newPage) =>
             nationalCuisinesProps.onChangePage(newPage)
           }
           count={nationalCuisinesProps.items?.countItems || 0}
           limit={nationalCuisinesProps.limit}
           currentPage={nationalCuisinesProps.currentPage}
-          onChangeLimit={onChangeLimit}
+          onChangeLimit={nationalCuisinesProps.onChangeLimit}
         />
       </CharactersticsLayout>
       <MessageModal
@@ -87,23 +55,17 @@ export const AdminNationalCuisinesPage: FC = () => {
           isError: 'Ошибка! проверте данные',
           isLoading: 'Загрузка...',
         }}
-        isLoading={
-          nationalCuisinesProps.postIsLoading ||
-          nationalCuisinesProps.deleteManyIsLoading ||
-          nationalCuisinesProps.itemsIsLoading
-        }
-        isError={
-          nationalCuisinesProps.itemsIsError ||
-          nationalCuisinesProps.postIsError ||
-          nationalCuisinesProps.deleteManyIsError
-        }
-        isSuccess={
-          nationalCuisinesProps.postIsSuccess ||
-          nationalCuisinesProps.deleteManyIsSuccess ||
-          nationalCuisinesProps.putIsSuccess
-        }
+        isLoading={nationalCuisinesProps.isLoading}
+        isError={nationalCuisinesProps.isError}
+        isSuccess={nationalCuisinesProps.isSuccess}
       />
-      <AdminPostCharaceteristicModal onPost={handlePostNationalCuisine} />
+      <AdminPostCharaceteristicModal
+        onPost={(data: IPostCharacteristicForm) => {
+          nationalCuisinesProps.post(data);
+          onToggleModalVisibility();
+        }}
+        onToggleVisible={onToggleModalVisibility}
+      />
     </>
   );
 };
