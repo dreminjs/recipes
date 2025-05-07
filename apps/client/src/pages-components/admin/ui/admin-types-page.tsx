@@ -1,11 +1,11 @@
 import { InputSearch, IPostCharacteristicForm } from '@/shared';
 import { AdminPostCharaceteristicModal } from '@/widgets/admin';
 import { MessageModal } from '@/features/message';
-import { FC, useCallback } from 'react';
+import { FC } from 'react';
 import { useTypes } from '../model/hooks/use-types';
 import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
-import { useCharacteristicActions } from '../model/hooks/use-characteristic-actions';
+import { useAdminCharacteristicActions } from '../model/hooks/use-admin-characteristic-actions';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
@@ -21,38 +21,9 @@ export const AdminTypesPage: FC = () => {
 
   const {
     newCharacteristic,
-    setActiveCell,
     onToggleModalVisibility,
     selectedCharacteristics,
-  } = useCharacteristicActions();
-
-  const handlePutType = () => {
-    if (newCharacteristic) {
-      setActiveCell(null);
-      if (typeof newCharacteristic.payload === 'boolean') {
-        typesProps.put({
-          data: { isVisible: newCharacteristic.payload },
-          id: newCharacteristic.id,
-        });
-      } else {
-        typesProps.put({
-          data: { title: newCharacteristic.payload },
-          id: newCharacteristic.id,
-        });
-      }
-    }
-  };
-
-  const handleDeleteTypes = () => {
-    setActiveCell(null);
-
-    typesProps.deleteMany(selectedCharacteristics);
-  };
-
-  const handlePostType = (data: IPostCharacteristicForm) => {
-    typesProps.post(data);
-    onToggleModalVisibility();
-  };
+  } = useAdminCharacteristicActions();
 
   return (
     <>
@@ -62,15 +33,14 @@ export const AdminTypesPage: FC = () => {
           onChange={typesProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
-          onDeleteMany={handleDeleteTypes}
-          onPut={handlePutType}
-          onChangePage={useCallback(
-            (_, newPage) => {
-              typesProps.onChangePage(newPage);
-            },
-            [typesProps]
-          )}
-          type="type"
+          onDeleteMany={() => {
+            typesProps.deleteMany(selectedCharacteristics);
+          }}
+          onPut={() => newCharacteristic && typesProps.onPut(newCharacteristic)}
+          onChangePage={(_, newPage) => {
+            typesProps.onChangePage(newPage);
+          }}
+          type="types"
           count={typesProps.items?.countItems ? typesProps.items.countItems : 0}
           limit={typesProps.limit}
           currentPage={typesProps.currentPage}
@@ -89,7 +59,10 @@ export const AdminTypesPage: FC = () => {
       />
       <AdminPostCharaceteristicModal
         onToggleVisible={onToggleModalVisibility}
-        onPost={handlePostType}
+        onPost={(data: IPostCharacteristicForm) => {
+          typesProps.post(data);
+          onToggleModalVisibility();
+        }}
       />
     </>
   );

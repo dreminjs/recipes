@@ -7,6 +7,9 @@ import {
   useGetNationalCuisines,
   usePostNationalCuisine,
 } from '../../api/national-cuisine/queries';
+import { useSetAtom } from 'jotai';
+import { activeCellAtom } from 'src/application/providers/characteristics-provider';
+import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 
 export const useNationalCuisines = ({
   initialTitle,
@@ -21,6 +24,7 @@ export const useNationalCuisines = ({
   const [value] = useDebounce(title, 500);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
+  const setActiveCell = useSetAtom(activeCellAtom);
 
   const {
     putNationalCuisine,
@@ -79,6 +83,23 @@ export const useNationalCuisines = ({
     setCurrentPage(0);
   };
 
+  const handlePutNationalCuisine = (newCharacteristic: UpdateCharacteristicDto) => {
+    if (newCharacteristic) {
+      setActiveCell(null);
+      if (typeof newCharacteristic.payload === 'boolean') {
+        putNationalCuisine({
+          data: { isVisible: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
+      } else {
+        putNationalCuisine({
+          data: { title: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
+      }
+    }
+  };
+
   const isLoading =
     deleteNationalCuisineIsLoading ||
     putNationalCuisineIsLoading ||
@@ -104,7 +125,7 @@ export const useNationalCuisines = ({
     onChangePage,
     limit,
     setLimit,
-    put: putNationalCuisine,
+    onPut: handlePutNationalCuisine,
     deleteOne: deleteNationalCuisine,
     deleteMany: deleteManyNationalCuisines,
     items: nationalCuisines,

@@ -1,6 +1,4 @@
-import { IItemsPaginationResponse } from '@/interfaces';
 import {
-  Ingredient,
   Measure,
   Type,
 } from 'prisma/prisma-client';
@@ -16,14 +14,6 @@ export interface IGetCharacteristicsQueryParameters {
 export type IPostCharacteristicForm = z.infer<
   typeof PostCharacteristicFormSchema
 >;
-
-// export interface ICharacteristic {
-//   createdAt: Date
-//   title: string
-//   id: string
-//   isVisible: boolean
-//   measure?: Measure
-// } 
 
 export interface ICharacteristic extends Type {
   measure?: Measure

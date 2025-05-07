@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC, memo, useCallback } from 'react';
+import { ChangeEventHandler, FC } from 'react';
 import {
   AdminCharacteristicHeadTable,
   AdminCharacteristicToolBarTable,
@@ -10,7 +10,7 @@ import { Paper } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
 import { Characteristics } from '@/interfaces*';
 import { useSetAtom } from 'jotai';
-import { selectedCharacteristicsIdsAtom } from 'src/application/providers/characteristics-provider';
+import { selectedCharacteristicsIdsAtom } from 'src/application/stores/characteristics.store';
 
 interface IProps {
   onPut: () => void;
@@ -27,8 +27,8 @@ interface IProps {
   onChangeLimit: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
-export const AdminCharacteristicsTable: FC<IProps> = memo(
-  function AdminCharacteristicsTable({
+export const AdminCharacteristicsTable: FC<IProps> = 
+  function ({
     onPut,
     onDeleteMany,
     count,
@@ -73,4 +73,4 @@ export const AdminCharacteristicsTable: FC<IProps> = memo(
       </Paper>
     );
   }
-);
+

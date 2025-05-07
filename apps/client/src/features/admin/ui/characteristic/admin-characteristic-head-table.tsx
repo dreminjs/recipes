@@ -5,17 +5,10 @@ import { FC } from 'react';
 interface IProps {
   addiotionalColoumns?: string[];
 }
-
+const headers = ['id', 'title', 'is visible'];
 export const AdminCharacteristicHeadTable: FC<IProps> = ({
   addiotionalColoumns,
 }) => {
-  const headers = [
-    'id',
-    'title',
-    'is visible',
-    ...(addiotionalColoumns ? addiotionalColoumns : []),
-  ];
-
   const { isHeadCheckboxChecked, onSelectAllCharacteristics } =
     useAdminCharacteristicHeadTableLogic();
 
@@ -30,11 +23,13 @@ export const AdminCharacteristicHeadTable: FC<IProps> = ({
             id="head-checkbox"
           />
         </TableCell>
-        {headers.map((item) => (
-          <TableCell align="left" key={item}>
-            {item}
-          </TableCell>
-        ))}
+        {[...headers, ...(addiotionalColoumns ? addiotionalColoumns : [])].map(
+          (item) => (
+            <TableCell align="left" key={item}>
+              {item}
+            </TableCell>
+          )
+        )}
       </TableRow>
     </TableHead>
   );

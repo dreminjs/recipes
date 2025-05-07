@@ -52,7 +52,7 @@ model RefreshToken {
 }
 
 model Recipe {
-  @@map("recipes")
+  @@map("recipes")        
   id                String             @id @default(uuid())
   title             String
   description       String

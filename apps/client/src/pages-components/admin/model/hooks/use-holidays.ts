@@ -6,6 +6,7 @@ import {
   useGetHolidays,
   usePostHoliday,
 } from '../../api/holiday/queries';
+import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 
 export const useHolidays = ({
   initialTitle,
@@ -73,6 +74,22 @@ export const useHolidays = ({
     setCurrentPage(0);
   };
 
+  const handlePutType = (newCharacteristic: UpdateCharacteristicDto) => {
+    if (newCharacteristic) {
+      if (typeof newCharacteristic.payload === 'boolean') {
+        putHoliday({
+          data: { isVisible: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
+      } else {
+        putHoliday({
+          data: { title: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
+      }
+    }
+  };
+
   const isLoading =
     deleteManyHolidayIsLoading || putHolidayIsLoading || postHolidayIsLoading;
 
@@ -88,7 +105,7 @@ export const useHolidays = ({
     onChangePage: handleChangePage,
     limit,
     setLimit,
-    put: putHoliday,
+    onPut: handlePutType,
     deleteMany: deleteManyHoliday,
     items: holidays,
     itemsIsLoading: holidaysIsLoading,

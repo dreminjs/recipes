@@ -1,5 +1,5 @@
 import { PostRecipeForm } from '@/widgets/recipe';
-import { ChooseCharacteristicsModal } from '@/widgetscharacteristic';
+import { ChooseCharacteristicsModal } from '@/widgets/characteristic';
 import { useState } from 'react';
 
 export const PostRecipePage = () => {

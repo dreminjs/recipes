@@ -5,6 +5,7 @@ import {
   usePutIngredient,
 } from '../../api/ingredient/queries';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useDebounce } from 'use-debounce';
 
 export const useIngredients = ({
@@ -78,6 +79,33 @@ export const useIngredients = ({
     []
   );
 
+    const handlePutIngredient = (newCharacteristic: UpdateCharacteristicDto) => {
+      if (newCharacteristic) {
+        if (typeof newCharacteristic.payload === 'boolean') {
+          putIngredient({
+            data: { isVisible: newCharacteristic.payload },
+            id: newCharacteristic.id,
+          });
+        } else if (
+          newCharacteristic.payload === 'ML' ||
+          newCharacteristic.payload === 'L' ||
+          newCharacteristic.payload === 'KG' ||
+          newCharacteristic.payload === 'G' ||
+          newCharacteristic.payload === 'N'
+        ) {
+          putIngredient({
+            data: { measure: newCharacteristic.payload },
+            id: newCharacteristic.id,
+          });
+        } else {
+          putIngredient({
+            data: { title: newCharacteristic.payload },
+            id: newCharacteristic.id,
+          });
+        }
+      }
+    };
+
   const isLoading = deleteManyIngredientsIsLoading || putIngredientIsLoading || postIngredientIsLoading
 
   const isSuccess = deleteManyIngredientsIsSuccess || putIngredientIsSuccess || postIngredientIsSuccess 
@@ -88,7 +116,7 @@ export const useIngredients = ({
     title,
     currentPage,
     onChangePage,
-    put: putIngredient,
+    onPut: handlePutIngredient,
     deleteMany: deleteManyIngredients,
     items: ingredients,
     itemsIsLoading: ingredientsIsLoading,

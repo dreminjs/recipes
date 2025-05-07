@@ -1,9 +1,11 @@
-import { useCharacteristics, QUERY_KEYS } from "@/shared*";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { Prisma } from "prisma/prisma-client";
-import { holidayService } from "./service";
+import { QUERY_KEYS } from '@/shared*';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { Prisma } from 'prisma/prisma-client';
+import { holidayService } from './service';
+import { useSetAtom } from 'jotai';
+import { activeCellAtom, characteristicsAtom } from 'src/application/stores/characteristics.store';
 
-const QUERY_KEY = QUERY_KEYS.holiday
+const QUERY_KEY = QUERY_KEYS.holiday;
 
 export const useGetHolidays = ({
   title,
@@ -14,7 +16,8 @@ export const useGetHolidays = ({
   page: number;
   limit: number;
 }) => {
-  const { onSetCharacterstics } = useCharacteristics();
+  const setCharacteristics = useSetAtom(characteristicsAtom);
+
   const {
     data: holidays,
     isLoading: holidaysIsLoading,
@@ -22,14 +25,9 @@ export const useGetHolidays = ({
     isError: holidaysIsError,
     refetch: refetchHolidays,
   } = useQuery({
-    queryKey: [QUERY_KEY,page,title],
+    queryKey: [QUERY_KEY, page, title],
     queryFn: () => holidayService.findMany({ limit, page, title }),
-    onSuccess: (data) =>
-      onSetCharacterstics({
-        items: [...data.items],
-        countItems: data.countItems,
-        currentPage: data.currentPage,
-      }),
+    onSuccess: (data) => setCharacteristics(data.items),
   });
 
   return {
@@ -42,7 +40,7 @@ export const useGetHolidays = ({
 };
 
 export const usePostHoliday = () => {
-  const { onHideInputCell } = useCharacteristics();
+  const setActiveCell = useSetAtom(activeCellAtom)
   const {
     mutate: postHoliday,
     isLoading: postHolidayIsLoading,
@@ -53,7 +51,7 @@ export const usePostHoliday = () => {
       holidayService.createOne({ ...data }),
     mutationKey: [QUERY_KEY],
     onSuccess: () => {
-      onHideInputCell();
+      setActiveCell(null);
     },
   });
 
@@ -102,7 +100,9 @@ export const useDeleteManyHolidays = () => {
 };
 
 export const usePutHoliday = () => {
-  const { onHideInputCell } = useCharacteristics();
+
+  const setActiveCell = useSetAtom(activeCellAtom)
+
   const {
     mutate: putHoliday,
     isLoading: putHolidayIsLoading,
@@ -117,9 +117,9 @@ export const usePutHoliday = () => {
       id: string;
     }) => holidayService.updateOne({ id }, data),
     mutationKey: [QUERY_KEY],
-    onSuccess:() => {
-      onHideInputCell()
-    }
+    onSuccess: () => {
+      setActiveCell(null)
+    },
   });
 
   return {

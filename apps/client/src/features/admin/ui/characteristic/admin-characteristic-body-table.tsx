@@ -13,7 +13,6 @@ export const AdminCharacteristictsBodyTable: FC<IProps> = ({ limit }) => {
     characteristics,
     onSelectCharacteristic,
   } = useAdminCharacteristicBodyTableLogic(limit);
-
   return (
     <TableBody>
       {characteristics &&

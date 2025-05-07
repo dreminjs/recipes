@@ -1,7 +1,9 @@
-import { QUERY_KEYS, useCharacteristics, IPostIngredientForm } from "@/shared*";
+import { QUERY_KEYS, IPostIngredientForm, IGetCharacteristicsQueryParameters } from "@/shared*";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Prisma } from "prisma/prisma-client";
 import { ingredientService } from "./service";
+import { useSetAtom } from "jotai";
+import { activeCellAtom, characteristicsAtom } from "src/application/stores/characteristics.store";
 
 const queryKey = QUERY_KEYS.ingredient;
 
@@ -9,12 +11,10 @@ export const useGetIngredients = ({
   title,
   page,
   limit,
-}: {
-  title?: string;
-  page: number;
-  limit: number;
-}) => {
-  const { onSetCharacterstics } = useCharacteristics();
+}: IGetCharacteristicsQueryParameters
+) => {
+
+  const setCharacteristics = useSetAtom(characteristicsAtom) 
 
   const {
     data: ingredients,
@@ -26,11 +26,7 @@ export const useGetIngredients = ({
     queryKey: [queryKey, limit, page, title],
     queryFn: () => ingredientService.findMany({ limit, page, title }),
     onSuccess(data) {
-      onSetCharacterstics({
-        items: [...data.items],
-        countItems: data.countItems,
-        currentPage: data.currentPage,
-      });
+      setCharacteristics(data.items)
     },
   });
 
@@ -100,7 +96,9 @@ export const useDeleteManyIngredients = () => {
 };
 
 export const usePutIngredient = () => {
-  const { onHideInputCell } = useCharacteristics();
+
+  const setActiveCell = useSetAtom(activeCellAtom)
+
   const {
     mutate: putIngredient,
     isLoading: putIngredientIsLoading,
@@ -116,7 +114,7 @@ export const usePutIngredient = () => {
     }) => ingredientService.updateOne({ id }, data),
     mutationKey: [queryKey],
     onSuccess: () => {
-      onHideInputCell();
+      setActiveCell(null)
     },
   });
   return {

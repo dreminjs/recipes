@@ -15,11 +15,11 @@ export class CharacteristicController {
 
   @Get('random')
   public async findRandom(@Query('type') type: Characteristics) {
-    if (type === 'type') {
+    if (type === 'types') {
       return await this.typeService.findOne();
-    } else if (type === 'holiday') {
+    } else if (type === 'holidays') {
       return await this.holidayService.findOne();
-    } else if (type === 'national-cuisine') {
+    } else if (type === 'national-cuisines') {
       return await this.nationalCuisineService.findOne();
     }else {
       throw new NotFoundException("404")

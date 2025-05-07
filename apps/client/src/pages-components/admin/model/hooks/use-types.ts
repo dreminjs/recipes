@@ -7,6 +7,7 @@ import {
   useGetTypes,
   usePostType,
 } from '../../api/type/queries';
+import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 
 export const useTypes = ({
   initialTitle,
@@ -71,6 +72,22 @@ export const useTypes = ({
     setCurrentPage(0);
   },[])
 
+    const handlePutType = (newCharacteristic: UpdateCharacteristicDto) => {
+      if (newCharacteristic) {
+        if (typeof newCharacteristic.payload === 'boolean') {
+          putType({
+            data: { isVisible: newCharacteristic.payload },
+            id: newCharacteristic.id,
+          });
+        } else {
+          putType({
+            data: { title: newCharacteristic.payload },
+            id: newCharacteristic.id,
+          });
+        }
+      }
+    };
+
   const isLoading = deleteTypeIsLoading || putTypeIsLoading || postTypeIsLoading || deleteTypesIsLoading
 
   const isSuccess = deleteTypeIsSuccess || putTypeIsSuccess || postTypeIsSuccess || deleteTypesIsSuccess
@@ -83,7 +100,7 @@ export const useTypes = ({
     onChangePage: handleChangePage,
     limit,
     setLimit,
-    put: putType,
+    onPut: handlePutType,
     deleteOne: deleteType,
     deleteMany:deleteTypes,
     deleteManyIsError: deleteTypesIsError,

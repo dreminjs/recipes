@@ -1,9 +1,9 @@
-import { useCharacteristics, QUERY_KEYS } from "@/shared*";
+import { QUERY_KEYS } from "@/shared*";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Prisma } from "prisma/prisma-client";
 import { typeService } from "./service";
 import { useSetAtom } from "jotai";
-import { characteristicsAtom } from "src/application/providers/characteristics-provider";
+import { characteristicsAtom } from "src/application/stores/characteristics.store";
 
 const QUERY_KEY = QUERY_KEYS.type
 
@@ -75,7 +75,6 @@ export const useDeleteType = () => {
 };
 
 export const usePutType = () => {
-  const { onHideInputCell } = useCharacteristics()
 
   const {
     mutate: putType,
@@ -86,7 +85,6 @@ export const usePutType = () => {
     mutationFn: ({ data, id }: { data: Prisma.TypeUpdateInput; id: string }) =>
       typeService.updateOne({ id }, data),
     mutationKey: [QUERY_KEY],
-    onSuccess: () => onHideInputCell(),
   });
 
   return { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess };

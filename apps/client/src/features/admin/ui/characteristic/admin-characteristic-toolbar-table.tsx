@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import {
   Toolbar,
@@ -13,7 +13,7 @@ import {
   isPostCharacteristicModalVisibleAtom,
   newCharacteristicAtom,
   selectedCharacteristicsIdsAtom,
-} from 'src/application/providers/characteristics-provider';
+} from 'src/application/stores/characteristics.store';
 
 interface IProps {
   onPut: () => void;
@@ -21,8 +21,8 @@ interface IProps {
   type: Characteristics;
 }
 
-export const AdminCharacteristicToolBarTable: FC<IProps> = memo(
-  function AdminCharacteristicToolBarTable({ onPut, onDeleteMany, type }) {
+export const AdminCharacteristicToolBarTable: FC<IProps> =
+  function ({ onPut, onDeleteMany, type }) {
     const selectedCharacteristicsIds = useAtomValue(
       selectedCharacteristicsIdsAtom
     );
@@ -88,4 +88,4 @@ export const AdminCharacteristicToolBarTable: FC<IProps> = memo(
       </Toolbar>
     );
   }
-);
+

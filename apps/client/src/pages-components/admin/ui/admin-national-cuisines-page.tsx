@@ -1,12 +1,11 @@
 import { InputSearch, IPostCharacteristicForm } from '@/shared';
 import { AdminPostCharaceteristicModal } from '@/widgets/admin';
-
 import { MessageModal } from '@/features/message';
 import { useNationalCuisines } from '../model/hooks/use-national-cuisines';
 import { FC } from 'react';
 import { CharactersticsLayout } from '@/application/';
 import dynamic from 'next/dynamic';
-import { useCharacteristicActions } from '../model/hooks/use-characteristic-actions';
+import { useAdminCharacteristicActions } from '../model/hooks/use-admin-characteristic-actions';
 
 const AdminCharacteristicsTable = dynamic(
   () => import('@/widgets/admin/').then((mod) => mod.AdminCharacteristicsTable),
@@ -20,30 +19,11 @@ export const AdminNationalCuisinesPage: FC = () => {
     initialTitle: '',
   });
 
-    const {
-      newCharacteristic,
-      setActiveCell,
-      onToggleModalVisibility,
-      selectedCharacteristics,
-    } = useCharacteristicActions();
-
-
-  const handlePutNationalCuisine = () => {
-    if (newCharacteristic) {
-      setActiveCell(null);
-      if (typeof newCharacteristic.payload === 'boolean') {
-        nationalCuisinesProps.put({
-          data: { isVisible: newCharacteristic.payload },
-          id: newCharacteristic.id,
-        });
-      } else {
-        nationalCuisinesProps.put({
-          data: { title: newCharacteristic.payload },
-          id: newCharacteristic.id,
-        });
-      }
-    }
-  };
+  const {
+    newCharacteristic,
+    onToggleModalVisibility,
+    selectedCharacteristics,
+  } = useAdminCharacteristicActions();
 
   return (
     <>
@@ -53,11 +33,13 @@ export const AdminNationalCuisinesPage: FC = () => {
           onChange={nationalCuisinesProps.onChangeTitle}
         />
         <AdminCharacteristicsTable
-          type="national-cuisine"
+          type="national-cuisines"
           onDeleteMany={() =>
             nationalCuisinesProps.deleteMany(selectedCharacteristics)
           }
-          onPut={handlePutNationalCuisine}
+          onPut={() =>
+            newCharacteristic && nationalCuisinesProps.onPut(newCharacteristic)
+          }
           onChangePage={(_, newPage) =>
             nationalCuisinesProps.onChangePage(newPage)
           }
@@ -80,7 +62,7 @@ export const AdminNationalCuisinesPage: FC = () => {
       <AdminPostCharaceteristicModal
         onPost={(data: IPostCharacteristicForm) => {
           nationalCuisinesProps.post(data);
-          onToggleModalVisibility()
+          onToggleModalVisibility();
         }}
         onToggleVisible={onToggleModalVisibility}
       />

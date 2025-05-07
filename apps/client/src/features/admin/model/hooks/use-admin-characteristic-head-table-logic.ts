@@ -1,9 +1,5 @@
 import { useAtom, useAtomValue } from 'jotai';
-import {
-  isHeadCheckboxCheckedAtom,
-  selectedCharacteristicsIdsAtom,
-  characteristicsAtom,
-} from 'src/application/providers/characteristics-provider';
+import { isHeadCheckboxCheckedAtom, selectedCharacteristicsIdsAtom, characteristicsAtom } from 'src/application/stores/characteristics.store';
 
 export const useAdminCharacteristicHeadTableLogic = () => {
   const [isHeadCheckboxChecked, setIsHeadCheckboxChecked] = useAtom(

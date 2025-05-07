@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from 'react';
+import { FC } from 'react';
 import { Checkbox, TableCell, TableRow } from '@mui/material';
 import { AdminCharacteristicCell } from '@/entitiesadmin';
 import { ICharacteristic } from '@/shared*';
@@ -10,10 +10,10 @@ interface RowProps {
   onSelect: (id: string) => void;
 }
 
-export const AdminTableRow: FC<RowProps> = memo(function AdminTableRow({ el, rowIdx, isChecked, onSelect }) {
-  const handleCheckboxClick = useCallback(() => {
+export const AdminTableRow: FC<RowProps> = function({ el, rowIdx, isChecked, onSelect }) {
+  const handleCheckboxClick = () => {
     onSelect(el.id);
-  }, [el.id, onSelect]);
+  }
 
   return (
     <TableRow hover role="checkbox" key={el.id} sx={{ cursor: 'pointer' }}>
@@ -48,4 +48,4 @@ export const AdminTableRow: FC<RowProps> = memo(function AdminTableRow({ el, row
       )}
     </TableRow>
   );
-});
+}

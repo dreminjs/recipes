@@ -2,10 +2,7 @@ import { TableCell } from '@mui/material';
 import { ChangeEvent, FC, useEffect, useRef } from 'react';
 import { ICharacteristicsTableCoordinats, measuresArray } from '@/shared';
 import { useAtom, useSetAtom } from 'jotai';
-import {
-  activeCellAtom,
-  newCharacteristicAtom,
-} from 'src/application/providers/characteristics-provider';
+import { activeCellAtom, newCharacteristicAtom } from 'src/application/stores/characteristics.store';
 
 interface IProps {
   type: 'checkbox' | 'text' | 'options';
@@ -28,7 +25,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
     newCharacteristicAtom
   );
 
-  const onChangeCharacteristicValue = (
+  const handleChangeCharacteristicValue = (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
   ) => {
     const { type, value, id } = event.target;
@@ -75,7 +72,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
         type === 'checkbox' ? (
           <input
             type="checkbox"
-            onChange={onChangeCharacteristicValue}
+            onChange={handleChangeCharacteristicValue}
             defaultChecked={Boolean(payload)}
             ref={inputRef as React.RefObject<HTMLInputElement>}
             id={id}
@@ -83,8 +80,9 @@ export const AdminCharacteristicCell: FC<IProps> = ({
           />
         ) : type === 'options' ? (
           <select
-            onChange={() => console.log('hello')}
+            onChange={handleChangeCharacteristicValue}
             defaultValue={String(payload)}
+            id={id}
             autoFocus
           >
             {measuresArray.map((option, index) => (
@@ -97,7 +95,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
           <input
             className="border-b-2 text-sm"
             type="text"
-            onChange={onChangeCharacteristicValue}
+            onChange={handleChangeCharacteristicValue}
             defaultValue={String(payload)}
             autoFocus
             id={id}

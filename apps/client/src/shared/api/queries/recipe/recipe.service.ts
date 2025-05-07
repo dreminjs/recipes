@@ -1,8 +1,8 @@
 import { Recipe } from 'prisma/prisma-client';
-import { SERVICE_KEYS } from '../../../model/constants';
-import { IGetRecipesQueryParameters } from '../../../model/interfaces/recipe.interface';
-import { instance } from '../../api.instance';
 import { IInfiniteScrollResponse } from '@/interfaces';
+import { instance } from 'src/shared/api/api.instance';
+import { SERVICE_KEYS } from 'src/shared/model/constants';
+import { IGetRecipesQueryParameters } from 'src/shared/model/interfaces/recipe.interface';
 
 export const recipeService = {
   axios: instance,

@@ -4,7 +4,7 @@ import { useIngredients } from '../model/hooks/use-ingredients';
 import { CharactersticsLayout } from '@/application/';
 import { InputSearch, IPostIngredientForm } from '@/shared';
 import dynamic from 'next/dynamic';
-import { useCharacteristicActions } from '../model/hooks/use-characteristic-actions';
+import { useAdminCharacteristicActions } from '../model/hooks/use-admin-characteristic-actions';
 import { MessageModal } from '@/featuresmessage';
 
 const AdminCharacteristicsTable = dynamic(
@@ -17,40 +17,13 @@ export const AdminIngredientPage = () => {
     newCharacteristic,
     selectedCharacteristics,
     onToggleModalVisibility,
-  } = useCharacteristicActions();
+  } = useAdminCharacteristicActions();
 
   const ingredientsProps = useIngredients({
     initialLimit: 5,
     initialPage: 0,
     initialTitle: '',
   });
-
-  const handlePutIngredient = () => {
-    if (newCharacteristic) {
-      if (typeof newCharacteristic.payload === 'boolean') {
-        ingredientsProps.put({
-          data: { isVisible: newCharacteristic.payload },
-          id: newCharacteristic.id,
-        });
-      } else if (
-        newCharacteristic.payload === 'ML' ||
-        newCharacteristic.payload === 'L' ||
-        newCharacteristic.payload === 'KG' ||
-        newCharacteristic.payload === 'G' ||
-        newCharacteristic.payload === 'N'
-      ) {
-        ingredientsProps.put({
-          data: { measure: newCharacteristic.payload },
-          id: newCharacteristic.id,
-        });
-      } else {
-        ingredientsProps.put({
-          data: { title: newCharacteristic.payload },
-          id: newCharacteristic.id,
-        });
-      }
-    }
-  };
 
   return (
     <>
@@ -64,7 +37,7 @@ export const AdminIngredientPage = () => {
         />
         <AdminCharacteristicsTable
           addiotionalColoumns={['measure']}
-          onPut={handlePutIngredient}
+          onPut={() => newCharacteristic && ingredientsProps.onPut(newCharacteristic)}
           onDeleteMany={() =>
             ingredientsProps.deleteMany(selectedCharacteristics)
           }
@@ -73,7 +46,7 @@ export const AdminIngredientPage = () => {
           onChangePage={ingredientsProps.onChangePage}
           onChangeLimit={ingredientsProps.onChangeLimit}
           count={ingredientsProps.items?.countItems || 0}
-          type={'ingredient'}
+          type={'ingredients'}
         />
       </CharactersticsLayout>
       <AdminPostIngredientModal

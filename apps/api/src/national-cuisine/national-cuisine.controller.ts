@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CreateNationalCuisineDto } from './dtos/create-national-cuisine.dto';
-import { NationalCuisine, Prisma, Roles } from '@prisma/client';
+import { NationalCuisine, Roles } from '@prisma/client';
 import { UpdateNationalCuisineDto } from './dtos/update-national-cuisine.dto';
 import { NationalCuisineService } from './national-cuisine.service';
 import { GetCharacteristicsQueryParameters } from '../shared';

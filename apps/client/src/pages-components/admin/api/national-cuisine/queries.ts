@@ -1,11 +1,12 @@
+import { QUERY_KEYS } from '@/shared';
 
-import { QUERY_KEYS, useCharacteristics } from '@/shared';
-
-import { Prisma,  } from 'prisma/prisma-client';
+import { Prisma } from 'prisma/prisma-client';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { nationalCuisineService } from './service';
+import { useSetAtom } from 'jotai';
+import { activeCellAtom, characteristicsAtom } from 'src/application/stores/characteristics.store';
 
-const MUTATION_KEY = QUERY_KEYS['national-cuisine']
+const MUTATION_KEY = QUERY_KEYS['national-cuisine'];
 
 export const useGetNationalCuisines = ({
   title,
@@ -16,7 +17,7 @@ export const useGetNationalCuisines = ({
   page: number;
   limit: number;
 }) => {
-  const { onSetCharacterstics } = useCharacteristics();
+  const setCharacteristics = useSetAtom(characteristicsAtom);
 
   const {
     data: nationalCuisines,
@@ -27,12 +28,7 @@ export const useGetNationalCuisines = ({
   } = useQuery({
     queryKey: [MUTATION_KEY, limit, page, title],
     queryFn: () => nationalCuisineService.findMany({ limit, page, title }),
-    onSuccess: (data) =>
-      onSetCharacterstics({
-        items: [...data.items],
-        countItems: data.countItems,
-        currentPage: data.currentPage,
-      }),
+    onSuccess: (data) => setCharacteristics(data.items),
   });
 
   return {
@@ -101,7 +97,9 @@ export const useDeleteManyNationalCuisine = () => {
 };
 
 export const usePutNationalCuisine = () => {
-  const { onHideInputCell } = useCharacteristics();
+
+  const setActiveCell = useSetAtom(activeCellAtom)
+
   const {
     mutate: putNationalCuisine,
     isLoading: putNationalCuisineIsLoading,
@@ -117,7 +115,7 @@ export const usePutNationalCuisine = () => {
     }) => nationalCuisineService.updateOne({ id }, data),
     mutationKey: [MUTATION_KEY],
     onSuccess: () => {
-      onHideInputCell();
+      setActiveCell(null)
     },
   });
 
