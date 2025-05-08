@@ -7,8 +7,6 @@ import {
   Post,
   Render,
   Res,
-  UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
 import { SignupDto } from './dto/signup.dto';
 import { IAuthResponse } from 'interfaces';

@@ -25,6 +25,6 @@ export async function generateHashPassword(
 
   return {
     salt,
-    hashedPassword: hashedPassword,
+    hashedPassword,
   };
 }

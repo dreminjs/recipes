@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { Prisma } from "prisma/prisma-client";
 import { typeService } from "./service";
 import { useSetAtom } from "jotai";
-import { characteristicsAtom } from "src/application/stores/characteristics.store";
+import { activeCellAtom, characteristicsAtom } from "src/application/stores/characteristics.store";
 
 const QUERY_KEY = QUERY_KEYS.type
 
@@ -76,6 +76,8 @@ export const useDeleteType = () => {
 
 export const usePutType = () => {
 
+  const setActiveCell = useSetAtom(activeCellAtom)
+
   const {
     mutate: putType,
     isLoading: putTypeIsLoading,
@@ -85,6 +87,9 @@ export const usePutType = () => {
     mutationFn: ({ data, id }: { data: Prisma.TypeUpdateInput; id: string }) =>
       typeService.updateOne({ id }, data),
     mutationKey: [QUERY_KEY],
+    onSuccess:() => {
+      setActiveCell(null)
+    }
   });
 
   return { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess };
