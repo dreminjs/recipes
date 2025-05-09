@@ -13,7 +13,6 @@ export const useAdminCharacteristicBodyTableLogic = (limit: number) => {
   const handleSelectCharacteristic = (id: string) => {
     if (!selectedCharacteristicsIds.includes(id)) {
       setSelectedCharacteristicsIds((prev) => [...prev, id]);
-      setIsHeadCheckboxChecked(false);
     } else {
       setSelectedCharacteristicsIds((prev) => [
         ...prev.filter((el) => el !== id),
