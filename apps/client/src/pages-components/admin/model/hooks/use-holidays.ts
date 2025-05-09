@@ -28,12 +28,14 @@ export const useHolidays = ({
     putHolidayIsLoading,
     putHolidayIsSuccess,
   } = usePutHoliday();
+  
   const {
     deleteManyHoliday,
     deleteManyHolidayIsError,
     deleteManyHolidayIsLoading,
     deleteManyHolidayIsSuccess,
   } = useDeleteManyHolidays();
+  
   const {
     holidays,
     holidaysIsError,
@@ -41,6 +43,7 @@ export const useHolidays = ({
     holidaysIsSuccess,
     refetchHolidays,
   } = useGetHolidays({ title: value, page: currentPage, limit });
+  
   const {
     postHoliday,
     postHolidayIsError,

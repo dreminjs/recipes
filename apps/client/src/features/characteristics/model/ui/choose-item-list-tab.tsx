@@ -39,7 +39,7 @@ export const ChooseItemListTab: FC<IProps> = ({ value, type }) => {
           onChange={(e) => onChangeSearchTitle(e.target.value)}
         />
         <ul
-          className={`h-[200px] list-none p-0 pr-5 w-[80%] text-center ${
+          className={`h-[260px] list-none p-0 pr-5 w-full text-center ${
             characteristics &&
             characteristics.items.length > 4 &&
             'overflow-y-scroll'

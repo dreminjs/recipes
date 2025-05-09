@@ -1,11 +1,41 @@
 import { FC } from 'react';
-import { ChoosedItemsList } from '../model/ui/choosed-item-list-tab';
 import { Box } from '@mui/material';
+import { TabPanel } from '@mui/lab';
+import { ChoosedItemsListTab } from '../model/ui/choosed-items-list-tab';
+import { useAtom } from 'jotai/react';
+import {
+  typeAtom,
+  nationalCuisineAtom,
+  holidayAtom,
+} from 'src/application/stores/post-recipe.store';
 
-export const ChoosedCharacteristicsTabPanel: FC = () => {
+interface IProps {
+  parentNumber: string;
+}
+
+export const ChoosedCharacteristicsTabPanel: FC<IProps> = ({
+  parentNumber,
+}) => {
+  const [type, setType] = useAtom(typeAtom);
+  const [nationalCuisine, setNationalCuisine] = useAtom(nationalCuisineAtom);
+  const [holiday, setHoliday] = useAtom(holidayAtom);
+
   return (
-    <Box sx={{ height: '400px' }}>
-      <ChoosedItemsList />
-    </Box>
+    <TabPanel value={parentNumber}>
+        <ul className="space-y-2 p-2">
+          <ChoosedItemsListTab
+            onRemove={() => setType(null)}
+            title={type?.title}
+          />
+          <ChoosedItemsListTab
+            onRemove={() => setNationalCuisine(null)}
+            title={nationalCuisine?.title}
+          />
+          <ChoosedItemsListTab
+            onRemove={() => setHoliday(null)}
+            title={holiday?.title}
+          />
+        </ul>
+    </TabPanel>
   );
 };

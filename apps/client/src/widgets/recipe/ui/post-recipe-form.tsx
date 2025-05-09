@@ -4,6 +4,7 @@ import { IPostRecipeForm, PostRecipeFormSchema } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UploadRecipePhoto } from '@/features/recipe/';
 import { FC } from 'react';
+import { Button } from '../model/ui/button';
 
 interface IProps {
   onOpen: () => void;
@@ -18,18 +19,21 @@ export const PostRecipeForm: FC<IProps> = ({ onOpen }) => {
   });
 
   return (
-    <form className="">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log(e);
+      }}
+    >
       <RecipeFieldForm register={register} />
       <RecipeTextareaForm register={register} />
-      <button
-        onClick={onOpen}
-        type="button"
-        className="border-2 px-3 py-2 mb-2"
-      >
-        Выберите характеристики
-      </button>
+      <Button onClick={onOpen}>
+          Выберите характеристики
+      </Button>
       <UploadRecipePhoto register={register} error={errors.photo} />
-      <button className="px-9 py-2">Submit</button>
+      <button type="submit" className="px-9 py-2">
+        Submit
+      </button>
     </form>
   );
 };

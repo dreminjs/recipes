@@ -4,6 +4,7 @@ import { ChooseCharacteristicTabPanel } from '@/featurescharacteristics/ui/choos
 import { TabContext } from '@mui/lab/';
 import { ChoosedCharacteristicsTabPanel } from '@/features/characteristics';
 import { CustomTabList } from '../model/custom-tab-list';
+import { Box } from '@mui/material';
 
 interface IProps {
   isVisible: boolean;
@@ -27,9 +28,11 @@ export const ChooseCharacteristicsModal: FC<IProps> = ({
       onClose={onClose}
     >
       <TabContext value={tab}>
-        <CustomTabList onChange={handleChange} />
-        <ChooseCharacteristicTabPanel parentNumber="1" />
-        <ChoosedCharacteristicsTabPanel parentNumber="2" />
+        <Box sx={{width:"450px",height: '500px'}}>
+          <CustomTabList onChange={handleChange} />
+          <ChooseCharacteristicTabPanel parentNumber="1" />
+          <ChoosedCharacteristicsTabPanel parentNumber="2" />
+        </Box>
       </TabContext>
     </BasicModal>
   );

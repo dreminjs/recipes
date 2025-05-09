@@ -8,8 +8,8 @@ import {
   usePostNationalCuisine,
 } from '../../api/national-cuisine/queries';
 import { useSetAtom } from 'jotai';
-import { activeCellAtom } from 'src/application/providers/characteristics-provider';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
+import { activeCellAtom } from 'src/application/stores/characteristics.store';
 
 export const useNationalCuisines = ({
   initialTitle,

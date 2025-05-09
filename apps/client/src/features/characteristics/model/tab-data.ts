@@ -1,5 +1,5 @@
 import { SERVICE_KEYS } from '@/shared*';
-import { IChoosedItemTabContent, IChooseItemTabContent } from './interfaces';
+import { IChooseItemTabContent } from './interfaces';
 
 export const CHOOSE_ITEM_TAB_LIST = [
   { label: 'типы', endpoint: SERVICE_KEYS.types },
