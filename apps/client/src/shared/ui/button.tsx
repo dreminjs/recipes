@@ -1,16 +1,22 @@
 import { FC, ReactNode } from 'react';
 
 interface IProps {
-  onClick: () => void;
+  onClick?: () => void;
   children: ReactNode;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
-export const Button: FC<IProps> = ({ onClick, children, className }) => {
+export const Button: FC<IProps> = ({
+  onClick,
+  children,
+  className,
+  type = 'button',
+}) => {
   return (
     <button
+      type={type}
       onClick={onClick}
-      type="button"
       className={`
     bg-white hover:bg-gray-50
     border border-gray-300

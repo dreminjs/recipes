@@ -7,6 +7,7 @@ import {
   UseFormRegister,
 } from 'react-hook-form';
 import Image from 'next/image';
+import { Button } from 'src/shared/ui/button';
 
 interface IProps {
   register: UseFormRegister<IPostRecipeForm>;
@@ -43,13 +44,14 @@ export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
           alt="Recipe Preview"
         />
       )}
-      <button
+      <Button
+          
+
         className="block border-2 px-5 py-2"
-        type="button"
         onClick={onClick}
       >
         Выбрать превью для рецепта
-      </button>
+      </Button>
       <input
         {...register('photo')}
         ref={(e) => {

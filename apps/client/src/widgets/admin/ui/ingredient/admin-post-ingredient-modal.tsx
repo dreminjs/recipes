@@ -2,7 +2,7 @@ import { AdminPostIngredientForm } from '@/features/admin';
 import { BasicModal, IPostIngredientForm } from '@/shared';
 import { useAtomValue } from 'jotai';
 import { FC } from 'react';
-import { isPostCharacteristicModalVisibleAtom } from 'src/application/providers/characteristics-provider';
+import { isPostCharacteristicModalVisibleAtom } from 'src/application/stores/characteristics.store';
 
 interface IProps {
   onPost: (data: IPostIngredientForm) => void;
