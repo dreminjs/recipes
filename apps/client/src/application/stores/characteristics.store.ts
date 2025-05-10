@@ -9,8 +9,6 @@ export const limitAtom = atom(0)
 export const characteristicsAtom = atom<ICharacteristic[]>([])
 
 export const selectedCharacteristicsIdsAtom = atom<string[]>([])
- 
-export const isHeadCheckboxCheckedAtom = atom(false)
 
 export const isPostCharacteristicModalVisibleAtom = atom(false)
 
@@ -23,7 +21,6 @@ export const newCharacteristicAtom = atom<UpdateCharacteristicDto | null>(null)
 store.set(limitAtom,0)
 store.set(characteristicsAtom,[])
 store.set(selectedCharacteristicsIdsAtom,[])
-store.set(isHeadCheckboxCheckedAtom, false)
 store.set(isPostCharacteristicModalVisibleAtom,false)
 store.set(activeCellAtom, null)
 store.set(updatedCharacteristicsAtom,[])
