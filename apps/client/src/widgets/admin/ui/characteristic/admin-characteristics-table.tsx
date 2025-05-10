@@ -58,7 +58,7 @@ export const AdminCharacteristicsTable: FC<IProps> =
               limit={limit}
               addiotionalColoumns={addiotionalColoumns}
             />
-            <AdminCharacteristictsBodyTable limit={limit} />
+            <AdminCharacteristictsBodyTable  />
           </Table>
         </TableContainer>
         <TablePagination

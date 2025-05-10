@@ -9,7 +9,7 @@ import {
 } from '../../api/type/queries';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useSetAtom } from 'jotai';
-import { activeCellAtom, isHeadCheckboxCheckedAtom, selectedCharacteristicsIdsAtom } from 'src/application/stores/characteristics.store';
+import { activeCellAtom, selectedCharacteristicsIdsAtom } from 'src/application/stores/characteristics.store';
 
 export const useTypes = ({
   initialTitle,
@@ -26,7 +26,6 @@ export const useTypes = ({
   const [limit, setLimit] = useState(initialLimit);
   const setActiveCell = useSetAtom(activeCellAtom);
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom)
-  const setIsHeadCheckboxCheckedAtom = useSetAtom(isHeadCheckboxCheckedAtom)
 
 
   const { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess } =
@@ -57,7 +56,6 @@ export const useTypes = ({
     if (newPage >= 0 && newPage < Math.ceil((types?.countItems || 0) / limit)) {
       setCurrentPage(newPage);
       setCharacteristicsIds([])
-      setIsHeadCheckboxCheckedAtom(false)
     }
   },[limit, types?.countItems,setCharacteristicsIds])
 

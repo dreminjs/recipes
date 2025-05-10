@@ -9,7 +9,10 @@ import {
 } from '../../api/national-cuisine/queries';
 import { useSetAtom } from 'jotai';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
-import { activeCellAtom } from 'src/application/stores/characteristics.store';
+import {
+  activeCellAtom,
+  selectedCharacteristicsIdsAtom,
+} from 'src/application/stores/characteristics.store';
 
 export const useNationalCuisines = ({
   initialTitle,
@@ -25,6 +28,7 @@ export const useNationalCuisines = ({
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
   const setActiveCell = useSetAtom(activeCellAtom);
+  const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom);
 
   const {
     putNationalCuisine,
@@ -75,7 +79,10 @@ export const useNationalCuisines = ({
 
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
     setTitle(event.target.value);
-  const onChangePage = (newPage: number) => setCurrentPage(newPage);
+  const onChangePage = (newPage: number) => {
+    setCurrentPage(newPage);
+    setCharacteristicsIds([])
+  };
   const onChangeLimit = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -83,7 +90,9 @@ export const useNationalCuisines = ({
     setCurrentPage(0);
   };
 
-  const handlePutNationalCuisine = (newCharacteristic: UpdateCharacteristicDto) => {
+  const handlePutNationalCuisine = (
+    newCharacteristic: UpdateCharacteristicDto
+  ) => {
     if (newCharacteristic) {
       setActiveCell(null);
       if (typeof newCharacteristic.payload === 'boolean') {

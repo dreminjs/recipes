@@ -8,7 +8,10 @@ import {
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useDebounce } from 'use-debounce';
-import { activeCellAtom } from 'src/application/stores/characteristics.store';
+import {
+  activeCellAtom,
+  selectedCharacteristicsIdsAtom,
+} from 'src/application/stores/characteristics.store';
 
 export const useIngredients = ({
   initialTitle,
@@ -24,6 +27,8 @@ export const useIngredients = ({
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
   const setActiveCell = useSetAtom(activeCellAtom);
+
+  const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom);
 
   const {
     putIngredient,
@@ -72,7 +77,10 @@ export const useIngredients = ({
   const onChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
-  ) => setCurrentPage(newPage);
+  ) => {
+    setCharacteristicsIds([])
+    setCurrentPage(newPage);
+  };
 
   const handleChangeLimit = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -82,39 +90,48 @@ export const useIngredients = ({
     []
   );
 
-    const handlePutIngredient = (newCharacteristic: UpdateCharacteristicDto) => {
-      if (newCharacteristic) {
-        setActiveCell(null)
-        if (typeof newCharacteristic.payload === 'boolean') {
-          putIngredient({
-            data: { isVisible: newCharacteristic.payload },
-            id: newCharacteristic.id,
-          });
-        } else if (
-          newCharacteristic.payload === 'ML' ||
-          newCharacteristic.payload === 'L' ||
-          newCharacteristic.payload === 'KG' ||
-          newCharacteristic.payload === 'G' ||
-          newCharacteristic.payload === 'N'
-        ) {
-          putIngredient({
-            data: { measure: newCharacteristic.payload },
-            id: newCharacteristic.id,
-          });
-        } else {
-          putIngredient({
-            data: { title: newCharacteristic.payload },
-            id: newCharacteristic.id,
-          });
-        }
+  const handlePutIngredient = (newCharacteristic: UpdateCharacteristicDto) => {
+    if (newCharacteristic) {
+      setActiveCell(null);
+      if (typeof newCharacteristic.payload === 'boolean') {
+        putIngredient({
+          data: { isVisible: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
+      } else if (
+        newCharacteristic.payload === 'ML' ||
+        newCharacteristic.payload === 'L' ||
+        newCharacteristic.payload === 'KG' ||
+        newCharacteristic.payload === 'G' ||
+        newCharacteristic.payload === 'N'
+      ) {
+        putIngredient({
+          data: { measure: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
+      } else {
+        putIngredient({
+          data: { title: newCharacteristic.payload },
+          id: newCharacteristic.id,
+        });
       }
-    };
+    }
+  };
 
-  const isLoading = deleteManyIngredientsIsLoading || putIngredientIsLoading || postIngredientIsLoading
+  const isLoading =
+    deleteManyIngredientsIsLoading ||
+    putIngredientIsLoading ||
+    postIngredientIsLoading;
 
-  const isSuccess = deleteManyIngredientsIsSuccess || putIngredientIsSuccess || postIngredientIsSuccess 
+  const isSuccess =
+    deleteManyIngredientsIsSuccess ||
+    putIngredientIsSuccess ||
+    postIngredientIsSuccess;
 
-  const isError =  deleteManyIngredientsIsError || postIngredientIsError || putIngredientIsError
+  const isError =
+    deleteManyIngredientsIsError ||
+    postIngredientIsError ||
+    putIngredientIsError;
 
   return {
     title,
@@ -133,6 +150,6 @@ export const useIngredients = ({
     limit,
     isLoading,
     isSuccess,
-    isError
+    isError,
   };
 };

@@ -3,16 +3,13 @@ import { useAdminCharacteristicBodyTableLogic } from '@/featuresadmin/model/hook
 import { AdminTableRow } from '@/featuresadmin/model/ui/admin-table-row';
 import { FC } from 'react';
 
-interface IProps {
-  limit: number;
-}
 
-export const AdminCharacteristictsBodyTable: FC<IProps> = ({ limit }) => {
+export const AdminCharacteristictsBodyTable: FC = () => {
   const {
     selectedCharacteristicsIds,
     characteristics,
     onSelectCharacteristic,
-  } = useAdminCharacteristicBodyTableLogic(limit);
+  } = useAdminCharacteristicBodyTableLogic();
   return (
     <TableBody>
       {characteristics &&

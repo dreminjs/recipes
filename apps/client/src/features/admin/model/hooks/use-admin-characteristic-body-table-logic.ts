@@ -1,13 +1,11 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
-import { selectedCharacteristicsIdsAtom, isHeadCheckboxCheckedAtom, characteristicsAtom } from 'src/application/stores/characteristics.store';
+import { selectedCharacteristicsIdsAtom, characteristicsAtom } from 'src/application/stores/characteristics.store';
 
-export const useAdminCharacteristicBodyTableLogic = (limit: number) => {
+export const useAdminCharacteristicBodyTableLogic = () => {
   const [selectedCharacteristicsIds, setSelectedCharacteristicsIds] = useAtom(
     selectedCharacteristicsIdsAtom
   );
-
-  const setIsHeadCheckboxChecked = useSetAtom(isHeadCheckboxCheckedAtom);
 
   const characteristics = useAtomValue(characteristicsAtom);
 
@@ -18,15 +16,6 @@ export const useAdminCharacteristicBodyTableLogic = (limit: number) => {
       setSelectedCharacteristicsIds((prev) => [
         ...prev.filter((el) => el !== id),
       ]);
-      setIsHeadCheckboxChecked(false);
-    }
-
-    const totalSelected = selectedCharacteristicsIds?.includes(id)
-      ? selectedCharacteristicsIds.length - 1
-      : selectedCharacteristicsIds && selectedCharacteristicsIds.length + 1;
-
-    if (totalSelected === limit || totalSelected === characteristics.length) {
-      setIsHeadCheckboxChecked(true);
     }
   };
 

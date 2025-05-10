@@ -8,7 +8,7 @@ import {
 } from '../../api/holiday/queries';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useSetAtom } from 'jotai';
-import { activeCellAtom } from 'src/application/stores/characteristics.store';
+import { activeCellAtom, selectedCharacteristicsIdsAtom } from 'src/application/stores/characteristics.store';
 
 export const useHolidays = ({
   initialTitle,
@@ -24,6 +24,7 @@ export const useHolidays = ({
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
   const setActiveCell = useSetAtom(activeCellAtom);
+  const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom);
 
   const {
     putHoliday,
@@ -72,7 +73,10 @@ export const useHolidays = ({
   const handleChangeTitle = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => setTitle(event.target.value);
-  const handleChangePage = (newPage: number) => setCurrentPage(newPage);
+  const handleChangePage = (newPage: number) =>{ 
+    setCurrentPage(newPage);
+    setCharacteristicsIds([])
+  }
   const handleChangeLimit = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
