@@ -7,6 +7,8 @@ import {
   usePostHoliday,
 } from '../../api/holiday/queries';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
+import { useSetAtom } from 'jotai';
+import { activeCellAtom } from 'src/application/stores/characteristics.store';
 
 export const useHolidays = ({
   initialTitle,
@@ -21,6 +23,7 @@ export const useHolidays = ({
   const [value] = useDebounce(title, 500);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
+  const setActiveCell = useSetAtom(activeCellAtom);
 
   const {
     putHoliday,
@@ -79,6 +82,7 @@ export const useHolidays = ({
 
   const handlePutType = (newCharacteristic: UpdateCharacteristicDto) => {
     if (newCharacteristic) {
+      setActiveCell(null)
       if (typeof newCharacteristic.payload === 'boolean') {
         putHoliday({
           data: { isVisible: newCharacteristic.payload },

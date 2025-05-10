@@ -1,4 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+
 import { selectedCharacteristicsIdsAtom, isHeadCheckboxCheckedAtom, characteristicsAtom } from 'src/application/stores/characteristics.store';
 
 export const useAdminCharacteristicBodyTableLogic = (limit: number) => {

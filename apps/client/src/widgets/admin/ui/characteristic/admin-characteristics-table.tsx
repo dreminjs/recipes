@@ -55,6 +55,7 @@ export const AdminCharacteristicsTable: FC<IProps> =
         <TableContainer sx={{ height: 440, width: 900 }}>
           <Table stickyHeader>
             <AdminCharacteristicHeadTable
+              limit={limit}
               addiotionalColoumns={addiotionalColoumns}
             />
             <AdminCharacteristictsBodyTable limit={limit} />

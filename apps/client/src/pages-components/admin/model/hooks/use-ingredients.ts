@@ -1,3 +1,4 @@
+import { useSetAtom } from 'jotai';
 import {
   useGetIngredients,
   usePostIngredient,
@@ -7,6 +8,7 @@ import {
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useDebounce } from 'use-debounce';
+import { activeCellAtom } from 'src/application/stores/characteristics.store';
 
 export const useIngredients = ({
   initialTitle,
@@ -21,6 +23,7 @@ export const useIngredients = ({
   const [value] = useDebounce(title, 500);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
+  const setActiveCell = useSetAtom(activeCellAtom);
 
   const {
     putIngredient,
@@ -81,6 +84,7 @@ export const useIngredients = ({
 
     const handlePutIngredient = (newCharacteristic: UpdateCharacteristicDto) => {
       if (newCharacteristic) {
+        setActiveCell(null)
         if (typeof newCharacteristic.payload === 'boolean') {
           putIngredient({
             data: { isVisible: newCharacteristic.payload },

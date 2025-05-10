@@ -4,12 +4,15 @@ import { FC } from 'react';
 
 interface IProps {
   addiotionalColoumns?: string[];
+  limit: number
 }
 const headers = ['id', 'title', 'is visible'];
 export const AdminCharacteristicHeadTable: FC<IProps> = ({
   addiotionalColoumns,
+  limit,
+
 }) => {
-  const { isHeadCheckboxChecked, onSelectAllCharacteristics } =
+  const { selectedCharacteristics, onSelectAllCharacteristics } =
     useAdminCharacteristicHeadTableLogic();
 
   return (
@@ -18,7 +21,7 @@ export const AdminCharacteristicHeadTable: FC<IProps> = ({
         <TableCell padding="checkbox">
           <Checkbox
             color="primary"
-            checked={isHeadCheckboxChecked}
+            checked={selectedCharacteristics.length === limit}
             onChange={onSelectAllCharacteristics}
             id="head-checkbox"
           />

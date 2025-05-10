@@ -8,6 +8,8 @@ import {
   usePostType,
 } from '../../api/type/queries';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
+import { useSetAtom } from 'jotai';
+import { activeCellAtom, isHeadCheckboxCheckedAtom, selectedCharacteristicsIdsAtom } from 'src/application/stores/characteristics.store';
 
 export const useTypes = ({
   initialTitle,
@@ -22,6 +24,10 @@ export const useTypes = ({
   const [value] = useDebounce(title, 500);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
+  const setActiveCell = useSetAtom(activeCellAtom);
+  const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom)
+  const setIsHeadCheckboxCheckedAtom = useSetAtom(isHeadCheckboxCheckedAtom)
+
 
   const { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess } =
     usePutType();
@@ -50,8 +56,10 @@ export const useTypes = ({
   const handleChangePage = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < Math.ceil((types?.countItems || 0) / limit)) {
       setCurrentPage(newPage);
+      setCharacteristicsIds([])
+      setIsHeadCheckboxCheckedAtom(false)
     }
-  },[limit, types?.countItems])
+  },[limit, types?.countItems,setCharacteristicsIds])
 
   useEffect(() => {
     if (typesIsSuccess && types?.countItems === 0 && currentPage > 0) {
@@ -74,6 +82,7 @@ export const useTypes = ({
 
     const handlePutType = (newCharacteristic: UpdateCharacteristicDto) => {
       if (newCharacteristic) {
+        setActiveCell(null)
         if (typeof newCharacteristic.payload === 'boolean') {
           putType({
             data: { isVisible: newCharacteristic.payload },
