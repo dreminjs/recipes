@@ -58,7 +58,7 @@ export const AdminTypesPage: FC = () => {
         isSuccess={typesProps.isSuccess}
       />
       <AdminPostCharaceteristicModal
-        onToggleVisible={onToggleModalVisibility}
+        onToggleVisibility={onToggleModalVisibility}
         onPost={(data: IPostCharacteristicForm) => {
           typesProps.post(data);
           onToggleModalVisibility();

@@ -1,11 +1,14 @@
-import { QUERY_KEYS } from "@/shared*";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { Prisma } from "prisma/prisma-client";
-import { typeService } from "./service";
-import { useSetAtom } from "jotai";
-import { activeCellAtom, characteristicsAtom } from "src/application/stores/characteristics.store";
+import { QUERY_KEYS } from '@/shared*';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { Prisma } from 'prisma/prisma-client';
+import { typeService } from './service';
+import { useSetAtom } from 'jotai';
+import {
+  activeCellAtom,
+  characteristicsAtom,
+} from 'src/application/stores/characteristics.store';
 
-const QUERY_KEY = QUERY_KEYS.type
+const QUERY_KEY = QUERY_KEYS.type;
 
 export const useGetTypes = ({
   title,
@@ -16,9 +19,8 @@ export const useGetTypes = ({
   page: number;
   limit: number;
 }) => {
-
-  const setCharacterstics = useSetAtom(characteristicsAtom) 
-
+  const setCharacterstics = useSetAtom(characteristicsAtom);
+  
   const {
     data: types,
     isLoading: typesIsLoading,
@@ -26,10 +28,10 @@ export const useGetTypes = ({
     isError: typesIsError,
     refetch: refetchTypes,
   } = useQuery({
-    queryKey: [QUERY_KEY, page, title, limit],
+    queryKey: [page, title, limit],
     queryFn: () => typeService.findMany({ limit, page, title }),
-    onSuccess: (data) =>
-      setCharacterstics(data.items),
+    onSuccess: (data) => setCharacterstics(data.items),
+    keepPreviousData: true,
   });
 
   return {
@@ -75,8 +77,7 @@ export const useDeleteType = () => {
 };
 
 export const usePutType = () => {
-
-  const setActiveCell = useSetAtom(activeCellAtom)
+  const setActiveCell = useSetAtom(activeCellAtom);
 
   const {
     mutate: putType,
@@ -87,16 +88,15 @@ export const usePutType = () => {
     mutationFn: ({ data, id }: { data: Prisma.TypeUpdateInput; id: string }) =>
       typeService.updateOne({ id }, data),
     mutationKey: [QUERY_KEY],
-    onSuccess:() => {
-      setActiveCell(null)
-    }
+    onSuccess: () => {
+      setActiveCell(null);
+    },
   });
 
   return { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess };
 };
 
 export const useDeleteManyTypes = () => {
-
   const {
     mutate: deleteTypes,
     isLoading: deleteTypesIsLoading,

@@ -1,6 +1,6 @@
 export { AdminLinksList } from './ui/common/admin-links-list';
 
-export { AdminPostCharacteristic } from './ui/characteristic/admin-post-characteristic';
+export { AdminPostCharacteristic } from './ui/characteristic/admin-post-characteristic-form';
 
 export { AdminIngredientItem } from './ui/ingredient/admin-ingredient-item';
 

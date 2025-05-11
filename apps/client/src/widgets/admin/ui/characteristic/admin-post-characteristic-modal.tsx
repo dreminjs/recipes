@@ -1,6 +1,7 @@
-import { AdminPostCharacteristic } from '@/features/admin';
+import { AdminPostCharacteristicForm } from '@/featuresadmin/ui/characteristic/admin-post-characteristic-form';
 import {
   BasicModal,
+  CloseModalButton,
   IPostCharacteristicForm,
 } from '@/shared';
 import { useAtomValue } from 'jotai';
@@ -8,26 +9,28 @@ import { FC } from 'react';
 import { isPostCharacteristicModalVisibleAtom } from 'src/application/stores/characteristics.store';
 
 interface IProps {
-  onPost: (data: IPostCharacteristicForm) => void
-  onToggleVisible: () => void
+  onPost: (data: IPostCharacteristicForm) => void;
+  onToggleVisibility: () => void;
 }
 
-export const AdminPostCharaceteristicModal: FC<IProps> = ({ onPost, onToggleVisible }) => {
-
-  const isPostCharacteristicModalVisible = useAtomValue(isPostCharacteristicModalVisibleAtom)
+export const AdminPostCharaceteristicModal: FC<IProps> = ({
+  onPost,
+  onToggleVisibility,
+}) => {
+  const isPostCharacteristicModalVisible = useAtomValue(
+    isPostCharacteristicModalVisibleAtom
+  );
 
   return (
     <BasicModal
       isOpen={isPostCharacteristicModalVisible}
-      onClose={onToggleVisible}
+      onClose={onToggleVisibility}
     >
-      <AdminPostCharacteristic label="characteristic" onPost={onPost} />
-      <button
-        className="border-2 px-5 py-3 text-[20px] rounded-xl"
-        onClick={onToggleVisible}
-      >
-        Close
-      </button>
+      <AdminPostCharacteristicForm
+        label="characteristic"
+        onPost={onPost}
+      />
+       <CloseModalButton onClick={onToggleVisibility} />
     </BasicModal>
   );
 };

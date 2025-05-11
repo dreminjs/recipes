@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SigninFormField } from '@/features/auth';
 import { usePostSignIn } from '../api/queries';
 import { MessageModal } from '@/features/message';
+import { AuthFormLayout } from 'src/shared/ui/auth-form-layout';
 
 export const SignInForm = () => {
   const {
@@ -17,31 +18,27 @@ export const SignInForm = () => {
 
   return (
     <>
-      <form
-        className="max-w-[400px]"
-        onSubmit={handleSubmit((data) => signin({ ...data }))}
-      >
+      <AuthFormLayout onSubmit={handleSubmit((data) => signin({ ...data }))}>
         <SigninFormField
           register={register}
           error={errors.email?.message}
-          type={'email'}
+          type="email"
         />
-
         <SigninFormField
           register={register}
           error={errors.password?.message}
-          type={'password'}
+          type="password"
         />
-        <AuthButton className="text-[24px] rounded-xl px-5 py-2 text-[white] border-2 border-[white] mt-5" />
-      </form>
+        <AuthButton isLoading={signinIsLoading} />
+      </AuthFormLayout>
       <MessageModal
         isError={signinIsError}
         isLoading={signinIsLoading}
         isSuccess={signinIsSuccess}
         message={{
-          isError: 'Проверьте данные которые вы ввели',
-          isLoading: 'Загрузка...',
-          isSuccess: 'Вы успешно зарегистрировались',
+          isError: 'Проверьте введенные данные',
+          isLoading: 'Выполняется вход...',
+          isSuccess: 'Вход выполнен успешно!',
         }}
       />
     </>

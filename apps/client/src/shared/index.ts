@@ -42,3 +42,11 @@ export type { ISignIn,ISignUp } from "./model/interfaces/auth.interface"
 export { SignInSchema,SignUpSchema } from "./model/schemas/auth.schema"
 
 export { useGetRandomCharacteristic } from "./api/queries/characteristic/characteristic.queries"
+
+export { FormLabel } from "./ui/admin/form-label"
+
+export {FormTitle }from './ui/admin/form-title'
+
+export { CloseModalButton } from "./ui/close-button-modal"
+
+export { AuthTitle } from "./ui/auth-title"

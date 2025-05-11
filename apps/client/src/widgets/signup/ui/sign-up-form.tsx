@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SignupFormField } from '@/features/auth';
 import { usePostSignUp } from '../api/queries';
 import { MessageModal } from '@/features/message';
-
+import { AuthFormLayout } from 'src/shared/ui/auth-form-layout';
 
 export const SignUpForm = () => {
   const {
@@ -13,47 +13,43 @@ export const SignUpForm = () => {
     formState: { errors },
   } = useForm<ISignUp>({ resolver: zodResolver(SignUpSchema) });
 
-  const {
-    signup,
-    signupIsLoading,
-    signupIsSuccess,
-    signupIsError,
-  } = usePostSignUp();
+  const { signup, signupIsLoading, signupIsSuccess, signupIsError } =
+    usePostSignUp();
 
   return (
     <>
-      <form
-        className="max-w-[400px]"
-        onSubmit={handleSubmit((data) => signup({ ...data }))}
-      >
+      <AuthFormLayout onSubmit={handleSubmit((data) => signup({ ...data }))}>
         <SignupFormField
           register={register}
           error={errors.email?.message}
-          type={'email'}
+          type="email"
         />
+
         <SignupFormField
           register={register}
           error={errors.nickname?.message}
-          type={'nickname'}
+          type="nickname"
         />
+
         <SignupFormField
           register={register}
           error={errors.password?.message}
-          type={'password'}
-          className="mb-5"
+          type="password"
         />
-        <AuthButton className="" />
-      </form>
+
+        <AuthButton isLoading={signupIsLoading} />
+      </AuthFormLayout>
+
       <MessageModal
         isError={signupIsError}
         isLoading={signupIsLoading}
         isSuccess={signupIsSuccess}
         message={{
-          isError: "Проверьте данные которые вы ввели",
-          isLoading: "Загрузка...",
-          isSuccess: "Вы успешно зарегистрировались",
-        }}    
-         />
+          isError: 'Проверьте введенные данные',
+          isLoading: 'Регистрация...',
+          isSuccess: 'Регистрация успешно завершена!',
+        }}
+      />
     </>
   );
 };

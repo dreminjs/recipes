@@ -1,61 +1,51 @@
 import Link from 'next/link';
-import {
-  PAGE_KEYS,
-  QUERY_KEYS,
-  SERVICE_KEYS,
-} from '@/shared';
+import { PAGE_KEYS, QUERY_KEYS, SERVICE_KEYS } from '@/shared';
 import { useGetMyProfile } from '@/features/user/';
-
+import { useLougout } from '../api/queries';
+import { ActionButton } from '../model/ui/active-button';
+import { NavLink } from '../model/ui/nav-link';
 
 export const Header = () => {
   const { userInfo } = useGetMyProfile();
 
+  const { logoutFromAccount } = useLougout();
+
   return (
-    <header className="border-2 py-5 px-5 mx-auto flex justify-between items-center mb-[40px] rounded-2xl">
-      <Link href={'/'} className="text-[32px]">
-        {"Recipes :)"}
+    <header className="w-full bg-gradient-to-r from-amber-50 to-orange-50 shadow-lg py-4 px-8 mx-auto flex justify-between items-center mb-8 rounded-2xl border border-orange-100">
+      <Link
+        href={'/'}
+        className="text-3xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent hover:from-amber-700 hover:to-orange-700 transition-all"
+      >
+        Recipes :)
       </Link>
-      <div className="flex gap-5 items-center">
+
+      <div className="flex gap-6 items-center">
         {userInfo ? (
           <>
-            <>
-              {userInfo.role === 'ADMIN' && (
-                <Link className="text-[20px]" href={`/${PAGE_KEYS.admin}`}>
-                  {"Админ Панель"}
-                </Link>
-              )}
-            </>
-            <>
-              {userInfo.isActived && (
-                <Link
-                  className="text-[20px]"
-                  href={`/${PAGE_KEYS.recipes}/${QUERY_KEYS.post}`}
-                >
-                  {"Добавить рецепт"}
-                </Link>
-              )}
-            </>
-            <Link href={`/${PAGE_KEYS.profile}`} className="text-[20px]">
-              {"Профиль"}
-            </Link>
-            <Link className="text-[20px]" href={`/${QUERY_KEYS.signout}`}>
-              {"выйти"}
-            </Link>
+            {userInfo.role === 'ADMIN' && (
+              <NavLink href={`/${PAGE_KEYS.admin}`}>Админ Панель</NavLink>
+            )}
+
+            {userInfo.isActived && (
+              <NavLink href={`/${PAGE_KEYS.recipes}/${QUERY_KEYS.post}`}>
+                Добавить рецепт
+              </NavLink>
+            )}
+
+            <NavLink href={`/${PAGE_KEYS.profile}`}>Профиль</NavLink>
+
+            <ActionButton onClick={() => logoutFromAccount()}>
+              Выйти
+            </ActionButton>
           </>
         ) : (
           <>
-            <Link
-              className="text-[20px]"
-              href={`/${SERVICE_KEYS.auth}/${PAGE_KEYS.signin}`}
-            >
-              {"войти"}
-            </Link>
-            <Link
-              className="text-[20px]"
-              href={`/${SERVICE_KEYS.auth}/${PAGE_KEYS.signup}`}
-            >
-              {"зарегистрироаваться"}
-            </Link>
+            <NavLink href={`/${SERVICE_KEYS.auth}/${PAGE_KEYS.signin}`}>
+              Войти
+            </NavLink>
+            <ActionButton href={`/${SERVICE_KEYS.auth}/${PAGE_KEYS.signup}`}>
+              Зарегистрироваться
+            </ActionButton>
           </>
         )}
       </div>

@@ -27,7 +27,6 @@ export const useTypes = ({
   const setActiveCell = useSetAtom(activeCellAtom);
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom)
 
-
   const { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess } =
     usePutType();
   const {

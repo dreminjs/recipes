@@ -64,7 +64,7 @@ export const AdminNationalCuisinesPage: FC = () => {
           nationalCuisinesProps.post(data);
           onToggleModalVisibility();
         }}
-        onToggleVisible={onToggleModalVisibility}
+        onToggleVisibility={onToggleModalVisibility}
       />
     </>
   );

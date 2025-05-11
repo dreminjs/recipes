@@ -60,7 +60,7 @@ export const AdminHolidaysPage: FC = () => {
           holidaysProps.post(data);
           onToggleModalVisibility();
         }}
-        onToggleVisible={onToggleModalVisibility}
+        onToggleVisibility={onToggleModalVisibility}
       />
     </>
   );

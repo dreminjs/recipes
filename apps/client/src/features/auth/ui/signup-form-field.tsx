@@ -26,19 +26,24 @@ export const SignupFormField: FC<IProps> = ({
 }) => {
   const placeholder = {
     email: 'Email',
-    nickname: 'Nickname',
-    password: 'Password',
+    nickname: 'Имя пользователя',
+    password: 'Пароль',
   };
 
   return (
-    <fieldset className={`pb-2 mb-3 ${className} relative`}>
+    <fieldset className={`mb-4 ${className}`}>
       <input
         placeholder={placeholder[type]}
         {...register(type)}
-        className="text-[24px] bg-transparent placeholder:text-white text-white outline-none border-b-2 w-full"
+        type={type === 'password' ? 'password' : 'text'}
+        className={`w-full px-4 py-3 text-lg bg-white/90 rounded-lg border ${
+          error ? 'border-red-500' : 'border-amber-200'
+        } focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all`}
       />
       {error && (
-        <p className="text-[24px] text-white underline">{error.toString()}</p>
+        <p className="mt-1 text-red-600 text-sm font-medium animate-fadeIn">
+          {error.toString()}
+        </p>
       )}
     </fieldset>
   );

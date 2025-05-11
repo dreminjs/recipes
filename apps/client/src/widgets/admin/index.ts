@@ -1,4 +1,3 @@
-export { AdminPostIngredient } from './ui/ingredient/admin-post-ingredient';
 
 export { AdminCharacteristicsTable } from "./ui/characteristic/admin-characteristics-table"
 

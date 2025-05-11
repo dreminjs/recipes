@@ -6,7 +6,6 @@ export const useAdminCharacteristicHeadTableLogic = () => {
   const [selectedCharacteristics, setSelectedCharacteristics] = useAtom(
     selectedCharacteristicsIdsAtom
   );
-
   const characteristics = useAtomValue(characteristicsAtom);
 
   const handleSelectAllCharacteristics = () => {
