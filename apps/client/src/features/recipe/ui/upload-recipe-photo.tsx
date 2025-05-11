@@ -35,7 +35,7 @@ export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
   };
 
   return (
-    <div className="mb-3">
+    <div className="">
       {imagePreview && (
         <Image
           width={480}
@@ -44,18 +44,19 @@ export const UploadRecipePhoto: FC<IProps> = ({ register, error }) => {
           alt="Recipe Preview"
         />
       )}
-      <Button
-          
 
-        className="block border-2 px-5 py-2"
+      <Button
         onClick={onClick}
+        type="button"
+        className="bg-amber-100 text-amber-800 hover:bg-amber-200"
+        disabled={false}
       >
-        Выбрать превью для рецепта
+        Загрузка фотографии
       </Button>
       <input
         {...register('photo')}
         ref={(e) => {
-          register('photo').ref(e)
+          register('photo').ref(e);
           inputRef.current = e;
         }}
         type="file"

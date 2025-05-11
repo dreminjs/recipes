@@ -8,9 +8,22 @@ interface IProps {
 
 export const CustomTabList: FC<IProps> = ({ onChange }) => {
   return (
-    <TabList sx={{ margin: '0 auto', width: '250px' }} onChange={onChange}>
-      <Tab label="выбрать" value="1" />
-      <Tab label="выбранное" value="2" />
+    <TabList
+      textColor="inherit"
+      indicatorColor="primary"
+      sx={{ margin: '0 auto', width: '250px', backgroundColor: 'transparent' }}
+      onChange={onChange}
+    >
+      <Tab
+        sx={{ color: '#FF5733', fontWeight: '600' }}
+        label="выбрать"
+        value="1"
+      />
+      <Tab
+        sx={{ color: '#FF5733', fontWeight: '600' }}
+        label="выбранное"
+        value="2"
+      />
     </TabList>
   );
 };

@@ -21,25 +21,36 @@ export const CharacteristicItem: FC<IProps> = ({ title, id, onClick }) => {
 
   return (
     <li
-      className={`w-full flex justify-between items-center bg-gray-200 rounded-lg py-3 px-4 mb-5 text-xl transition-colors ${
-        isItemChoosed ? 'text-gray-600' : 'text-black'
+      className={`flex mb-3 items-center shadow-sm border-amber-300 justify-between p-3 rounded-lg transition-all duration-200 cursor-pointer ${
+        isItemChoosed
+          ? 'bg-amber-50 border-2  '
+          : 'bg-white border border-gray-200 hover:border-amber-200 hover:shadow-xs'
       }`}
     >
       <button
         type="button"
-        className="bg-transparent text-left text-lg cursor-pointer flex-1 hover:text-gray-700 focus:outline-none"
+        className={`flex-1 text-left text-base bg-transparent ${
+          isItemChoosed ? 'font-semibold text-amber-800' : 'text-gray-800'
+        }`}
         onClick={onClick}
         aria-pressed={isItemChoosed}
       >
         {title}
       </button>
+
       {isItemChoosed && (
         <button
           type="button"
-          className="px-3 rounded-lg text-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();                                    
+          }}
+          className="ml-2 w-6 h-6 flex items-center justify-center rounded-full transition-colors
+                      bg-amber-100 text-amber-600 hover:bg-amber-200 hover:text-amber-800
+                      focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1"
           aria-label={`Удалить ${title}`}
         >
-          ×
+          <span className="text-sm leading-none">×</span>
         </button>
       )}
     </li>

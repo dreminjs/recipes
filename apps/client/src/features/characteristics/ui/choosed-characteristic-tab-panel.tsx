@@ -22,20 +22,23 @@ export const ChoosedCharacteristicsTabPanel: FC<IProps> = ({
 
   return (
     <TabPanel value={parentNumber}>
-        <ul className="space-y-2 p-2">
-          <ChoosedItemsListTab
-            onRemove={() => setType(null)}
-            title={type?.title}
-          />
-          <ChoosedItemsListTab
-            onRemove={() => setNationalCuisine(null)}
-            title={nationalCuisine?.title}
-          />
-          <ChoosedItemsListTab
-            onRemove={() => setHoliday(null)}
-            title={holiday?.title}
-          />
-        </ul>
+      <ul className="space-y-2 p-2">
+        <ChoosedItemsListTab
+          onRemove={() => setType(null)}
+          title={type?.title}
+          type={'types'}
+        />
+        <ChoosedItemsListTab
+          onRemove={() => setNationalCuisine(null)}
+          title={nationalCuisine?.title}
+          type={'holidays'}
+        />
+        <ChoosedItemsListTab
+          onRemove={() => setHoliday(null)}
+          title={holiday?.title}
+          type={'national-cuisines'}
+        />
+      </ul>
     </TabPanel>
   );
 };

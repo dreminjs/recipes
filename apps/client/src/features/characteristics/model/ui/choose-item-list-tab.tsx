@@ -32,7 +32,7 @@ export const ChooseItemListTab: FC<IProps> = ({ value, type }) => {
     <TabPanel value={value}>
       <div className="flex flex-col items-center">
         <input
-          className="border-b-2 mb-3 text-[16px] outline-none"
+          className="border-b-2 mb-3 text-[16px] outline-none bg-transparent"
           type="text"
           placeholder="search..."
           defaultValue={searchTitle}

@@ -1,26 +1,49 @@
-import React, { FC } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 
-interface IProps {
+interface ModalProps {
   isOpen: boolean;
-  onClose(): void;
-  children: React.ReactNode;
-  className?: string
+  onClose: () => void;
+  children: ReactNode;
+  className?: string;
+  title?: string;
 }
 
-export const BasicModal: FC<IProps> = ({ isOpen, onClose, children, className }) => {
+export const BasicModal: FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  children,
+  className = '',
+  title,
+}) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   return (
-    <div
-      onClick={onClose}
-      className={`fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 ${className}`}
-    >
-      <div onClick={handleContentClick} className="bg-white p-6 rounded-lg shadow-lg relative z-51s">
-        {children}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2">
+      <div
+        onClick={onClose}
+        className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity"
+      />
+
+      <div
+        className={`relative w-full max-w-2xl rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 shadow-xl border border-orange-200 ${className}`}
+      >
+        {title && (
+          <div className="px-6 py-4 border-b border-orange-200">
+            <h3 className="text-xl font-bold text-amber-900">{title}</h3>
+          </div>
+        )}
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );

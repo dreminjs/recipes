@@ -1,6 +1,6 @@
 import { BasicModal } from '@/shared*';
 import { FC, useState } from 'react';
-import { ChooseCharacteristicTabPanel } from '@/featurescharacteristics/ui/choose-characteristic-tab-panel';
+import { ChooseCharacteristicTabPanel } from '@/features/characteristics/ui/choose-characteristic-tab-panel';
 import { TabContext } from '@mui/lab/';
 import { ChoosedCharacteristicsTabPanel } from '@/features/characteristics';
 import { CustomTabList } from '../model/custom-tab-list';
@@ -17,7 +17,7 @@ export const ChooseCharacteristicsModal: FC<IProps> = ({
 }) => {
   const [tab, setTab] = useState('1');
 
-  const handleChange = (event: React.SyntheticEvent, newTab: string) => {
+  const handleChange = (_: unknown, newTab: string) => {
     setTab(newTab);
   };
 
@@ -28,7 +28,7 @@ export const ChooseCharacteristicsModal: FC<IProps> = ({
       onClose={onClose}
     >
       <TabContext value={tab}>
-        <Box sx={{width:"450px",height: '500px'}}>
+        <Box sx={{width:"450px", height: '500px'}}>
           <CustomTabList onChange={handleChange} />
           <ChooseCharacteristicTabPanel parentNumber="1" />
           <ChoosedCharacteristicsTabPanel parentNumber="2" />

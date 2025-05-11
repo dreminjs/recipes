@@ -5,33 +5,29 @@ interface IProps {
   children: ReactNode;
   className?: string;
   type?: 'button' | 'submit' | 'reset';
+  disabled: boolean
 }
 
 export const Button: FC<IProps> = ({
   onClick,
   children,
-  className,
+  className = '',
   type = 'button',
+  disabled = false,
 }) => {
   return (
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`
-    bg-white hover:bg-gray-50
-    border border-gray-300
-    text-gray-800 hover:text-gray-900
-    px-4 py-2
-    rounded-lg
-    shadow-sm hover:shadow-md
-    transition-all duration-200
-    ease-in-out
-    font-medium
-    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-    active:bg-gray-100
-    transform hover:-translate-y-0.5
-    ${className ? className : ''}
-  `}
+        inline-flex items-center justify-center
+        px-6 py-3 rounded-lg font-medium
+        transition-all duration-200
+        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500
+        disabled:opacity-50 disabled:cursor-not-allowed
+        ${className}
+      `}
     >
       {children}
     </button>
