@@ -29,7 +29,7 @@ export class AuthController {
     private readonly authService: AuthService
   ) {}
 
-  @Post('/signup')
+  @Post('signup')
   public async signup(
     @Body() { email, nickname, ...body }: SignupDto,
     @Res({ passthrough: true }) res: Response
@@ -87,7 +87,7 @@ export class AuthController {
     };
   }
 
-  @Post('/signin')
+  @Post('signin')
   public async signin(
     @Body() { email, ...dto }: SigninDto,
     @Res({ passthrough: true }) res: Response

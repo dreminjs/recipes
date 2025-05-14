@@ -6,15 +6,24 @@ import { FC } from 'react';
 import { useGetCharacteristics } from 'src/shared/api/queries/characteristic/characteristic.queries';
 import { useCharacteristicActions } from '../hooks/use-characteristics-actions';
 const LIMIT = 5;
+import Image from "next/image"
+import { lupa } from '../icons/lupa';
 
 interface IProps {
   value: string;
   type: Characteristics;
 }
 
+
+
 export const ChooseItemListTab: FC<IProps> = ({ value, type }) => {
-  const { page, searchTitle, onChangeSearchTitle, onChangePage, onAddCharacteristic } =
-    useCharacteristicActions();
+  const {
+    page,
+    searchTitle,
+    onChangeSearchTitle,
+    onChangePage,
+    onAddCharacteristic,
+  } = useCharacteristicActions();
 
   const {
     characteristics,
@@ -31,15 +40,19 @@ export const ChooseItemListTab: FC<IProps> = ({ value, type }) => {
   return (
     <TabPanel value={value}>
       <div className="flex flex-col items-center">
-        <input
-          className="border-b-2 mb-3 text-[16px] outline-none bg-transparent"
-          type="text"
-          placeholder="search..."
-          defaultValue={searchTitle}
-          onChange={(e) => onChangeSearchTitle(e.target.value)}
-        />
+        <div className="relative w-full mb-4 flex justify-between items-center">
+          <input
+            type="text"
+            placeholder="Поиск..."
+            defaultValue={searchTitle}
+            onChange={(e) => onChangeSearchTitle(e.target.value)}
+            className="w-full px-4 py-2 outline-none text-amber-900 bg-amber-50 border border-amber-500 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent placeholder-amber-500 transition-all"
+          />
+            {lupa}
+            {/* // TODO: change to normal svg */}
+        </div>
         <ul
-          className={`h-[260px] list-none p-0 pr-5 w-full text-center ${
+          className={`h-[260px] w-full p-0 list-none text-center ${
             characteristics &&
             characteristics.items.length > 4 &&
             'overflow-y-scroll'
@@ -49,10 +62,15 @@ export const ChooseItemListTab: FC<IProps> = ({ value, type }) => {
             characteristics.items.map((el) => (
               <CharacteristicItem
                 {...el}
-                onClick={() => onAddCharacteristic({
-                  title: el.title,
-                  id: el.id
-                },type)}
+                onClick={() =>
+                  onAddCharacteristic(
+                    {
+                      title: el.title,
+                      id: el.id,
+                    },
+                    type
+                  )
+                }
                 key={el.id}
               />
             ))
