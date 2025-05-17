@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { AuthButton, ISignUp, SignUpSchema } from '@/shared/';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SignupFormField } from '@/features/auth';
-import { usePostSignUp } from '../api/queries';
+import { SignupFormField } from '../model/ui/signup-form-field';
+import { useSignUp } from '../api/queries';
 import { MessageModal } from '@/features/message';
-import { AuthFormLayout } from 'src/shared/ui/auth-form-layout';
+import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
 
 export const SignUpForm = () => {
   const {
@@ -13,8 +13,13 @@ export const SignUpForm = () => {
     formState: { errors },
   } = useForm<ISignUp>({ resolver: zodResolver(SignUpSchema) });
 
-  const { signup, signupIsLoading, signupIsSuccess, signupIsError } =
-    usePostSignUp();
+  const {
+    signup,
+    signupIsLoading,
+    signupIsSuccess,
+    signupIsError,
+    signupData,
+  } = useSignUp();
 
   return (
     <>
@@ -45,7 +50,7 @@ export const SignUpForm = () => {
         isLoading={signupIsLoading}
         isSuccess={signupIsSuccess}
         message={{
-          isError: 'Проверьте введенные данные',
+          isError: signupData?.message || 'error!',
           isLoading: 'Регистрация...',
           isSuccess: 'Регистрация успешно завершена!',
         }}

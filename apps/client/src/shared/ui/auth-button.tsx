@@ -32,20 +32,18 @@ export const AuthButton: FC<AuthButtonProps> = ({ isLoading, className }) => {
         )}
       </button>
 
-      <div className="text-center">
         <Link
           href={
             router.pathname === `/${QUERY_KEYS.auth}/${PAGE_KEYS.signin}`
               ? `${PAGE_KEYS.signup}`
               : `${PAGE_KEYS.signin}`
           }
-          className="text-amber-700 hover:text-orange-700 font-medium transition-colors"
+          className="text-amber-700 hover:text-orange-700 font-medium transition-colors text-center"
         >
           {isSingup
             ? 'Уже есть аккаунт? Войти'
             : 'Нет аккаунта? Зарегистрироваться'}
         </Link>
-      </div>
     </div>
   );
 };

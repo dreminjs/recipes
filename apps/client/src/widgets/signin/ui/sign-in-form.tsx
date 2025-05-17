@@ -1,10 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { AuthButton, ISignIn, SignInSchema } from '@/shared/';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SigninFormField } from '@/features/auth';
-import { usePostSignIn } from '../api/queries';
+import { SigninFormField } from '../model/ui/signin-form-field';
+import { useSignIn } from '../api/queries';
 import { MessageModal } from '@/features/message';
-import { AuthFormLayout } from 'src/shared/ui/auth-form-layout';
+import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
+import { ResetPassordButton } from '../model/ui/reset-password-button';
 
 export const SignInForm = () => {
   const {
@@ -14,7 +15,7 @@ export const SignInForm = () => {
   } = useForm<ISignIn>({ resolver: zodResolver(SignInSchema) });
 
   const { signin, signinIsLoading, signinIsSuccess, signinIsError } =
-    usePostSignIn();
+    useSignIn();
 
   return (
     <>
@@ -30,6 +31,7 @@ export const SignInForm = () => {
           type="password"
         />
         <AuthButton isLoading={signinIsLoading} />
+        <ResetPassordButton />
       </AuthFormLayout>
       <MessageModal
         isError={signinIsError}

@@ -1,10 +1,9 @@
 import { Roles, Step, User } from 'prisma/prisma-client';
 
-export type IAuthResponse = Omit<
-  User,
-  'hashPassword' | 'salt' | 'id' | 'link' | 'role' | 'createdAt'
->;
-
+export type IAuthResponse = {
+  message: string
+  userId: string
+}
 export type IStep = Pick<Step, 'content'>;
 
 export interface IInfiniteScrollResponse<T> {
@@ -25,4 +24,9 @@ export interface IUserResponse {
   role: Roles;
   isActived: boolean;
   email: string;
+}
+
+
+export interface IMessageResponse {
+  message: string
 }

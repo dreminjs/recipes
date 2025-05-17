@@ -9,7 +9,7 @@ export const useLougout = () => {
     isError: isErrorlogoutFromAccount,
     isLoading: isLoadinglogoutFromAccount,
   } = useMutation({
-    mutationKey: [QUERY_KEYS.auth, SERVICE_KEYS.signout],
+    mutationKey: [SERVICE_KEYS.auth,QUERY_KEYS.signout],
     mutationFn: () => logout(),
   });
 
