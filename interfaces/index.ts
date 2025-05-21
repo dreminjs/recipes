@@ -1,4 +1,4 @@
-import { Roles, Step, User } from 'prisma/prisma-client';
+import { Roles, Step } from '@prisma/client';
 
 export type IAuthResponse = {
   message: string
@@ -24,6 +24,16 @@ export interface IUserResponse {
   role: Roles;
   isActived: boolean;
   email: string;
+}
+
+export interface IStandardResponse<T = any> {
+  success: boolean;
+  message: string;
+  data?: T;
+  error?: {
+    code: string;
+    details?: any;
+  };
 }
 
 

@@ -1,0 +1,1 @@
+export { EmailPendingConfirmationPage } from "./ui/password-pending-confirmation" 

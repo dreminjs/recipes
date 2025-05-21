@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { Roles, Type } from 'prisma/prisma-client';
+import { Roles, Type } from '@prisma/client';
 import { TypeService } from './type.service';
 import { CreateTypeDto } from './dto/create-type.dto';
 import { GetCharacteristicsQueryParameters } from '../shared';

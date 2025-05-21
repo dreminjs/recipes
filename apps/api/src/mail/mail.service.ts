@@ -41,14 +41,14 @@ export class MailService {
   public async sendResetPasswordMail(dto: ISendPasswordResetMailDto, token: string) {
     return await this.mailerService
     .sendMail({
-      to: dto.user.email,
+      to: dto.email,
       subject: 'сброс пароля',
       template: join(
         __dirname,
         '../../../apps/api/templates/reset-password-confirm.ejs'
       ),
       context: {
-        nickname: dto.user.nickname,
+        nickname: dto.nickname,
         token,
       },
     })

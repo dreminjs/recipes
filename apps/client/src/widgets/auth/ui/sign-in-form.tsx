@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
-import { AuthButton, ISignIn, SignInSchema } from '@/shared/';
+import { AuthButton, ISignIn, PAGE_KEYS, SignInSchema } from '@/shared/';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SigninFormField } from '../model/ui/signin-form-field';
 import { useSignIn } from '../api/queries';
 import { MessageModal } from '@/features/message';
 import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
-import { ResetPassordButton } from '../model/ui/reset-password-button';
+import { SigninFormField } from '../model/ui/signin-form-field';
+import Link from 'next/link';
 
 export const SignInForm = () => {
   const {
@@ -14,7 +14,7 @@ export const SignInForm = () => {
     formState: { errors },
   } = useForm<ISignIn>({ resolver: zodResolver(SignInSchema) });
 
-  const { signin, signinIsLoading, signinIsSuccess, signinIsError } =
+  const { signin, signinIsLoading, signinIsSuccess, signinIsError,signinError } =
     useSignIn();
 
   return (
@@ -31,14 +31,16 @@ export const SignInForm = () => {
           type="password"
         />
         <AuthButton isLoading={signinIsLoading} />
-        <ResetPassordButton />
+        <Link className='text-[#d36922] text-center block' href={PAGE_KEYS['request-reset-password']}>
+          Сброс пароля
+        </Link>
       </AuthFormLayout>
       <MessageModal
         isError={signinIsError}
         isLoading={signinIsLoading}
         isSuccess={signinIsSuccess}
         message={{
-          isError: 'Проверьте введенные данные',
+          isError: signinError?.message || "error!",
           isLoading: 'Выполняется вход...',
           isSuccess: 'Вход выполнен успешно!',
         }}

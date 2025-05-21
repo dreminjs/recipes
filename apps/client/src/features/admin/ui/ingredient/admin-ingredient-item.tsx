@@ -1,4 +1,4 @@
-import { Measure } from 'prisma/prisma-client';
+import { Measure } from '@prisma/client';
 import { FC } from 'react';
 
 interface IProps {

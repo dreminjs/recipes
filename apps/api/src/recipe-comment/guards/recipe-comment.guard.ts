@@ -6,14 +6,12 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { RecipeService } from '../../recipe/recipe.service';
-import { UserService } from '../../user';
 import { Request } from 'express';
 import { User } from '@prisma/client';
 
 @Injectable()
 export class RecipeCommentGuard implements CanActivate {
   constructor(
-    private readonly userService: UserService,
     private readonly recipeService: RecipeService
   ) {}
 

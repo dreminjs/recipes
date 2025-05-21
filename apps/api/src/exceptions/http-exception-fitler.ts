@@ -6,7 +6,7 @@ import {
     BadRequestException,
   } from '@nestjs/common';
   import { Response } from 'express';
-  import { IStandardResponse } from '../shared/interfaces/response.interface';
+import { IStandardResponse } from 'interfaces';
   
   @Catch(HttpException)
   export class HttpExceptionFilter implements ExceptionFilter {
@@ -23,7 +23,6 @@ import {
         },
       };
   
-      // Добавляем validation errors для BadRequestException
       if (exception instanceof BadRequestException) {
         const exceptionResponse = exception.getResponse();
         if (typeof exceptionResponse === 'object') {

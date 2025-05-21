@@ -1,6 +1,6 @@
 import { IItemsPaginationResponse } from "@/interfaces*";
 import { SERVICE_KEYS, IGetCharacteristicsQueryParameters, instance } from "@/shared*";
-import { Prisma,Type } from "prisma/prisma-client";
+import { Prisma,Type } from "@prisma/client";
 
 export const typeService = {
   root: SERVICE_KEYS.types,

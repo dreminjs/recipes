@@ -1,33 +1,66 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { ResetPasswordInput } from '../model/ui/reset-password-form-field';
-import { ResetPasswordFormSchema } from '../model/schema';
-import { useRequestResetPassword } from '../model/api/queries';
+import { passwordResetFormSchema } from '../model/schema';
 import { IResetPasswordForm } from '../model/inteface';
+import { ResetPasswordInput } from '../model/ui/reset-password-form-field';
+import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
+import { AuthButton } from '@/shared*';
+import { useResetPassword } from '../model/api/queries';
+import { NextRouter, useRouter } from 'next/router';
+import { MessageModal } from '@/featuresmessage';
 
 export const ResetPasswordForm = () => {
+  const { query } = useRouter() as NextRouter & { query: { token?: string } };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IResetPasswordForm>({
-    resolver: zodResolver(ResetPasswordFormSchema),
+    resolver: zodResolver(passwordResetFormSchema),
   });
 
-  const { sendRequestResetPassword } = useRequestResetPassword();
+  const {
+    sendResetPassword,
+    resetPasswordIsLoading,
+    resetPasswordData,
+    resetPasswordError,
+    resetPasswordIsError,
+    resetPasswordIsSuccess,
+  } = useResetPassword();
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => sendRequestResetPassword(data))}
-      className="space-y-6 w-1/2 mx-auto"
-    >
-      <ResetPasswordInput error={errors.email?.message} register={register} />
-      <button
-        type="submit"
-        className="w-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3 px-4 rounded-lg font-medium hover:from-amber-600 hover:to-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+    <>
+      <AuthFormLayout
+        className="mx-auto"
+        onSubmit={handleSubmit(({ newPassword }) =>
+          sendResetPassword({ newPassword, token: query.token })
+        )}
       >
-        Отправить ссылку для сброса
-      </button>
-    </form>
+        <ResetPasswordInput
+          error={errors.newPassword?.message}
+          register={register}
+          label={'введи новый пароль'}
+          type={'newPassword'}
+        />
+        <ResetPasswordInput
+          error={errors.newPassword?.message}
+          register={register}
+          label={'подтверди его'}
+          type={'confirmPassword'}
+        />
+        <AuthButton isLoading={resetPasswordIsLoading} />
+      </AuthFormLayout>
+      <MessageModal
+        message={{
+          isSuccess: resetPasswordData?.message || 'успех!',
+          isError: resetPasswordError?.message || 'ошибка :(',
+          isLoading: resetPasswordData?.message || 'загрузка...',
+        }}
+        isLoading={resetPasswordIsLoading}
+        isError={resetPasswordIsError}
+        isSuccess={resetPasswordIsSuccess}
+      />
+    </>
   );
 };

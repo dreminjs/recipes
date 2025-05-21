@@ -7,7 +7,7 @@ import {
   UseFormRegister,
 } from 'react-hook-form';
 import Image from 'next/image';
-import { Button } from 'src/shared/ui/button';
+import { Button } from 'src/shared/ui/bradient-button';
 
 interface IProps {
   register: UseFormRegister<IPostRecipeForm>;

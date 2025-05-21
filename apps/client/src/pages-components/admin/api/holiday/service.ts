@@ -1,6 +1,6 @@
 import { IItemsPaginationResponse } from "@/interfaces*";
 import { SERVICE_KEYS, IGetCharacteristicsQueryParameters } from "@/shared*";
-import { Holiday, Prisma } from "prisma/prisma-client";
+import { Holiday, Prisma } from "@prisma/client";
 import { instance } from "src/shared/api/api.instance";
 
 export const holidayService = {

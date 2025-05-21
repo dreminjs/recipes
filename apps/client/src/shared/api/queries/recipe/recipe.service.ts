@@ -1,4 +1,4 @@
-import { Recipe } from 'prisma/prisma-client';
+import { Recipe } from '@prisma/client';
 import { IInfiniteScrollResponse } from '@/interfaces';
 import { instance } from 'src/shared/api/api.instance';
 import { SERVICE_KEYS } from 'src/shared/model/constants';

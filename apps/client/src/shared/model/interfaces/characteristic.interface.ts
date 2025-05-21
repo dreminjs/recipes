@@ -1,7 +1,7 @@
 import {
   Measure,
   Type,
-} from 'prisma/prisma-client';
+} from '@prisma/client';
 import { PostCharacteristicFormSchema } from '../schemas/characteristic.schema';
 import { z } from 'zod';
 

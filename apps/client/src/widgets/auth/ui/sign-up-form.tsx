@@ -18,7 +18,7 @@ export const SignUpForm = () => {
     signupIsLoading,
     signupIsSuccess,
     signupIsError,
-    signupData,
+    signupError
   } = useSignUp();
 
   return (
@@ -50,7 +50,7 @@ export const SignUpForm = () => {
         isLoading={signupIsLoading}
         isSuccess={signupIsSuccess}
         message={{
-          isError: signupData?.message || 'error!',
+          isError: signupError?.message || 'error!',
           isLoading: 'Регистрация...',
           isSuccess: 'Регистрация успешно завершена!',
         }}

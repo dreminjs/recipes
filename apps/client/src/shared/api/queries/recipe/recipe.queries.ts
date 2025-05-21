@@ -16,11 +16,11 @@ export const useGetRecipes = (
     isSuccess: isRecipesSuccess,
     isError: isRecipesError,
   } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.recipe, queryParams],
-    queryFn: async ({ pageParam }) =>
-      recipeService.findMany({ take: 10, cursor: pageParam, ...queryParams }),
-    getNextPageParam: (lastPage, allPages) => lastPage.nextCursor,
-    enabled: enabled !== undefined && enabled
+    // queryKey: [QUERY_KEYS.recipe, queryParams],
+    // queryFn: async ({ pageParam }) =>
+    //   recipeService.findMany({ take: 10, cursor: pageParam, ...queryParams }),
+    // getNextPageParam: (lastPage, allPages) => lastPage.nextCursor,
+    // enabled: enabled !== undefined && enabled
   });
 
   return {

@@ -6,6 +6,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   NotFoundException,
   Param,
   Post,
@@ -14,19 +15,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { SignupDto } from './dto/signup.dto';
-import { IAuthResponse } from 'interfaces';
+import { IAuthResponse, IStandardResponse } from 'interfaces';
 import { SigninDto } from './dto/signin.dto';
 import { CurrentUser, UserService } from '../user/';
 import { TokenService } from '../token/token.service';
 import { Response } from 'express';
 import { MailService } from '../mail/mail.service';
 import { Roles } from '@prisma/client';
-import { generateHashPassword, hashPassword } from './helpers/password.helper';
+import { generateHashPassword } from './helpers/password.helper';
 import * as crypto from 'node:crypto';
 import { AuthService } from './auth.service';
 import { AccessTokenGuard } from '../token';
 import { PasswordService } from '../password/password.service';
-import { IStandardResponse } from '../shared/interfaces/response.interface';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('auth')
@@ -38,6 +38,8 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly passwordService: PasswordService
   ) {}
+
+  private logger = new Logger(AuthController.name)
 
   @Post('signup')
   public async signup(
@@ -154,15 +156,20 @@ export class AuthController {
 
     const { id: userId, nickname } = user;
 
-    const passwordResetToken = await this.passwordService.createResetRequest(
-      userId
-    );
+    const passwordResetToken = await this.passwordService.findOne({
+      where: { userId },
+    });
+
+    if (passwordResetToken) {
+      await this.passwordService.deleteOne(userId);
+    }
+
+    const createdPasswordResetToken =
+      await this.passwordService.createResetRequest(userId);
 
     await this.mailService.sendResetPasswordMail(
-      {
-        user: { email, nickname },
-      },
-      passwordResetToken.token
+      { email, nickname },
+      createdPasswordResetToken.token
     );
 
     return {
@@ -172,7 +179,9 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  public async resetPassword(@Body() { token, newPassword }: ResetPasswordDto): Promise<IStandardResponse> {
+  public async resetPassword(
+    @Body() { token, newPassword }: ResetPasswordDto
+  ): Promise<IStandardResponse> {
     const resetToken = await this.passwordService.findOne({
       where: {
         token,
@@ -181,25 +190,27 @@ export class AuthController {
 
     const { hashedPassword, salt } = await generateHashPassword(newPassword);
 
-     await this.userService.updateOne(
+    await this.userService.updateOne(
       {
         id: resetToken.userId,
-        salt
       },
       {
         hashPassword: hashedPassword,
+        salt,
       }
     );
 
+  await this.passwordService.deleteOne(resetToken.userId)
+
     return {
-      message: "пароль изменён",
-      success: true
-    }
+      message: 'пароль изменён',
+      success: true,
+    };
   }
 
   @Render('thank-you.ejs')
   @Get(`/activate-account/:link`)
-  public async activeAccount(@Param('link') link: string): Promise<void> {
+  public async activateAccount(@Param('link') link: string): Promise<void> {
     await this.userService.updateOne({ link }, { isActived: true });
   }
 }

@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/prisma-client';
+import { Prisma } from '@prisma/client';
 import { FC, useEffect, useRef, useState } from 'react';
 
 interface IProps {

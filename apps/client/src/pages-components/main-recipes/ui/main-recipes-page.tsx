@@ -2,9 +2,9 @@ import { RecipeSelection } from '@/features/recipe';
 import { Characteristics } from '@/interfaces';
 
 const characteristics: [Characteristics, Characteristics, Characteristics] = [
-  'type',
-  'national-cuisine',
-  'holiday',
+  'types',
+  'national-cuisines',
+  'holidays',
 ];
 
 export const MainRecipesPage = () => (

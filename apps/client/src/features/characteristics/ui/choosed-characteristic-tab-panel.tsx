@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { Box } from '@mui/material';
 import { TabPanel } from '@mui/lab';
 import { ChoosedItemsListTab } from '../model/ui/choosed-items-list-tab';
 import { useAtom } from 'jotai/react';

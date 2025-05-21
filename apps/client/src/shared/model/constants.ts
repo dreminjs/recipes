@@ -14,6 +14,7 @@ export const QUERY_KEYS = {
   post: 'post',
   random: 'random',
   "request-reset-password": 'request-reset-password',
+  "reset-password": 'reset-password',
   me: 'me',
 } as const;
 
@@ -37,7 +38,8 @@ export const PAGE_KEYS = {
   recipes: 'recipes',
   admin: 'admin',
   profile: 'profile',
-  "request-reset-password":"request-reset-password"
+  "request-reset-password":"request-reset-password",
+  "password-pending-confirmation": "password-pending-confirmation"
 } as const;
 export const measuresObj = {
   ML: 'мл',

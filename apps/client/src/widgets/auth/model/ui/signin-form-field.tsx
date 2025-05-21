@@ -1,4 +1,4 @@
-import { ISignUp } from '@/shared';
+import { ISignIn } from '@/shared';
 import { FC } from 'react';
 import {
   UseFormRegister,
@@ -8,17 +8,13 @@ import {
 } from 'react-hook-form';
 
 interface IProps {
-  error:
-    | string
-    | FieldError
-    | Merge<FieldError, FieldErrorsImpl<any>>
-    | undefined;
-  register: UseFormRegister<ISignUp>;
-  type: 'email' | 'nickname' | 'password';
+  error?: string
+  register: UseFormRegister<ISignIn>;
+  type: keyof ISignIn
   className?: string;
 }
 
-export const SignupFormField: FC<IProps> = ({
+export const SigninFormField: FC<IProps> = ({
   register,
   error,
   type,
@@ -26,7 +22,6 @@ export const SignupFormField: FC<IProps> = ({
 }) => {
   const placeholder = {
     email: 'Email',
-    nickname: 'Имя пользователя',
     password: 'Пароль',
   };
 

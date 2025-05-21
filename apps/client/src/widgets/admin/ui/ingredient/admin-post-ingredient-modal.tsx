@@ -23,8 +23,7 @@ export const AdminPostIngredientModal: FC<IProps> = ({
       onClose={onToggleVisibility}
     >
       <AdminPostIngredientForm onPost={onPost} />
-            <CloseModalButton onClick={onToggleVisibility} />
-     
+      <CloseModalButton onClick={onToggleVisibility} />
     </BasicModal>
   );
 };

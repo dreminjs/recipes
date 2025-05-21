@@ -50,3 +50,5 @@ export {FormTitle }from './ui/admin/form-title'
 export { CloseModalButton } from "./ui/close-button-modal"
 
 export { AuthTitle } from "./ui/auth-title"
+
+export {  GradientButton } from "./ui/bradient-button"
