@@ -9,6 +9,7 @@ export const PostRecipePage = () => {
 
   const handleToggleCharacteristicModal = () =>
     setIsCharaceteristicModalVisible((prev) => !prev);
+// TODO: implement adding steps & ingredients here
 
   return (
     <Layout>
