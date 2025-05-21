@@ -21,7 +21,7 @@ export const CharacteristicItem: FC<IProps> = ({ title, id, onClick }) => {
 
   return (
     <li
-      className={`flex mb-3 items-center shadow-sm border-amber-300 justify-between p-3 rounded-lg transition-all duration-200 cursor-pointer ${
+      className={`flex mb-3 w-full items-center shadow-sm border-amber-300 justify-between p-3 rounded-lg transition-all duration-200 cursor-pointer ${
         isItemChoosed
           ? 'bg-amber-50 border-2  '
           : 'bg-white border border-gray-200 hover:border-amber-200 hover:shadow-xs'

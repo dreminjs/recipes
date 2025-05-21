@@ -40,7 +40,7 @@ export class AuthController {
   ) {}
 
   private logger = new Logger(AuthController.name)
-
+  
   @Post('signup')
   public async signup(
     @Body() { email, nickname, ...body }: SignupDto,
