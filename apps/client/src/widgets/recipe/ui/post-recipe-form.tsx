@@ -5,7 +5,7 @@ import {
 import { IPostRecipeForm, PostRecipeFormSchema } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FC, useState } from 'react';
-import { Button } from '../../../shared/ui/button';
+import { Button } from '../../../shared/ui/bradient-button';
 import { UploadRecipePhotoModal } from '@/featuresrecipe/ui/upload-recipe-photo-modal';
 
 interface IProps {

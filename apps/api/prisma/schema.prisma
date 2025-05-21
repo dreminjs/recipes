@@ -27,32 +27,34 @@ enum Measure {
 }
 
 model User {
+  createdAt          DateTime            @default(now()) @map("created_at")
+  id                 String              @id @default(uuid())
+  nickname           String
+  email              String              @unique
+  isActived          Boolean             @map("is_actived")
+  link               String?             @unique
+  role               Roles
+  hashPassword       String              @map("hass_password")
+  salt               String
+  RefreshToken       RefreshToken?
+  Recipe             Recipe[]
+  RecipeComment      RecipeComment[]
+  FavoriteRecipe     FavoriteRecipe[]
+  PasswordResetToken PasswordResetToken?
+
   @@map("users")
-  createdAt      DateTime         @default(now()) @map("created_at")
-  id             String           @id @default(uuid())
-  nickname       String
-  email          String           @unique
-  isActived      Boolean          @map("is_actived")
-  link           String?          @unique
-  role           Roles
-  hashPassword   String           @map("hass_password")
-  salt           String
-  RefreshToken   RefreshToken[]
-  Recipe         Recipe[]
-  RecipeComment  RecipeComment[]
-  FavoriteRecipe FavoriteRecipe[]
 }
 
 model RefreshToken {
-  @@map("refresh_tokens")
   id     String @id @default(uuid())
   token  String
   user   User   @relation(references: [id], fields: [userId])
-  userId String @map("user_id")
+  userId String @map("user_id") @unique
+
+  @@map("refresh_tokens")
 }
 
 model Recipe {
-  @@map("recipes")        
   id                String             @id @default(uuid())
   title             String
   description       String
@@ -70,37 +72,41 @@ model Recipe {
   recipeComment     RecipeComment[]
   favoriteRecipe    FavoriteRecipe[]
   recipeIngredient  RecipeIngredient[]
+
+  @@map("recipes")
 }
 
 model NationalCuisine {
-  @@map("national_cuisines")
   id        String   @id @default(uuid())
   title     String   @unique
   isVisible Boolean  @default(true) @map("is_visible")
   createdAt DateTime @default(now()) @map("created_at")
   recipe    Recipe[]
+
+  @@map("national_cuisines")
 }
 
 model Type {
-  @@map("types")
   id        String   @id @default(uuid())
   title     String   @unique
   isVisible Boolean  @default(true) @map("is_visible")
   createdAt DateTime @default(now()) @map("created_at")
   recipe    Recipe[]
+
+  @@map("types")
 }
 
 model Holiday {
-  @@map("holidays")
   id        String   @id @default(uuid())
   title     String   @unique
   isVisible Boolean  @default(true) @map("is_visible")
   createdAt DateTime @default(now()) @map("created_at")
   recipe    Recipe[]
+
+  @@map("holidays")
 }
 
 model RecipeComment {
-  @@map("recipe_comments")
   createdAt       DateTime        @default(now()) @map("created_at")
   id              String          @id @default(uuid())
   content         String
@@ -111,39 +117,43 @@ model RecipeComment {
   recipeCommentId String?         @map("recipe_comment_id")
   recipeComment   RecipeComment?  @relation("RecipeComments", fields: [recipeCommentId], references: [id])
   replies         RecipeComment[] @relation("RecipeComments")
+
+  @@map("recipe_comments")
 }
 
 model FavoriteRecipe {
-  @@map("favorite_recipes")
   createdAt DateTime @default(now()) @map("created_at")
   id        String   @id @default(uuid())
   userId    String   @map("user_id")
   user      User     @relation(references: [id], fields: [userId])
   recipeId  String   @map("recipe_id")
   recipe    Recipe   @relation(references: [id], fields: [recipeId])
+
+  @@map("favorite_recipes")
 }
 
 model Ingredient {
-  @@map("ingredients")
   id               String             @id @default(uuid())
   title            String
   isVisible        Boolean            @default(true) @map("is_visible")
   measure          Measure
   RecipeIngredient RecipeIngredient[]
   createdAt        DateTime           @default(now()) @map("created_at")
+
+  @@map("ingredients")
 }
 
 model Step {
-  @@map("steps")
   createdAt DateTime @default(now()) @map("created_at")
   id        String   @id @default(uuid())
   content   String
   recipeId  String   @map("recipe_id")
   recipe    Recipe   @relation(references: [id], fields: [recipeId])
+
+  @@map("steps")
 }
 
 model RecipeIngredient {
-  @@map("recipe_ingredients")
   id           String     @id @default(uuid())
   ingredient   Ingredient @relation(references: [id], fields: [ingredientId])
   count        Int
@@ -151,12 +161,25 @@ model RecipeIngredient {
   recipeId     String     @map("recipe_id")
   recipe       Recipe     @relation(references: [id], fields: [recipeId])
   createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@map("recipe_ingredients")
 }
 
 model IngredientRequest {
-  @@map("ingredient_requests")
   id        String   @id @default(uuid())
   title     String
   measure   Measure
   createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("ingredient_requests")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId])
+  userId    String   @unique
+
+  @@map("password_reset_tokens")
 }

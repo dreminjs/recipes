@@ -1,6 +1,6 @@
 import { QUERY_KEYS } from '@/shared*';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Prisma } from 'prisma/prisma-client';
+import { Prisma } from '@prisma/client';
 import { typeService } from './service';
 import { useSetAtom } from 'jotai';
 import {
@@ -30,8 +30,7 @@ export const useGetTypes = ({
   } = useQuery({
     queryKey: [page, title, limit],
     queryFn: () => typeService.findMany({ limit, page, title }),
-    onSuccess: (data) => setCharacterstics(data.items),
-    keepPreviousData: true,
+    // onSuccess: (data) => setCharacterstics(data.items),
   });
 
   return {
@@ -46,7 +45,7 @@ export const useGetTypes = ({
 export const usePostType = () => {
   const {
     mutate: postType,
-    isLoading: postTypeIsLoading,
+   isPending: postTypeIsLoading,
     isError: postTypeIsError,
     isSuccess: postTypeIsSuccess,
   } = useMutation({
@@ -61,7 +60,7 @@ export const usePostType = () => {
 export const useDeleteType = () => {
   const {
     mutate: deleteType,
-    isLoading: deleteTypeIsLoading,
+    isPending: deleteTypeIsLoading,
     isError: deleteTypeIsError,
     isSuccess: deleteTypeIsSuccess,
   } = useMutation({
@@ -81,7 +80,7 @@ export const usePutType = () => {
 
   const {
     mutate: putType,
-    isLoading: putTypeIsLoading,
+    isPending: putTypeIsLoading,
     isError: putTypeIsError,
     isSuccess: putTypeIsSuccess,
   } = useMutation({
@@ -99,7 +98,7 @@ export const usePutType = () => {
 export const useDeleteManyTypes = () => {
   const {
     mutate: deleteTypes,
-    isLoading: deleteTypesIsLoading,
+    isPending: deleteTypesIsLoading,
     isSuccess: deleteTypesIsSuccess,
     isError: deleteTypesIsError,
   } = useMutation({

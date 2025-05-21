@@ -13,6 +13,12 @@ export class TokenService {
     private readonly configService: ConfigService
   ) {}
 
+  public async deleteOne(
+    args: Prisma.RefreshTokenDeleteArgs
+  ): Promise<RefreshToken> {
+    return await this.prisma.refreshToken.delete(args);
+  }
+
   public async generateTokens(payload: ITokenPayload): Promise<ITokens> {
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: '1d',
@@ -21,6 +27,11 @@ export class TokenService {
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: '1w',
       secret: this.configService.get('REFRESH_TOKEN'),
+    });
+
+    await this.saveRefreshToken({
+      user: { connect: { email: payload.email } },
+      token: refreshToken,
     });
 
     return {
@@ -33,7 +44,7 @@ export class TokenService {
     return this.jwtService.verify(token);
   }
 
-  public async saveRefreshToken(
+  private async saveRefreshToken(
     payload: Prisma.RefreshTokenCreateInput
   ): Promise<RefreshToken> {
     return await this.prisma.refreshToken.create({ data: payload });

@@ -1,6 +1,6 @@
 import { QUERY_KEYS } from '@/shared*';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Prisma } from 'prisma/prisma-client';
+import { Prisma } from '@prisma/client';
 import { holidayService } from './service';
 import { useSetAtom } from 'jotai';
 import { activeCellAtom, characteristicsAtom } from 'src/application/stores/characteristics.store';
@@ -27,7 +27,6 @@ export const useGetHolidays = ({
   } = useQuery({
     queryKey: [QUERY_KEY, page, title],
     queryFn: () => holidayService.findMany({ limit, page, title }),
-    onSuccess: (data) => setCharacteristics(data.items),
   });
 
   return {
@@ -43,7 +42,7 @@ export const usePostHoliday = () => {
   const setActiveCell = useSetAtom(activeCellAtom)
   const {
     mutate: postHoliday,
-    isLoading: postHolidayIsLoading,
+    isPending: postHolidayIsLoading,
     isError: postHolidayIsError,
     isSuccess: postHolidayIsSuccess,
   } = useMutation({
@@ -66,7 +65,7 @@ export const usePostHoliday = () => {
 export const useDeleteHoliday = () => {
   const {
     mutate: deleteHoliday,
-    isLoading: deleteHolidayIsLoading,
+    isPending: deleteHolidayIsLoading,
     isError: deleteHolidayIsError,
     isSuccess: deleteHolidayIsSuccess,
   } = useMutation({
@@ -84,7 +83,7 @@ export const useDeleteHoliday = () => {
 export const useDeleteManyHolidays = () => {
   const {
     mutate: deleteManyHoliday,
-    isLoading: deleteManyHolidayIsLoading,
+    isPending: deleteManyHolidayIsLoading,
     isError: deleteManyHolidayIsError,
     isSuccess: deleteManyHolidayIsSuccess,
   } = useMutation({
@@ -105,7 +104,7 @@ export const usePutHoliday = () => {
 
   const {
     mutate: putHoliday,
-    isLoading: putHolidayIsLoading,
+    isPending: putHolidayIsLoading,
     isError: putHolidayIsError,
     isSuccess: putHolidayIsSuccess,
   } = useMutation({

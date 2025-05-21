@@ -1,7 +1,6 @@
 export const API_URL = 'http://localhost:3001/api';
 
 export const QUERY_KEYS = {
-  auth: 'auth',
   signup: 'signup',
   signin: 'signin',
   signout: 'signout',
@@ -14,26 +13,22 @@ export const QUERY_KEYS = {
   ingredient: 'ingredient',
   post: 'post',
   random: 'random',
-  me:"me"
-} as const
+  "request-reset-password": 'request-reset-password',
+  "reset-password": 'reset-password',
+  me: 'me',
+} as const;
 
 export const SERVICE_KEYS = {
   auth: 'auth',
-  signup: 'signup',
-  signin: 'signin',
-  selection: 'selection',
-  random: 'random',
   users: 'users',
-  signout: 'signout',
   characteristics: 'characteristics',
   'national-cuisines': 'national-cuisines',
   ingredients: 'ingredients',
   types: 'types',
   recipes: 'recipes',
   holidays: 'holidays',
-  user: "user"
-  
-} as const
+  user: 'user',
+} as const;
 
 export const PAGE_KEYS = {
   main: '/',
@@ -43,7 +38,9 @@ export const PAGE_KEYS = {
   recipes: 'recipes',
   admin: 'admin',
   profile: 'profile',
-} as const
+  "request-reset-password":"request-reset-password",
+  "password-pending-confirmation": "password-pending-confirmation"
+} as const;
 export const measuresObj = {
   ML: 'мл',
   L: 'л',

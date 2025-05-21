@@ -1,5 +1,5 @@
 import { AuthTitle } from '@/shared*';
-import { SignInForm } from '@/widgets/signin';
+import { SignInForm } from '@/widgetsauth/ui/sign-in-form';
 import { AuthLayout } from 'src/shared/ui/layouts/auth-layout';
 
 export const SignInPage = () => {

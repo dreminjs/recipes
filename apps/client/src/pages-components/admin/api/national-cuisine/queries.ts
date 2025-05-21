@@ -1,6 +1,6 @@
 import { QUERY_KEYS } from '@/shared';
 
-import { Prisma } from 'prisma/prisma-client';
+import { Prisma } from '@prisma/client';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { nationalCuisineService } from './service';
 import { useSetAtom } from 'jotai';
@@ -28,7 +28,7 @@ export const useGetNationalCuisines = ({
   } = useQuery({
     queryKey: [MUTATION_KEY, limit, page, title],
     queryFn: () => nationalCuisineService.findMany({ limit, page, title }),
-    onSuccess: (data) => setCharacteristics(data.items),
+    // onSuccess: (data) => setCharacteristics(data.items),
   });
 
   return {
@@ -43,7 +43,7 @@ export const useGetNationalCuisines = ({
 export const usePostNationalCuisine = () => {
   const {
     mutate: postNationalCuisine,
-    isLoading: postNationalCuisineIsLoading,
+    isPending: postNationalCuisineIsLoading,
     isError: postNationalCuisineIsError,
     isSuccess: postNationalCuisineIsSuccess,
   } = useMutation({
@@ -63,7 +63,7 @@ export const usePostNationalCuisine = () => {
 export const useDeleteNationalCuisine = () => {
   const {
     mutate: deleteNationalCuisine,
-    isLoading: deleteNationalCuisineIsLoading,
+    isPending: deleteNationalCuisineIsLoading,
     isError: deleteNationalCuisineIsError,
     isSuccess: deleteNationalCuisineIsSuccess,
   } = useMutation({
@@ -81,7 +81,7 @@ export const useDeleteNationalCuisine = () => {
 export const useDeleteManyNationalCuisine = () => {
   const {
     mutate: deleteManyNationalCuisines,
-    isLoading: deleteManyNationalCuisinesIsLoading,
+    isPending: deleteManyNationalCuisinesIsLoading,
     isError: deleteManyNationalCuisinesIsError,
     isSuccess: deleteManyNationalCuisinesIsSuccess,
   } = useMutation({
@@ -102,7 +102,7 @@ export const usePutNationalCuisine = () => {
 
   const {
     mutate: putNationalCuisine,
-    isLoading: putNationalCuisineIsLoading,
+    isPending: putNationalCuisineIsLoading,
     isError: putNationalCuisineIsError,
     isSuccess: putNationalCuisineIsSuccess,
   } = useMutation({

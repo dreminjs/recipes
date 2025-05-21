@@ -5,7 +5,8 @@ import { comparePassword } from './helpers/password.helper';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService,
+  ) {}
 
   public async validateUser({ email, password }: SigninDto): Promise<boolean> {
     const { hashPassword } = await this.userService.findOne({

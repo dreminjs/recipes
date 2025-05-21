@@ -1,4 +1,4 @@
-import { Measure } from 'prisma/prisma-client';
+import { Measure } from '@prisma/client';
 import { z } from 'zod';
 
 export const IngredientFormSchema = z.object({

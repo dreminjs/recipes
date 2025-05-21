@@ -5,8 +5,9 @@ import { UserModule } from '../user/user.module';
 import { TokenModule } from '../token/token.module';
 import { MailModule } from '../mail/mail.module';
 import { AuthService } from './auth.service';
+import { PasswordModule } from '../password/password.module';
 @Module({
-  imports: [UserModule, PrismaModule, TokenModule, MailModule],
+  imports: [UserModule, PrismaModule, TokenModule, MailModule, PasswordModule],
   controllers: [AuthController],
   providers: [AuthService],
 })

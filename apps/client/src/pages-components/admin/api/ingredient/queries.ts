@@ -1,6 +1,6 @@
 import { QUERY_KEYS, IPostIngredientForm, IGetCharacteristicsQueryParameters } from "@/shared*";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Prisma } from "prisma/prisma-client";
+import { Prisma } from "@prisma/client";
 import { ingredientService } from "./service";
 import { useSetAtom } from "jotai";
 import { activeCellAtom, characteristicsAtom } from "src/application/stores/characteristics.store";
@@ -25,9 +25,7 @@ export const useGetIngredients = ({
   } = useQuery({
     queryKey: [queryKey, limit, page, title],
     queryFn: () => ingredientService.findMany({ limit, page, title }),
-    onSuccess(data) {
-      setCharacteristics(data.items)
-    },
+  
   });
 
   return {
@@ -42,7 +40,7 @@ export const useGetIngredients = ({
 export const usePostIngredient = () => {
   const {
     mutate: postIngredient,
-    isLoading: postIngredientIsLoading,
+    isPending: postIngredientIsLoading,
     isError: postIngredientIsError,
     isSuccess: postIngredientIsSuccess,
   } = useMutation({
@@ -62,7 +60,7 @@ export const usePostIngredient = () => {
 export const useDeleteIngredient = () => {
   const {
     mutate: deleteIngredient,
-    isLoading: deleteIngredientIsLoading,
+    isPending: deleteIngredientIsLoading,
     isError: deleteIngredientIsError,
     isSuccess: deleteIngredientIsSuccess,
   } = useMutation({
@@ -80,7 +78,7 @@ export const useDeleteIngredient = () => {
 export const useDeleteManyIngredients = () => {
   const {
     mutate: deleteManyIngredients,
-    isLoading: deleteManyIngredientsIsLoading,
+    isPending: deleteManyIngredientsIsLoading,
     isError: deleteManyIngredientsIsError,
     isSuccess: deleteManyIngredientsIsSuccess,
   } = useMutation({
@@ -101,7 +99,7 @@ export const usePutIngredient = () => {
 
   const {
     mutate: putIngredient,
-    isLoading: putIngredientIsLoading,
+    isPending: putIngredientIsLoading,
     isError: putIngredientIsError,
     isSuccess: putIngredientIsSuccess,
   } = useMutation({

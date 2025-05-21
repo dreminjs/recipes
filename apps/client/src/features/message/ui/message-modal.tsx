@@ -1,5 +1,5 @@
 import { BasicModal } from '@/shared';
-import { FC,useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 interface IProps {
   message: {
@@ -21,7 +21,9 @@ export const MessageModal: FC<IProps> = ({
   className,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [type, setType] = useState<'isLoading' | 'isError' | 'isSuccess'>('isLoading');
+  const [type, setType] = useState<'isLoading' | 'isError' | 'isSuccess'>(
+    'isLoading'
+  );
 
   const handleClose = () => setIsVisible(false);
 
@@ -42,8 +44,10 @@ export const MessageModal: FC<IProps> = ({
   }, [isError, isSuccess]);
 
   return (
-    <BasicModal onClose={handleClose} isOpen={isVisible}>
-      {message[type]}
-    </BasicModal>
+    <BasicModal
+      title={message[type]}
+      onClose={handleClose}
+      isOpen={isVisible}
+    />
   );
 };

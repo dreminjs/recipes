@@ -1,6 +1,6 @@
 import { IItemsPaginationResponse } from "@/interfaces*";
 import { SERVICE_KEYS, IPostIngredientForm, IGetCharacteristicsQueryParameters } from "@/shared*";
-import { Ingredient, Prisma } from "prisma/prisma-client";
+import { Ingredient, Prisma } from "@prisma/client";
 import { instance } from "src/shared/api/api.instance";
 
 export const ingredientService = {

@@ -1,3 +1,2 @@
-export { SigninFormField } from './ui/signin-form-field';
 
-export { SignupFormField } from './ui/signup-form-field';
+export { SignupFormField } from '../../widgets/auth/model/ui/signup-form-field';

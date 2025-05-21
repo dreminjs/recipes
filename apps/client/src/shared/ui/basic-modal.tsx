@@ -1,14 +1,14 @@
 import { FC, ReactNode, useEffect } from 'react';
 
-interface ModalProps {
+interface IProps {
   isOpen: boolean;
   onClose: () => void;
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   title?: string;
 }
 
-export const BasicModal: FC<ModalProps> = ({
+export const BasicModal: FC<IProps> = ({
   isOpen,
   onClose,
   children,
@@ -40,7 +40,7 @@ export const BasicModal: FC<ModalProps> = ({
       >
         {title && (
           <div className="px-6 py-4 border-b border-orange-200">
-            <h3 className="text-xl font-bold text-amber-900">{title}</h3>
+            <h3 className="text-xl font-bold text-amber-900 text-center">{title}</h3>
           </div>
         )}
         <div className="p-6">{children}</div>

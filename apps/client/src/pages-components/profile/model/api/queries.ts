@@ -10,6 +10,7 @@ export const useGetMyProfile = () => {
   } = useQuery({
     queryFn: () => findMySelf(),
     queryKey: [SERVICE_KEYS.user,QUERY_KEYS.me],
+
   });
 
   return { userInfo, userInfoIsLoading, userInfoIsSuccess };
