@@ -26,7 +26,7 @@ export class RecipeController {
 
   @UseGuards(AccessTokenGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('file'),MinioFileUploadInterceptor)
+  @UseInterceptors(FileInterceptor('file'), MinioFileUploadInterceptor)
   public async createOne(
     @Body() body: CreateRecipeDto,
     @CurrentUser('id') userId: string,
@@ -63,22 +63,22 @@ export class RecipeController {
   public async findMany(
     @Query()
     {
-      typeId,
-      holidayId,
-      nationalCuisineId,
-      cursor,
-      take,
       title,
+      cursor = 0,
+      take = 10,
+      typeIds,
+      nationalCuisineIds,
+      holidayIds,
     }: GetRecipesQueryParameters
   ): Promise<IInfiniteScrollResponse<Recipe>> {
     const recipes = await this.recipeService.findMany({
       where: {
-        ...(typeId && { type: { id: typeId } }),
-        ...(holidayId && { holiday: { id: holidayId } }),
-        ...(nationalCuisineId && {
-          nationalCuisine: { id: nationalCuisineId },
+        ...(typeIds && {
+          type: { id: typeIds instanceof Array ? { in: typeIds } : typeIds },
         }),
-        title: { contains: title },
+        ...(holidayIds && { id: holidayIds instanceof Array ? { in: holidayIds } : holidayIds }),
+        ...(nationalCuisineIds && { id: nationalCuisineIds instanceof Array ? { in: nationalCuisineIds } : nationalCuisineIds }),
+        ...(title && { title: { contains: title } }),
       },
       include: { recipeIngredient: { include: { ingredient: true } } },
       skip: cursor,

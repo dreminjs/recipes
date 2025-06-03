@@ -1,4 +1,4 @@
-import { Roles, Step } from '@prisma/client';
+import { Step, User } from '@prisma/client';
 
 export type IAuthResponse = {
   message: string
@@ -15,16 +15,10 @@ export type Characteristics = 'holidays' | 'types' | 'national-cuisines' | 'ingr
 
 export interface IItemsPaginationResponse<T> {
   items: T[];
-  currentPage: number;
   countItems: number;
 }
 
-export interface IUserResponse {
-  nickname: string;
-  role: Roles;
-  isActived: boolean;
-  email: string;
-}
+export type IUserResponse = Omit<User,"hashPassword" | "salt" | "createdAt" | "link">
 
 export interface IStandardResponse<T = any> {
   success: boolean;

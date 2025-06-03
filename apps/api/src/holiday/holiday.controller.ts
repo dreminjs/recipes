@@ -47,7 +47,6 @@ export class HolidayController {
     
     return {
       items,
-      currentPage: page,
       countItems: count,
     };
   }

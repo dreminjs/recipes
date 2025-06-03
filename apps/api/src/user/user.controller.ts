@@ -12,8 +12,25 @@ export class UserController {
   @Get('me')
   @UseGuards(AccessTokenGuard)
   public async findMySelf(
-    @CurrentUser() { email, role, isActived, nickname }: User
+    @CurrentUser()
+    {
+      email,
+      role,
+      isActived,
+      nickname,
+      id,
+      twoFactorSecret,
+      isTwoFactorEnabled,
+    }: User
   ): Promise<IUserResponse> {
-    return { email, role, isActived, nickname };
+    return {
+      email,
+      role,
+      isActived,
+      nickname,
+      id,
+      isTwoFactorEnabled,
+      twoFactorSecret,
+    };
   }
 }

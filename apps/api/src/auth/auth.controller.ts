@@ -6,10 +6,10 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Logger,
   NotFoundException,
   Param,
   Post,
+  Put,
   Render,
   Res,
   UseGuards,
@@ -21,13 +21,14 @@ import { CurrentUser, UserService } from '../user/';
 import { TokenService } from '../token/token.service';
 import { Response } from 'express';
 import { MailService } from '../mail/mail.service';
-import { Roles } from '@prisma/client';
+import { Roles, User } from '@prisma/client';
 import { generateHashPassword } from './helpers/password.helper';
 import * as crypto from 'node:crypto';
 import { AuthService } from './auth.service';
 import { AccessTokenGuard } from '../token';
 import { PasswordService } from '../password/password.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import * as speakeasy from 'speakeasy';
 
 @Controller('auth')
 export class AuthController {
@@ -39,8 +40,6 @@ export class AuthController {
     private readonly passwordService: PasswordService
   ) {}
 
-  private logger = new Logger(AuthController.name)
-  
   @Post('signup')
   public async signup(
     @Body() { email, nickname, ...body }: SignupDto,
@@ -178,6 +177,53 @@ export class AuthController {
     };
   }
 
+  @UseGuards(AccessTokenGuard)
+  @Post('2fa/request')
+  public async requestEnableTwoFactor(
+    @CurrentUser() { id: userId, nickname, email }: User
+  ): Promise<IStandardResponse> {
+    await this.mailService.sendRequestTwoFaEnable({
+      id: userId,
+      nickname,
+      email,
+    });
+
+    return {
+      success: true,
+      message: 'письмо отправленно',
+    };
+  }
+
+  @Render('thank-you-for-2fa-enabled.ejs')
+  @Get('2fa/enable/:userId')
+  public async enableTwoFactorAuth(
+    @Param('userId') userId: string
+  ): Promise<IStandardResponse> {
+    await this.userService.updateOne(
+      { id: userId },
+      { isTwoFactorEnabled: true }
+    );
+
+    return {
+      success: true,
+      message: '2fa включен!',
+    };
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Put('2fa/disable')
+  public async disableTwoFactorAuth(@CurrentUser('id') userId: string): Promise<IStandardResponse> {
+    await this.userService.updateOne(
+      { id: userId },
+      { isTwoFactorEnabled: false }
+    );
+
+    return {
+      success: true,
+      message: '2fa выключен!',
+    };
+  }
+
   @Post('reset-password')
   public async resetPassword(
     @Body() { token, newPassword }: ResetPasswordDto
@@ -200,7 +246,7 @@ export class AuthController {
       }
     );
 
-  await this.passwordService.deleteOne(resetToken.userId)
+    await this.passwordService.deleteOne(resetToken.userId);
 
     return {
       message: 'пароль изменён',

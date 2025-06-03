@@ -50,6 +50,14 @@ export class TokenService {
     return await this.prisma.refreshToken.create({ data: payload });
   }
 
+  public async findOne(
+    where: Prisma.RefreshTokenWhereInput
+  ): Promise<RefreshToken> {
+    return await this.prisma.refreshToken.findFirst({
+      where,
+    });
+  }
+
   public async deleteRefreshToken(where: Prisma.RefreshTokenWhereUniqueInput) {
     return await this.prisma.refreshToken.delete({ where });
   }

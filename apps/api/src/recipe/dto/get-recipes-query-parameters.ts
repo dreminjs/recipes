@@ -3,11 +3,11 @@ import { Transform } from "class-transformer"
 
 export class GetRecipesQueryParameters {
 
-    nationalCuisineId?: string
+    nationalCuisineIds?: string[] | string
 
-    typeId?: string
+    typeIds?: string[] | string
 
-    holidayId?: string
+    holidayIds?: string[] | string
 
     title: string
 

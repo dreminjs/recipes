@@ -36,6 +36,8 @@ model User {
   role               Roles
   hashPassword       String              @map("hass_password")
   salt               String
+  twoFactorSecret    String?             @map("two_factor_secret")
+  isTwoFactorEnabled Boolean             @default(false) @map("is_two_factor_enabled")
   RefreshToken       RefreshToken?
   Recipe             Recipe[]
   RecipeComment      RecipeComment[]
@@ -43,13 +45,14 @@ model User {
   PasswordResetToken PasswordResetToken?
 
   @@map("users")
+  TwoFaResetToken TwoFaResetToken[]
 }
 
 model RefreshToken {
   id     String @id @default(uuid())
   token  String
   user   User   @relation(references: [id], fields: [userId])
-  userId String @map("user_id") @unique
+  userId String @unique @map("user_id")
 
   @@map("refresh_tokens")
 }
@@ -182,4 +185,14 @@ model PasswordResetToken {
   userId    String   @unique
 
   @@map("password_reset_tokens")
+}
+
+model TwoFaResetToken {
+  id        String   @id @default(uuid())
+  token     String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId])
+  userId    String   @unique
+
+  @@map("two_fa_reset_tokens")
 }

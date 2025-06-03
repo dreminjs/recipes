@@ -2,9 +2,6 @@ import { ISignIn } from '@/shared';
 import { FC } from 'react';
 import {
   UseFormRegister,
-  FieldError,
-  FieldErrorsImpl,
-  Merge,
 } from 'react-hook-form';
 
 interface IProps {
