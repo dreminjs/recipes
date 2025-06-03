@@ -6,12 +6,14 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   NotFoundException,
   Param,
   Post,
   Put,
   Render,
   Res,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { SignupDto } from './dto/signup.dto';
@@ -29,6 +31,8 @@ import { AccessTokenGuard } from '../token';
 import { PasswordService } from '../password/password.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import * as speakeasy from 'speakeasy';
+import { SigninTwoFaDto } from './dto/signin-2fa.dto';
+import { TwoFaParamsDto } from './dto/2fa-params.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -39,6 +43,8 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly passwordService: PasswordService
   ) {}
+
+  private logger = new Logger(AuthController.name);
 
   @Post('signup')
   public async signup(
@@ -97,22 +103,19 @@ export class AuthController {
     };
   }
 
-  @Post('signin')
-  public async signin(
-    @Body() { email, ...dto }: SigninDto,
+  @Post('2fa/signin')
+  public async signinWithTwoFa(
+    @Body() { secret, email }: SigninTwoFaDto,
     @Res({ passthrough: true }) res: Response
-  ): Promise<IStandardResponse<IAuthResponse>> {
-    await this.authService.validateUser({ ...dto, email });
+  ): Promise<IStandardResponse> {
+    const user = await this.userService.findOne({ email });
 
-    const userQuery = this.userService.findOne({ email });
+    if (user.twoFactorSecret !== secret) {
+      throw new UnauthorizedException('Неверный код');
+    }
 
-    const tokensQuery = this.tokenService.generateTokens({ email });
-
-    const [_, { accessToken, refreshToken }] = await Promise.all([
-      userQuery,
-      tokensQuery,
-    ]);
-
+    const { accessToken, refreshToken } =
+      await this.tokenService.generateTokens({ email });
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       sameSite: 'lax',
@@ -128,9 +131,68 @@ export class AuthController {
     });
 
     return {
-      message: 'успешно!',
+      message: 'успех!',
       success: true,
     };
+  }
+
+  @Post('signin')
+  public async signin(
+    @Body() { email, ...dto }: SigninDto,
+    @Res({ passthrough: true }) res: Response
+  ): Promise<IStandardResponse> {
+    const user = await this.authService.validateUser({ ...dto, email });
+
+    if (user.isTwoFactorEnabled) {
+      const token = speakeasy.generateSecret({
+        length: 5,
+      });
+
+      const updatedUserQuery = this.userService.updateOne(
+        {
+          id: user.id,
+        },
+        {
+          twoFactorSecret: token.ascii,
+        }
+      );
+
+      const mailQuery = this.mailService.sendTwoFaSecret({
+        nickname: user.nickname,
+        email: user.email,
+        secret: token.ascii,
+      });
+
+      Promise.all([updatedUserQuery, mailQuery]);
+
+      return {
+        message: 'На вашу почту поступил Код!',
+        success: true,
+      };
+    } else {
+      this.logger.log(user);
+
+      const { accessToken, refreshToken } =
+        await this.tokenService.generateTokens({ email });
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000,
+        path: '/',
+      });
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: '/',
+      });
+
+      return {
+        message: 'успешно!',
+        success: true,
+      };
+    }
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -211,11 +273,13 @@ export class AuthController {
     };
   }
 
-  @Render('thank-you-for-2fa-enabled.ejs')
   @Get('2fa/enable/:userId')
+  @Render('thank-you-for-2fa-enabled.ejs')
   public async enableTwoFactorAuth(
-    @Param('userId') userId: string
+    @Param() { userId }: TwoFaParamsDto
   ): Promise<IStandardResponse> {
+    this.logger.log(userId, '- user id');
+
     await this.userService.updateOne(
       { id: userId },
       { isTwoFactorEnabled: true }
@@ -227,10 +291,10 @@ export class AuthController {
     };
   }
 
-  @Render('thank-you-for-2fa-disabled.ejs')
   @Get('2fa/disable/:userId')
+  @Render('thank-you-for-2fa-disabled.ejs')
   public async disableTwoFactorAuth(
-    @Param('userId') userId: string
+    @Param() { userId }: TwoFaParamsDto
   ): Promise<IStandardResponse> {
     await this.userService.updateOne(
       { id: userId },
@@ -273,7 +337,7 @@ export class AuthController {
     };
   }
 
-  @Render('thank-you.ejs')
+  @Render('thank-you-for-email-confirm.ejs')
   @Get(`/activate-account/:link`)
   public async activateAccount(@Param('link') link: string): Promise<void> {
     await this.userService.updateOne({ link }, { isActived: true });

@@ -5,6 +5,7 @@ import { ISendEmailConfirmMailDto } from './dto/send-mail-confirm-email.dto';
 import { join } from 'node:path';
 import { ISendPasswordResetMailDto } from './dto/send-password-reset-mail.dto';
 import { ISendTwoFaConfirmMailDto } from './dto/send-request-two-fa-confirm.dto';
+import { SendTwoFaSecretDto } from './dto/send-two-fa-secret.dto';
 
 
 
@@ -65,6 +66,33 @@ export class MailService {
       });
   }
 
+     public async sendTwoFaSecret({
+        nickname,
+        email,
+        secret
+    }: SendTwoFaSecretDto): Promise<SentMessageInfo> {
+    return await this.mailerService
+      .sendMail({
+        to: email,
+        subject: '2fa',
+        template: join(
+          __dirname,
+          '../../../apps/api/templates/2fa-secret.ejs'
+        ),
+        context: {
+          nickname,
+          secret
+        },
+      })
+      .catch((e) => {
+        console.log(e)
+        throw new HttpException(
+          `Ошибка работы почты: ${JSON.stringify(e)}`,
+          HttpStatus.UNPROCESSABLE_ENTITY
+        );
+      });
+  }
+
    public async sendRequestDisableTwoFa({
         id,
         nickname,
@@ -92,7 +120,7 @@ export class MailService {
       });
   }
 
-  public async sendResetPasswordMail(dto: ISendPasswordResetMailDto, token: string) {
+  public async sendResetPasswordMail(dto: ISendPasswordResetMailDto, token: string): Promise<SentMessageInfo> {
     return await this.mailerService
     .sendMail({
       to: dto.email,

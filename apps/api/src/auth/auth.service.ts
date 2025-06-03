@@ -7,6 +7,7 @@ import { UserService } from '../user';
 import { SigninDto } from './dto/signin.dto';
 import { comparePassword } from './helpers/password.helper';
 import { TokenService } from '../token';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -15,16 +16,16 @@ export class AuthService {
     private readonly tokenService: TokenService
   ) {}
 
-  public async validateUser({ email, password }: SigninDto): Promise<boolean> {
-    const { hashPassword } = await this.userService.findOne({
+  public async validateUser({ email, password }: SigninDto): Promise<User> {
+    const user = await this.userService.findOne({
       email,
     });
 
-    if (!hashPassword) {
+    if (!user.hashPassword) {
       throw new NotFoundException('Такого пользователя не существует!');
     }
 
-    const isPasswordValid = comparePassword({ hashPassword, password });
+    const isPasswordValid = comparePassword({ hashPassword: user.hashPassword, password });
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Неверный пароль!');
@@ -36,6 +37,6 @@ export class AuthService {
       await this.tokenService.deleteRefreshToken({ id: token.id });
     }
 
-    return true;
+    return user;
   }
 }
