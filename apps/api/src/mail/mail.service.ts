@@ -38,7 +38,7 @@ export class MailService {
       });
   }
 
-    public async sendRequestTwoFaEnable({
+    public async sendRequestEnableTwoFa({
         id,
         nickname,
         email,
@@ -50,6 +50,33 @@ export class MailService {
         template: join(
           __dirname,
           '../../../apps/api/templates/enable-2fa-confirm.ejs'
+        ),
+        context: {
+          nickname,
+          userId: id
+        },
+      })
+      .catch((e) => {
+        console.log(e)
+        throw new HttpException(
+          `Ошибка работы почты: ${JSON.stringify(e)}`,
+          HttpStatus.UNPROCESSABLE_ENTITY
+        );
+      });
+  }
+
+   public async sendRequestDisableTwoFa({
+        id,
+        nickname,
+        email,
+    }: ISendTwoFaConfirmMailDto): Promise<SentMessageInfo> {
+    return await this.mailerService
+      .sendMail({
+        to: email,
+        subject: '2fa',
+        template: join(
+          __dirname,
+          '../../../apps/api/templates/disable-2fa-confirm.ejs'
         ),
         context: {
           nickname,

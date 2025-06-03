@@ -178,11 +178,28 @@ export class AuthController {
   }
 
   @UseGuards(AccessTokenGuard)
-  @Post('2fa/request')
+  @Post('2fa/enable/request')
   public async requestEnableTwoFactor(
     @CurrentUser() { id: userId, nickname, email }: User
   ): Promise<IStandardResponse> {
-    await this.mailService.sendRequestTwoFaEnable({
+    await this.mailService.sendRequestEnableTwoFa({
+      id: userId,
+      nickname,
+      email,
+    });
+
+    return {
+      success: true,
+      message: 'письмо отправленно',
+    };
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('2fa/disable/request')
+  public async requestDisableTwoFactor(
+    @CurrentUser() { id: userId, nickname, email }: User
+  ): Promise<IStandardResponse> {
+    await this.mailService.sendRequestDisableTwoFa({
       id: userId,
       nickname,
       email,
@@ -212,7 +229,9 @@ export class AuthController {
 
   @Render('thank-you-for-2fa-disabled.ejs')
   @Get('2fa/disable/:userId')
-  public async disableTwoFactorAuth(@Param('userId') userId: string): Promise<IStandardResponse> {
+  public async disableTwoFactorAuth(
+    @Param('userId') userId: string
+  ): Promise<IStandardResponse> {
     await this.userService.updateOne(
       { id: userId },
       { isTwoFactorEnabled: false }
