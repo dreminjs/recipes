@@ -210,9 +210,9 @@ export class AuthController {
     };
   }
 
-  @UseGuards(AccessTokenGuard)
-  @Put('2fa/disable')
-  public async disableTwoFactorAuth(@CurrentUser('id') userId: string): Promise<IStandardResponse> {
+  @Render('thank-you-for-2fa-disabled.ejs')
+  @Get('2fa/disable/:userId')
+  public async disableTwoFactorAuth(@Param('userId') userId: string): Promise<IStandardResponse> {
     await this.userService.updateOne(
       { id: userId },
       { isTwoFactorEnabled: false }
