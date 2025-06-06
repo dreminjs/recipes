@@ -16,6 +16,7 @@ export const QUERY_KEYS = {
   "request-reset-password": 'request-reset-password',
   "reset-password": 'reset-password',
   me: 'me',
+  "2fa":"2fa"
 } as const;
 
 export const SERVICE_KEYS = {
@@ -39,7 +40,8 @@ export const PAGE_KEYS = {
   admin: 'admin',
   profile: 'profile',
   "request-reset-password":"request-reset-password",
-  "password-pending-confirmation": "password-pending-confirmation"
+  "password-pending-confirmation": "password-pending-confirmation",
+  "signin-with-two-fa": "signin-with-two-fa"
 } as const;
 export const measuresObj = {
   ML: 'мл',

@@ -1,9 +1,5 @@
 import { Step, User } from '@prisma/client';
 
-export type IAuthResponse = {
-  message: string
-  userId: string
-}
 export type IStep = Pick<Step, 'content'>;
 
 export interface IInfiniteScrollResponse<T> {
@@ -18,7 +14,7 @@ export interface IItemsPaginationResponse<T> {
   countItems: number;
 }
 
-export type IUserResponse = Omit<User,"hashPassword" | "salt" | "createdAt" | "link">
+export type IAuthResponse = Omit<User,"hashPassword" | "salt" | "createdAt" | "link">
 
 export interface IStandardResponse<T = any> {
   success: boolean;

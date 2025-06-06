@@ -10,7 +10,8 @@ export const useGetMyProfile = () => {
   } = useQuery({
     queryFn: () => findMySelf(),
     queryKey: [SERVICE_KEYS.user,QUERY_KEYS.me],
-
+    retry: false,
+    refetchOnWindowFocus: false, 
   });
 
   return { userInfo, userInfoIsLoading, userInfoIsSuccess };

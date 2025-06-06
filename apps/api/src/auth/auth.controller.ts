@@ -10,7 +10,6 @@ import {
   NotFoundException,
   Param,
   Post,
-  Put,
   Render,
   Res,
   UnauthorizedException,
@@ -33,6 +32,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import * as speakeasy from 'speakeasy';
 import { SigninTwoFaDto } from './dto/signin-2fa.dto';
 import { TwoFaParamsDto } from './dto/2fa-params.dto';
+import { use } from 'passport';
 
 @Controller('auth')
 export class AuthController {
@@ -50,7 +50,7 @@ export class AuthController {
   public async signup(
     @Body() { email, nickname, ...body }: SignupDto,
     @Res({ passthrough: true }) res: Response
-  ): Promise<IStandardResponse<IAuthResponse>> {
+  ): Promise<IStandardResponse> {
     const user = await this.userService.findOne({ email });
 
     if (user) {
@@ -107,7 +107,7 @@ export class AuthController {
   public async signinWithTwoFa(
     @Body() { secret, email }: SigninTwoFaDto,
     @Res({ passthrough: true }) res: Response
-  ): Promise<IStandardResponse> {
+  ): Promise<IStandardResponse<IAuthResponse>> {
     const user = await this.userService.findOne({ email });
 
     if (user.twoFactorSecret !== secret) {
@@ -133,6 +133,15 @@ export class AuthController {
     return {
       message: 'успех!',
       success: true,
+      data: {
+        id: user.id,
+        nickname: user.nickname,
+        email: user.email,
+        isActived: user.isActived,
+        role: Roles.USER,
+        twoFactorSecret: user.twoFactorSecret,
+        isTwoFactorEnabled: user.isTwoFactorEnabled
+      }
     };
   }
 
@@ -140,7 +149,7 @@ export class AuthController {
   public async signin(
     @Body() { email, ...dto }: SigninDto,
     @Res({ passthrough: true }) res: Response
-  ): Promise<IStandardResponse> {
+  ): Promise<IStandardResponse<IAuthResponse>> {
     const user = await this.authService.validateUser({ ...dto, email });
 
     if (user.isTwoFactorEnabled) {
@@ -163,14 +172,22 @@ export class AuthController {
         secret: token.ascii,
       });
 
-      Promise.all([updatedUserQuery, mailQuery]);
+      await Promise.all([updatedUserQuery, mailQuery]);
 
       return {
         message: 'На вашу почту поступил Код!',
         success: true,
+        data: {
+          email: user.email,
+          id: user.id,
+          nickname: user.nickname,
+          isActived: user.isActived,
+          role: user.role,
+          twoFactorSecret: user.twoFactorSecret,
+          isTwoFactorEnabled: user.isTwoFactorEnabled
+        }
       };
     } else {
-      this.logger.log(user);
 
       const { accessToken, refreshToken } =
         await this.tokenService.generateTokens({ email });
@@ -278,8 +295,6 @@ export class AuthController {
   public async enableTwoFactorAuth(
     @Param() { userId }: TwoFaParamsDto
   ): Promise<IStandardResponse> {
-    this.logger.log(userId, '- user id');
-
     await this.userService.updateOne(
       { id: userId },
       { isTwoFactorEnabled: true }

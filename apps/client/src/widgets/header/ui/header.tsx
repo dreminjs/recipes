@@ -9,7 +9,7 @@ export const Header = () => {
   const { userInfo } = useGetMyProfile();
 
   const { logoutFromAccount } = useLougout();
-
+  
 
   return (
     <header className="w-full bg-gradient-to-r from-amber-50 to-orange-50 shadow-lg py-4 px-8 mx-auto flex justify-between items-center mb-8 rounded-2xl border border-orange-100">

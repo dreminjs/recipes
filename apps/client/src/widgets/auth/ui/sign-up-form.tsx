@@ -14,16 +14,16 @@ export const SignUpForm = () => {
   } = useForm<ISignUp>({ resolver: zodResolver(SignUpSchema) });
 
   const {
-    signup,
-    signupIsLoading,
-    signupIsSuccess,
-    signupIsError,
-    signupError
+    mutate,
+    isError,
+    isPending,
+    isSuccess,
+    error
   } = useSignUp();
 
   return (
     <>
-      <AuthFormLayout onSubmit={handleSubmit((data) => signup({ ...data }))}>
+      <AuthFormLayout onSubmit={handleSubmit((data) => mutate({ ...data }))}>
         <SignupFormField
           register={register}
           error={errors.email?.message}
@@ -42,15 +42,15 @@ export const SignUpForm = () => {
           type="password"
         />
 
-        <AuthButton isLoading={signupIsLoading} />
+        <AuthButton isLoading={isPending} />
       </AuthFormLayout>
 
       <MessageModal
-        isError={signupIsError}
-        isLoading={signupIsLoading}
-        isSuccess={signupIsSuccess}
+        isError={isError}
+        isLoading={isPending}
+        isSuccess={isSuccess}
         message={{
-          isError: signupError?.message || 'error!',
+          isError: error?.response?.data.message || 'error!',
           isLoading: 'Регистрация...',
           isSuccess: 'Регистрация успешно завершена!',
         }}
