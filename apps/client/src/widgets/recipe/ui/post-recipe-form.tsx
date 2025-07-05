@@ -5,8 +5,8 @@ import {
 import { IPostRecipeForm, PostRecipeFormSchema } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FC, useState } from 'react';
-import { Button } from '../../../shared/ui/bradient-button';
 import { UploadRecipePhotoModal } from '@/featuresrecipe/ui/upload-recipe-photo-modal';
+import { Button } from '@mui/material';
 
 interface IProps {
   onOpen: () => void;
@@ -47,7 +47,7 @@ export const PostRecipeForm: FC<IProps> = ({ onOpen }) => {
           </Button>
 
           <Button
-          onClick={handleToggleModalVisiblity}
+            onClick={handleToggleModalVisiblity}
             className="bg-amber-100 text-amber-800 hover:bg-amber-200 mb-2"
             disabled={false}
           >

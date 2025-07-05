@@ -4,12 +4,34 @@ import { useGetMyProfile } from '@/features/user/';
 import { useLougout } from '../api/queries';
 import { ActionButton } from '../model/ui/active-button';
 import { NavLink } from '../model/ui/nav-link';
+import { useEffect } from 'react';
+import { useAtom } from 'jotai';
+import { isAuthAtom } from 'src/application/stores/auth.store';
 
 export const Header = () => {
-  const { userInfo } = useGetMyProfile();
+  const [isAuth, setIsAuth] = useAtom(isAuthAtom);
 
-  const { logoutFromAccount } = useLougout();
-  
+  // TODO: перенести логику в обертку
+
+  // REFACTOR
+
+  const { userInfo, refetchUserInfo, userInfoIsSuccess } = useGetMyProfile();
+
+  const { logoutFromAccount, isSuccesslogoutFromAccount } = useLougout();
+
+  useEffect(() => {
+    if (isSuccesslogoutFromAccount) {
+      refetchUserInfo();
+    }
+    if (userInfoIsSuccess) {
+      setIsAuth(true);
+    }
+  }, [
+    isSuccesslogoutFromAccount,
+    refetchUserInfo,
+    setIsAuth,
+    userInfoIsSuccess,
+  ]);
 
   return (
     <header className="w-full bg-gradient-to-r from-amber-50 to-orange-50 shadow-lg py-4 px-8 mx-auto flex justify-between items-center mb-8 rounded-2xl border border-orange-100">
@@ -21,7 +43,7 @@ export const Header = () => {
       </Link>
 
       <div className="flex gap-6 items-center">
-        {userInfo ? (
+        {isAuth && userInfo ? (
           <>
             {userInfo.role === 'ADMIN' && (
               <NavLink href={`/${PAGE_KEYS.admin}`}>Админ Панель</NavLink>

@@ -54,7 +54,7 @@
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",
     "zod": "^3.24.1",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/compat": "^1.1.1",

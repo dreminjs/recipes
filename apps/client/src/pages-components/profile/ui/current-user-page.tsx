@@ -3,6 +3,7 @@ import { ProfileCard } from '@/features/user';
 import { useGetMyProfile } from '../model/api/queries';
 import { AvatarInitial } from '../model/ui/icons/avatar-initial';
 import { EmailIcon } from '../model/ui/icons/email-icon';
+import { ToggleTwoFaStatus } from '@/featuresuser/ui/toggle-2fa-status';
 
 export const CurrentUserPage = () => {
   const { userInfo } = useGetMyProfile();
@@ -21,6 +22,7 @@ export const CurrentUserPage = () => {
         value={userInfo?.email}
         fallback="Не указан"
       />
+      <ToggleTwoFaStatus isEnabled={userInfo?.isTwoFactorEnabled} />
     </ProfileCard>
   );
 };

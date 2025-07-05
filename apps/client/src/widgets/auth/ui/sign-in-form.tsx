@@ -14,7 +14,7 @@ export const SignInForm = () => {
     formState: { errors },
   } = useForm<ISignIn>({ resolver: zodResolver(SignInSchema) });
 
-  const { mutate, isError, isPending, isSuccess, error } = useSignIn();
+  const { mutate, isError, isPending, isSuccess, error, data } = useSignIn();
 
   return (
     <>
@@ -44,7 +44,7 @@ export const SignInForm = () => {
         message={{
           isError: error?.response?.data.message || 'error!',
           isLoading: 'Выполняется вход...',
-          isSuccess: 'Вход выполнен успешно!',
+          isSuccess: data?.message || "Успех!",
         }}
       />
     </>

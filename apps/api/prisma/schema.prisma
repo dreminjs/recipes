@@ -37,7 +37,7 @@ model User {
   hashPassword       String              @map("hass_password")
   salt               String
   twoFactorSecret    String?             @map("two_factor_secret")
-  isTwoFactorEnabled Boolean             @default(false) @map("is_two_factor_enabled")
+  isTwoFactorEnabled Boolean?             @default(false) @map("is_two_factor_enabled") 
   RefreshToken       RefreshToken?
   Recipe             Recipe[]
   RecipeComment      RecipeComment[]

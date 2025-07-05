@@ -32,7 +32,6 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import * as speakeasy from 'speakeasy';
 import { SigninTwoFaDto } from './dto/signin-2fa.dto';
 import { TwoFaParamsDto } from './dto/2fa-params.dto';
-import { use } from 'passport';
 
 @Controller('auth')
 export class AuthController {
@@ -51,9 +50,9 @@ export class AuthController {
     @Body() { email, nickname, ...body }: SignupDto,
     @Res({ passthrough: true }) res: Response
   ): Promise<IStandardResponse> {
-    const user = await this.userService.findOne({ email });
+    const oldUser = await this.userService.findOne({ email });
 
-    if (user) {
+    if (oldUser) {
       throw new BadRequestException('Такой пользователь уже существует!');
     }
 
@@ -61,7 +60,7 @@ export class AuthController {
 
     const link = crypto.randomUUID();
 
-    const userQuery = this.userService.createOne({
+    await this.userService.createOne({
       hashPassword: hashedPassword,
       email,
       nickname,
@@ -80,7 +79,6 @@ export class AuthController {
 
     const [{ accessToken, refreshToken }] = await Promise.all([
       tokensQuery,
-      userQuery,
       mailQuery,
     ]);
 
@@ -140,8 +138,8 @@ export class AuthController {
         isActived: user.isActived,
         role: Roles.USER,
         twoFactorSecret: user.twoFactorSecret,
-        isTwoFactorEnabled: user.isTwoFactorEnabled
-      }
+        isTwoFactorEnabled: user.isTwoFactorEnabled,
+      },
     };
   }
 
@@ -184,11 +182,10 @@ export class AuthController {
           isActived: user.isActived,
           role: user.role,
           twoFactorSecret: user.twoFactorSecret,
-          isTwoFactorEnabled: user.isTwoFactorEnabled
-        }
+          isTwoFactorEnabled: user.isTwoFactorEnabled,
+        },
       };
     } else {
-
       const { accessToken, refreshToken } =
         await this.tokenService.generateTokens({ email });
       res.cookie('accessToken', accessToken, {
@@ -220,8 +217,8 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response
   ): Promise<void> {
     await this.tokenService.deleteOne({ where: { userId } });
-    res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
+    res.clearCookie('accessToken');
   }
 
   @Post('request-reset-password')
@@ -250,6 +247,13 @@ export class AuthController {
       createdPasswordResetToken.token
     );
 
+    await this.userService.updateOne(
+      {
+        email,
+      },
+      { isTwoFactorEnabled: null }
+    );
+
     return {
       message: 'письмо отправлено!',
       success: true,
@@ -267,6 +271,13 @@ export class AuthController {
       email,
     });
 
+    await this.userService.updateOne(
+      {
+        email,
+      },
+      { isTwoFactorEnabled: null }
+    );
+
     return {
       success: true,
       message: 'письмо отправленно',
@@ -283,6 +294,13 @@ export class AuthController {
       nickname,
       email,
     });
+
+    await this.userService.updateOne(
+      {
+        email,
+      },
+      { isTwoFactorEnabled: null }
+    );
 
     return {
       success: true,
