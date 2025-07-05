@@ -7,11 +7,12 @@ export const useGetMyProfile = () => {
     data: userInfo,
     isLoading: userInfoIsLoading,
     isSuccess: userInfoIsSuccess,
+    refetch: refetchUserInfo
   } = useQuery({
     queryFn: () => findMySelf(),
     queryKey: [SERVICE_KEYS.user,QUERY_KEYS.me],
-
+    
   });
 
-  return { userInfo, userInfoIsLoading, userInfoIsSuccess };
+  return { userInfo, userInfoIsLoading, userInfoIsSuccess, refetchUserInfo};
 };

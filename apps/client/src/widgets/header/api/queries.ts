@@ -18,8 +18,8 @@ export const useLougout = () => {
     mutationKey: [SERVICE_KEYS.auth, QUERY_KEYS.signout],
     mutationFn: () => logout(),
     onSuccess: () => {
-      navigate('/');
       setIsAuth(false);
+      navigate('/');
     },
   });
 

@@ -43,7 +43,6 @@ export class TypeController {
 
     return {
       items,
-      currentPage: page,
       countItems: count,
     };
   }

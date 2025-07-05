@@ -14,12 +14,11 @@ export const SignInForm = () => {
     formState: { errors },
   } = useForm<ISignIn>({ resolver: zodResolver(SignInSchema) });
 
-  const { signin, signinIsLoading, signinIsSuccess, signinIsError,signinError } =
-    useSignIn();
+  const { mutate, isError, isPending, isSuccess, error, data } = useSignIn();
 
   return (
     <>
-      <AuthFormLayout onSubmit={handleSubmit((data) => signin({ ...data }))}>
+      <AuthFormLayout onSubmit={handleSubmit((data) => mutate({ ...data }))}>
         <SigninFormField
           register={register}
           error={errors.email?.message}
@@ -30,19 +29,22 @@ export const SignInForm = () => {
           error={errors.password?.message}
           type="password"
         />
-        <AuthButton isLoading={signinIsLoading} />
-        <Link className='text-[#d36922] text-center block' href={PAGE_KEYS['request-reset-password']}>
+        <AuthButton isLoading={isPending} />
+        <Link
+          className="text-[#d36922] text-center block"
+          href={PAGE_KEYS['request-reset-password']}
+        >
           Сброс пароля
         </Link>
       </AuthFormLayout>
       <MessageModal
-        isError={signinIsError}
-        isLoading={signinIsLoading}
-        isSuccess={signinIsSuccess}
+        isError={isError}
+        isLoading={isPending}
+        isSuccess={isSuccess}
         message={{
-          isError: signinError?.message || "error!",
+          isError: error?.response?.data.message || 'error!',
           isLoading: 'Выполняется вход...',
-          isSuccess: 'Вход выполнен успешно!',
+          isSuccess: data?.message || "Успех!",
         }}
       />
     </>

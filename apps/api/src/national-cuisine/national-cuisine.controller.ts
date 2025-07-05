@@ -53,7 +53,7 @@ export class NationalCuisineController {
 
     const [items, count] = await Promise.all([itemsQuery, countQuery]);
 
-    return { items: items, currentPage: page, countItems: count };
+    return { items: items, countItems: count };
   }
 
   @AllowedRoles(Roles.ADMIN)
@@ -71,7 +71,7 @@ export class NationalCuisineController {
   @Put()
   public async updateMany(
     @Body() body: UpdateManyNationalCuisinesDto
-  ):  Promise<NationalCuisine[]> {
+  ): Promise<NationalCuisine[]> {
     return await this.nationalCuisineService.updateMany(
       body.updates.map(({ id, title }) => ({ id, data: { title } }))
     );

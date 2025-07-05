@@ -62,7 +62,6 @@ export class IngredientController {
     return {
       items,
       countItems,
-      currentPage: page,
     };
   }
 
