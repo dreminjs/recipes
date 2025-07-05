@@ -31,7 +31,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     });
   }
 
-  async validate({ email }: ITokenPayload): Promise<User> {
-    return await this.userService.findOne({ email });
+  async validate({ userId }: ITokenPayload): Promise<User> {
+    return await this.userService.findOne({ id: userId });
   }
 }

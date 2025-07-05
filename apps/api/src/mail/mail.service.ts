@@ -6,17 +6,26 @@ import { join } from 'node:path';
 import { ISendPasswordResetMailDto } from './dto/send-password-reset-mail.dto';
 import { ISendTwoFaConfirmMailDto } from './dto/send-request-two-fa-confirm.dto';
 import { SendTwoFaSecretDto } from './dto/send-two-fa-secret.dto';
-
-
+import { UserService } from '../user';
 
 @Injectable()
 export class MailService {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService,
+    private userService: UserService
+  ) {}
 
   public async sendConfirmationEmail({
     user: { email, nickname },
     urlConfirmAddress,
   }: ISendEmailConfirmMailDto): Promise<SentMessageInfo> {
+    await this.userService.updateOne(
+      {
+        email,
+      },
+      { isActived: null, link: urlConfirmAddress }
+    );
+
     return await this.mailerService
       .sendMail({
         to: email,
@@ -31,7 +40,7 @@ export class MailService {
         },
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         throw new HttpException(
           `Ошибка работы почты: ${JSON.stringify(e)}`,
           HttpStatus.UNPROCESSABLE_ENTITY
@@ -39,11 +48,11 @@ export class MailService {
       });
   }
 
-    public async sendRequestEnableTwoFa({
-        id,
-        nickname,
-        email,
-    }: ISendTwoFaConfirmMailDto): Promise<SentMessageInfo> {
+  public async sendRequestEnableTwoFa({
+    id,
+    nickname,
+    email,
+  }: ISendTwoFaConfirmMailDto): Promise<SentMessageInfo> {
     return await this.mailerService
       .sendMail({
         to: email,
@@ -54,11 +63,11 @@ export class MailService {
         ),
         context: {
           nickname,
-          userId: id
+          userId: id,
         },
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         throw new HttpException(
           `Ошибка работы почты: ${JSON.stringify(e)}`,
           HttpStatus.UNPROCESSABLE_ENTITY
@@ -66,26 +75,23 @@ export class MailService {
       });
   }
 
-     public async sendTwoFaSecret({
-        nickname,
-        email,
-        secret
-    }: SendTwoFaSecretDto): Promise<SentMessageInfo> {
+  public async sendTwoFaSecret({
+    nickname,
+    email,
+    secret,
+  }: SendTwoFaSecretDto): Promise<SentMessageInfo> {
     return await this.mailerService
       .sendMail({
         to: email,
         subject: '2fa',
-        template: join(
-          __dirname,
-          '../../../apps/api/templates/2fa-secret.ejs'
-        ),
+        template: join(__dirname, '../../../apps/api/templates/2fa-secret.ejs'),
         context: {
           nickname,
-          secret
+          secret,
         },
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         throw new HttpException(
           `Ошибка работы почты: ${JSON.stringify(e)}`,
           HttpStatus.UNPROCESSABLE_ENTITY
@@ -93,11 +99,11 @@ export class MailService {
       });
   }
 
-   public async sendRequestDisableTwoFa({
-        id,
-        nickname,
-        email,
-    }: ISendTwoFaConfirmMailDto): Promise<SentMessageInfo> {
+  public async sendRequestDisableTwoFa({
+    id,
+    nickname,
+    email,
+  }: ISendTwoFaConfirmMailDto): Promise<SentMessageInfo> {
     return await this.mailerService
       .sendMail({
         to: email,
@@ -108,11 +114,11 @@ export class MailService {
         ),
         context: {
           nickname,
-          userId: id
+          userId: id,
         },
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
         throw new HttpException(
           `Ошибка работы почты: ${JSON.stringify(e)}`,
           HttpStatus.UNPROCESSABLE_ENTITY
@@ -120,26 +126,28 @@ export class MailService {
       });
   }
 
-  public async sendResetPasswordMail(dto: ISendPasswordResetMailDto, token: string): Promise<SentMessageInfo> {
+  public async sendResetPasswordMail(
+    dto: ISendPasswordResetMailDto,
+    token: string
+  ): Promise<SentMessageInfo> {
     return await this.mailerService
-    .sendMail({
-      to: dto.email,
-      subject: 'сброс пароля',
-      template: join(
-        __dirname,
-        '../../../apps/api/templates/reset-password-confirm.ejs'
-      ),
-      context: {
-        nickname: dto.nickname,
-        token,
-      },
-    })
-    .catch((e) => {
-      throw new HttpException(
-        `Ошибка работы почты: ${JSON.stringify(e)}`,
-        HttpStatus.UNPROCESSABLE_ENTITY
-      );
-    });
+      .sendMail({
+        to: dto.email,
+        subject: 'сброс пароля',
+        template: join(
+          __dirname,
+          '../../../apps/api/templates/reset-password-confirm.ejs'
+        ),
+        context: {
+          nickname: dto.nickname,
+          token,
+        },
+      })
+      .catch((e) => {
+        throw new HttpException(
+          `Ошибка работы почты: ${JSON.stringify(e)}`,
+          HttpStatus.UNPROCESSABLE_ENTITY
+        );
+      });
   }
-
 }

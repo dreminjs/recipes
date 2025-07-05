@@ -20,6 +20,17 @@ export class TokenService {
   }
 
   public async generateTokens(payload: ITokenPayload): Promise<ITokens> {
+    const oldToken = await this.findOne({ id: payload.userId });
+
+    if (oldToken) {
+     await this.deleteOne({
+        where: {
+          userId: payload.userId,
+          token: oldToken.token,
+        },
+      });
+    }
+
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: '1d',
       secret: this.configService.get('ACCESS_TOKEN'),
@@ -30,7 +41,11 @@ export class TokenService {
     });
 
     await this.saveRefreshToken({
-      user: { connect: { email: payload.email } },
+      user: {
+        connect: {
+          id: payload.userId,
+        },
+      },
       token: refreshToken,
     });
 

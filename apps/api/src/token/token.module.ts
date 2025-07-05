@@ -16,7 +16,7 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
     ConfigService,
     RefreshTokenStrategy,
   ],
-  exports: [TokenService, AccessTokenStrategy],
+  exports: [TokenService, RefreshTokenStrategy, AccessTokenStrategy],
   controllers: [TokenController],
 })
 export class TokenModule {}

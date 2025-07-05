@@ -3,6 +3,7 @@ import { ProfileCard } from '@/features/user';
 import { useGetMyProfile } from '../model/api/queries';
 import { AvatarInitial } from '../model/ui/icons/avatar-initial';
 import { ToggleTwoFaStatus } from '@/featuresuser/ui/toggle-2fa-status';
+import { EmailConfirmationStatus } from '@/featuresuser/ui/email-confirmation-status';
 
 export const CurrentUserPage = () => {
   const { userInfo } = useGetMyProfile();
@@ -21,12 +22,7 @@ export const CurrentUserPage = () => {
         value={userInfo?.email}
         fallback="Не указан"
       />
-      <ProfileInfoItem
-        icon={<img src='/confirm-email-icon.svg' className='w-[25px] h-[25px]' alt='email' />}
-        label="Подверждение почты"
-        value={userInfo?.isActived ? "Подтвержден" : "Подтвердите"}
-        fallback="Не указан"
-      />
+      <EmailConfirmationStatus isActived={userInfo?.isActived} />
       <ToggleTwoFaStatus isEnabled={userInfo?.isTwoFactorEnabled} />
     </ProfileCard>
   );

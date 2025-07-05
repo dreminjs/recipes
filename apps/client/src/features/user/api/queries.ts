@@ -1,5 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { sendDisableTwoFaRequest, sendEnableTwoFaRequest } from './service';
+import {
+  resendCorfirmationEmail,
+  sendDisableTwoFaRequest,
+  sendEnableTwoFaRequest,
+} from './service';
 import { SERVICE_KEYS, QUERY_KEYS } from '@/shared*';
 
 export const useSendEnableTwoFaRequest = () => {
@@ -19,6 +23,18 @@ export const useSendDisableTwoFaRequest = () => {
 
   return useMutation({
     mutationFn: () => sendDisableTwoFaRequest(),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [SERVICE_KEYS.user, QUERY_KEYS.me],
+      }),
+  });
+};
+
+export const useResendEmailConfirmation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => resendCorfirmationEmail(),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: [SERVICE_KEYS.user, QUERY_KEYS.me],

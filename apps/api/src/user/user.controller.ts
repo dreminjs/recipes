@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 
-import { AccessTokenGuard, RefreshTokenGuard } from '../token';
+import { RefreshTokenGuard } from '../token';
 
 import { User } from '@prisma/client';
 

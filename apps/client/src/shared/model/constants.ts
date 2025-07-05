@@ -16,7 +16,8 @@ export const QUERY_KEYS = {
   "request-reset-password": 'request-reset-password',
   "reset-password": 'reset-password',
   me: 'me',
-  "2fa":"2fa"
+  "2fa":"2fa",
+  "resend": "resend"
 } as const;
 
 export const SERVICE_KEYS = {
@@ -29,6 +30,7 @@ export const SERVICE_KEYS = {
   recipes: 'recipes',
   holidays: 'holidays',
   user: 'user',
+  "mail": "mail",
 } as const;
 
 export const PAGE_KEYS = {

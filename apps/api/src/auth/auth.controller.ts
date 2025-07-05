@@ -60,7 +60,7 @@ export class AuthController {
 
     const link = crypto.randomUUID();
 
-    await this.userService.createOne({
+   const newUser = await this.userService.createOne({
       hashPassword: hashedPassword,
       email,
       nickname,
@@ -75,7 +75,7 @@ export class AuthController {
       urlConfirmAddress: link,
     });
 
-    const tokensQuery = this.tokenService.generateTokens({ email });
+    const tokensQuery = this.tokenService.generateTokens({ userId: newUser.id });
 
     const [{ accessToken, refreshToken }] = await Promise.all([
       tokensQuery,
@@ -113,7 +113,7 @@ export class AuthController {
     }
 
     const { accessToken, refreshToken } =
-      await this.tokenService.generateTokens({ email });
+      await this.tokenService.generateTokens({ userId: user.id });
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       sameSite: 'lax',
@@ -187,7 +187,7 @@ export class AuthController {
       };
     } else {
       const { accessToken, refreshToken } =
-        await this.tokenService.generateTokens({ email });
+        await this.tokenService.generateTokens({ userId: user.id });
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
         sameSite: 'lax',

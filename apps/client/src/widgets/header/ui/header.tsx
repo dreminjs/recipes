@@ -11,7 +11,6 @@ import { isAuthAtom } from 'src/application/stores/auth.store';
 export const Header = () => {
   const isAuth = useAtomValue(isAuthAtom);
 
-
   const { userInfo, refetchUserInfo, userInfoIsSuccess } = useGetMyProfile();
 
   const { logoutFromAccount, isSuccesslogoutFromAccount } = useLougout();

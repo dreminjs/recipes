@@ -12,3 +12,9 @@ export const sendDisableTwoFaRequest = async (): Promise<IStandardResponse> => {
     `${SERVICE_KEYS.auth}/${QUERY_KEYS['2fa']}/disable/request`
   )).data
 };
+
+export const resendCorfirmationEmail = async (): Promise<IStandardResponse> => {
+  return (await instance.post(
+    `${SERVICE_KEYS.mail}/${QUERY_KEYS.resend}`
+  )).data
+}

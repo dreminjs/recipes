@@ -1,4 +1,4 @@
-import { Controller, Get, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Logger, Res, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../user/decorators/current-user.decorator';
 import { TokenService } from './token.service';
 import { ITokens } from './token.interface';
@@ -9,13 +9,17 @@ import { Response } from 'express';
 export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
-  @UseGuards(RefreshTokenGuard)
+  private logger = new Logger(TokenController.name)
+
   @Get()
+  @UseGuards(RefreshTokenGuard)
   public async index(
-    @CurrentUser('email') email: string,
+    @CurrentUser('id') userId: string,
     @Res({ passthrough: true }) res: Response
   ): Promise<ITokens> {
-    const tokens = await this.tokenService.generateTokens({ email });
+    const tokens = await this.tokenService.generateTokens({ userId });
+
+    this.logger.log(tokens)
 
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
