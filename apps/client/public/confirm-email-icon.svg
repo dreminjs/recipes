@@ -1,0 +1,15 @@
+<svg 
+  xmlns="http://www.w3.org/2000/svg" 
+  className="h-5 w-5" 
+  viewBox="0 0 24 24" 
+  fill="#d97706"
+>
+  <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill-opacity="0.2"/>
+  <path d="M22 6l-10 7L2 6" stroke="#d97706" stroke-width="2" fill="none"/>
+  
+  <path 
+    d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" 
+    fill="#d97706"
+    transform="translate(3 3)"
+  />
+</svg>
