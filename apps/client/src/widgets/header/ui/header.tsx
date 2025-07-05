@@ -5,15 +5,12 @@ import { useLougout } from '../api/queries';
 import { ActionButton } from '../model/ui/active-button';
 import { NavLink } from '../model/ui/nav-link';
 import { useEffect } from 'react';
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { isAuthAtom } from 'src/application/stores/auth.store';
 
 export const Header = () => {
-  const [isAuth, setIsAuth] = useAtom(isAuthAtom);
+  const isAuth = useAtomValue(isAuthAtom);
 
-  // TODO: перенести логику в обертку
-
-  // REFACTOR
 
   const { userInfo, refetchUserInfo, userInfoIsSuccess } = useGetMyProfile();
 
@@ -23,14 +20,11 @@ export const Header = () => {
     if (isSuccesslogoutFromAccount) {
       refetchUserInfo();
     }
-    if (userInfoIsSuccess) {
-      setIsAuth(true);
-    }
   }, [
     isSuccesslogoutFromAccount,
     refetchUserInfo,
-    setIsAuth,
     userInfoIsSuccess,
+    userInfo
   ]);
 
   return (

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { signin, signup } from './service';
-import { useMutation } from '@tanstack/react-query';
-import { ISignIn, ISignUp, PAGE_KEYS } from '@/shared*';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ISignIn, ISignUp, PAGE_KEYS, QUERY_KEYS, SERVICE_KEYS } from '@/shared*';
 import { useSetAtom } from 'jotai';
 import { isAuthAtom } from 'src/application/stores/auth.store';
 import {
@@ -47,6 +47,8 @@ export const useSignIn = (): {
 } & ApiOperationState => {
   const { push: navigate } = useRouter();
 
+  const queryClient = useQueryClient()
+
   const setIsAuth = useSetAtom(isAuthAtom);
 
   const { mutate, isPending, data, isSuccess, isError, error } = useMutation<
@@ -61,6 +63,10 @@ export const useSignIn = (): {
       }else {
         navigate('/')
         setIsAuth(true)
+        queryClient.invalidateQueries({
+          queryKey: [SERVICE_KEYS.users,QUERY_KEYS.me]
+        })
+        
       }
     },
   });
