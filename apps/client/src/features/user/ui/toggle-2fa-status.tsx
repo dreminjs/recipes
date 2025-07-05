@@ -13,23 +13,19 @@ export const ToggleTwoFaStatus: FC<IProps> = ({ isEnabled = false }) => {
   
   const handleToggle = () => {
     if (isEnabled === null && !isConfirming) {
-      // Первое нажатие - показать подтверждение
       setIsConfirming(true);
       return;
     }
     
-    // Отправка запроса в зависимости от текущего состояния
     if (isEnabled || isConfirming) {
       sendDisableTwoFaRequest();
     } else {
       sendEnableTwoFaRequest();
     }
     
-    // Сброс состояния подтверждения
     setIsConfirming(false);
   };
 
-  // Определяем текст статуса и классы для переключателя
   let statusText = 'Выключена';
   let toggleClasses = 'bg-gray-300';
   let thumbPosition = 'translate-x-1';
