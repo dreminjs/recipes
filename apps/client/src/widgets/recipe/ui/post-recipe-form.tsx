@@ -1,28 +1,48 @@
 import { RecipeFieldForm, RecipeTextareaForm } from '@/features/recipe';
-import {
-  useForm,
-} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { IPostRecipeForm, PostRecipeFormSchema } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FC, useState } from 'react';
 import { UploadRecipePhotoModal } from '@/featuresrecipe/ui/upload-recipe-photo-modal';
 import { Button } from '@mui/material';
+import { usePostRecipe } from '../model/api/queries';
+import { useAtomValue } from 'jotai';
+import {
+  typeAtom,
+  nationalCuisineAtom,
+  holidayAtom,
+} from 'src/application/stores/post-recipe.store';
 
 interface IProps {
   onOpen: () => void;
 }
 
 export const PostRecipeForm: FC<IProps> = ({ onOpen }) => {
+  const type = useAtomValue(typeAtom);
+  const nationalCuisine = useAtomValue(nationalCuisineAtom);
+  const holiday = useAtomValue(holidayAtom);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm<IPostRecipeForm>({
     resolver: zodResolver(PostRecipeFormSchema),
   });
 
+  const { mutate } = usePostRecipe();
+
   const onSubmit = (data: IPostRecipeForm) => {
-    console.log(data);
+    if (type?.id && nationalCuisine?.id && holiday?.id) {
+      mutate({
+        ...data,
+        photos: data.photos,
+        nationalCuisineId: nationalCuisine.id,
+        typeId: type.id,
+        holidayId: holiday.id
+      });
+    }
   };
 
   const [isUploadFileModalVisible, setIsUploadFileModalVisible] =
@@ -64,9 +84,10 @@ export const PostRecipeForm: FC<IProps> = ({ onOpen }) => {
       </form>
       <UploadRecipePhotoModal
         register={register}
-        error={errors.photo}
+        error={errors.photos?.message?.toString()}
         isOpen={isUploadFileModalVisible}
         onClose={handleToggleModalVisiblity}
+        setValue={setValue}
       />
     </>
   );

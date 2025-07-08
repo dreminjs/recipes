@@ -28,6 +28,8 @@ export class RecipeService {
     });
   }
 
+
+
   public async deleteOne(where: Prisma.RecipeWhereUniqueInput): Promise<void> {
     await this.prisma.recipe.delete({ where });
   }

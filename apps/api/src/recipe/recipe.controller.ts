@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
   UseInterceptors,
@@ -13,16 +14,21 @@ import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { FavoriteRecipe, Recipe, User } from '@prisma/client';
 import { RecipeService } from './recipe.service';
 import { CurrentUser } from '../user';
-import { MinioFileName } from '../minio-client/minio-file-name.decorator';
+import { MinioFileNames } from '../minio-client/minio-file-name.decorator';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
 import { IInfiniteScrollResponse } from 'interfaces';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MinioFileUploadInterceptor } from '../minio-client/minio-file-upload.interceptor';
+import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { MinioClientService } from '../minio-client/minio-client.service';
 
 @Controller('recipes')
 export class RecipeController {
-  constructor(private readonly recipeService: RecipeService) {}
+  constructor(
+    private readonly recipeService: RecipeService,
+    private readonly minioClientService: MinioClientService
+  ) {}
 
   @UseGuards(AccessTokenGuard)
   @Post()
@@ -30,16 +36,16 @@ export class RecipeController {
   public async createOne(
     @Body() body: CreateRecipeDto,
     @CurrentUser('id') userId: string,
-    @MinioFileName() fileName: string
+    @MinioFileNames() fileNames: string[]
   ): Promise<Recipe> {
     const recipe = await this.recipeService.createOne({
       title: body.title,
       description: body.description,
-      photo: fileName,
-      recipeIngredient: { createMany: { data: body.recipeIngredients } },
+      photos: fileNames,
+      recipeIngredient: { createMany: { data: [] } },
       steps: {
         createMany: {
-          data: body.steps,
+          data: [],
         },
       },
       user: {
@@ -55,6 +61,45 @@ export class RecipeController {
         connect: { id: body.typeId },
       },
     });
+
+    return recipe;
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('file'), MinioFileUploadInterceptor)
+  public async updateOne(
+    @Param('id') id: string,
+    @Body() body: UpdateRecipeDto,
+    @CurrentUser('id') userId: string,
+    @MinioFileNames() fileNames?: string[]
+  ): Promise<Recipe> {
+
+    await this.minioClientService.deleteMany(body?.removedPictures)
+
+    const recipe = await this.recipeService.updateOne({
+      title: body.title,
+      description: body.description,
+      photos: body.pictures,
+      recipeIngredient: { createMany: { data: [] } },
+      steps: {
+        createMany: {
+          data: [],
+        },
+      },
+      user: {
+        connect: { id: userId },
+      },
+      holiday: {
+        connect: { id: body.holidayId },
+      },
+      nationalCuisine: {
+        connect: { id: body.nationalCuisineId },
+      },
+      type: {
+        connect: { id: body.typeId },
+      },
+    }, { id });
 
     return recipe;
   }
@@ -76,8 +121,15 @@ export class RecipeController {
         ...(typeIds && {
           type: { id: typeIds instanceof Array ? { in: typeIds } : typeIds },
         }),
-        ...(holidayIds && { id: holidayIds instanceof Array ? { in: holidayIds } : holidayIds }),
-        ...(nationalCuisineIds && { id: nationalCuisineIds instanceof Array ? { in: nationalCuisineIds } : nationalCuisineIds }),
+        ...(holidayIds && {
+          id: holidayIds instanceof Array ? { in: holidayIds } : holidayIds,
+        }),
+        ...(nationalCuisineIds && {
+          id:
+            nationalCuisineIds instanceof Array
+              ? { in: nationalCuisineIds }
+              : nationalCuisineIds,
+        }),
         ...(title && { title: { contains: title } }),
       },
       include: { recipeIngredient: { include: { ingredient: true } } },

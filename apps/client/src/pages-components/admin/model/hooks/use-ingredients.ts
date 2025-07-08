@@ -10,6 +10,7 @@ import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteris
 import { useDebounce } from 'use-debounce';
 import {
   activeCellAtom,
+  characteristicsAtom,
   selectedCharacteristicsIdsAtom,
 } from 'src/application/stores/characteristics.store';
 
@@ -27,7 +28,7 @@ export const useIngredients = ({
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
   const setActiveCell = useSetAtom(activeCellAtom);
-
+  const setCharacteristics = useSetAtom(characteristicsAtom);
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom);
 
   const {
@@ -58,6 +59,10 @@ export const useIngredients = ({
   } = useDeleteManyIngredients();
 
   useEffect(() => {
+    if (ingredients?.items) setCharacteristics(ingredients?.items);
+  }, [setCharacteristics, ingredients?.items]);
+
+  useEffect(() => {
     if (
       postIngredientIsSuccess ||
       deleteManyIngredientsIsSuccess ||
@@ -78,7 +83,7 @@ export const useIngredients = ({
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
-    setCharacteristicsIds([])
+    setCharacteristicsIds([]);
     setCurrentPage(newPage);
   };
 

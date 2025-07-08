@@ -2,11 +2,8 @@ import { FC, useState } from "react";
 import { useResendEmailConfirmation } from "../api/queries"
 
 
-
-
-
 interface IProps {
-    isActived?: boolean
+    isActived?: boolean | null
 }
 
 export const EmailConfirmationStatus: FC<IProps> = ({ isActived = false }) => {

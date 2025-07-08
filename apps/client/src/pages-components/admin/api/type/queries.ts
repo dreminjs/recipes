@@ -5,7 +5,6 @@ import { typeService } from './service';
 import { useSetAtom } from 'jotai';
 import {
   activeCellAtom,
-  characteristicsAtom,
 } from 'src/application/stores/characteristics.store';
 
 const QUERY_KEY = QUERY_KEYS.type;
@@ -19,7 +18,6 @@ export const useGetTypes = ({
   page: number;
   limit: number;
 }) => {
-  const setCharacterstics = useSetAtom(characteristicsAtom);
   
   const {
     data: types,
@@ -30,7 +28,6 @@ export const useGetTypes = ({
   } = useQuery({
     queryKey: [page, title, limit],
     queryFn: () => typeService.findMany({ limit, page, title }),
-    // onSuccess: (data) => setCharacterstics(data.items),
   });
 
   return {

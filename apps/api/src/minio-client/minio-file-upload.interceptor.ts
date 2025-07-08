@@ -19,13 +19,12 @@ export class MinioFileUploadInterceptor implements NestInterceptor {
   ): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest() as CustomRequest;
 
-    const { file } = request;
 
-    const { fileName } = await this.minioClientService.uploadOne(
-      file as BufferedFile
+    const fileNames = await this.minioClientService.uploadFiles(
+      request.files as BufferedFile[]
     );
 
-    request['fileName'] = fileName;
+    request['fileNames'] = fileNames.map(el => el.fileName)
 
     return next.handle();
   }

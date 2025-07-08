@@ -33,7 +33,7 @@ export const ToggleTwoFaStatus: FC<IProps> = ({ isEnabled = false }) => {
   if (isEnabled === true) {
     statusText = 'Включена';
     toggleClasses = 'bg-green-500';
-    thumbPosition = 'translate-x-6';
+    thumbPosition = 'translate-x-4';
   } else if (isEnabled === null || isConfirming) {
     statusText = 'Подтвердите действие';
     toggleClasses = 'bg-amber-500 opacity-70';

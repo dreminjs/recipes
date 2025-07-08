@@ -9,7 +9,7 @@ import {
 } from '../../api/type/queries';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useSetAtom } from 'jotai';
-import { activeCellAtom, selectedCharacteristicsIdsAtom } from 'src/application/stores/characteristics.store';
+import { activeCellAtom, characteristicsAtom, selectedCharacteristicsIdsAtom } from 'src/application/stores/characteristics.store';
 
 export const useTypes = ({
   initialTitle,
@@ -26,6 +26,7 @@ export const useTypes = ({
   const [limit, setLimit] = useState(initialLimit);
   const setActiveCell = useSetAtom(activeCellAtom);
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom)
+  const setCharacteristics = useSetAtom(characteristicsAtom)
 
   const { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess } =
     usePutType();
@@ -63,6 +64,11 @@ export const useTypes = ({
       setCurrentPage(0);
     }
   }, [types, typesIsSuccess, currentPage]);
+
+  useEffect(() => {
+    if(types?.items)
+    setCharacteristics(types?.items)
+  },[setCharacteristics, types?.items])
 
   useEffect(() => {
     if (postTypeIsSuccess || deleteTypesIsSuccess || putTypeIsSuccess) {
