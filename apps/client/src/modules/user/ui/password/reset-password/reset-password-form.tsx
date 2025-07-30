@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { ResetPasswordInput } from './reset-password-form-field';
 import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
-import { AuthButton } from '@/shared*';
+import { AuthButton, FormField } from '@/shared*';
 import { NextRouter, useRouter } from 'next/router';
-import { passwordResetFormSchema } from '../../modal/schema';
-import { IResetPasswordForm } from '../../modal/interface';
-import { useResetPassword } from '../../api/queries';
+import { ResetPasswordInput } from './reset-password-form-field';
+import { passwordResetFormSchema } from 'src/modules/user/modal/schema';
+import { IResetPasswordForm } from 'src/modules/user/modal/interface';
+import { useResetPassword } from 'src/modules/user/api/queries';
 
 export const ResetPasswordForm = () => {
   const { query } = useRouter() as NextRouter & { query: { token?: string } };
@@ -19,10 +19,7 @@ export const ResetPasswordForm = () => {
     resolver: zodResolver(passwordResetFormSchema),
   });
 
-  const {
-    sendResetPassword,
-    resetPasswordIsLoading,
-  } = useResetPassword();
+  const { sendResetPassword, resetPasswordIsLoading } = useResetPassword();
 
   return (
     <>
@@ -32,17 +29,20 @@ export const ResetPasswordForm = () => {
           sendResetPassword({ newPassword, token: query.token })
         )}
       >
-        <ResetPasswordInput
+        <FormField<IResetPasswordForm>
           error={errors.newPassword?.message}
           register={register}
           label={'введи новый пароль'}
           type={'newPassword'}
+          placeholder={'Новый парольы'}
         />
-        <ResetPasswordInput
+        <FormField<IResetPasswordForm>
           error={errors.newPassword?.message}
           register={register}
           label={'подтверди его'}
           type={'confirmPassword'}
+          placeholder={'повтори'}
+          inputType={'number'}
         />
         <AuthButton isLoading={resetPasswordIsLoading} />
       </AuthFormLayout>

@@ -19,7 +19,7 @@ export const NotificationItem: FC<IProps> = ({ notification, onClose }) => {
       className={`${bgColor} text-white px-4 py-2 rounded-md shadow-lg flex items-center justify-between min-w-[250px]`}
     >
       <span>{notification.message}</span>
-      <button onClick={onClose} className="ml-2 text-lg">
+      <button onClick={onClose} className="ml-2 bg-transparent text-white text-lg">
         &times;
       </button>
     </div>

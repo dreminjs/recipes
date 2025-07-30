@@ -7,38 +7,30 @@ interface IProps {
 }
 
 export const ToggleTwoFaStatus: FC<IProps> = ({ isEnabled = false }) => {
+
   const { mutate: sendEnableTwoFaRequest } = useSendEnableTwoFaRequest();
   const { mutate: sendDisableTwoFaRequest } = useSendDisableTwoFaRequest();
 
-  const [isConfirming, setIsConfirming] = useState(false);
-
   const handleToggle = () => {
-    if (isEnabled === null && !isConfirming) {
-      setIsConfirming(true);
-      return;
-    }
-
-    if (isEnabled || isConfirming) {
+    if (isEnabled) {
       sendDisableTwoFaRequest();
     } else {
       sendEnableTwoFaRequest();
     }
-
-    setIsConfirming(false);
   };
 
   let statusText = 'Выключена';
   let toggleClasses = 'bg-gray-300';
-  let thumbPosition = 'translate-x-1';
+  let thumbPosition = '';
 
   if (isEnabled === true) {
     statusText = 'Включена';
     toggleClasses = 'bg-green-500';
     thumbPosition = 'translate-x-4';
-  } else if (isEnabled === null || isConfirming) {
+  } else if (isEnabled === null) {
     statusText = 'Подтвердите действие';
     toggleClasses = 'bg-amber-500 opacity-70';
-    thumbPosition = 'translate-x-3';
+    thumbPosition = 'translate-x-2';
   }
 
   return (
@@ -57,23 +49,11 @@ export const ToggleTwoFaStatus: FC<IProps> = ({ isEnabled = false }) => {
       <button
         onClick={handleToggle}
         className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none ${toggleClasses}`}
-        disabled={isEnabled === null && !isConfirming}
+        disabled={isEnabled === null}
       >
         <span
           className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${thumbPosition}`}
         />
-
-        {(isEnabled === null || isConfirming) && (
-          <span className="absolute inset-0 flex items-center justify-center">
-            <svg
-              className="h-3 w-3 text-white animate-pulse"
-              fill="currentColor"
-              viewBox="0 0 8 8"
-            >
-              <circle cx="4" cy="4" r="3" />
-            </svg>
-          </span>
-        )}
       </button>
     </div>
   );

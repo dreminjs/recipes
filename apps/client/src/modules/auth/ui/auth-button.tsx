@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { PAGE_KEYS, SERVICE_KEYS } from '../model/constants';
-import { GradientButton } from './bradient-button';
+import { PAGE_KEYS, SERVICE_KEYS } from '../../../shared/model/constants';
+import { Button } from '../../../shared/ui/button';
 
 interface IProps {
   isLoading?: boolean;
@@ -17,7 +17,7 @@ export const AuthButton: FC<IProps> = ({ isLoading, className }) => {
 
   return (
     <div className="flex flex-col gap-4 mt-6">
-      <GradientButton
+      <Button
         type="submit"
         disabled={isLoading}
         className={`bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xl font-semibold py-3 px-6 rounded-lg shadow-md hover:from-amber-600 hover:to-orange-600 transition-all ${
@@ -33,7 +33,7 @@ export const AuthButton: FC<IProps> = ({ isLoading, className }) => {
         ) : (
           'вход'
         )}
-      </GradientButton>
+      </Button>
 
       <Link
         href={

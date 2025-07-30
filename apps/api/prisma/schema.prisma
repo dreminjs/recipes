@@ -70,7 +70,6 @@ model Recipe {
   recipeComment     RecipeComment[]
   favoriteRecipe    FavoriteRecipe[]
   recipeIngredient  RecipeIngredient[]
-
   @@map("recipes")
 }
 

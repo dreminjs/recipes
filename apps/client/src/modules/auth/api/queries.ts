@@ -17,18 +17,13 @@ import {
 } from 'src/shared/model/interfaces/api.interface';
 import { SigninWithTwoFaDto } from '../model/types/signin-with-two-fa.dto';
 import { signin, signinByTwoFa, signup } from './service';
-import { useNotificationStore } from 'src/modules/notifications';
+import { useNotificationActions } from 'src/modules/notifications';
 
 export const useSigninWithTwoFa = () => {
   const { push: navigate } = useRouter();
   const setIsAuth = useSetAtom(isAuthAtom);
 
-  const {
-    addErrorNotification,
-    addInfoNotification,
-    addSuccessNotification,
-    removeNotification,
-  } = useNotificationStore();
+  const { remove, addSuccess, addError, addInfo } = useNotificationActions();
 
   return useMutation<
     IStandardResponse<IAuthResponse>,
@@ -38,52 +33,58 @@ export const useSigninWithTwoFa = () => {
     mutationKey: [QUERY_KEYS['2fa']],
     mutationFn: (data: SigninWithTwoFaDto) => signinByTwoFa(data),
     onSuccess: () => {
-      removeNotification('info');
-      addSuccessNotification({ duration: 3000, message: 'Успех' });
+      remove('info');
+      addSuccess({ duration: 3000, message: 'Успех' });
       setIsAuth(true);
       navigate('/');
     },
-    onError() {
-      removeNotification('info');
-      addErrorNotification();
+    onError(error) {
+      remove('info');
+      addError({ message: error.response?.data.message });
     },
     onMutate: () => {
-      addInfoNotification();
+      addInfo();
     },
   });
 };
 
-export const useSignUp = (): {
-  mutate: (data: ISignUp) => void;
-  data: IStandardResponse | undefined;
-} & ApiOperationState => {
+export const useSignUp = () => {
   const { push: navigate } = useRouter();
+
+  const { remove, addSuccess, addError, addInfo } = useNotificationActions();
 
   const setIsAuth = useSetAtom(isAuthAtom);
 
   return useMutation<IStandardResponse, AxiosError<IErrorResponse>, ISignUp>({
     mutationFn: (data: ISignUp) => signup(data),
     onSuccess: () => {
-      navigate(PAGE_KEYS.emailConfirm);
+      remove('info');
+      addSuccess();
+      navigate(`${SERVICE_KEYS.auth}/${PAGE_KEYS.emailConfirm}`);
       setIsAuth(true);
     },
+    onError: (error) => {
+      remove('info');
+      addError({ message: error.response?.data.message });
+    },
+    onMutate: () => addInfo(),
   });
 };
 
 export const useSignIn = () => {
   const { push: navigate } = useRouter();
 
+  const { remove, addSuccess, addError, addInfo } = useNotificationActions();
+
   const queryClient = useQueryClient();
 
   const setIsAuth = useSetAtom(isAuthAtom);
 
-  return useMutation<
-    IStandardResponse<IAuthResponse>,
-    AxiosError<IErrorResponse>,
-    ISignIn
-  >({
+  return useMutation<IStandardResponse, AxiosError<IErrorResponse>, ISignIn>({
     mutationFn: (data: ISignIn) => signin(data),
     onSuccess: ({ data }) => {
+      remove('info')
+      addSuccess();
       if (data?.isTwoFactorEnabled) {
         navigate(`${PAGE_KEYS['signin-with-two-fa']}?email=${data.email}`);
       } else {
@@ -94,5 +95,11 @@ export const useSignIn = () => {
         });
       }
     },
+    onError: (error) => {
+      remove('info')
+
+      addError({ message: error.response?.data.message });
+    },
+    onMutate: () => addInfo(),
   });
 };

@@ -1,4 +1,5 @@
 import { Characteristics } from '@/interfaces';
+import { Fragment } from 'react';
 
 const characteristics: [Characteristics, Characteristics, Characteristics] = [
   'types',
@@ -9,7 +10,7 @@ const characteristics: [Characteristics, Characteristics, Characteristics] = [
 export const MainRecipesPage = () => (
   <div>
     {characteristics.map((type, idx) => (
-      <>{type}</>
+      <Fragment key={idx}>{type}</Fragment>
     ))}
   </div>
 );

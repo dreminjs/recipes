@@ -1,10 +1,9 @@
 import { useForm } from 'react-hook-form';
-import { AuthButton, ISignIn, PAGE_KEYS, SignInSchema } from '@/shared/';
+import { AuthButton, FormField, ISignIn, PAGE_KEYS, SignInSchema } from '@/shared/';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
 import Link from 'next/link';
-import { useSignIn } from '../api/queries';
-import { FormField } from './form-field';
+import { useSignIn } from '../../api/queries';
 
 export const SignInForm = () => {
   const {
@@ -13,7 +12,7 @@ export const SignInForm = () => {
     formState: { errors },
   } = useForm<ISignIn>({ resolver: zodResolver(SignInSchema) });
 
-  const { mutate, isError, isPending, isSuccess, error, data } = useSignIn();
+  const { mutate, isPending } = useSignIn();
 
   return (
     <>

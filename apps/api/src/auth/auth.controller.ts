@@ -70,6 +70,8 @@ export class AuthController {
       link,
     });
 
+    this.logger.log(newUser)
+
     const mailQuery = this.mailService.sendConfirmationEmail({
       user: { email, nickname },
       urlConfirmAddress: link,
@@ -148,7 +150,7 @@ export class AuthController {
     @Body() { email, ...dto }: SigninDto,
     @Res({ passthrough: true }) res: Response
   ): Promise<IStandardResponse<IAuthResponse>> {
-    const user = await this.authService.validateUser({ ...dto, email });
+    const user = await this.authService.validateUser({ password: dto.password, email });
 
     if (user.isTwoFactorEnabled) {
       const token = speakeasy.generateSecret({

@@ -1,9 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
-import { FormField } from './form-field';
-import { AuthButton, ISignUp, SignUpSchema } from '@/shared*';
-import { useSignUp } from '../api/queries';
+import { AuthButton, FormField, ISignUp, SignUpSchema } from '@/shared*';
+import { useSignUp } from '../../api/queries';
 
 export const SignUpForm = () => {
   const {

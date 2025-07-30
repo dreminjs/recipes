@@ -1,5 +1,6 @@
 "use client"
-import { RequestResetPasswordPage } from "@/pages/request-reset-password";
+
+import { RequestResetPasswordPage } from "src/modules/user"
 
 
 export default function Index(){

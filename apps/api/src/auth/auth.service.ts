@@ -21,7 +21,7 @@ export class AuthService {
       email,
     });
 
-    if (!user.hashPassword) {
+    if (!user?.hashPassword) {
       throw new NotFoundException('Такого пользователя не существует!');
     }
 
