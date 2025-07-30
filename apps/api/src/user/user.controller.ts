@@ -2,9 +2,9 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 
 import { RefreshTokenGuard } from '../token';
 
-import { User } from '@prisma/client';
-
 import { CurrentUser } from './decorators/current-user.decorator';
+
+import { User } from "@prisma/client"
 
 @Controller('users')
 export class UserController {

@@ -1,4 +1,4 @@
-import { AdminGreetingPage } from "../../src/pages-components/admin";
+import { AdminGreetingPage } from "src/modules/admin";
 
 
 
