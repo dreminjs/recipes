@@ -43,9 +43,9 @@ export { SignInSchema,SignUpSchema } from "./model/schemas/auth.schema"
 
 export { useGetRandomCharacteristic } from "./api/queries/characteristic/characteristic.queries"
 
-export { FormLabel } from "./ui/admin/form-label"
+export { FormLabel } from "../modules/admin/ui/characteristics/post-form/form-label"
 
-export {FormTitle }from './ui/admin/form-title'
+export {FormTitle }from '../modules/admin/ui/characteristics/post-form/form-title'
 
 export { CloseModalButton } from "./ui/close-button-modal"
 

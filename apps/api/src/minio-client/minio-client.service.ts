@@ -16,8 +16,6 @@ export class MinioClientService {
     return this.minioService.client;
   }
 
-  private readonly baseBucket = this.configService.get<string>('MINIO_BUCKET');
-
   private readonly minioPort = this.configService.get<string>('MINIO_PORT');
 
   private readonly minioEndpoint = this.configService.get<string>('MINIO_ENDPOINT');
@@ -44,7 +42,7 @@ export class MinioClientService {
 
         try {
           await this.client.putObject(
-            this.baseBucket,
+            this.minioBucket,
             fileName,
             file.buffer,
             file.size,
@@ -71,7 +69,7 @@ export class MinioClientService {
 
   async findBuffer(fileName: string): Promise<Readable> {
     const fileBuffer = await this.minioService.client.getObject(
-      this.baseBucket,
+      this.minioBucket,
       fileName
     );
     return fileBuffer;

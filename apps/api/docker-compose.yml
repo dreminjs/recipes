@@ -26,7 +26,7 @@ services:
       - .env
   
   minio:
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
     ports:
       - "9000:9000"
       - "9001:9001"

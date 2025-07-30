@@ -1,5 +1,4 @@
-import { EmailConfirmPage } from "../../src/pages-components/email-confirm";
-
+import { EmailConfirmPage } from "src/modules/auth";
 
 export default function Index(){
     return <EmailConfirmPage />
