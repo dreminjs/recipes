@@ -41,3 +41,7 @@ export * from "./ui/close-button-modal"
 export * from "./ui/auth-title"
 
 export * from "./ui/button"
+
+export * from "./ui/layouts/auth-form-layout"
+
+export * from "./ui/layouts/auth-layout"

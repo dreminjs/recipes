@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useRequestResetPassword } from '../../..';
 import { IRequestResetPasswordForm } from '../../../modal/interface';
 import { requestResetPasswordFormSchema } from '../../../modal/schema';
-import { Button, FormField } from '@/shared*';
+import { Button, FormField } from 'shared';
 
 export const RequestResetPasswordForm = () => {
   const {
@@ -14,12 +14,12 @@ export const RequestResetPasswordForm = () => {
     resolver: zodResolver(requestResetPasswordFormSchema),
   });
 
-  const { sendRequestResetPassword } = useRequestResetPassword();
+  const { mutate } = useRequestResetPassword();
 
   return (
     <>
       <form
-        onSubmit={handleSubmit((data) => sendRequestResetPassword(data))}
+        onSubmit={handleSubmit((data) => mutate(data))}
         className="space-y-6 mx-auto"
       >
         <FormField<IRequestResetPasswordForm>

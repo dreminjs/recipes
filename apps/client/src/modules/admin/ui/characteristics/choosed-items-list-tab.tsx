@@ -1,5 +1,4 @@
-import { Characteristics } from '@/interfaces*';
-import { ICharacteristic, measuresObj } from '@/shared*';
+import { ICharacteristic } from '@/shared/';
 import { FC } from 'react';
 
 type IProps = {

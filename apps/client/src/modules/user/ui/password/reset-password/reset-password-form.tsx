@@ -1,12 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
-import { AuthButton, FormField } from '@/shared*';
+import { AuthButton, FormField, AuthFormLayout } from '@/shared';
 import { NextRouter, useRouter } from 'next/router';
-import { ResetPasswordInput } from './reset-password-form-field';
 import { passwordResetFormSchema } from 'src/modules/user/modal/schema';
-import { IResetPasswordForm } from 'src/modules/user/modal/interface';
 import { useResetPassword } from 'src/modules/user/api/queries';
+import { IResetPasswordForm } from '@/modules/user/modal/interface';
 
 export const ResetPasswordForm = () => {
   const { query } = useRouter() as NextRouter & { query: { token?: string } };
@@ -19,14 +17,14 @@ export const ResetPasswordForm = () => {
     resolver: zodResolver(passwordResetFormSchema),
   });
 
-  const { sendResetPassword, resetPasswordIsLoading } = useResetPassword();
+  const { mutate, isPending } = useResetPassword();
 
   return (
     <>
       <AuthFormLayout
         className="mx-auto"
         onSubmit={handleSubmit(({ newPassword }) =>
-          sendResetPassword({ newPassword, token: query.token })
+          mutate({ newPassword, token: query.token })
         )}
       >
         <FormField<IResetPasswordForm>
@@ -44,7 +42,7 @@ export const ResetPasswordForm = () => {
           placeholder={'повтори'}
           inputType={'number'}
         />
-        <AuthButton isLoading={resetPasswordIsLoading} />
+        <AuthButton isLoading={isPending} />
       </AuthFormLayout>
     </>
   );

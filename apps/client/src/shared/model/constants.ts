@@ -52,13 +52,7 @@ export const measuresObj = {
   KG: 'кг',
   G: 'гр',
   N: 'шт',
-} as {
-  ML: 'мл';
-  L: 'л';
-  KG: 'кг';
-  G: 'гр';
-  N: 'шт';
-};
+} as const
 
 export const measuresArray = [
   { label: 'мл', value: 'ML' },

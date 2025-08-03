@@ -1,4 +1,4 @@
-import { SERVICE_KEYS } from "@/shared*";
+import { SERVICE_KEYS } from "@/shared";
 import { IChooseItemTabContent } from "./interfaces/characteristics.interface";
 import { IOption } from "./interfaces/mesure.interface";
 export const measureOptions: IOption[] = [

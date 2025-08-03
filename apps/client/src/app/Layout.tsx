@@ -7,7 +7,7 @@ const Header = dynamic(
   () => import('src/components/header').then((mod) => mod.Header),
   { ssr: false }
 );
-export default function Layout({ children }: { children: ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
     <CommonProvider>
       <div className="bg-gradient-to-br from-amber-50 to-orange-50 min-h-screen flex flex-col">

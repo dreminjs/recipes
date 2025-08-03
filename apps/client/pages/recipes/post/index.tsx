@@ -1,6 +1,6 @@
+import { PostRecipePage } from '@/modules/recipe';
 import { Provider } from 'jotai';
-import { PostRecipePage } from '../../../src/pages-components/recipe';
-import { postRecipeStore } from 'src/application/stores/post-recipe.store';
+import { postRecipeStore } from 'src/app';
 
 export default function Index() {
   return (

@@ -1,7 +1,7 @@
-import { PostRecipeForm } from '@/widgets/recipe';
-import { ChooseCharacteristicsModal } from '@/widgets/characteristic';
 import { useState } from 'react';
-import { Layout } from '../model/ui/layout';
+import { PostRecipeForm } from './post-recipe-form';
+import { ChooseCharacteristicsModal } from '@/modules/admin/';
+import {Layout} from '@/app/';
 
 export const PostRecipePage = () => {
   const [isCharaceteristicModalVisible, setIsCharaceteristicModalVisible] =
@@ -9,7 +9,6 @@ export const PostRecipePage = () => {
 
   const handleToggleCharacteristicModal = () =>
     setIsCharaceteristicModalVisible((prev) => !prev);
-// TODO: implement adding steps & ingredients here
 
   return (
     <Layout>
