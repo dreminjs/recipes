@@ -6,7 +6,7 @@ import { PAGE_KEYS } from '@/shared';
 
 export const IsAuth: FC<PropsWithChildren> = ({ children }) => {
 
-  const { data, isSuccess, isLoading } = useGetMyProfile();
+  const { data } = useGetMyProfile();
 
   const router = useRouter();
 
@@ -19,7 +19,7 @@ export const IsAuth: FC<PropsWithChildren> = ({ children }) => {
     if (router.pathname.includes(PAGE_KEYS.signin) || router.pathname.includes(PAGE_KEYS.signup) && !data) {
       router.push("/")
     }
-  }, [isProtectedRoute])
+  }, [isProtectedRoute, data])
 
   return <>{children}</>;
 };

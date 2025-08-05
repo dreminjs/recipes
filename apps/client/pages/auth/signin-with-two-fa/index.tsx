@@ -1,4 +1,4 @@
-import { SignInWithTwoFaPage } from "@/pages/signin-with-2fa/ui/sign-in-with-2fa";
+import { SignInWithTwoFaPage } from "@/modules/auth";
 
 export default function Index() {
 

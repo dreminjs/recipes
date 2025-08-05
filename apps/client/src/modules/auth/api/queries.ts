@@ -27,9 +27,8 @@ export const useSigninWithTwoFa = () => {
     onSuccess: () => {
       remove('info');
       addSuccess({ duration: 3000, message: 'Успех' });
-      queryClient.invalidateQueries({
-        queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
-      });
+      window.location.reload()
+
       navigate('/');
     },
     onError(error) {
