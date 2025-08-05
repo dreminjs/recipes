@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import {
   IErrorResponse,
@@ -25,7 +24,7 @@ export const useSigninWithTwoFa = () => {
   >({
     mutationKey: [QUERY_KEYS['2fa']],
     mutationFn: (data: SigninWithTwoFaDto) => signinByTwoFa(data),
-    onSuccess: (response) => {
+    onSuccess: () => {
       remove('info');
       addSuccess({ duration: 3000, message: 'Успех' });
       queryClient.invalidateQueries({
@@ -48,16 +47,11 @@ export const useSignUp = () => {
 
   const { remove, addSuccess, addError, addInfo } = useNotificationActions();
 
-  const queryClient = useQueryClient();
-
   return useMutation<IStandardResponse, AxiosError<IErrorResponse>, ISignUp>({
     mutationFn: (data: ISignUp) => signup(data),
     onSuccess: () => {
       remove('info');
       addSuccess();
-      queryClient.invalidateQueries({
-        queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
-      });
       navigate(`/${SERVICE_KEYS.auth}/${PAGE_KEYS.emailConfirm}`);
     },
     onError: (error) => {
@@ -73,8 +67,6 @@ export const useSignIn = () => {
 
   const { remove, addSuccess, addError, addInfo } = useNotificationActions();
 
-  const queryClient = useQueryClient();
-
   return useMutation<IStandardResponse, AxiosError<IErrorResponse>, ISignIn>({
     mutationFn: (data: ISignIn) => signin(data),
     onSuccess: ({ data }) => {
@@ -83,10 +75,7 @@ export const useSignIn = () => {
       if (data?.isTwoFactorEnabled) {
         navigate(`${PAGE_KEYS['signin-with-two-fa']}?email=${data.email}`);
       } else {
-        navigate('/');
-        queryClient.invalidateQueries({
-          queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
-        });
+        window.location.reload()
       }
     },
     onError: (error) => {
@@ -94,5 +83,5 @@ export const useSignIn = () => {
       addError({ message: error.response?.data.message });
     },
     onMutate: () => addInfo(),
-  });
+  })
 };

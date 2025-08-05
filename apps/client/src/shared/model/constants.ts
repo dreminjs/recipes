@@ -29,7 +29,6 @@ export const SERVICE_KEYS = {
   types: 'types',
   recipes: 'recipes',
   holidays: 'holidays',
-  user: 'user',
   "mail": "mail",
 } as const;
 

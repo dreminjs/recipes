@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { logout } from './service';
 import { useRouter } from 'next/router';
 import { useSetAtom } from 'jotai';
@@ -9,10 +9,13 @@ export const useLougout = () => {
   const { push: navigate } = useRouter();
   const setCurrentUser = useSetAtom(currentUserAtom);
 
+  const queryClient = useQueryClient()
+
  return useMutation({
     mutationKey: [SERVICE_KEYS.auth, QUERY_KEYS.signout],
     mutationFn: () => logout(),
     onSuccess: () => {
+      queryClient.clear()
       setCurrentUser(null);
       navigate('/');
     },

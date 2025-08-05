@@ -1,4 +1,4 @@
-import { Characteristics } from '@/interfaces';
+import { Characteristics } from 'interfaces';
 import { Fragment } from 'react';
 
 const characteristics: [Characteristics, Characteristics, Characteristics] = [

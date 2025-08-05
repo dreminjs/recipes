@@ -36,7 +36,7 @@ export const useGetMyProfile = () => {
     if (isSuccess && props.data) {
       setCurrentUser(props.data);
     }
-  }, [setCurrentUser, isSuccess]);
+  }, [setCurrentUser, isSuccess, props.data]);
 
   return { isSuccess, ...props };
 };

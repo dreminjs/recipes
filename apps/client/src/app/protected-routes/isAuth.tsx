@@ -1,20 +1,25 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
-
 import { useRouter } from 'next/router';
 import { useGetMyProfile } from '@/modules/user';
+import { authProtectedRoutes } from './auth-protected-routes';
+import { PAGE_KEYS } from '@/shared';
 
 export const IsAuth: FC<PropsWithChildren> = ({ children }) => {
+
   const { data, isSuccess, isLoading } = useGetMyProfile();
 
-  const navigate = useRouter();
+  const router = useRouter();
+
+  const isProtectedRoute = authProtectedRoutes.some(el => el === router.pathname)
 
   useEffect(() => {
-    if (isSuccess && !data) {
-      navigate.push('/');
+    if (isProtectedRoute && !data) {
+      router.push("/")
     }
-  }, [navigate, data, isSuccess]);
-
-  if (isLoading) return;
+    if (router.pathname.includes(PAGE_KEYS.signin) || router.pathname.includes(PAGE_KEYS.signup) && !data) {
+      router.push("/")
+    }
+  }, [isProtectedRoute])
 
   return <>{children}</>;
 };
