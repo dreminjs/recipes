@@ -1,5 +1,5 @@
-import { IAuthResponse, IStandardResponse } from '@/interfaces*';
-import { instance, ISignIn, ISignUp, QUERY_KEYS, SERVICE_KEYS } from '@/shared*';
+import { instance, SERVICE_KEYS, QUERY_KEYS, ISignUp, ISignIn } from '@/shared';
+import { IStandardResponse, IAuthResponse } from 'interfaces';
 import { SigninWithTwoFaDto } from '../model/types/signin-with-two-fa.dto';
 
 export function signinByTwoFa(dto: SigninWithTwoFaDto): Promise<IStandardResponse<IAuthResponse>> {

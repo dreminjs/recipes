@@ -70,8 +70,6 @@ export class AuthController {
       link,
     });
 
-    this.logger.log(newUser)
-
     const mailQuery = this.mailService.sendConfirmationEmail({
       user: { email, nickname },
       urlConfirmAddress: link,
@@ -79,10 +77,12 @@ export class AuthController {
 
     const tokensQuery = this.tokenService.generateTokens({ userId: newUser.id });
 
-    const [{ accessToken, refreshToken }] = await Promise.all([
+    const [{ accessToken, refreshToken }, mail] = await Promise.all([
       tokensQuery,
       mailQuery,
     ]);
+
+    this.logger.log(mail)
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,

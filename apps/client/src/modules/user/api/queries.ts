@@ -1,4 +1,3 @@
-import { PAGE_KEYS, QUERY_KEYS, SERVICE_KEYS } from '@/shared*';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   findMySelf,
@@ -10,37 +9,36 @@ import {
 } from './service';
 import { useSetAtom } from 'jotai';
 import { useEffect } from 'react';
-import { isAuthAtom } from 'src/app/stores/auth.store';
 import {
   IRequestResetPasswordForm,
   IResetPasswordDto,
 } from '../modal/interface';
-import { IStandardResponse } from '@/interfaces*';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { useNotificationActions } from 'src/modules/notifications';
 import { IErrorResponse } from 'src/shared/model/interfaces/api.interface';
+import { SERVICE_KEYS, QUERY_KEYS, PAGE_KEYS } from '@/shared';
+import { IStandardResponse } from 'interfaces';
+import { currentUserAtom } from '@/app/stores/auth.store';
 
 export const useGetMyProfile = () => {
-  const setIsAuth = useSetAtom(isAuthAtom);
+  const setCurrentUser = useSetAtom(currentUserAtom);
 
   const {
-    data: userInfo,
-    isLoading: userInfoIsLoading,
-    isSuccess: userInfoIsSuccess,
-    refetch: refetchUserInfo,
+    isSuccess,
+    ...props
   } = useQuery({
     queryFn: () => findMySelf(),
-    queryKey: [SERVICE_KEYS.user, QUERY_KEYS.me],
+    queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
   });
 
   useEffect(() => {
-    if (userInfoIsSuccess) {
-      setIsAuth(true);
+    if (isSuccess && props.data) {
+      setCurrentUser(props.data);
     }
-  }, [setIsAuth, userInfoIsSuccess]);
+  }, [setCurrentUser, isSuccess]);
 
-  return { userInfo, userInfoIsLoading, userInfoIsSuccess, refetchUserInfo };
+  return { isSuccess, ...props };
 };
 
 export const useResendEmailConfirmation = () => {
@@ -76,7 +74,7 @@ export const useSendEnableTwoFaRequest = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [SERVICE_KEYS.user, QUERY_KEYS.me],
+        queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
       });
       remove('info');
       addSuccess();
@@ -99,7 +97,7 @@ export const useSendDisableTwoFaRequest = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [SERVICE_KEYS.user, QUERY_KEYS.me],
+        queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
       });
       remove('info');
       addSuccess();

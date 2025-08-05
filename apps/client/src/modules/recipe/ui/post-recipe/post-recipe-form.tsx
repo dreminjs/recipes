@@ -1,17 +1,14 @@
-import { RecipeFieldForm, RecipeTextareaForm } from '@/features/recipe';
 import { useForm } from 'react-hook-form';
 import { IPostRecipeForm, PostRecipeFormSchema } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FC, useState } from 'react';
-import { UploadRecipePhotoModal } from '@/featuresrecipe/ui/upload-recipe-photo-modal';
 import { Button } from '@mui/material';
-import { usePostRecipe } from '../model/api/queries';
 import { useAtomValue } from 'jotai';
-import {
-  typeAtom,
-  nationalCuisineAtom,
-  holidayAtom,
-} from 'src/application/stores/post-recipe.store';
+import { holidayAtom, nationalCuisineAtom, typeAtom } from '@/app';
+import { usePostRecipe } from '../../model/api/queries';
+import { RecipeFieldForm } from './recipe-field-form';
+import { RecipeTextareaForm } from './recipe-textarea-form';
+import { UploadRecipePhotoModal } from './upload-recipe-photo-modal';
 
 interface IProps {
   onOpen: () => void;

@@ -1,29 +1,22 @@
-import { IStandardResponse, IAuthResponse } from '@/interfaces*';
-import {
-  ISignIn,
-  ISignUp,
-  PAGE_KEYS,
-  QUERY_KEYS,
-  SERVICE_KEYS,
-} from '@/shared*';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { isAuthAtom } from 'src/app/stores/auth.store';
 import {
-  ApiOperationState,
   IErrorResponse,
 } from 'src/shared/model/interfaces/api.interface';
 import { SigninWithTwoFaDto } from '../model/types/signin-with-two-fa.dto';
 import { signin, signinByTwoFa, signup } from './service';
 import { useNotificationActions } from 'src/modules/notifications';
+import { IAuthResponse, IStandardResponse } from 'interfaces';
+import { QUERY_KEYS, ISignUp, SERVICE_KEYS, PAGE_KEYS, ISignIn } from '@/shared';
 
 export const useSigninWithTwoFa = () => {
   const { push: navigate } = useRouter();
-  const setIsAuth = useSetAtom(isAuthAtom);
 
   const { remove, addSuccess, addError, addInfo } = useNotificationActions();
+
+  const queryClient = useQueryClient();
 
   return useMutation<
     IStandardResponse<IAuthResponse>,
@@ -32,10 +25,12 @@ export const useSigninWithTwoFa = () => {
   >({
     mutationKey: [QUERY_KEYS['2fa']],
     mutationFn: (data: SigninWithTwoFaDto) => signinByTwoFa(data),
-    onSuccess: () => {
+    onSuccess: (response) => {
       remove('info');
       addSuccess({ duration: 3000, message: 'Успех' });
-      setIsAuth(true);
+      queryClient.invalidateQueries({
+        queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
+      });
       navigate('/');
     },
     onError(error) {
@@ -53,15 +48,17 @@ export const useSignUp = () => {
 
   const { remove, addSuccess, addError, addInfo } = useNotificationActions();
 
-  const setIsAuth = useSetAtom(isAuthAtom);
+  const queryClient = useQueryClient();
 
   return useMutation<IStandardResponse, AxiosError<IErrorResponse>, ISignUp>({
     mutationFn: (data: ISignUp) => signup(data),
     onSuccess: () => {
       remove('info');
       addSuccess();
-      navigate(`${SERVICE_KEYS.auth}/${PAGE_KEYS.emailConfirm}`);
-      setIsAuth(true);
+      queryClient.invalidateQueries({
+        queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
+      });
+      navigate(`/${SERVICE_KEYS.auth}/${PAGE_KEYS.emailConfirm}`);
     },
     onError: (error) => {
       remove('info');
@@ -78,8 +75,6 @@ export const useSignIn = () => {
 
   const queryClient = useQueryClient();
 
-  const setIsAuth = useSetAtom(isAuthAtom);
-
   return useMutation<IStandardResponse, AxiosError<IErrorResponse>, ISignIn>({
     mutationFn: (data: ISignIn) => signin(data),
     onSuccess: ({ data }) => {
@@ -89,7 +84,6 @@ export const useSignIn = () => {
         navigate(`${PAGE_KEYS['signin-with-two-fa']}?email=${data.email}`);
       } else {
         navigate('/');
-        setIsAuth(true);
         queryClient.invalidateQueries({
           queryKey: [SERVICE_KEYS.users, QUERY_KEYS.me],
         });
@@ -97,7 +91,6 @@ export const useSignIn = () => {
     },
     onError: (error) => {
       remove('info')
-
       addError({ message: error.response?.data.message });
     },
     onMutate: () => addInfo(),

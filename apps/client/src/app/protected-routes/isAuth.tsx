@@ -1,20 +1,20 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
 
 import { useRouter } from 'next/router';
-import { useGetMyProfile } from '@/featuresuser';
+import { useGetMyProfile } from '@/modules/user';
 
 export const IsAuth: FC<PropsWithChildren> = ({ children }) => {
-  const { userInfo, userInfoIsLoading, userInfoIsSuccess } = useGetMyProfile();
+  const { data, isSuccess, isLoading } = useGetMyProfile();
 
   const navigate = useRouter();
 
   useEffect(() => {
-    if (userInfoIsSuccess && !userInfo) {
+    if (isSuccess && !data) {
       navigate.push('/');
     }
-  }, [navigate, userInfo, userInfoIsLoading, userInfoIsSuccess]);
+  }, [navigate, data, isSuccess]);
 
-  if (userInfoIsLoading) return;
+  if (isLoading) return;
 
   return <>{children}</>;
 };

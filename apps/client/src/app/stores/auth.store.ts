@@ -1,6 +1,7 @@
+import { User } from "@prisma/client";
 import { atom } from "jotai";
 
 
 
 
-export const isAuthAtom = atom<boolean>(false)
+export const currentUserAtom = atom<User | null>(null)

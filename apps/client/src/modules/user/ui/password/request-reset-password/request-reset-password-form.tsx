@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useRequestResetPassword } from '../../..';
 import { IRequestResetPasswordForm } from '../../../modal/interface';
 import { requestResetPasswordFormSchema } from '../../../modal/schema';
-import { Button, FormField } from 'shared';
+import { Button, FormField } from '@/shared';
 
 export const RequestResetPasswordForm = () => {
   const {

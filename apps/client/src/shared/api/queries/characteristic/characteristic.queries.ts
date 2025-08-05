@@ -1,8 +1,8 @@
-import { Characteristics } from '@/interfaces';
 import { useQuery } from '@tanstack/react-query';
 import { IGetCharacteristicsQueryParameters } from 'src/shared/model/interfaces/characteristic.interface';
 import { findMany, findRandom } from './characteristic.service';
-import { QUERY_KEYS, SERVICE_KEYS } from '@/shared*';
+import { Characteristics } from 'interfaces';
+import { QUERY_KEYS, SERVICE_KEYS } from '@/shared';
 
 export const useGetCharacteristics = ({
   type,

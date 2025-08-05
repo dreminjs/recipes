@@ -1,4 +1,4 @@
-import { Characteristics, IItemsPaginationResponse } from '@/interfaces';
+import { Characteristics, IItemsPaginationResponse } from 'interfaces';
 import { ICharacteristic, IGetCharacteristicsQueryParameters, QUERY_KEYS, SERVICE_KEYS } from '@/shared';
 import { instance } from '../../api.instance';
 

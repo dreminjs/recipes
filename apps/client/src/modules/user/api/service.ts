@@ -1,12 +1,12 @@
-import { IStandardResponse } from '@/interfaces*';
-import { instance, QUERY_KEYS, SERVICE_KEYS } from '@/shared*';
+import { instance, SERVICE_KEYS, QUERY_KEYS } from '@/shared';
 import { User } from '@prisma/client';
-import { IRequestResetPasswordForm, IResetPasswordDto } from 'src-fsd/widgets/reset-password/model/inteface';
+import { IStandardResponse } from 'interfaces';
+import { IRequestResetPasswordForm, IResetPasswordDto } from '../modal/interface';
 
 export const findMySelf = async (): Promise<User> => {
   return await (
     await instance.get(`${SERVICE_KEYS.users}/${QUERY_KEYS.me}`)
-  ).data;
+  ).data
 };
 
 export const resendEmailConfirmation = () =>

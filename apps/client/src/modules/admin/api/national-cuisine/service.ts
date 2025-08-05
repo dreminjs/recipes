@@ -1,5 +1,5 @@
-import { IItemsPaginationResponse } from "@/interfaces*";
-import { SERVICE_KEYS, IGetCharacteristicsQueryParameters,instance } from "@/shared*";
+import { IItemsPaginationResponse } from "interfaces";
+import { SERVICE_KEYS, IGetCharacteristicsQueryParameters,instance } from "@/shared";
 import { NationalCuisine, Prisma } from "@prisma/client";
 import { Type } from "typescript";
 

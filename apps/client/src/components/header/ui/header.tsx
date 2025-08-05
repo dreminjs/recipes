@@ -1,30 +1,16 @@
 import Link from 'next/link';
-import { PAGE_KEYS, QUERY_KEYS, SERVICE_KEYS } from '@/shared';
+import { PAGE_KEYS, QUERY_KEYS, SERVICE_KEYS } from '@/shared/';
 import { useLougout } from '../api/queries';
 import { ActionButton } from '../model/ui/active-button';
 import { NavLink } from '../model/ui/nav-link';
-import { useEffect } from 'react';
 import { useAtomValue } from 'jotai';
-import { isAuthAtom } from 'src/app/stores/auth.store';
-import { useGetMyProfile } from 'src/modules/user';
+import { currentUserAtom } from '@/app/stores/auth.store';
 
 export const Header = () => {
-  const isAuth = useAtomValue(isAuthAtom);
 
-  const { userInfo, refetchUserInfo, userInfoIsSuccess } = useGetMyProfile();
+  const { mutate } = useLougout();
 
-  const { logoutFromAccount, isSuccesslogoutFromAccount } = useLougout();
-
-  useEffect(() => {
-    if (isSuccesslogoutFromAccount) {
-      refetchUserInfo();
-    }
-  }, [
-    isSuccesslogoutFromAccount,
-    refetchUserInfo,
-    userInfoIsSuccess,
-    userInfo
-  ]);
+  const currentUser = useAtomValue(currentUserAtom) 
 
   return (
     <header className="w-full bg-gradient-to-r from-amber-50 to-orange-50 shadow-lg py-4 px-8 mx-auto flex justify-between items-center mb-8 rounded-2xl border border-orange-100">
@@ -36,13 +22,13 @@ export const Header = () => {
       </Link>
 
       <div className="flex gap-6 items-center">
-        {isAuth && userInfo ? (
+        {currentUser ? (
           <>
-            {userInfo.role === 'ADMIN' && (
+            {currentUser.role === 'ADMIN' && (
               <NavLink href={`/${PAGE_KEYS.admin}`}>Админ Панель</NavLink>
             )}
 
-            {userInfo.isActived && (
+            {currentUser.isActived && (
               <NavLink href={`/${PAGE_KEYS.recipes}/${QUERY_KEYS.post}`}>
                 Добавить рецепт
               </NavLink>
@@ -50,7 +36,7 @@ export const Header = () => {
 
             <NavLink href={`/${PAGE_KEYS.profile}`}>Профиль</NavLink>
 
-            <ActionButton onClick={() => logoutFromAccount()}>
+            <ActionButton onClick={() => mutate()}>
               Выйти
             </ActionButton>
           </>

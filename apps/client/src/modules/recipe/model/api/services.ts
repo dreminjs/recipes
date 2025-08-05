@@ -1,4 +1,4 @@
-import { instance, SERVICE_KEYS } from '@/shared*';
+import { instance, SERVICE_KEYS } from '@/shared';
 import { CreateRecipeDto } from '../types/create-recipe.dto';
 
 export const createOne = (data: CreateRecipeDto) => {

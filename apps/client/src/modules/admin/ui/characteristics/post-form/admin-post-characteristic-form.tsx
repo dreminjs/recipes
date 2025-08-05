@@ -2,10 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   IPostCharacteristicForm,
   PostCharacteristicFormSchema,
-} from '@/shared';
+} from '@/shared/';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormLayout } from './form-layout';
 import { FormTitle } from './form-title';
 import { FormSubmit } from './form-submit';
 interface IProps {

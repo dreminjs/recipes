@@ -25,7 +25,7 @@ import { ConfigModule } from '@nestjs/config';
     IngredientModule,
     RecipeModule,
     MinioClientModule,
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true , envFilePath: "../../.env"}),
   ],
 })
 export class AppModule {}

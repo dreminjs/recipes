@@ -7,7 +7,7 @@ import { NextRouter, useRouter } from 'next/router';
 import { useSigninWithTwoFa } from '../../api/queries';
 import { signinTwoFaSchema } from '../../model/schemas/schema';
 import { SigninWithTwoFaDto } from '../../model/types/signin-with-two-fa.dto';
-import { Button, FormField } from '@/shared*';
+import { Button, FormField } from '@/shared';
 
 export const SigninFormWithTwoFa = () => {
   const {

@@ -1,5 +1,5 @@
 //@ts-check
-
+const path = require('path');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next');
 
@@ -17,6 +17,18 @@ const nextConfig = {
   },
   images: {
     domains: ['localhost'], 
+  },
+  webpack: (config) => {
+    // Configure path aliases
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@/interfaces': path.resolve(__dirname, '../../interfaces'),
+      '@/modules': path.resolve(__dirname, 'src/modules'),
+      '@/app': path.resolve(__dirname, 'src/app'),
+      '@/shared': path.resolve(__dirname, 'src/shared'),
+      '@/pages': path.resolve(__dirname, 'src/pages-components'),
+    };
+    return config;
   },
 };
 

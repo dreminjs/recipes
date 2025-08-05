@@ -1,6 +1,4 @@
-import { IPostRecipeForm } from "@/shared*";
-
-
+import { IPostRecipeForm } from "@/shared";
 
 export type CreateRecipeDto = {
     holidayId: string

@@ -5,16 +5,19 @@ import { EmailConfirmationStatus } from './email-confirmation-status';
 import { ProfileCard } from './profile-card';
 import { ProfileInfoItem } from './profile-info-item';
 import { ToggleTwoFaStatus } from './toggle-2fa-status';
+import { useAtomValue } from 'jotai';
+import { currentUserAtom } from '@/app/stores/auth.store';
 
 export const CurrentUserPage = () => {
-  const { userInfo } = useGetMyProfile();
+
+  const currentUser = useAtomValue(currentUserAtom)
 
   return (
     <ProfileCard title="Ваш профиль">
       <ProfileInfoItem
-        icon={<AvatarInitial name={userInfo?.nickname} />}
+        icon={<AvatarInitial name={currentUser?.nickname} />}
         label="Имя пользователя"
-        value={userInfo?.nickname}
+        value={currentUser?.nickname}
       />
 
       <ProfileInfoItem
@@ -27,11 +30,11 @@ export const CurrentUserPage = () => {
           />
         }
         label="Email"
-        value={userInfo?.email}
+        value={currentUser?.email}
         fallback="Не указан"
       />
-      <EmailConfirmationStatus isActived={userInfo?.isActived} />
-      <ToggleTwoFaStatus isEnabled={userInfo?.isTwoFactorEnabled} />
+      <EmailConfirmationStatus isActived={currentUser?.isActived} />
+      <ToggleTwoFaStatus isEnabled={currentUser?.isTwoFactorEnabled} />
     </ProfileCard>
   );
 };

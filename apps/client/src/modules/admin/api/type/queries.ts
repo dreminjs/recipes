@@ -1,4 +1,4 @@
-import { QUERY_KEYS } from '@/shared*';
+import { QUERY_KEYS } from '@/shared';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Prisma } from '@prisma/client';
 import { typeService } from './service';
