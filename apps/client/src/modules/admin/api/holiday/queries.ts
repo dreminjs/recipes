@@ -1,10 +1,11 @@
 import { QUERY_KEYS } from '@/shared';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Prisma } from '@prisma/client';
 import { holidayService } from './service';
 import { useSetAtom } from 'jotai';
 import { activeCellAtom, characteristicsAtom } from 'src/app/stores/characteristics.store';
 import { useEffect } from 'react';
+import { useNotificationActions } from '@/modules/notifications';
 
 const QUERY_KEY = QUERY_KEYS.holiday;
 
@@ -38,75 +39,80 @@ export const useGetHolidays = ({
 };
 
 export const usePostHoliday = () => {
+
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
   const setActiveCell = useSetAtom(activeCellAtom)
-  const {
-    mutate: postHoliday,
-    isPending: postHolidayIsLoading,
-    isError: postHolidayIsError,
-    isSuccess: postHolidayIsSuccess,
-  } = useMutation({
+
+  return useMutation({
     mutationFn: (data: Prisma.HolidayCreateInput) =>
       holidayService.createOne({ ...data }),
     mutationKey: [QUERY_KEY],
     onSuccess: () => {
       setActiveCell(null);
-    },
-  });
 
-  return {
-    postHoliday,
-    postHolidayIsLoading,
-    postHolidayIsError,
-    postHolidayIsSuccess,
-  };
+      remove("info")
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addSuccess()
+    },
+    onError: () => {
+      remove('info')
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addError()
+    },
+    onMutate: () => addInfo()
+  });
 };
 
 export const useDeleteHoliday = () => {
-  const {
-    mutate: deleteHoliday,
-    isPending: deleteHolidayIsLoading,
-    isError: deleteHolidayIsError,
-    isSuccess: deleteHolidayIsSuccess,
-  } = useMutation({
+  return useMutation({
     mutationFn: (id: string) => holidayService.deleteOne({ id }),
     mutationKey: [QUERY_KEY],
   });
-  return {
-    deleteHolidayIsSuccess,
-    deleteHolidayIsError,
-    deleteHolidayIsLoading,
-    deleteHoliday,
-  };
 };
 
 export const useDeleteManyHolidays = () => {
-  const {
-    mutate: deleteManyHoliday,
-    isPending: deleteManyHolidayIsLoading,
-    isError: deleteManyHolidayIsError,
-    isSuccess: deleteManyHolidayIsSuccess,
-  } = useMutation({
+
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (ids: string[]) => holidayService.deleteMany(ids),
     mutationKey: [QUERY_KEY],
+    onSuccess: () => {
+      remove('info')
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addSuccess()
+    },
+    onError: () => {
+      remove('info')
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addError()
+    },
+    onMutate: () => addInfo()
   });
-  return {
-    deleteManyHolidayIsSuccess,
-    deleteManyHolidayIsError,
-    deleteManyHolidayIsLoading,
-    deleteManyHoliday,
-  };
 };
 
 export const usePutHoliday = () => {
 
   const setActiveCell = useSetAtom(activeCellAtom)
 
-  const {
-    mutate: putHoliday,
-    isPending: putHolidayIsLoading,
-    isError: putHolidayIsError,
-    isSuccess: putHolidayIsSuccess,
-  } = useMutation({
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: ({
       data,
       id,
@@ -116,14 +122,21 @@ export const usePutHoliday = () => {
     }) => holidayService.updateOne({ id }, data),
     mutationKey: [QUERY_KEY],
     onSuccess: () => {
+      remove('info')
       setActiveCell(null)
-    },
-  });
 
-  return {
-    putHoliday,
-    putHolidayIsError,
-    putHolidayIsSuccess,
-    putHolidayIsLoading,
-  };
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addSuccess()
+    },
+    onError: () => {
+      remove('info')
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addError()
+    },
+    onMutate: () => addInfo()
+  });
 };

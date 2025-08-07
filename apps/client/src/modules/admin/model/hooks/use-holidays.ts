@@ -28,48 +28,20 @@ export const useHolidays = ({
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom);
 
   const {
-    putHoliday,
-    putHolidayIsError,
-    putHolidayIsLoading,
-    putHolidayIsSuccess,
+    mutate: putHoliday,
   } = usePutHoliday();
   
   const {
-    deleteManyHoliday,
-    deleteManyHolidayIsError,
-    deleteManyHolidayIsLoading,
-    deleteManyHolidayIsSuccess,
+    mutate: deleteManyHoliday,
   } = useDeleteManyHolidays();
   
   const {
-    holidays,
-    holidaysIsError,
-    holidaysIsLoading,
-    holidaysIsSuccess,
-    refetchHolidays,
+   data: holidays,
   } = useGetHolidays({ title: value, page: currentPage, limit });
   
   const {
-    postHoliday,
-    postHolidayIsError,
-    postHolidayIsLoading,
-    postHolidayIsSuccess,
+    mutate: postHoliday,
   } = usePostHoliday();
-
-  useEffect(() => {
-    if (
-      postHolidayIsSuccess ||
-      deleteManyHolidayIsSuccess ||
-      putHolidayIsSuccess
-    ) {
-      refetchHolidays();
-    }
-  }, [
-    refetchHolidays,
-    postHolidayIsSuccess,
-    deleteManyHolidayIsSuccess,
-    putHolidayIsSuccess,
-  ]);
 
   const handleChangeTitle = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -102,15 +74,6 @@ export const useHolidays = ({
     }
   };
 
-  const isLoading =
-    deleteManyHolidayIsLoading || putHolidayIsLoading || postHolidayIsLoading;
-
-  const isSuccess =
-    deleteManyHolidayIsSuccess || putHolidayIsSuccess || postHolidayIsSuccess;
-
-  const isError =
-    deleteManyHolidayIsError || postHolidayIsError || putHolidayIsError;
-
   return {
     title,
     currentPage,
@@ -120,15 +83,8 @@ export const useHolidays = ({
     onPut: handlePutType,
     deleteMany: deleteManyHoliday,
     items: holidays,
-    itemsIsLoading: holidaysIsLoading,
-    itemsIsError: holidaysIsError,
-    itemsIsSuccess: holidaysIsSuccess,
-    refetch: refetchHolidays,
     post: postHoliday,
     onChangeTitle: handleChangeTitle,
     onChangeLimit: handleChangeLimit,
-    isLoading,
-    isSuccess,
-    isError,
   };
 };

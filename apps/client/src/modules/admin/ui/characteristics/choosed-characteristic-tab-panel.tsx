@@ -26,12 +26,12 @@ export const ChoosedCharacteristicsTabPanel: FC<IProps> = ({
         <ChoosedItemsListTab
           onRemove={() => setNationalCuisine(null)}
           title={nationalCuisine?.title}
-          type={'holidays'}
+          type={'national-cuisines'}
         />
         <ChoosedItemsListTab
           onRemove={() => setHoliday(null)}
           title={holiday?.title}
-          type={'national-cuisines'}
+          type={'holidays'}
         />
       </ul>
     </TabPanel>
