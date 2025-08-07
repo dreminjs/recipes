@@ -5,7 +5,8 @@ import { useHolidays } from '../../model/hooks/use-holidays';
 import { AdminCharacteristicsTable } from '../characteristics/table/admin-characteristics-table';
 import { AdminPostCharaceteristicModal } from '../characteristics/post-form/admin-post-characteristic-modal';
 
-export const HolidayPage = () => {
+export const AdminHolidaysPage = () => {
+
   const {
     newCharacteristic,
     selectedCharacteristics,

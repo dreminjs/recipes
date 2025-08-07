@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Button,
   IPostCharacteristicForm,
   PostCharacteristicFormSchema,
 } from '@/shared/';
@@ -8,11 +9,11 @@ import { useForm } from 'react-hook-form';
 import { FormTitle } from './form-title';
 import { FormSubmit } from './form-submit';
 interface IProps {
-  label: string;
   onPost: (data: IPostCharacteristicForm) => void;
+  onClose: () => void
 }
 
-export const AdminPostCharacteristicForm: FC<IProps> = ({ label, onPost }) => {
+export const AdminPostCharacteristicForm: FC<IProps> = ({ onPost, onClose }) => {
   const {
     register,
     handleSubmit,
@@ -30,8 +31,8 @@ export const AdminPostCharacteristicForm: FC<IProps> = ({ label, onPost }) => {
   return (
     <>
       <FormTitle title="добавь новую характеристику" />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-5 mb-5">
-        <label>
+      <form onSubmit={handleSubmit(onSubmit)} className="mb-2">
+        <label className='block mb-2'>
           <input
             {...register('title')}
             type="text"
@@ -40,7 +41,10 @@ export const AdminPostCharacteristicForm: FC<IProps> = ({ label, onPost }) => {
           />
           {errors.title && <p>{errors.title.message?.toString()}</p>}
         </label>
-        <FormSubmit content={'submit'} />
+        <div className='flex gap-2'>
+          <Button type="submit" variant="secondary" size="sm">Submit</Button>
+          <Button variant="secondary" size="sm" onClick={onClose} type="button">Закрыть</Button>
+        </div>
       </form>
     </>
   );

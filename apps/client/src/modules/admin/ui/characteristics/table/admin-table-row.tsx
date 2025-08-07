@@ -1,16 +1,16 @@
 import { FC } from 'react';
 import { Checkbox, TableCell, TableRow } from '@mui/material';
-import { ICharacteristic } from '@/shared*';
 import { AdminCharacteristicCell } from './admin-characteristic-cell';
+import { ICharacteristic } from '@/shared';
 
-interface RowProps {
+interface IProps {
   el: ICharacteristic;
   rowIdx: number;
   isChecked: boolean;
   onSelect: (id: string) => void;
 }
 
-export const AdminTableRow: FC<RowProps> = function({ el, rowIdx, isChecked, onSelect }) {
+export const AdminTableRow: FC<IProps> = function({ el, rowIdx, isChecked, onSelect }) {
   const handleCheckboxClick = () => {
     onSelect(el.id);
   }

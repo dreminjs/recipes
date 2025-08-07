@@ -1,9 +1,11 @@
 import { QUERY_KEYS } from '@/shared';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Prisma } from '@prisma/client';
 import { typeService } from './service';
 import { useSetAtom } from 'jotai';
-import { activeCellAtom } from 'src/app/stores/characteristics.store';
+import { activeCellAtom, characteristicsAtom } from 'src/app/stores/characteristics.store';
+import { useNotificationActions } from '@/modules/notifications';
+import { useEffect } from 'react';
 
 const QUERY_KEY = QUERY_KEYS.type;
 
@@ -16,95 +18,115 @@ export const useGetTypes = ({
   page: number;
   limit: number;
 }) => {
-  
+
+  const setCharacteristics = useSetAtom(characteristicsAtom)
+
   const {
-    data: types,
-    isLoading: typesIsLoading,
-    isSuccess: typesIsSuccess,
-    isError: typesIsError,
-    refetch: refetchTypes,
+    ...props
   } = useQuery({
-    queryKey: [page, title, limit],
+    queryKey: [QUERY_KEY, page, title, limit],
     queryFn: () => typeService.findMany({ limit, page, title }),
   });
 
+  useEffect(() => {
+    if (props.isSuccess && props.data?.items) {
+      setCharacteristics(props.data.items)
+    }
+  }, [props.isSuccess, props.data?.items])
+
   return {
-    types,
-    typesIsLoading,
-    typesIsError,
-    typesIsSuccess,
-    refetchTypes,
+    ...props
   };
 };
 
 export const usePostType = () => {
-  const {
-    mutate: postType,
-   isPending: postTypeIsLoading,
-    isError: postTypeIsError,
-    isSuccess: postTypeIsSuccess,
-  } = useMutation({
+
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (data: Prisma.TypeCreateInput) =>
       typeService.createOne({ ...data }),
     mutationKey: [QUERY_KEY],
+    onSuccess: () => {
+      remove("info")
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addSuccess()
+    },
+    onError: () => {
+      remove('info')
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addError()
+    },
+    onMutate: () => addInfo()
   });
-
-  return { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess };
 };
 
 export const useDeleteType = () => {
-  const {
-    mutate: deleteType,
-    isPending: deleteTypeIsLoading,
-    isError: deleteTypeIsError,
-    isSuccess: deleteTypeIsSuccess,
-  } = useMutation({
+  return useMutation({
     mutationFn: (id: string) => typeService.deleteOne({ id }),
     mutationKey: [QUERY_KEY],
   });
-  return {
-    deleteTypeIsSuccess,
-    deleteTypeIsError,
-    deleteTypeIsLoading,
-    deleteType,
-  };
 };
 
 export const usePutType = () => {
   const setActiveCell = useSetAtom(activeCellAtom);
 
-  const {
-    mutate: putType,
-    isPending: putTypeIsLoading,
-    isError: putTypeIsError,
-    isSuccess: putTypeIsSuccess,
-  } = useMutation({
+  const queryClient = useQueryClient()
+
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  return useMutation({
     mutationFn: ({ data, id }: { data: Prisma.TypeUpdateInput; id: string }) =>
       typeService.updateOne({ id }, data),
     mutationKey: [QUERY_KEY],
     onSuccess: () => {
+      remove("info")
       setActiveCell(null);
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addSuccess()
     },
+    onError: () => {
+      remove("info")
+      setActiveCell(null);
+      addError()
+    },
+    onMutate: () => {
+      addInfo()
+    }
   });
 
-  return { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess };
 };
 
 export const useDeleteManyTypes = () => {
-  const {
-    mutate: deleteTypes,
-    isPending: deleteTypesIsLoading,
-    isSuccess: deleteTypesIsSuccess,
-    isError: deleteTypesIsError,
-  } = useMutation({
+
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (ids: string[]) => typeService.deleteMany(ids),
     mutationKey: [QUERY_KEY],
+    onSuccess: () => {
+      remove("info")
+      queryClient.refetchQueries({
+        queryKey: [QUERY_KEY]
+      })
+      addSuccess()
+    },
+    onError: () => {
+      remove("info")
+      addError()
+    },
+    onMutate: () => {
+      addInfo()
+    }
   });
-
-  return {
-    deleteTypes,
-    deleteTypesIsSuccess,
-    deleteTypesIsLoading,
-    deleteTypesIsError,
-  };
 };

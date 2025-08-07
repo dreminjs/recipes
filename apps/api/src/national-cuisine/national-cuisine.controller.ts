@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Put,
@@ -25,6 +26,8 @@ export class NationalCuisineController {
   constructor(
     private readonly nationalCuisineService: NationalCuisineService
   ) {}
+
+  private logger = new Logger(NationalCuisineController.name)
 
   @AllowedRoles(Roles.ADMIN)
   @UseGuards(AccessTokenGuard, RolesGuard)
@@ -52,6 +55,8 @@ export class NationalCuisineController {
     });
 
     const [items, count] = await Promise.all([itemsQuery, countQuery]);
+
+    this.logger.log(items)
 
     return { items: items, countItems: count };
   }

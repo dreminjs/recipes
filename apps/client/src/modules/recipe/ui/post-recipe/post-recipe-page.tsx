@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { PostRecipeForm } from './post-recipe-form';
 import { ChooseCharacteristicsModal } from '@/modules/admin/';
-import {Layout} from '@/app/';
 
 export const PostRecipePage = () => {
   const [isCharaceteristicModalVisible, setIsCharaceteristicModalVisible] =
@@ -11,12 +10,12 @@ export const PostRecipePage = () => {
     setIsCharaceteristicModalVisible((prev) => !prev);
 
   return (
-    <Layout>
+    <>
       <PostRecipeForm onOpen={handleToggleCharacteristicModal} />
       <ChooseCharacteristicsModal
         isVisible={isCharaceteristicModalVisible}
         onClose={handleToggleCharacteristicModal}
       />
-    </Layout>
+    </>
   );
 };

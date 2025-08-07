@@ -1,5 +1,4 @@
-
-import { Characteristics } from '@/interfaces*';
+import { Characteristics } from "interfaces";
 
 export interface IChooseItemTabContent {
   label: string;
@@ -7,5 +6,6 @@ export interface IChooseItemTabContent {
 }
 
 export interface IChoosedItemTabContent {
-  label: "другие характеристики" | "ингридиенты"
+  label: "Выбрать" | "Выбраное",
+  value: "1" | "2"
 }

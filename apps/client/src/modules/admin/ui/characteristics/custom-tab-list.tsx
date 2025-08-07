@@ -11,7 +11,7 @@ interface IProps {
 export const CustomTabList: FC<IProps> = ({ onChange, tabs }) => {
   return (
     <Box
-      sx={{ maxWidth: { xs: 320, sm: 480 }, backgroundColor: 'transparent' }}
+      sx={{ maxWidth: { xs: 320, sm: 420, display: "flex", justifyContent: "center" }, backgroundColor: 'transparent'}}
     >
       <TabList
         textColor="inherit"

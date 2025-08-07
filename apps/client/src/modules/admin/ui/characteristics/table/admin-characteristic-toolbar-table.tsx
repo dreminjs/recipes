@@ -8,8 +8,8 @@ import {
   Button,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Characteristics } from '@/interfaces*';
 import { isPostCharacteristicModalVisibleAtom, newCharacteristicAtom, selectedCharacteristicsIdsAtom } from 'src/app/stores/characteristics.store';
+import { Characteristics } from 'interfaces';
 
 interface IProps {
   onPut: () => void;

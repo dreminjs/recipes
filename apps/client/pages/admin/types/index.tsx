@@ -1,6 +1,8 @@
-"use client";
-import { CharacteristicsProvider } from '@/application';
-import { AdminTypesPage } from '@/pages/admin';
+
+import { CharacteristicsProvider } from "@/app";
+import dynamic from "next/dynamic";
+
+export const AdminTypesPage = dynamic(() => import("@/modules/admin").then((mod) => mod.AdminTypesPage), { ssr: false })
 
 export default function Index() {
   return (

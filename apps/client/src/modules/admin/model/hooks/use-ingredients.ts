@@ -5,7 +5,7 @@ import {
   useDeleteManyIngredients,
   usePutIngredient,
 } from '../../api/ingredient/queries';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useDebounce } from 'use-debounce';
 import { activeCellAtom, characteristicsAtom, selectedCharacteristicsIdsAtom } from 'src/app/stores/characteristics.store';
@@ -24,54 +24,21 @@ export const useIngredients = ({
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
   const setActiveCell = useSetAtom(activeCellAtom);
-  const setCharacteristics = useSetAtom(characteristicsAtom);
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom);
 
   const {
-    putIngredient,
-    putIngredientIsError,
-    putIngredientIsLoading,
-    putIngredientIsSuccess,
+    mutate: putIngredient,
   } = usePutIngredient();
 
   const {
-    ingredients,
-    ingredientsIsError,
-    ingredientsIsLoading,
-    ingredientsIsSuccess,
-    refetchIngredients,
+    data,
   } = useGetIngredients({ title: value, page: currentPage, limit });
   const {
-    postIngredient,
-    postIngredientIsError,
-    postIngredientIsLoading,
-    postIngredientIsSuccess,
+    mutate: postIngredient,
   } = usePostIngredient();
   const {
-    deleteManyIngredients,
-    deleteManyIngredientsIsError,
-    deleteManyIngredientsIsLoading,
-    deleteManyIngredientsIsSuccess,
+    mutate: deleteManyIngredients,
   } = useDeleteManyIngredients();
-
-  useEffect(() => {
-    if (ingredients?.items) setCharacteristics(ingredients?.items);
-  }, [setCharacteristics, ingredients?.items]);
-
-  useEffect(() => {
-    if (
-      postIngredientIsSuccess ||
-      deleteManyIngredientsIsSuccess ||
-      putIngredientIsSuccess
-    ) {
-      refetchIngredients();
-    }
-  }, [
-    refetchIngredients,
-    postIngredientIsSuccess,
-    putIngredientIsSuccess,
-    deleteManyIngredientsIsSuccess,
-  ]);
 
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
     setTitle(event.target.value);
@@ -119,38 +86,16 @@ export const useIngredients = ({
     }
   };
 
-  const isLoading =
-    deleteManyIngredientsIsLoading ||
-    putIngredientIsLoading ||
-    postIngredientIsLoading;
-
-  const isSuccess =
-    deleteManyIngredientsIsSuccess ||
-    putIngredientIsSuccess ||
-    postIngredientIsSuccess;
-
-  const isError =
-    deleteManyIngredientsIsError ||
-    postIngredientIsError ||
-    putIngredientIsError;
-
   return {
     title,
     currentPage,
     onChangePage,
     onPut: handlePutIngredient,
     deleteMany: deleteManyIngredients,
-    items: ingredients,
-    itemsIsLoading: ingredientsIsLoading,
-    itemsIsError: ingredientsIsError,
-    itemsIsSuccess: ingredientsIsSuccess,
-    refetch: refetchIngredients,
     post: postIngredient,
     onChangeTitle,
     onChangeLimit: handleChangeLimit,
     limit,
-    isLoading,
-    isSuccess,
-    isError,
+    items: data
   };
 };

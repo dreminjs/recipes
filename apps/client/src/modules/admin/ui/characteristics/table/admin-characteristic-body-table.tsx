@@ -18,7 +18,7 @@ export const AdminCharacteristictsBodyTable: FC = () => {
           );
           return (
             <AdminTableRow
-              key={el.title}
+              key={el.id}
               el={el}
               rowIdx={rowIdx}
               isChecked={isChecked}

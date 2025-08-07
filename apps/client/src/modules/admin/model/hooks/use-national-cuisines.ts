@@ -22,51 +22,21 @@ export const useNationalCuisines = ({
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom);
 
   const {
-    putNationalCuisine,
-    putNationalCuisineIsLoading,
-    putNationalCuisineIsError,
-    putNationalCuisineIsSuccess,
+    mutate: putNationalCuisine,
   } = usePutNationalCuisine();
   const {
-    deleteNationalCuisine,
-    deleteNationalCuisineIsError,
-    deleteNationalCuisineIsLoading,
-    deleteNationalCuisineIsSuccess,
+    mutate: deleteNationalCuisine,
   } = useDeleteNationalCuisine();
   const {
-    deleteManyNationalCuisines,
-    deleteManyNationalCuisinesIsError,
-    deleteManyNationalCuisinesIsLoading,
-    deleteManyNationalCuisinesIsSuccess,
+    mutate: deleteManyNationalCuisines,
   } = useDeleteManyNationalCuisine();
   const {
-    nationalCuisines,
-    nationalCuisinesIsLoading,
-    nationalCuisinesIsError,
-    nationalCuisinesIsSuccess,
-    refetchNationalCuisines,
+    data,
+    refetch: refetchNationalCuisines
   } = useGetNationalCuisines({ title: value, page: currentPage, limit });
   const {
-    postNationalCuisine,
-    postNationalCuisineIsError,
-    postNationalCuisineIsLoading,
-    postNationalCuisineIsSuccess,
+    mutate: postNationalCuisine,
   } = usePostNationalCuisine();
-
-  useEffect(() => {
-    if (
-      postNationalCuisineIsSuccess ||
-      deleteManyNationalCuisinesIsSuccess ||
-      putNationalCuisineIsSuccess
-    ) {
-      refetchNationalCuisines();
-    }
-  }, [
-    refetchNationalCuisines,
-    postNationalCuisineIsSuccess,
-    deleteManyNationalCuisinesIsSuccess,
-    putNationalCuisineIsSuccess,
-  ]);
 
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
     setTitle(event.target.value);
@@ -100,25 +70,6 @@ export const useNationalCuisines = ({
     }
   };
 
-  const isLoading =
-    deleteNationalCuisineIsLoading ||
-    putNationalCuisineIsLoading ||
-    postNationalCuisineIsLoading ||
-    deleteManyNationalCuisinesIsLoading;
-
-  const isSuccess =
-    deleteNationalCuisineIsSuccess ||
-    putNationalCuisineIsSuccess ||
-    postNationalCuisineIsSuccess ||
-    deleteManyNationalCuisinesIsSuccess;
-  const isError =
-    putNationalCuisineIsSuccess ||
-    postNationalCuisineIsSuccess ||
-    deleteNationalCuisineIsError ||
-    postNationalCuisineIsError ||
-    putNationalCuisineIsError ||
-    deleteManyNationalCuisinesIsError;
-
   return {
     title,
     currentPage,
@@ -128,16 +79,10 @@ export const useNationalCuisines = ({
     onPut: handlePutNationalCuisine,
     deleteOne: deleteNationalCuisine,
     deleteMany: deleteManyNationalCuisines,
-    items: nationalCuisines,
-    itemsIsLoading: nationalCuisinesIsLoading,
-    itemsIsError: nationalCuisinesIsError,
-    itemsIsSuccess: nationalCuisinesIsSuccess,
+    items: data,
     refetch: refetchNationalCuisines,
     post: postNationalCuisine,
     onChangeTitle,
     onChangeLimit,
-    isLoading,
-    isError,
-    isSuccess,
   };
 };

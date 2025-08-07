@@ -1,10 +1,12 @@
 import { QUERY_KEYS, IPostIngredientForm, IGetCharacteristicsQueryParameters } from "@/shared";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Prisma } from "@prisma/client";
 import { ingredientService } from "./service";
 import { useSetAtom } from "jotai";
 import { activeCellAtom } from "src/app/stores/characteristics.store";
-// import { characteristicsAtom } from "src/app/stores/characteristics.store";
+import { characteristicsAtom } from "src/app/stores/characteristics.store";
+import { useEffect } from "react";
+import { useNotificationActions } from "@/modules/notifications";
 
 const queryKey = QUERY_KEYS.ingredient;
 
@@ -15,95 +17,100 @@ export const useGetIngredients = ({
 }: IGetCharacteristicsQueryParameters
 ) => {
 
-  // const setCharacteristics = useSetAtom(characteristicsAtom) 
-
-  const {
-    data: ingredients,
-    isLoading: ingredientsIsLoading,
-    isSuccess: ingredientsIsSuccess,
-    isError: ingredientsIsError,
-    refetch: refetchIngredients,
-  } = useQuery({
+  const setCharacteristics = useSetAtom(characteristicsAtom)
+  const { isSuccess, ...props } = useQuery({
     queryKey: [queryKey, limit, page, title],
     queryFn: () => ingredientService.findMany({ limit, page, title }),
-  
   });
 
-  return {
-    ingredients,
-    ingredientsIsLoading,
-    ingredientsIsError,
-    ingredientsIsSuccess,
-    refetchIngredients,
-  };
+  useEffect(() => {
+    if (isSuccess && props.data?.items) {
+      setCharacteristics(props.data?.items)
+    }
+  }, [isSuccess, props.data?.items])
+
+  return { isSuccess, ...props }
 };
 
 export const usePostIngredient = () => {
-  const {
-    mutate: postIngredient,
-    isPending: postIngredientIsLoading,
-    isError: postIngredientIsError,
-    isSuccess: postIngredientIsSuccess,
-  } = useMutation({
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (data: IPostIngredientForm) =>
       ingredientService.createOne({ ...data }),
     mutationKey: [queryKey],
+    onMutate: () => addInfo(),
+    onError: () => {
+      remove("info")
+      addError()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKey]
+      })
+      remove("info")
+      addSuccess()
+    }
   });
-
-  return {
-    postIngredient,
-    postIngredientIsLoading,
-    postIngredientIsError,
-    postIngredientIsSuccess,
-  };
 };
 
 export const useDeleteIngredient = () => {
-  const {
-    mutate: deleteIngredient,
-    isPending: deleteIngredientIsLoading,
-    isError: deleteIngredientIsError,
-    isSuccess: deleteIngredientIsSuccess,
-  } = useMutation({
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (id: string) => ingredientService.deleteOne({ id }),
     mutationKey: [queryKey],
+    onMutate: () => addInfo(),
+    onError: () => {
+      remove("info")
+      addError()
+    },
+    onSuccess: () => {
+      remove("info")
+      queryClient.refetchQueries({
+        queryKey: [queryKey]
+      })
+      addSuccess()
+    }
   });
-  return {
-    deleteIngredient,
-    deleteIngredientIsLoading,
-    deleteIngredientIsError,
-    deleteIngredientIsSuccess,
-  };
 };
 
 export const useDeleteManyIngredients = () => {
-  const {
-    mutate: deleteManyIngredients,
-    isPending: deleteManyIngredientsIsLoading,
-    isError: deleteManyIngredientsIsError,
-    isSuccess: deleteManyIngredientsIsSuccess,
-  } = useMutation({
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (ids: string[]) => ingredientService.deleteMany(ids),
     mutationKey: [queryKey],
+    onMutate: () => addInfo(),
+    onError: () => {
+      remove("info")
+      addError()
+    },
+    onSuccess: () => {
+      remove("info")
+      queryClient.invalidateQueries({
+        queryKey: [queryKey]
+      })
+      addSuccess()
+    }
   });
-  return {
-    deleteManyIngredients,
-    deleteManyIngredientsIsLoading,
-    deleteManyIngredientsIsError,
-    deleteManyIngredientsIsSuccess,
-  };
 };
 
 export const usePutIngredient = () => {
 
   const setActiveCell = useSetAtom(activeCellAtom)
 
-  const {
-    mutate: putIngredient,
-    isPending: putIngredientIsLoading,
-    isError: putIngredientIsError,
-    isSuccess: putIngredientIsSuccess,
-  } = useMutation({
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: ({
       data,
       id,
@@ -112,14 +119,18 @@ export const usePutIngredient = () => {
       id: string;
     }) => ingredientService.updateOne({ id }, data),
     mutationKey: [queryKey],
+    onMutate: () => addInfo(),
+    onError: () => {
+      remove("info")
+      addError()
+    },
     onSuccess: () => {
       setActiveCell(null)
-    },
+      remove("info")
+      queryClient.invalidateQueries({
+        queryKey: [queryKey]
+      })
+      addSuccess()
+    }
   });
-  return {
-    putIngredient,
-    putIngredientIsError,
-    putIngredientIsSuccess,
-    putIngredientIsLoading,
-  };
 };

@@ -2,7 +2,7 @@ import { InputSearch, IPostCharacteristicForm } from '@/shared';
 import { FC } from 'react';
 import { useTypes } from '../../model/hooks/use-types';
 import { useAdminCharacteristicActions } from '../../model/hooks/use-admin-characteristic-actions';
-import { CharactersticsLayout } from 'src/app';
+import { CharactersticsLayout } from '@/app';
 import { AdminCharacteristicsTable } from '../characteristics/table/admin-characteristics-table';
 import { AdminPostCharaceteristicModal } from '../characteristics/post-form/admin-post-characteristic-modal';
 

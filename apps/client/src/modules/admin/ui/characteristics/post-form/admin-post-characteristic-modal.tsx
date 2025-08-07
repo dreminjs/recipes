@@ -26,11 +26,10 @@ export const AdminPostCharaceteristicModal: FC<IProps> = ({
       isOpen={isPostCharacteristicModalVisible}
       onClose={onToggleVisibility}
     >
-      <AdminPostCharacteristicForm
-        label="characteristic"
-        onPost={onPost}
-      />
-       <CloseModalButton onClick={onToggleVisibility} />
+        <AdminPostCharacteristicForm
+          onPost={onPost}
+          onClose={onToggleVisibility}
+        />
     </BasicModal>
   );
 };

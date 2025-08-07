@@ -3,12 +3,12 @@ import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { Paper } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
-import { Characteristics } from '@/interfaces*';
 import { useSetAtom } from 'jotai';
 import { AdminCharacteristicToolBarTable } from './admin-characteristic-toolbar-table';
 import { selectedCharacteristicsIdsAtom } from 'src/app/stores/characteristics.store';
 import { AdminCharacteristicHeadTable } from './admin-characteristic-head-table';
 import { AdminCharacteristictsBodyTable } from './admin-characteristic-body-table';
+import { Characteristics } from 'interfaces';
 
 interface IProps {
   onPut: () => void;
@@ -51,7 +51,7 @@ export const AdminCharacteristicsTable: FC<IProps> =
           }}
         />
         <TableContainer sx={{ height: 440, width: 900 }}>
-          <Table stickyHeader>
+          <Table stickyHeader={true}>
             <AdminCharacteristicHeadTable
               limit={limit}
               addiotionalColoumns={addiotionalColoumns}

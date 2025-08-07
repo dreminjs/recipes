@@ -11,7 +11,7 @@ export const InputSearch: FC<IProps> = memo(function InputSearch({
 }) {
   return (
     <input
-      className="border-b-2 outline-none p-2 w-[470px] mb-5"
+      className="border-b-2 outline-none p-2 w-[320px] mb-5 bg-transparent"
       onChange={onChange}
       defaultValue={value}
       type="text"

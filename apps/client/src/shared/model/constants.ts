@@ -53,6 +53,12 @@ export const measuresObj = {
   N: 'шт',
 } as const
 
+export const ACTIONS_KEYS = {
+  edit: "edit",
+  create: "create",
+  delete: "delete"
+}
+
 export const measuresArray = [
   { label: 'мл', value: 'ML' },
   { label: 'л', value: 'L' },

@@ -4,7 +4,6 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormTitle } from 'src/modules/admin/ui/characteristics/post-form/form-title';
 import { FormSubmit } from 'src/modules/admin/ui/characteristics/post-form/form-submit';
-import { FormLayout } from 'src/modules/admin/ui/characteristics/post-form/form-layout';
 import { measureOptions } from '../../model/constants';
 
 interface IProps {
@@ -27,7 +26,7 @@ export const AdminPostIngredientForm: FC<IProps> = ({ onPost }) => {
   };
 
   return (
-    <FormLayout>
+    <>
       <FormTitle title="добавь новый ингредиент" />
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
@@ -67,6 +66,6 @@ export const AdminPostIngredientForm: FC<IProps> = ({ onPost }) => {
           <FormSubmit content={'submit'} />
         </div>
       </form>
-    </FormLayout>
+    </>
   );
 };

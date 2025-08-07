@@ -1,10 +1,11 @@
 import { QUERY_KEYS } from '@/shared';
-
 import { Prisma } from '@prisma/client';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { nationalCuisineService } from './service';
 import { useSetAtom } from 'jotai';
 import { activeCellAtom, characteristicsAtom } from 'src/app/stores/characteristics.store';
+import { useEffect } from 'react';
+import { useNotificationActions } from '@/modules/notifications';
 
 const MUTATION_KEY = QUERY_KEYS['national-cuisine'];
 
@@ -20,92 +21,106 @@ export const useGetNationalCuisines = ({
   const setCharacteristics = useSetAtom(characteristicsAtom);
 
   const {
-    data: nationalCuisines,
-    isLoading: nationalCuisinesIsLoading,
-    isSuccess: nationalCuisinesIsSuccess,
-    isError: nationalCuisinesIsError,
-    refetch: refetchNationalCuisines,
+    isSuccess,
+    ...props
   } = useQuery({
     queryKey: [MUTATION_KEY, limit, page, title],
     queryFn: () => nationalCuisineService.findMany({ limit, page, title }),
-    // onSuccess: (data) => setCharacteristics(data.items),
   });
 
+  useEffect(() => {
+    if (isSuccess && props.data?.items) {
+      setCharacteristics(props.data?.items)
+    }
+  }, [isSuccess, props.data?.items])
+
   return {
-    nationalCuisines,
-    nationalCuisinesIsLoading,
-    nationalCuisinesIsError,
-    nationalCuisinesIsSuccess,
-    refetchNationalCuisines,
-  };
+    isSuccess,
+    ...props
+  }
 };
 
 export const usePostNationalCuisine = () => {
-  const {
-    mutate: postNationalCuisine,
-    isPending: postNationalCuisineIsLoading,
-    isError: postNationalCuisineIsError,
-    isSuccess: postNationalCuisineIsSuccess,
-  } = useMutation({
+
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (data: Prisma.NationalCuisineCreateInput) =>
       nationalCuisineService.createOne({ ...data }),
     mutationKey: [MUTATION_KEY],
+    onError: () => {
+      remove("info")
+      addError()
+    },
+    onMutate: () => addInfo(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [MUTATION_KEY]
+      })
+      remove("info")
+      addSuccess()
+    }
   });
-
-  return {
-    postNationalCuisine,
-    postNationalCuisineIsLoading,
-    postNationalCuisineIsError,
-    postNationalCuisineIsSuccess,
-  };
 };
 
 export const useDeleteNationalCuisine = () => {
-  const {
-    mutate: deleteNationalCuisine,
-    isPending: deleteNationalCuisineIsLoading,
-    isError: deleteNationalCuisineIsError,
-    isSuccess: deleteNationalCuisineIsSuccess,
-  } = useMutation({
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (id: string) => nationalCuisineService.deleteOne({ id }),
     mutationKey: [MUTATION_KEY],
+    onError: () => {
+      remove("info")
+      addError()
+    },
+    onMutate: () => addInfo(),
+    onSuccess: () => {
+      remove("info")
+      queryClient.invalidateQueries({
+        queryKey: [MUTATION_KEY]
+      })
+      addSuccess()
+    }
   });
-  return {
-    deleteNationalCuisineIsSuccess,
-    deleteNationalCuisineIsError,
-    deleteNationalCuisineIsLoading,
-    deleteNationalCuisine,
-  };
 };
 
 export const useDeleteManyNationalCuisine = () => {
-  const {
-    mutate: deleteManyNationalCuisines,
-    isPending: deleteManyNationalCuisinesIsLoading,
-    isError: deleteManyNationalCuisinesIsError,
-    isSuccess: deleteManyNationalCuisinesIsSuccess,
-  } = useMutation({
+
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: (ids: string[]) => nationalCuisineService.deleteMany(ids),
     mutationKey: [MUTATION_KEY],
+    onMutate: () => addInfo(),
+    onError: () => {
+      remove("info")
+      addError()
+    },
+    onSuccess: () => {
+      remove("info")
+      queryClient.invalidateQueries({
+        queryKey: [MUTATION_KEY]
+      })
+      addSuccess()
+    }
   });
-  return {
-    deleteManyNationalCuisinesIsSuccess,
-    deleteManyNationalCuisinesIsError,
-    deleteManyNationalCuisinesIsLoading,
-    deleteManyNationalCuisines,
-  };
 };
 
 export const usePutNationalCuisine = () => {
 
+  const { addError, remove, addInfo, addSuccess } = useNotificationActions()
+
   const setActiveCell = useSetAtom(activeCellAtom)
 
-  const {
-    mutate: putNationalCuisine,
-    isPending: putNationalCuisineIsLoading,
-    isError: putNationalCuisineIsError,
-    isSuccess: putNationalCuisineIsSuccess,
-  } = useMutation({
+  const queryClient = useQueryClient()
+
+  return useMutation({
     mutationFn: ({
       data,
       id,
@@ -115,14 +130,17 @@ export const usePutNationalCuisine = () => {
     }) => nationalCuisineService.updateOne({ id }, data),
     mutationKey: [MUTATION_KEY],
     onSuccess: () => {
+      remove("info")
+      queryClient.invalidateQueries({
+        queryKey: [MUTATION_KEY]
+      })
+      addSuccess()
       setActiveCell(null)
     },
+    onError: () => {
+      remove("info")
+      addError()
+    },
+    onMutate: () => addInfo()
   });
-
-  return {
-    putNationalCuisine,
-    putNationalCuisineIsLoading,
-    putNationalCuisineIsError,
-    putNationalCuisineIsSuccess,
-  };
 };

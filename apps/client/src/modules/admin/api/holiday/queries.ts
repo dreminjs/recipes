@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client';
 import { holidayService } from './service';
 import { useSetAtom } from 'jotai';
 import { activeCellAtom, characteristicsAtom } from 'src/app/stores/characteristics.store';
+import { useEffect } from 'react';
 
 const QUERY_KEY = QUERY_KEYS.holiday;
 
@@ -19,22 +20,20 @@ export const useGetHolidays = ({
   const setCharacteristics = useSetAtom(characteristicsAtom);
 
   const {
-    data: holidays,
-    isLoading: holidaysIsLoading,
-    isSuccess: holidaysIsSuccess,
-    isError: holidaysIsError,
-    refetch: refetchHolidays,
+    ...props
   } = useQuery({
     queryKey: [QUERY_KEY, page, title],
     queryFn: () => holidayService.findMany({ limit, page, title }),
   });
 
+  useEffect(() => {
+    if (props.data?.items && props.isSuccess) {
+      setCharacteristics(props.data.items)
+    }
+  }, [props.data?.items, props.isSuccess])
+
   return {
-    holidays,
-    holidaysIsLoading,
-    holidaysIsError,
-    holidaysIsSuccess,
-    refetchHolidays,
+    ...props
   };
 };
 

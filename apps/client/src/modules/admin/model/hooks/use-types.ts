@@ -26,27 +26,21 @@ export const useTypes = ({
   const [limit, setLimit] = useState(initialLimit);
   const setActiveCell = useSetAtom(activeCellAtom);
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom)
-  const setCharacteristics = useSetAtom(characteristicsAtom)
 
-  const { putType, putTypeIsLoading, putTypeIsError, putTypeIsSuccess } =
+  const { mutate: putType } =
     usePutType();
+
   const {
-    deleteType,
-    deleteTypeIsLoading,
-    deleteTypeIsError,
-    deleteTypeIsSuccess,
+    mutate: deleteType,
   } = useDeleteType();
   const {
-    deleteTypesIsSuccess,
-    deleteTypes,
-    deleteTypesIsLoading,
-    deleteTypesIsError,
+    mutate: deleteTypes,
   } = useDeleteManyTypes();
 
-  const { types, typesIsLoading, typesIsError, typesIsSuccess, refetchTypes } =
+  const { data: types, isSuccess: typesIsSuccess } =
     useGetTypes({ title: value, page: currentPage, limit });
 
-  const { postType, postTypeIsLoading, postTypeIsError, postTypeIsSuccess } =
+  const { mutate: postType } =
     usePostType();
     
   const handleChangeTitle = useCallback((event: ChangeEvent<HTMLInputElement>) =>
@@ -64,17 +58,6 @@ export const useTypes = ({
       setCurrentPage(0);
     }
   }, [types, typesIsSuccess, currentPage]);
-
-  useEffect(() => {
-    if(types?.items)
-    setCharacteristics(types?.items)
-  },[setCharacteristics, types?.items])
-
-  useEffect(() => {
-    if (postTypeIsSuccess || deleteTypesIsSuccess || putTypeIsSuccess) {
-      refetchTypes();
-    }
-  }, [refetchTypes, postTypeIsSuccess, deleteTypesIsSuccess, putTypeIsSuccess]);
 
   const handleChangeLimit = useCallback((
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -100,12 +83,6 @@ export const useTypes = ({
       }
     };
 
-  const isLoading = deleteTypeIsLoading || putTypeIsLoading || postTypeIsLoading || deleteTypesIsLoading
-
-  const isSuccess = deleteTypeIsSuccess || putTypeIsSuccess || postTypeIsSuccess || deleteTypesIsSuccess
-
-  const isError =  deleteTypeIsError || postTypeIsError || putTypeIsError
-
   return {
     title,
     currentPage: Math.min(currentPage, Math.max(0, Math.ceil((types?.countItems || 0) / limit) - 1)),
@@ -115,17 +92,9 @@ export const useTypes = ({
     onPut: handlePutType,
     deleteOne: deleteType,
     deleteMany:deleteTypes,
-    deleteManyIsError: deleteTypesIsError,
     items: types,
-    itemsIsLoading: typesIsLoading,
-    itemsIsError: typesIsError,
-    itemsIsSuccess: typesIsSuccess,
-    refetch: refetchTypes,
     post: postType,
     onChangeTitle: handleChangeTitle,
     onChangeLimit: handleChangeLimit,
-    isLoading,
-    isSuccess,
-    isError
   };
 };
