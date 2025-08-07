@@ -1,12 +1,8 @@
 export * from './model/constants';
 
-export * from '../modules/auth/ui/auth-button';
-
 export * from './ui/greeting-title';
 
 export * from './ui/basic-modal';
-
-export * from './model/schemas/recipe.schema';
 
 export type * from './model/interfaces/recipe.interface';
 
@@ -31,10 +27,6 @@ export type * from "./model/interfaces/auth.interface"
 export * from "./model/schemas/auth.schema"
 
 export * from "./api/queries/characteristic/characteristic.queries"
-
-export * from "../modules/admin/ui/characteristics/post-form/form-label"
-
-export *from '../modules/admin/ui/characteristics/post-form/form-title'
 
 export * from "./ui/close-button-modal"
 

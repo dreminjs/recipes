@@ -1,6 +1,3 @@
-import { PostRecipeFormSchema } from "../schemas/recipe.schema"
-
-import { z } from "zod";
 
 export interface IGetRecipesQueryParameters {
     typeId?: string
@@ -19,5 +16,3 @@ export interface IGetRecipesSelectionQueryParameters {
     limit?: number
     cursor?: number
 }
-
-export type IPostRecipeForm = z.infer<typeof PostRecipeFormSchema>;

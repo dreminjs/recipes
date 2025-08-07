@@ -1,6 +1,6 @@
 import { Step, User } from '@prisma/client';
 
-export type IStep = Pick<Step, 'content'>;
+export type IStep = Pick<Step, 'content' | "index">;
 
 export interface IInfiniteScrollResponse<T> {
   items: T[];

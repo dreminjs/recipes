@@ -1,5 +1,6 @@
 import { BasicModal } from "@/shared"
 import { FC } from "react"
+import { InputStep } from "./input-step"
 
 interface IProps {
     isOpen: boolean
@@ -8,12 +9,9 @@ interface IProps {
 
 export const StepsModal: FC<IProps> = (props) => {
 
-
-
     return (
         <BasicModal {...props} >
-
-            steps modal
+            <InputStep />
         </BasicModal>
     )
 }

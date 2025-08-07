@@ -144,6 +144,7 @@ model Step {
   createdAt DateTime @default(now()) @map("created_at")
   id        String   @id @default(uuid())
   content   String
+  index     Int
   recipeId  String   @map("recipe_id")
   recipe    Recipe   @relation(references: [id], fields: [recipeId])
 

@@ -13,11 +13,11 @@ export class CreateRecipeDto {
   @IsString({ message: 'Описание должно быть строкой' })
   description: string;
 
-  // @IsArray({ message: 'Ингредиенты должны быть массивом' })
-  // recipeIngredients: RecipeIngredient[];
+  @IsArray({ message: 'Ингредиенты должны быть массивом' })
+  recipeIngredients: RecipeIngredient[];
 
-  // @IsArray({ message: 'Шаги должны быть массивом' })
-  // steps: IStep[];
+  @IsArray({ message: 'Шаги должны быть массивом' })
+  steps: IStep[];
 
   @IsString()
   nationalCuisineId: string;

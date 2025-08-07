@@ -45,7 +45,7 @@ export class RecipeController {
       recipeIngredient: { createMany: { data: [] } },
       steps: {
         createMany: {
-          data: [],
+          data: body.steps,
         },
       },
       user: {
