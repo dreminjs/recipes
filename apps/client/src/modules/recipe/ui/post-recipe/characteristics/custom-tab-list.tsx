@@ -1,7 +1,7 @@
 import { Box, Tab } from '@mui/material';
 import { FC } from 'react';
 import { TabList } from '@mui/lab';
-import { IChoosedItemTabContent, IChooseItemTabContent } from '../../model/interfaces/characteristics.interface';
+import { IChoosedItemTabContent, IChooseItemTabContent } from '@/modules/admin/model/interfaces/characteristics.interface';
 
 interface IProps {
   onChange: (_: unknown, newTab: string) => void;

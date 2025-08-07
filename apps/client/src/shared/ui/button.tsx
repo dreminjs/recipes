@@ -14,7 +14,7 @@ interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button: FC<IProps> = ({
   variant = "orange",
-  size = 'md',
+  size = 'sm',
   className = '',
   children,
   type = 'button',

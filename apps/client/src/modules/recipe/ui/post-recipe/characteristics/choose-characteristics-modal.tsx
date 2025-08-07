@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
 import { TabContext } from '@mui/lab/';
-import { CustomTabList } from './custom-tab-list';
 import { Box, Modal } from '@mui/material';
-import { ChooseCharacteristicTabPanel } from './choose-characteristic-tab-panel';
-import { ChoosedCharacteristicsTabPanel } from './choosed-characteristic-tab-panel';
+import { ChoosedCharacteristicsTabPanel } from './choosed-characteristics-tab-panel';
 import { BasicModal } from '@/shared';
-import { ACTION_TABS } from '../../model/constants';
+import { ACTION_TABS } from '../../../../admin/model/constants';
+import { CustomTabList } from './custom-tab-list';
+import { ChooseCharacteristicTabPanel } from './choose-characteristic-tab-panel';
 
 interface IProps {
   isVisible: boolean;

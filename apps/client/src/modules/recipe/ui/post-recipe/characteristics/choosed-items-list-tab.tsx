@@ -27,8 +27,6 @@ export const ChoosedItemsListTab: FC<IProps> = ({
       <div className="px-3 py-1 bg-amber-100 text-amber-800 text-sm font-medium">
         {typeLabels[type]}
       </div>
-
-      {/* Содержимое */}
       <div className="p-3">
         {!title ? (
           <p className="text-amber-400 italic">Не выбрано</p>

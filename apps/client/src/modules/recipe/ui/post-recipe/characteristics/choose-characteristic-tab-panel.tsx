@@ -1,8 +1,8 @@
+import { CHOOSE_ITEM_TAB_LIST } from '@/modules/admin/model/constants';
+import { ChooseItemListTab } from '@/modules/admin/ui/characteristics/choose-item-list-tab';
+import { TabsLayout } from '@/modules/admin/ui/characteristics/tabs-layout';
 import { FC, useState } from 'react';
-import { ChooseItemListTab } from './choose-item-list-tab';
 import { CustomTabList } from './custom-tab-list';
-import { TabsLayout } from './tabs-layout';
-import { CHOOSE_ITEM_TAB_LIST } from '../../model/constants';
 
 interface IProps {
   parentNumber: string;
