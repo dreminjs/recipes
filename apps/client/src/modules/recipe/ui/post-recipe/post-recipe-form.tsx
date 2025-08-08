@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Button, IPostRecipeForm, PostRecipeFormSchema } from '@/shared';
+import { Button } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FC, useState } from 'react';
 import { useAtomValue } from 'jotai';
@@ -8,6 +8,8 @@ import { usePostRecipe } from '../../model/api/queries';
 import { RecipeFieldForm } from './recipe-field-form';
 import { RecipeTextareaForm } from './recipe-textarea-form';
 import { UploadRecipePhotoModal } from './upload-recipe-photo-modal';
+import { IPostRecipeForm } from '../../model/types/create-recipe.dto';
+import { PostRecipeFormSchema } from '../../model/schemas/recipe.schema';
 
 interface IProps {
   onOpenCharacteristicsModal: () => void;

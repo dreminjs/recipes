@@ -1,24 +1,24 @@
-import { Box, Modal } from '@mui/material';
-import { FC, ReactNode, useEffect } from 'react';
+import { Box, Modal, BoxProps } from '@mui/material';
+import { FC, ReactNode } from 'react';
 
-interface IProps {
+type Props = {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
-}
+} & BoxProps
 
-export const BasicModal: FC<IProps> = ({
+export const BasicModal: FC<Props> = ({
   isOpen,
   onClose,
   children,
+  ...props
 }) => {
   return (
     <Modal
-      className="flex flex-col items-center"
       open={isOpen}
       onClose={onClose}
     >
-      <Box bgcolor={"white"} borderRadius={5} marginTop={10} padding={5}>
+      <Box {...props} bgcolor={"white"} borderRadius={5} marginTop={10} padding={5}>
         {children}  
       </Box>
     </Modal>

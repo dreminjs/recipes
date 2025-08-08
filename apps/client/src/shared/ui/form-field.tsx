@@ -22,7 +22,7 @@ export const FormField = <T extends FieldValues>({
 }: FormFieldProps<T>) => {
 
   return (
-    <fieldset className={`space-y-2 mb-2 ${className}`}>
+    <fieldset className={`space-y-2 ${className}`}>
       {label && (
         <label htmlFor={type.toString()} className="block text-sm font-medium text-amber-800">
           {label}

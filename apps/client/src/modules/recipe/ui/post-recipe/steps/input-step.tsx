@@ -1,9 +1,14 @@
 import { useAddCharacteristic } from '@/modules/recipe/model/hooks/use-add-characteristic';
 import { StepFormSchema } from '@/modules/recipe/model/schemas/step.schema';
 import { ICreateStepFormDto } from '@/modules/recipe/model/types/create-step.dto';
-import { Button } from '@/shared';
+import { Button, FormField } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import {
+  FieldValues,
+  RegisterOptions,
+  useForm,
+  UseFormRegisterReturn,
+} from 'react-hook-form';
 
 export const InputStep = () => {
   const { onAddStep } = useAddCharacteristic();
@@ -11,6 +16,7 @@ export const InputStep = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ICreateStepFormDto>({
     resolver: zodResolver(StepFormSchema),
@@ -18,20 +24,21 @@ export const InputStep = () => {
 
   return (
     <form
-      onSubmit={handleSubmit((data) => onAddStep(data.content))}
-      className="flex gap-5"
+      onSubmit={handleSubmit((data) => {
+        onAddStep(data.content);
+        reset();
+      })}
+      className="flex gap-5 mb-4 w-[320px] mx-auto"
     >
-      <fieldset>
-        <input
-          {...register('content')}
-          className="border-b-2 outline-none"
-          type="text"
-          placeholder="Введите новый шаг..."
-        />
-        {errors.content?.message && <p className='text-red'>{errors.content?.message}</p>}
-      </fieldset>
+      <FormField<ICreateStepFormDto>
+        register={register}
+        type={'content'}
+        placeholder={'Введите значение...'}
+        error={errors.content?.message}
+        className="w-full"
+      />
       <Button type="submit" variant="ghost">
-        Добавить
+        ✅
       </Button>
     </form>
   );

@@ -3,6 +3,6 @@ import z from "zod";
 export const StepFormSchema = z.object({
   content: z
     .string()
-    .min(3, 'Title must be at least 3 characters long')
-    .max(100, 'Title must be at most 100 characters long'),
+    .min(3, 'Минимальная длина 3 символа')
+    .max(40, 'Шаг должен быть короче 40 символов'),
 })
