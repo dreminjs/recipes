@@ -9,13 +9,13 @@ import { useForm } from 'react-hook-form';
 interface IProps {
   defualtContentValue: string;
   currentItemIdx: number;
-  handleHideInput: () => void;
+  onHideInput: () => void;
 }
 
 export const UpdateStepItemForm: FC<IProps> = ({
   defualtContentValue,
   currentItemIdx,
-  handleHideInput,
+  onHideInput,
 }) => {
   const methods = useForm<ICreateStepFormDto>({
     resolver: zodResolver(StepFormSchema),
@@ -29,10 +29,10 @@ export const UpdateStepItemForm: FC<IProps> = ({
   const handleSubmit = methods.handleSubmit((data) => {
     setSteps((prev) =>
       prev.map((el, idx) =>
-        currentItemIdx === idx ? { content: data.content } : el
+        currentItemIdx === idx ? { content: data.content, id: el.id } : el
       )
     );
-    handleHideInput();
+    onHideInput();
   });
 
   return (

@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { AuthButton, FormField, AuthFormLayout } from '@/shared';
+import { FormField, AuthFormLayout } from '@/shared';
 import { NextRouter, useRouter } from 'next/router';
-import { passwordResetFormSchema } from 'src/modules/user/modal/schema';
-import { useResetPassword } from 'src/modules/user/api/queries';
+import { passwordResetFormSchema } from '@/modules/user/modal/schema';
+import { useResetPassword } from '@/modules/user/api/queries';
 import { IResetPasswordForm } from '@/modules/user/modal/interface';
+import { AuthButton } from '@/modules/auth/ui/auth-button';
 
 export const ResetPasswordForm = () => {
   const { query } = useRouter() as NextRouter & { query: { token?: string } };

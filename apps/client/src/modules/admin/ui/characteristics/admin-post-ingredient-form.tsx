@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormLabel, IPostIngredientForm, IngredientFormSchema } from '@/shared';
+import { IPostIngredientForm, IngredientFormSchema } from '@/shared';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormTitle } from 'src/modules/admin/ui/characteristics/post-form/form-title';
 import { FormSubmit } from 'src/modules/admin/ui/characteristics/post-form/form-submit';
 import { measureOptions } from '../../model/constants';
+import { FormLabel } from './post-form/form-label';
 
 interface IProps {
   onPost: (data: IPostIngredientForm) => void;

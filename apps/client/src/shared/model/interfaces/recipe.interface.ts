@@ -16,3 +16,8 @@ export interface IGetRecipesSelectionQueryParameters {
     limit?: number
     cursor?: number
 }
+
+export type TStep = {
+    content: string
+    id: string
+}

@@ -1,6 +1,7 @@
+import { NotificationActions } from "../notifications.interface";
 import { useNotificationStore } from "../store";
 
-export const useNotificationActions = () => {
+export const useNotificationActions = (): NotificationActions => {
   return {
     addSuccess: useNotificationStore(state => state.addSuccessNotification),
     addError: useNotificationStore(state => state.addErrorNotification),

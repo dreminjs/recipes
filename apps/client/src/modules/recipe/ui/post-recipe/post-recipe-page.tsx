@@ -7,21 +7,27 @@ export const PostRecipePage = () => {
   const [isCharaceteristicModalVisible, setIsCharaceteristicModalVisible] =
     useState(false);
 
-  const [isStepsModalVisible, setIsStepsModalVisible] = useState(false)
+  const [isStepsModalVisible, setIsStepsModalVisible] = useState(false);
 
   const handleToggleCharacteristicModal = () =>
     setIsCharaceteristicModalVisible((prev) => !prev);
 
-  const handleToggleStepsModal = () => setIsStepsModalVisible(prev => !prev)
+  const handleToggleStepsModal = () => setIsStepsModalVisible((prev) => !prev);
 
   return (
     <>
-      <PostRecipeForm onOpenStepsModal={handleToggleStepsModal} onOpenCharacteristicsModal={handleToggleCharacteristicModal} />
+      <PostRecipeForm
+        onOpenStepsModal={handleToggleStepsModal}
+        onOpenCharacteristicsModal={handleToggleCharacteristicModal}
+      />
       <ChooseCharacteristicsModal
         isVisible={isCharaceteristicModalVisible}
         onClose={handleToggleCharacteristicModal}
       />
-      <StepsModal isOpen={isStepsModalVisible} onClose={handleToggleStepsModal} />
+      <StepsModal
+        isOpen={isStepsModalVisible}
+        onClose={handleToggleStepsModal}
+      />
     </>
   );
 };

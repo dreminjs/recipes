@@ -4,10 +4,7 @@ import { ICreateStepFormDto } from '@/modules/recipe/model/types/create-step.dto
 import { Button, FormField } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  FieldValues,
-  RegisterOptions,
   useForm,
-  UseFormRegisterReturn,
 } from 'react-hook-form';
 
 export const InputStep = () => {

@@ -1,16 +1,12 @@
 import { stepsAtom } from '@/app';
 import { useAtom } from 'jotai';
+import { nanoid } from 'nanoid';
 
 export const useAddCharacteristic = () => {
   const [steps, setSteps] = useAtom(stepsAtom);
 
   const handleAddStep = (content: string) => {
-    if (steps.length === 0) {
-      setSteps([{ content, index: 1 }]);
-    } else {
-      console.log(steps)
-      setSteps((prev) => [...prev, { content, index: prev.at(-1)!.index + 1 }]);
-    }
+    setSteps((prev) => [...prev, { content, id: nanoid() }]);
   };
 
   return { onAddStep: handleAddStep, steps };

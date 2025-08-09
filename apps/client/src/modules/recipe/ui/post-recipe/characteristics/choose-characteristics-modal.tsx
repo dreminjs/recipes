@@ -23,10 +23,14 @@ export const ChooseCharacteristicsModal: FC<IProps> = ({
   };
 
   return (
-    <BasicModal isOpen={isVisible} onClose={onClose}>
+    <BasicModal
+      sx={{ maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}
+      isOpen={isVisible}
+      onClose={onClose}
+    >
       <TabContext value={tab}>
-        <Box sx={{ width: "450px", height: '500px' }}>
-          <CustomTabList  onChange={handleChange} tabs={ACTION_TABS} />
+        <Box sx={{ height: '500px' }}>
+          <CustomTabList onChange={handleChange} tabs={ACTION_TABS} />
           <ChooseCharacteristicTabPanel parentNumber="0" />
           <ChoosedCharacteristicsTabPanel parentNumber="1" />
         </Box>

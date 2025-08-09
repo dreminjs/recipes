@@ -10,6 +10,13 @@ export interface INotification {
 
 export type IAddNotificationDto = Omit<INotification, 'id' | 'type'>;
 
+export interface NotificationActions {
+    addSuccess: (dto?: IAddNotificationDto) => void;
+    addError: (dto?: IAddNotificationDto) => void;
+    addInfo: (dto?: Omit<IAddNotificationDto, "duration">) => void;
+    remove: (data: NotificationType) => void;
+}
+
 export interface INotificationStore {
   notifications: INotification[];
   addNotification: (data: Omit<INotification, 'id'>) => void;

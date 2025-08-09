@@ -1,18 +1,17 @@
-import { useSortable } from "@dnd-kit/sortable";
+import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import Image from 'next/image';
-import { FC } from "react";
+import { FC } from 'react';
 
-interface IProps  { id: string; preview: string; removeImage: (id: string) => void }
+interface IProps {
+  id: string;
+  preview: string;
+  removeImage: (id: string) => void;
+}
 
-export const PhotoItem: FC<IProps> = ({ id, preview, removeImage } ) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id });
+export const PhotoItem: FC<IProps> = ({ id, preview, removeImage }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),

@@ -1,13 +1,17 @@
 import { IStep } from 'interfaces';
-import { FC, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import { UpdateStepItemForm } from './update-step-item-form';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-type Props = IStep & {
+export type Props = {
+  id: string;
+  content: string;
   choosed: boolean;
   onUpdate: (index: number | null) => void;
   onDelete: () => void;
   idx: number;
-};
+} & IStep;
 
 export const StepsItem: FC<Props> = ({
   content,
@@ -15,16 +19,17 @@ export const StepsItem: FC<Props> = ({
   onUpdate,
   onDelete,
   idx,
+  id,
 }) => {
-  const containerRef = useRef<HTMLLIElement>(null);
+  const internalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!choosed) return;
 
     const handleClickOutside = (e: MouseEvent) => {
       if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
+        internalRef.current &&
+        !internalRef.current.contains(e.target as Node)
       ) {
         onUpdate(null);
       }
@@ -34,23 +39,52 @@ export const StepsItem: FC<Props> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [choosed, onUpdate]);
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id });
+
+  const style = !choosed
+    ? {
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }
+    : undefined;
+
+  const setCombinedRefs = useCallback(
+    (node: HTMLDivElement | null) => {
+      (internalRef as React.MutableRefObject<HTMLDivElement | null>).current =
+        node;
+      setNodeRef(node);
+    },
+    [setNodeRef]
+  );
+
   return (
     <li
-      ref={containerRef}
-      className="w-full flex items-center justify-between py-3 px-4 border-b border-gray-100 hover:bg-gray-50 transition-colors"
+      className="w-full flex items-center py-3 px-4 border-b border-gray-100 hover:bg-gray-50 transition-colors"
+      style={style}
     >
       {choosed ? (
         <UpdateStepItemForm
           currentItemIdx={idx}
           defualtContentValue={content}
-          handleHideInput={() => onUpdate(null)}
+          onHideInput={() => onUpdate(null)}
         />
       ) : (
         <>
-          <div className="py-2 px-3 text-gray-700 flex-1 truncate">
+          <div
+            {...(!choosed ? attributes : {})}
+            {...(!choosed ? listeners : {})}
+            ref={setCombinedRefs}
+            className="py-2 px-3 basis-3/4 text-gray-70 w-32"
+          >
             {content}
           </div>
-          <div className="flex gap-1">
+          <div className="flex justify-evenly basis-1/4">
             <button
               onClick={() => onUpdate(idx)}
               className="p-2 text-gray-500 hover:text-blue-500 hover:bg-blue-50 rounded-full transition-colors"

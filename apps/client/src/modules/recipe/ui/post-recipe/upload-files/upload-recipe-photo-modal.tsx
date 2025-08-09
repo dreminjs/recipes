@@ -1,11 +1,11 @@
 import { FC, useEffect, useRef, useState, useCallback } from 'react';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
-import { 
+import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
-  useSensors
+  useSensors,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -14,9 +14,15 @@ import {
 } from '@dnd-kit/sortable';
 import { BasicModal } from '@/shared';
 import { Button } from '@mui/material';
-import { FieldError, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { IPostRecipeForm } from '@/shared';
+import {
+  FieldError,
+  UseFormClearErrors,
+  UseFormRegister,
+  UseFormSetValue,
+} from 'react-hook-form';
 import { PhotoItem } from './photo-item';
+import { IPostRecipeForm } from '../../../model/types/create-recipe.dto';
+import { PreviewMessage } from './preview-message';
 
 type ImageItem = {
   id: string;
@@ -24,12 +30,15 @@ type ImageItem = {
   file: File;
 };
 
+type PhotosField = [File] | [File, ...File[]];
+
 interface IProps {
   register: UseFormRegister<IPostRecipeForm>;
   isOpen: boolean;
   onClose: () => void;
-  error?: string | FieldError 
-  setValue: UseFormSetValue<IPostRecipeForm>
+  error?: string | FieldError;
+  setValue: UseFormSetValue<IPostRecipeForm>;
+  clearErrors: UseFormClearErrors<IPostRecipeForm>;
 }
 
 export const UploadRecipePhotoModal: FC<IProps> = ({
@@ -38,6 +47,7 @@ export const UploadRecipePhotoModal: FC<IProps> = ({
   onClose,
   error,
   setValue,
+  clearErrors,
 }) => {
   const [items, setItems] = useState<ImageItem[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -54,17 +64,19 @@ export const UploadRecipePhotoModal: FC<IProps> = ({
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFiles = Array.from(event.target.files);
-      
-      newFiles.forEach(file => {
+
+      newFiles.forEach((file) => {
         const reader = new FileReader();
         reader.onloadend = () => {
-          setItems(prev => [
+          setItems((prev) => [
             ...prev,
             {
-              id: `img-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+              id: `img-${Date.now()}-${Math.random()
+                .toString(36)
+                .slice(2, 11)}`,
               preview: reader.result as string,
               file,
-            }
+            },
           ]);
         };
         reader.readAsDataURL(file);
@@ -73,34 +85,45 @@ export const UploadRecipePhotoModal: FC<IProps> = ({
   };
 
   const removeImage = (id: string) => {
-    setItems(prev => prev.filter(item => item.id !== id));
+    setItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    
+
     if (over && active.id !== over.id) {
-      setItems(items => {
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over.id);
+      setItems((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
         return arrayMove(items, oldIndex, newIndex);
       });
     }
   };
 
   useEffect(() => {
-    setValue('photos', items.map(item => item.file));
-  }, [items, setValue]);
+    const files = items.map((item) => item.file);
+
+    if (files.length > 0) {
+      setValue('photos', files as PhotosField);
+      clearErrors('photos');
+    } else {
+      setValue('photos', [] as unknown as PhotosField);
+    }
+  }, [clearErrors, items, setValue]);
 
   return (
-    <BasicModal isOpen={isOpen} onClose={onClose}>
-      <div className="space-y-3 w-full">
+    <BasicModal
+      sx={{ maxWidth: 700, marginLeft: 'auto', marginRight: 'auto' }}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
+      <div className="space-y-3">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
-          <SortableContext items={items.map(item => item.id)}>
+          <SortableContext items={items.map((item) => item.id)}>
             {items.length > 0 ? (
               <div className="grid grid-cols-3 gap-2">
                 {items.map((item) => (
@@ -113,16 +136,7 @@ export const UploadRecipePhotoModal: FC<IProps> = ({
                 ))}
               </div>
             ) : (
-              <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center">
-                <div className="text-center p-4">
-                  <p className="mt-2 text-sm text-gray-600">
-                    Превью рецептов появится здесь
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Рекомендуемый размер: 1200×800px
-                  </p>
-                </div>
-              </div>
+              <PreviewMessage />
             )}
           </SortableContext>
         </DndContext>
@@ -149,12 +163,9 @@ export const UploadRecipePhotoModal: FC<IProps> = ({
         />
 
         {error && (
-          <p className="text-red-500 text-sm mt-1">
-            {error.toString()}
-          </p>
+          <p className="text-red-500 text-sm mt-1">{error.toString()}</p>
         )}
       </div>
     </BasicModal>
   );
 };
-

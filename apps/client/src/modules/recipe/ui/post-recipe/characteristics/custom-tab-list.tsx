@@ -1,7 +1,10 @@
 import { Box, Tab } from '@mui/material';
 import { FC } from 'react';
 import { TabList } from '@mui/lab';
-import { IChoosedItemTabContent, IChooseItemTabContent } from '@/modules/admin/model/interfaces/characteristics.interface';
+import {
+  IChoosedItemTabContent,
+  IChooseItemTabContent,
+} from '@/modules/admin/model/interfaces/characteristics.interface';
 
 interface IProps {
   onChange: (_: unknown, newTab: string) => void;
@@ -11,7 +14,15 @@ interface IProps {
 export const CustomTabList: FC<IProps> = ({ onChange, tabs }) => {
   return (
     <Box
-      sx={{ maxWidth: { xs: 320, sm: 420, display: "flex", justifyContent: "center" }, backgroundColor: 'transparent'}}
+      sx={{
+        maxWidth: {
+          xs: 320,
+          sm: 420,
+        },
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        backgroundColor: 'transparent',
+      }}
     >
       <TabList
         textColor="inherit"
