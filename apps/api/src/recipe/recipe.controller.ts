@@ -42,10 +42,14 @@ export class RecipeController {
       title: body.title,
       description: body.description,
       photos: fileNames,
-      recipeIngredient: { createMany: { data: [] } },
+      recipeIngredient: {
+        createMany: {
+          data: body.ingredients,
+        },
+      },
       steps: {
         createMany: {
-          data: body.steps,
+          data: body.steps.map((el) => ({ content: el })),
         },
       },
       user: {
@@ -74,32 +78,34 @@ export class RecipeController {
     @CurrentUser('id') userId: string,
     @MinioFileNames() fileNames?: string[]
   ): Promise<Recipe> {
+    await this.minioClientService.deleteMany(body?.removedPictures);
 
-    await this.minioClientService.deleteMany(body?.removedPictures)
-
-    const recipe = await this.recipeService.updateOne({
-      title: body.title,
-      description: body.description,
-      photos: body.pictures,
-      recipeIngredient: { createMany: { data: [] } },
-      steps: {
-        createMany: {
-          data: [],
+    const recipe = await this.recipeService.updateOne(
+      {
+        title: body.title,
+        description: body.description,
+        photos: body.pictures,
+        recipeIngredient: { createMany: { data: [] } },
+        steps: {
+          createMany: {
+            data: [],
+          },
+        },
+        user: {
+          connect: { id: userId },
+        },
+        holiday: {
+          connect: { id: body.holidayId },
+        },
+        nationalCuisine: {
+          connect: { id: body.nationalCuisineId },
+        },
+        type: {
+          connect: { id: body.typeId },
         },
       },
-      user: {
-        connect: { id: userId },
-      },
-      holiday: {
-        connect: { id: body.holidayId },
-      },
-      nationalCuisine: {
-        connect: { id: body.nationalCuisineId },
-      },
-      type: {
-        connect: { id: body.typeId },
-      },
-    }, { id });
+      { id }
+    );
 
     return recipe;
   }

@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { IPostRecipeForm } from '@/shared';
 import { FieldError, UseFormRegister } from 'react-hook-form';
+import { IPostRecipeForm } from '../../model/types/create-recipe.dto';
 
 interface IProps {
   register: UseFormRegister<IPostRecipeForm>;

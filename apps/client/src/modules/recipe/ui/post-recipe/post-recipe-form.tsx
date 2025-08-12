@@ -15,18 +15,25 @@ import { useGetRecipeAdditionals } from '../../model/hooks/use-get-recipe-additi
 import { ActionsButtons } from './actions-buttons';
 
 interface IProps {
-  onOpenCharacteristicsModal: Func
-  onOpenStepsModal: Func
-  onOpenIngredientsModal: Func
+  onOpenCharacteristicsModal: Func;
+  onOpenStepsModal: Func;
+  onOpenIngredientsModal: Func;
 }
 
 export const PostRecipeForm: FC<IProps> = ({
   onOpenCharacteristicsModal,
   onOpenStepsModal,
-  onOpenIngredientsModal
+  onOpenIngredientsModal,
 }) => {
-  const { nationalCuisine, type, holiday, hasSteps } =
-    useGetRecipeAdditionals();
+  const {
+    nationalCuisine,
+    type,
+    holiday,
+    hasSteps,
+    hasIngredients,
+    ingredients,
+    steps,
+  } = useGetRecipeAdditionals();
 
   const notificationActions = useNotificationActions();
 
@@ -48,6 +55,7 @@ export const PostRecipeForm: FC<IProps> = ({
         {
           typeId: type?.id,
           hasSteps,
+          hasIngredients,
         },
         notificationActions
       )
@@ -58,6 +66,8 @@ export const PostRecipeForm: FC<IProps> = ({
         nationalCuisineId: nationalCuisine!.id,
         typeId: type!.id,
         holidayId: holiday!.id,
+        ingredients,
+        steps,
       });
     }
   };

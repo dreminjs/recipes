@@ -25,33 +25,30 @@ export class HolidayController {
 
   @Get()
   public async findMany(
-    @Query() { title, page, limit }: GetCharacteristicsQueryParameters
+    @Query() { search, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<Holiday>> {
-
     const itemsQuery = this.holidayService.findMany({
       skip: (page - 1) * limit,
       take: limit,
       where: {
-        ...(title && { title: { contains: title } }),
+        ...(search && { title: { contains: search } }),
       },
-    })
+    });
 
-    const countQuery = this.holidayService.count({where: {
-      ...(title && { title: { contains: title } }),
-    },})
+    const countQuery = this.holidayService.count({
+      where: {
+        ...(search && { title: { contains: search } }),
+      },
+    });
 
-    const [items, count] = await Promise.all([
-      itemsQuery,
-      countQuery,
-    ]);
-    
+    const [items, count] = await Promise.all([itemsQuery, countQuery]);
+
     return {
       items,
       itemsCount: count,
     };
   }
 
-  
   @AllowedRoles(Roles.ADMIN)
   @UseGuards(AccessTokenGuard, RolesGuard)
   @Put(':id')

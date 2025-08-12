@@ -18,6 +18,7 @@ import { AllowedRoles } from '../user/decorators/roles.decorator';
 import { AccessTokenGuard } from '../token';
 import { RolesGuard } from '../user/guards/roles.guard';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
+import { GetCharacteristicsQueryParameters } from '../shared';
 
 @Controller('ingredients')
 export class IngredientController {
@@ -44,18 +45,18 @@ export class IngredientController {
 
   @Get()
   public async findMany(
-    @Query() { title, page, limit }: GetIngredientsQueryParameters
+    @Query() { search, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<Ingredient>> {
     const itemsQuery = this.ingredientService.findMany({
       where: {
-        ...(title && { title: { contains: title } }),
+        ...(search && { title: { contains: search } }),
       },
       skip: (page - 1) * limit,
       take: limit,
     });
 
     const countQuery = this.ingredientService.count({
-      where: { ...(title ? { title: { contains: title } } : {}) },
+      where: { ...(search ? { title: { contains: search } } : {}) },
     });
 
     const [items, itemsCount] = await Promise.all([itemsQuery, countQuery]);

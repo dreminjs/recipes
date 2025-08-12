@@ -7,7 +7,7 @@ import {
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormTitle } from './form-title';
-import { FormSubmit } from './form-submit';
+
 interface IProps {
   onPost: (data: IPostCharacteristicForm) => void;
   onClose: () => void

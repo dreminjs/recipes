@@ -37,7 +37,7 @@ export const AdminNationalCuisinesPage: FC = () => {
           onChangePage={(_, newPage) =>
             nationalCuisinesProps.onChangePage(newPage)
           }
-          count={nationalCuisinesProps.items?.countItems || 0}
+          count={nationalCuisinesProps.items?.itemsCount || 0}
           limit={nationalCuisinesProps.limit}
           currentPage={nationalCuisinesProps.currentPage}
           onChangeLimit={nationalCuisinesProps.onChangeLimit}

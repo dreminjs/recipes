@@ -26,6 +26,14 @@ export interface IStandardResponse<T = any> {
   };
 }
 
+export interface IRecipeIngredientPayload {
+  ingredientId: string
+  amount: number
+}
+
+export interface IRecipeStepPayload {
+  content: string
+}
 
 export interface IMessageResponse {
   message: string

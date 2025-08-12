@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useGetIngredients } from '../../api/queries';
+import { useAtomValue } from 'jotai';
+import { ingredientsAtom } from '@/app';
 
 export const useIngredients = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -8,7 +10,7 @@ export const useIngredients = () => {
 
   const handleChangeSearchValue = (newValue: string) => {
     setSearchValue(newValue);
-    setCurrentPage(0);
+    setCurrentPage(1);
   };
 
   const handleChangePage = (newPage: number) => {
@@ -21,6 +23,8 @@ export const useIngredients = () => {
     page: currentPage,
     limit: 10,
   });
+
+  const choosedIngredients = useAtomValue(ingredientsAtom)
   
   return {
     apiStates,
@@ -32,5 +36,6 @@ export const useIngredients = () => {
       currentPage,
       onChangePage: handleChangePage,
     },
+    choosedIngredients
   };
 };

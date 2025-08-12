@@ -3,6 +3,7 @@ import { NotificationActions } from '@/modules/notifications/model/notifications
 interface IArgs {
   typeId?: string;
   hasSteps: boolean;
+  hasIngredients: boolean
 }
 
 export const validateCharacteristics = (

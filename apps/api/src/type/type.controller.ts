@@ -25,18 +25,18 @@ export class TypeController {
 
   @Get()
   public async findMany(
-    @Query() { title, page, limit }: GetCharacteristicsQueryParameters
+    @Query() { search, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<Type>> {
     const itemsQuery = this.typeService.findMany({
       where: {
-        ...(title && { title: { contains: title } }),
+        ...(search && { title: { contains: search } }),
       },
       skip: page === 0 ? 0 : (page - 1) * limit,
       take: limit,
     });
 
     const countQuery = this.typeService.count({
-      where: { ...(title && { title: { contains: title } }) },
+      where: { ...(search && { title: { contains: search } }) },
     });
 
     const [items, count] = await Promise.all([itemsQuery, countQuery]);

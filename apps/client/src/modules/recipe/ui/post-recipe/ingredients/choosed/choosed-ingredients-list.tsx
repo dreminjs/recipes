@@ -10,7 +10,7 @@ export const ChoosedIngredientsList = () => {
   const [choosedItemId, setChoosedItemId] = useState<string | null>(null);
 
   return (
-    <ul className="list-none p-0">
+    <ul className="list-none h-[350px] overflow-y-scroll p-0 pr-2">
       {ingredients.map((el) => {
         return (
           <ChoosedIngredientsItem

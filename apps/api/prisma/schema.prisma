@@ -153,7 +153,7 @@ model Step {
 model RecipeIngredient {
   id           String     @id @default(uuid())
   ingredient   Ingredient @relation(references: [id], fields: [ingredientId])
-  count        Int
+  amount        Int
   ingredientId String
   recipeId     String     @map("recipe_id")
   recipe       Recipe     @relation(references: [id], fields: [recipeId])

@@ -3,6 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { findMany } from "./services";
 
 export const useGetIngredients = (dto: IGetCharacteristicsQueryParameters) => useQuery({
-    queryKey: [SERVICE_KEYS.ingredients],
+    queryKey: [SERVICE_KEYS.ingredients, Object.values(dto)],
     queryFn: () => findMany(dto)
 })

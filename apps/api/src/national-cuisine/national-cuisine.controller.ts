@@ -40,23 +40,21 @@ export class NationalCuisineController {
 
   @Get()
   public async findMany(
-    @Query() { title, page, limit }: GetCharacteristicsQueryParameters
+    @Query() { search, page, limit }: GetCharacteristicsQueryParameters
   ): Promise<IItemsPaginationResponse<NationalCuisine>> {
     const itemsQuery = this.nationalCuisineService.findMany({
       where: {
-        ...(title && { title: { contains: title } }),
+        ...(search && { title: { contains: search } }),
       },
       skip: (page - 1) * limit,
       take: limit,
     });
 
     const countQuery = this.nationalCuisineService.count({
-      where: { ...(title && { title: { contains: title } }) },
+      where: { ...(search && { title: { contains: search } }) },
     });
 
     const [items, count] = await Promise.all([itemsQuery, countQuery]);
-
-    this.logger.log(items)
 
     return { items: items, itemsCount: count };
   }

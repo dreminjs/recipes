@@ -1,6 +1,5 @@
-import { RecipeIngredient } from '@prisma/client';
 import { IsArray, IsString, MaxLength, MinLength } from 'class-validator';
-import { IStep } from 'interfaces';
+import { IRecipeIngredientPayload } from 'interfaces';
 
 export class CreateRecipeDto {
   @MinLength(2, { message: 'Заголовок должен быть больше 2 символов' })
@@ -14,10 +13,10 @@ export class CreateRecipeDto {
   description: string;
 
   @IsArray({ message: 'Ингредиенты должны быть массивом' })
-  recipeIngredients: RecipeIngredient[];
+  ingredients: IRecipeIngredientPayload[];
 
   @IsArray({ message: 'Шаги должны быть массивом' })
-  steps: IStep[];
+  steps: string[];
 
   @IsString()
   nationalCuisineId: string;

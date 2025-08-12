@@ -36,7 +36,7 @@ export const AdminTypesPage: FC = () => {
             typesProps.onChangePage(newPage);
           }}
           type="types"
-          count={typesProps.items?.countItems ? typesProps.items.countItems : 0}
+          count={typesProps.items?.itemsCount || 0}
           limit={typesProps.limit}
           currentPage={typesProps.currentPage}
           onChangeLimit={typesProps.onChangeLimit}

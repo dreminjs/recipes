@@ -25,6 +25,10 @@ export const AdminPostCharaceteristicModal: FC<IProps> = ({
     <BasicModal
       isOpen={isPostCharacteristicModalVisible}
       onClose={onToggleVisibility}
+      sx={{
+        margin: "50px auto",
+        maxWidth: 500
+      }}
     >
         <AdminPostCharacteristicForm
           onPost={onPost}

@@ -8,9 +8,10 @@ export const IngredietsList = () => {
     apiStates: { data, isLoading, error },
     pagination: { onChangePage, currentPage },
     filter: { searchValue, onChangeSearchValue },
+    choosedIngredients,
   } = useIngredients();
 
-  const [choosedIngredientId, setChoosedIngredientId] = useState<string | null>(
+  const [ingredientIdToAdd, setIngredientIdToAdd] = useState<string | null>(
     null
   );
 
@@ -31,8 +32,11 @@ export const IngredietsList = () => {
     >
       {data?.items.map((el) => (
         <IngredientItem
-          choosed={el.id === choosedIngredientId}
-          onChoose={(data) => setChoosedIngredientId(data)}
+          isAlreadyAdded={choosedIngredients.some(
+            (choosedEl) => choosedEl.id === el.id
+          )}
+          choosed={el.id === ingredientIdToAdd}
+          onChoose={(data) => setIngredientIdToAdd(data)}
           key={el.id}
           {...el}
         />

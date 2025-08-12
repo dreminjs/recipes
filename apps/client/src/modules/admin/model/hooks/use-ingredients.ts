@@ -5,10 +5,13 @@ import {
   useDeleteManyIngredients,
   usePutIngredient,
 } from '../../api/ingredient/queries';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useDebounce } from 'use-debounce';
-import { activeCellAtom, selectedCharacteristicsIdsAtom } from 'src/app/stores/characteristics.store';
+import {
+  activeCellAtom,
+  selectedCharacteristicsIdsAtom,
+} from 'src/app/stores/characteristics.store';
 
 export const useIngredients = ({
   initialTitle,
@@ -26,34 +29,32 @@ export const useIngredients = ({
   const setActiveCell = useSetAtom(activeCellAtom);
   const setCharacteristicsIds = useSetAtom(selectedCharacteristicsIdsAtom);
 
-  const {
-    mutate: putIngredient,
-  } = usePutIngredient();
+  const { mutate: putIngredient } = usePutIngredient();
 
-  const {
-    data,
-  } = useGetIngredients({ title: value, page: currentPage, limit });
-  const {
-    mutate: postIngredient,
-  } = usePostIngredient();
-  const {
-    mutate: deleteManyIngredients,
-  } = useDeleteManyIngredients();
+  const { data } = useGetIngredients({
+    title: value,
+    page: currentPage,
+    limit,
+  });
+  const { mutate: postIngredient } = usePostIngredient();
+  const { mutate: deleteManyIngredients } = useDeleteManyIngredients();
 
   const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) =>
     setTitle(event.target.value);
+
   const onChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
     setCharacteristicsIds([]);
     setCurrentPage(newPage);
+    setTitle("")
   };
 
   const handleChangeLimit = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setLimit(parseInt(event.target.value, 10));
-      setCurrentPage(0);
+      setCurrentPage(1);
     },
     []
   );
@@ -96,6 +97,6 @@ export const useIngredients = ({
     onChangeTitle,
     onChangeLimit: handleChangeLimit,
     limit,
-    items: data
+    items: data,
   };
 };

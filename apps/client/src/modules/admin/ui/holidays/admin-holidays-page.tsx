@@ -33,7 +33,7 @@ export const AdminHolidaysPage = () => {
             newCharacteristic && holidaysProps.onPut(newCharacteristic)
           }
           onChangePage={(_, newPage) => holidaysProps.onChangePage(newPage)}
-          count={holidaysProps.items?.countItems || 0}
+          count={holidaysProps.items?.itemsCount || 0}
           limit={holidaysProps.limit}
           currentPage={holidaysProps.currentPage}
           onChangeLimit={holidaysProps.onChangeLimit}
