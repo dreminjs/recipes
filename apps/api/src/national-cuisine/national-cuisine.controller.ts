@@ -58,7 +58,7 @@ export class NationalCuisineController {
 
     this.logger.log(items)
 
-    return { items: items, countItems: count };
+    return { items: items, itemsCount: count };
   }
 
   @AllowedRoles(Roles.ADMIN)

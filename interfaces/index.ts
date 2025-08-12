@@ -11,7 +11,7 @@ export type Characteristics = 'holidays' | 'types' | 'national-cuisines' | 'ingr
 
 export interface IItemsPaginationResponse<T> {
   items: T[];
-  countItems: number;
+  itemsCount: number;
 }
 
 export type IAuthResponse = Omit<User,"hashPassword" | "salt" | "createdAt" | "link">

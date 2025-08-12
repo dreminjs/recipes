@@ -1,19 +1,25 @@
 import { FC } from 'react';
 import { Checkbox, TableCell, TableRow } from '@mui/material';
 import { AdminCharacteristicCell } from './admin-characteristic-cell';
-import { ICharacteristic } from '@/shared';
+import { TCharacteristic } from '@/shared';
+import { Measure } from '@prisma/client';
 
 interface IProps {
-  el: ICharacteristic;
+  el: TCharacteristic & { measure: Measure };
   rowIdx: number;
   isChecked: boolean;
   onSelect: (id: string) => void;
 }
 
-export const AdminTableRow: FC<IProps> = function({ el, rowIdx, isChecked, onSelect }) {
+export const AdminTableRow: FC<IProps> = function ({
+  el,
+  rowIdx,
+  isChecked,
+  onSelect,
+}) {
   const handleCheckboxClick = () => {
     onSelect(el.id);
-  }
+  };
 
   return (
     <TableRow hover role="checkbox" key={el.id} sx={{ cursor: 'pointer' }}>
@@ -48,4 +54,4 @@ export const AdminTableRow: FC<IProps> = function({ el, rowIdx, isChecked, onSel
       )}
     </TableRow>
   );
-}
+};

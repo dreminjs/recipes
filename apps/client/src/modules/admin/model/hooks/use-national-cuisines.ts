@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { useSetAtom } from 'jotai';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';

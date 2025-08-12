@@ -8,7 +8,7 @@ import {
 import { ChangeEvent, useCallback, useState } from 'react';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useDebounce } from 'use-debounce';
-import { activeCellAtom, characteristicsAtom, selectedCharacteristicsIdsAtom } from 'src/app/stores/characteristics.store';
+import { activeCellAtom, selectedCharacteristicsIdsAtom } from 'src/app/stores/characteristics.store';
 
 export const useIngredients = ({
   initialTitle,

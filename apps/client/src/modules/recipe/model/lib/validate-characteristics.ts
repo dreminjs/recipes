@@ -1,9 +1,8 @@
 import { NotificationActions } from '@/modules/notifications/model/notifications.interface';
 
 interface IArgs {
-  nationalCuisineId?: string;
   typeId?: string;
-  holidayId?: string;
+  hasSteps: boolean;
 }
 
 export const validateCharacteristics = (
@@ -13,11 +12,8 @@ export const validateCharacteristics = (
   if (!args.typeId) {
     notificationActions.addError({ message: 'Добавте Тип рецепта!' });
     return false;
-  } else if (!args.nationalCuisineId) {
-    notificationActions.addError({ message: 'Добавте Кухню рецепта!' });
-    return false;
-  } else if (!args.holidayId) {
-    notificationActions.addError({ message: 'Добавте Праздник рецепта!' });
+  } else if (!args.hasSteps) {
+    notificationActions.addError({ message: 'Добавте Шаги в рецепт!' });
     return false;
   }
 

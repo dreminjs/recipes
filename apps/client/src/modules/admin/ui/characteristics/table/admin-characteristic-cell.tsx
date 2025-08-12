@@ -1,6 +1,6 @@
 import { TableCell } from '@mui/material';
 import { ChangeEvent, FC, useEffect, useRef } from 'react';
-import { ICharacteristicsTableCoordinats, measuresArray } from '@/shared';
+import { ICharacteristicsTableCoordinats, measuresOptions, } from '@/shared';
 import { useAtom, useSetAtom } from 'jotai';
 import { activeCellAtom, newCharacteristicAtom } from 'src/app/stores/characteristics.store';
 
@@ -85,7 +85,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
             id={id}
             autoFocus
           >
-            {measuresArray.map((option, index) => (
+            {measuresOptions.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
               </option>
@@ -109,7 +109,7 @@ export const AdminCharacteristicCell: FC<IProps> = ({
               return payload ? 'yes' : 'no';
             } else if (type === 'options') {
               return (
-                measuresArray.find((option) => option.value === payload)
+                measuresOptions.find((option) => option.value === payload)
                   ?.label || payload
               );
             }

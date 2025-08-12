@@ -58,10 +58,10 @@ export class IngredientController {
       where: { ...(title ? { title: { contains: title } } : {}) },
     });
 
-    const [items, countItems] = await Promise.all([itemsQuery, countQuery]);
+    const [items, itemsCount] = await Promise.all([itemsQuery, countQuery]);
     return {
       items,
-      countItems,
+      itemsCount,
     };
   }
 

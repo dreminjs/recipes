@@ -39,7 +39,7 @@ export const AdminIngredientPage = () => {
           currentPage={ingredientsProps.currentPage}
           onChangePage={ingredientsProps.onChangePage}
           onChangeLimit={ingredientsProps.onChangeLimit}
-          count={ingredientsProps.items?.countItems || 0}
+          count={ingredientsProps.items?.itemsCount || 0}
           type={'ingredients'}
         />
       </CharactersticsLayout>

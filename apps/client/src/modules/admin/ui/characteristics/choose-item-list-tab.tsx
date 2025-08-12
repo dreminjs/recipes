@@ -1,18 +1,16 @@
-import { Characteristics } from '@/interfaces*';
 import TabPanel from '@mui/lab/TabPanel';
 import Pagination from '@mui/material/Pagination';
 import { FC } from 'react';
 import { useGetCharacteristics } from 'src/shared/api/queries/characteristic/characteristic.queries';
 import { useCharacteristicActions } from '../../model/hooks/use-characteristics-actions';
 import { CharacteristicItem } from './characteristic-item';
+import { Characteristics } from 'interfaces';
 const LIMIT = 5;
 
 interface IProps {
   value: string;
   type: Characteristics;
 }
-
-
 
 export const ChooseItemListTab: FC<IProps> = ({ value, type }) => {
   const {
@@ -35,7 +33,7 @@ export const ChooseItemListTab: FC<IProps> = ({ value, type }) => {
   return (
     <TabPanel value={value}>
       <div className="flex flex-col items-center">
-        <div className="relative w-full mb-4 flex justify-between items-center">
+        <div className="w-full mb-4 flex justify-between items-center">
           <input
             type="text"
             placeholder="Поиск..."
@@ -71,15 +69,15 @@ export const ChooseItemListTab: FC<IProps> = ({ value, type }) => {
             <li>ничего не найдено :(</li>
           )}
         </ul>
-        {characteristics?.countItems !== 0 && (
+        {characteristics?.itemsCount !== 0 && (
           <Pagination
             page={page}
             onChange={(_: unknown, currentPage: number) =>
               onChangePage(currentPage)
             }
             count={
-              characteristics?.countItems
-                ? Math.ceil(characteristics.countItems / LIMIT)
+              characteristics?.itemsCount
+                ? Math.ceil(characteristics.itemsCount / LIMIT)
                 : 0
             }
           />

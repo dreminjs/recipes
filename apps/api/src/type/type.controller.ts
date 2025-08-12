@@ -43,7 +43,7 @@ export class TypeController {
 
     return {
       items,
-      countItems: count,
+      itemsCount: count,
     };
   }
 

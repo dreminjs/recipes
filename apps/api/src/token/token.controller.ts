@@ -17,9 +17,8 @@ export class TokenController {
     @CurrentUser('id') userId: string,
     @Res({ passthrough: true }) res: Response
   ): Promise<ITokens> {
-    const tokens = await this.tokenService.generateTokens({ userId });
 
-    this.logger.log(tokens)
+    const tokens = await this.tokenService.generateTokens({ userId });
 
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,

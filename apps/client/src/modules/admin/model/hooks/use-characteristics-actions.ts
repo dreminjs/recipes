@@ -1,5 +1,5 @@
-import { Characteristics } from '@/interfaces*';
-import { ICharacteristicPayload } from '@/shared*';
+import { ICharacteristicPayload } from '@/shared';
+import { Characteristics } from 'interfaces';
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
 import { holidayAtom, nationalCuisineAtom, typeAtom } from 'src/app/stores/post-recipe.store';

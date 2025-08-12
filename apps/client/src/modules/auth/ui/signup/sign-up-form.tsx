@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthFormLayout } from 'src/shared/ui/layouts/auth-form-layout';
-import { AuthButton, FormField, ISignUp, SignUpSchema } from '@/shared';
+import { FormField, ISignUp, SignUpSchema } from '@/shared';
 import { useSignUp } from '../../api/queries';
+import { AuthButton } from '../auth-button';
 
 export const SignUpForm = () => {
   const {
@@ -21,6 +22,7 @@ export const SignUpForm = () => {
           error={errors.email?.message}
           type="email"
           placeholder="email"
+          className='mb-2'
         />
 
         <FormField<ISignUp>
@@ -28,6 +30,7 @@ export const SignUpForm = () => {
           error={errors.nickname?.message}
           type="nickname"
           placeholder={'Имя пользователя'}
+          className='mb-2'
         />
 
         <FormField<ISignUp>

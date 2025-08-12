@@ -33,6 +33,7 @@ pre {
   border-style: solid;
   border-color: currentColor;
 }
+button,
 h1,
 h2 {
   font-size: inherit;

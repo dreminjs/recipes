@@ -1,4 +1,4 @@
-import { BasicModal, CloseModalButton, IPostIngredientForm } from '@/shared';
+import { BasicModal, Button, IPostIngredientForm } from '@/shared';
 import { useAtomValue } from 'jotai';
 import { FC } from 'react';
 import { AdminPostIngredientForm } from './admin-post-ingredient-form';
@@ -21,9 +21,15 @@ export const AdminPostIngredientModal: FC<IProps> = ({
     <BasicModal
       isOpen={isPostCharacteristicModalVisible}
       onClose={onToggleVisibility}
+      sx={{
+        maxWidth: 600,
+        margin: "30px auto"
+      }}
     >
       <AdminPostIngredientForm onPost={onPost} />
-      <CloseModalButton onClick={onToggleVisibility} />
+      <Button variant="ghost" onClick={onToggleVisibility}>
+        Закрыть
+      </Button>
     </BasicModal>
   );
 };

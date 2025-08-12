@@ -1,11 +1,11 @@
-import { ICharacteristic } from '@/shared*';
+import { TCharacteristic } from '@/shared';
 import { useAtomValue } from 'jotai';
 import { FC } from 'react';
 import { nationalCuisineAtom, holidayAtom, typeAtom } from 'src/app/stores/post-recipe.store';
 
 type IProps = {
   onClick: () => void;
-} & ICharacteristic;
+} & TCharacteristic;
 
 export const CharacteristicItem: FC<IProps> = ({ title, id, onClick }) => {
   const nationalCuisine = useAtomValue(nationalCuisineAtom);
@@ -19,7 +19,7 @@ export const CharacteristicItem: FC<IProps> = ({ title, id, onClick }) => {
     <li
       className={`flex mb-3 w-full items-center shadow-sm border-amber-300 justify-between p-3 rounded-lg transition-all duration-200 cursor-pointer ${
         isItemChoosed
-          ? 'bg-amber-50 border-2  '
+          ? 'bg-amber-50 border-2'
           : 'bg-white border border-gray-200 hover:border-amber-200 hover:shadow-xs'
       }`}
     >

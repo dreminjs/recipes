@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState, useCallback } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import {
   closestCenter,
@@ -144,6 +144,7 @@ export const UploadRecipePhotoModal: FC<IProps> = ({
         <Button
           onClick={onClick}
           type="button"
+          disabled={items.length >= 5}
           className="w-full bg-amber-100 text-amber-800 hover:bg-amber-200"
         >
           {items.length ? 'Добавить ещё фото' : 'Загрузить фото'}

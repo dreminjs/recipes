@@ -22,16 +22,15 @@ import {
 export const StepsList = () => {
   const [steps, setSteps] = useAtom(stepsAtom);
 
-  const [choosedItemIndex, setChoosedItemIndex] = useState<number | null>(null);
+  const [choosedItemId, setChoosedItemId] = useState<string | null>(null);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
-    setChoosedItemIndex(null);
+    setChoosedItemId(null);
   }, []);
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event;
-      // setActiveId(null);
 
       if (over && active.id !== over.id) {
         setSteps((prevSteps) => {
@@ -60,15 +59,14 @@ export const StepsList = () => {
     >
       <SortableContext items={steps.map((step) => step.id)}>
         <ol className="h-[350px] overflow-y-scroll p-0 pr-2">
-          {steps.map((el, itemIdx) => (
+          {steps.map((el) => (
             <StepsItem
-              idx={itemIdx}
-              onDelete={() =>
-                setSteps((prev) => prev.filter((el, idx) => itemIdx !== idx))
+              onDelete={(id: string) =>
+                setSteps((prev) => prev.filter((el) => el.id !== id ))
               }
               key={el.id + el.content}
-              choosed={choosedItemIndex === itemIdx}
-              onUpdate={(data) => setChoosedItemIndex(data)}
+              choosed={choosedItemId === el.id}
+              onUpdate={(data) => setChoosedItemId(data)}
               {...el}
             />
           ))}

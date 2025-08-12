@@ -1,4 +1,4 @@
-import { Measure, Type } from '@prisma/client';
+import { Ingredient, Measure, Type } from '@prisma/client';
 import { PostCharacteristicFormSchema } from '../schemas/characteristic.schema';
 import { z } from 'zod';
 
@@ -12,19 +12,28 @@ export type IPostCharacteristicForm = z.infer<
   typeof PostCharacteristicFormSchema
 >;
 
-export interface ICharacteristic extends Type {
-  measure?: Measure;
-}
+export type TCharacteristic = Omit<Type, "createdAt" | "isVisbile">
+
+export type TIngredient = Omit<Ingredient, "createdAt" | "isVisbile">
 
 export interface UpdateCharacteristicDto {
   payload: string | boolean;
   id: string;
 }
 
-export type ICharacteristicPayload = Omit<
-  ICharacteristic,
+export type TCharacteristicPayload = Omit<
+  TCharacteristic,
   'createdAt' | 'isVisible'
->;
+> & {
+  amount?: number
+}
+
+export type TIngredientPayload = Omit<
+  TIngredient,
+  'createdAt' | 'isVisible'
+> & {
+  amount: number
+}
 
 export type ICharacteristicsTableCoordinats = {
   coloumnIdx: number;

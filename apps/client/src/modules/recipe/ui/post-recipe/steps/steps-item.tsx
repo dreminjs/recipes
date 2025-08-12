@@ -3,14 +3,14 @@ import { FC, useCallback, useEffect, useRef } from 'react';
 import { UpdateStepItemForm } from './update-step-item-form';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { CharacteristicItemInfo } from '../characteristic-item-info';
 
 export type Props = {
   id: string;
   content: string;
   choosed: boolean;
-  onUpdate: (index: number | null) => void;
-  onDelete: () => void;
-  idx: number;
+  onUpdate: (id: string | null) => void;
+  onDelete: (id: string) => void;
 } & IStep;
 
 export const StepsItem: FC<Props> = ({
@@ -18,7 +18,6 @@ export const StepsItem: FC<Props> = ({
   choosed,
   onUpdate,
   onDelete,
-  idx,
   id,
 }) => {
   const internalRef = useRef<HTMLDivElement | null>(null);
@@ -39,13 +38,8 @@ export const StepsItem: FC<Props> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [choosed, onUpdate]);
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
   const style = !choosed
     ? {
@@ -70,34 +64,20 @@ export const StepsItem: FC<Props> = ({
     >
       {choosed ? (
         <UpdateStepItemForm
-          currentItemIdx={idx}
+          currentItemId={id}
           defualtContentValue={content}
           onHideInput={() => onUpdate(null)}
         />
       ) : (
         <>
-          <div
-            {...(!choosed ? attributes : {})}
-            {...(!choosed ? listeners : {})}
-            ref={setCombinedRefs}
-            className="py-2 px-3 basis-3/4 text-gray-70 w-32"
-          >
-            {content}
-          </div>
-          <div className="flex justify-evenly basis-1/4">
-            <button
-              onClick={() => onUpdate(idx)}
-              className="p-2 text-gray-500 hover:text-blue-500 hover:bg-blue-50 rounded-full transition-colors"
-            >
-              ✏️
-            </button>
-            <button
-              onClick={() => onDelete()}
-              className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
-            >
-              ❌
-            </button>
-          </div>
+          <CharacteristicItemInfo
+            {...{choosed, content}}
+            attributes={attributes}
+            listeners={listeners}
+            setCombinedRefs={setCombinedRefs}
+            onUpdate={() => onUpdate(id)}
+            onDelete={() => onDelete(id)}
+          />
         </>
       )}
     </li>

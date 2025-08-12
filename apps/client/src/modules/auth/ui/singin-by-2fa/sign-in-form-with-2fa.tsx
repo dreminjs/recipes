@@ -34,6 +34,7 @@ export const SigninFormWithTwoFa = () => {
           error={errors.root?.message}
           type={'secret'}
           placeholder={'Секрет-код'}
+          className='mb-2'
         />
         <Button type="submit">Вход</Button>
       </AuthFormLayout>

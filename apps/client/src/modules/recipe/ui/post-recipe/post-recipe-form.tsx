@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useForm } from 'react-hook-form';
-import { Button } from '@/shared';
+import { Button, Func } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FC, useState } from 'react';
-import { useAtomValue } from 'jotai';
-import { holidayAtom, nationalCuisineAtom, typeAtom } from '@/app';
 import { usePostRecipe } from '../../model/api/queries';
 import { RecipeFieldForm } from './recipe-field-form';
 import { RecipeTextareaForm } from './recipe-textarea-form';
@@ -13,19 +11,23 @@ import { IPostRecipeForm } from '../../model/types/create-recipe.dto';
 import { PostRecipeFormSchema } from '../../model/schemas/recipe.schema';
 import { validateCharacteristics } from '../../model/lib/validate-characteristics';
 import { useNotificationActions } from '@/modules/notifications';
+import { useGetRecipeAdditionals } from '../../model/hooks/use-get-recipe-additionals';
+import { ActionsButtons } from './actions-buttons';
 
 interface IProps {
-  onOpenCharacteristicsModal: () => void;
-  onOpenStepsModal: () => void;
+  onOpenCharacteristicsModal: Func
+  onOpenStepsModal: Func
+  onOpenIngredientsModal: Func
 }
 
 export const PostRecipeForm: FC<IProps> = ({
   onOpenCharacteristicsModal,
   onOpenStepsModal,
+  onOpenIngredientsModal
 }) => {
-  const type = useAtomValue(typeAtom);
-  const nationalCuisine = useAtomValue(nationalCuisineAtom);
-  const holiday = useAtomValue(holidayAtom);
+  const { nationalCuisine, type, holiday, hasSteps } =
+    useGetRecipeAdditionals();
+
   const notificationActions = useNotificationActions();
 
   const {
@@ -44,9 +46,8 @@ export const PostRecipeForm: FC<IProps> = ({
     if (
       validateCharacteristics(
         {
-          nationalCuisineId: nationalCuisine?.id,
           typeId: type?.id,
-          holidayId: holiday?.id,
+          hasSteps,
         },
         notificationActions
       )
@@ -64,7 +65,7 @@ export const PostRecipeForm: FC<IProps> = ({
   const [isUploadFileModalVisible, setIsUploadFileModalVisible] =
     useState(false);
 
-  const handleToggleModalVisiblity = () =>
+  const handleToggleUploadFileModalVisiblity = () =>
     setIsUploadFileModalVisible((prev) => !prev);
 
   return (
@@ -72,13 +73,14 @@ export const PostRecipeForm: FC<IProps> = ({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <RecipeFieldForm register={register} error={errors.title} />
         <RecipeTextareaForm register={register} error={errors.description} />
-        <div className="flex gap-2">
-          <Button onClick={onOpenCharacteristicsModal} type="button">
-            Выбрать характеристики
-          </Button>
-          <Button onClick={onOpenStepsModal}>Добавить шаги</Button>
-          <Button onClick={handleToggleModalVisiblity}>Загрузить Фото</Button>
-        </div>
+        <ActionsButtons
+          onOpenCharacteristicsModal={onOpenCharacteristicsModal}
+          onOpenStepsModal={onOpenStepsModal}
+          onToggleUploadFileModalVisiblity={
+            handleToggleUploadFileModalVisiblity
+          }
+          onOpenIngredientsModal={onOpenIngredientsModal}
+        />
         <Button
           type="submit"
           size="md"
@@ -91,7 +93,7 @@ export const PostRecipeForm: FC<IProps> = ({
         register={register}
         error={errors.photos?.message?.toString()}
         isOpen={isUploadFileModalVisible}
-        onClose={handleToggleModalVisiblity}
+        onClose={handleToggleUploadFileModalVisiblity}
         setValue={setValue}
         clearErrors={clearErrors}
       />

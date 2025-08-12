@@ -1,11 +1,11 @@
-import { ICharacteristicPayload, TStep } from '@/shared';
+import { TCharacteristicPayload, TIngredientPayload, TStep } from '@/shared';
 import { atom, createStore } from 'jotai';
 
-export const nationalCuisineAtom = atom<ICharacteristicPayload | null>(null);
-export const typeAtom = atom<ICharacteristicPayload | null>(null);
+export const nationalCuisineAtom = atom<TCharacteristicPayload | null>(null);
+export const typeAtom = atom<TCharacteristicPayload | null>(null);
 
-export const holidayAtom = atom<ICharacteristicPayload | null>(null);
-export const ingredientsAtom = atom<ICharacteristicPayload[]>([]);
+export const holidayAtom = atom<TCharacteristicPayload | null>(null);
+export const ingredientsAtom = atom<TIngredientPayload[]>([]);
 export const stepsAtom = atom<TStep[]>([])
 export const postRecipeStore = createStore();
                                                                 

@@ -9,7 +9,7 @@ import {
 } from '../../api/type/queries';
 import { UpdateCharacteristicDto } from 'src/shared/model/interfaces/characteristic.interface';
 import { useSetAtom } from 'jotai';
-import { activeCellAtom, characteristicsAtom, selectedCharacteristicsIdsAtom } from 'src/app/stores/characteristics.store';
+import { activeCellAtom, selectedCharacteristicsIdsAtom } from 'src/app/stores/characteristics.store';
 
 export const useTypes = ({
   initialTitle,
@@ -37,7 +37,7 @@ export const useTypes = ({
     mutate: deleteTypes,
   } = useDeleteManyTypes();
 
-  const { data: types, isSuccess: typesIsSuccess } =
+  const { data: types, } =
     useGetTypes({ title: value, page: currentPage, limit });
 
   const { mutate: postType } =
@@ -47,17 +47,11 @@ export const useTypes = ({
     setTitle(event.target.value),[])
 
   const handleChangePage = useCallback((newPage: number) => {
-    if (newPage >= 0 && newPage < Math.ceil((types?.countItems || 0) / limit)) {
+    if (newPage >= 0 && newPage < Math.ceil((types?.itemsCount || 0) / limit)) {
       setCurrentPage(newPage);
       setCharacteristicsIds([])
     }
-  },[limit, types?.countItems,setCharacteristicsIds])
-
-  useEffect(() => {
-    if (typesIsSuccess && types?.countItems === 0 && currentPage > 0) {
-      setCurrentPage(0);
-    }
-  }, [types, typesIsSuccess, currentPage]);
+  },[limit, types?.itemsCount,setCharacteristicsIds])
 
   const handleChangeLimit = useCallback((
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -85,7 +79,7 @@ export const useTypes = ({
 
   return {
     title,
-    currentPage: Math.min(currentPage, Math.max(0, Math.ceil((types?.countItems || 0) / limit) - 1)),
+    currentPage: Math.min(currentPage, Math.max(0, Math.ceil((types?.itemsCount || 0) / limit) - 1)),
     onChangePage: handleChangePage,
     limit,
     setLimit,

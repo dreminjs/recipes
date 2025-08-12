@@ -1,4 +1,4 @@
-import { QUERY_KEYS } from '@/shared';
+import { IGetCharacteristicsQueryParameters, QUERY_KEYS } from '@/shared';
 import { Prisma } from '@prisma/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { nationalCuisineService } from './service';
@@ -13,11 +13,7 @@ export const useGetNationalCuisines = ({
   title,
   page,
   limit,
-}: {
-  title?: string;
-  page: number;
-  limit: number;
-}) => {
+}: IGetCharacteristicsQueryParameters) => {
   const setCharacteristics = useSetAtom(characteristicsAtom);
 
   const {

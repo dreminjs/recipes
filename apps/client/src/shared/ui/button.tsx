@@ -3,6 +3,7 @@ import { FC, ButtonHTMLAttributes, ReactNode } from 'react';
 import clsx from 'clsx';
 
 export type ButtonVariant = 'orange' | 'secondary' | 'ghost';
+
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {

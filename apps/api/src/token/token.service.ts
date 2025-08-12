@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenPayload, ITokens } from './token.interface';
 import { PrismaService } from '../prisma';
@@ -13,6 +13,8 @@ export class TokenService {
     private readonly configService: ConfigService
   ) {}
 
+  private logger = new Logger(TokenService.name);
+
   public async deleteOne(
     args: Prisma.RefreshTokenDeleteArgs
   ): Promise<RefreshToken> {
@@ -20,10 +22,10 @@ export class TokenService {
   }
 
   public async generateTokens(payload: ITokenPayload): Promise<ITokens> {
-    const oldToken = await this.findOne({ id: payload.userId });
+    const oldToken = await this.findOne({ userId: payload.userId });
 
     if (oldToken) {
-     await this.deleteOne({
+      await this.deleteOne({
         where: {
           userId: payload.userId,
           token: oldToken.token,

@@ -1,4 +1,4 @@
-import { QUERY_KEYS } from '@/shared';
+import { IGetCharacteristicsQueryParameters, QUERY_KEYS } from '@/shared';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Prisma } from '@prisma/client';
 import { holidayService } from './service';
@@ -13,11 +13,7 @@ export const useGetHolidays = ({
   title,
   page,
   limit,
-}: {
-  title?: string;
-  page: number;
-  limit: number;
-}) => {
+}: IGetCharacteristicsQueryParameters) => {
   const setCharacteristics = useSetAtom(characteristicsAtom);
 
   const {

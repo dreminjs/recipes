@@ -47,9 +47,11 @@ export class HolidayController {
     
     return {
       items,
-      countItems: count,
+      itemsCount: count,
     };
   }
+
+  
   @AllowedRoles(Roles.ADMIN)
   @UseGuards(AccessTokenGuard, RolesGuard)
   @Put(':id')

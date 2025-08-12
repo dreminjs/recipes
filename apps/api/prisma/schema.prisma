@@ -63,9 +63,9 @@ model Recipe {
   steps             Step[]
   type              Type               @relation(fields: [typeId], references: [id])
   typeId            String             @map("type_id")
-  nationalCuisine   NationalCuisine    @relation(fields: [nationalCuisineId], references: [id])
+  nationalCuisine   NationalCuisine?    @relation(fields: [nationalCuisineId], references: [id])
   nationalCuisineId String             @map("national_cuisine_id")
-  holiday           Holiday            @relation(fields: [holidayId], references: [id])
+  holiday           Holiday?            @relation(fields: [holidayId], references: [id])
   holidayId         String             @map("holiday_id")
   recipeComment     RecipeComment[]
   favoriteRecipe    FavoriteRecipe[]
