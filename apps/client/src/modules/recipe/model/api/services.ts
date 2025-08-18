@@ -11,15 +11,16 @@ export const createOne = (data: CreateRecipeDto) => {
   formData.append('typeId', data.typeId);
 
   data.ingredients.forEach((ingredient) => {
-    formData.append(`ingredients`, JSON.stringify(ingredient));
+  formData.append(`ingredients`, JSON.stringify(ingredient));
   });
 
   data.steps.forEach((step) => {
-    formData.append(`steps`, JSON.stringify(step));
+  formData.append(`steps`, JSON.stringify(step));
   });
 
   data.photos.forEach((photo) => {
-    formData.append(`photos`, photo);
+    formData.append(`file`, photo);
   });
+
   return instance.post(`${SERVICE_KEYS.recipes}`, formData);
 };

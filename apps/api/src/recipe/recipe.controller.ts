@@ -3,10 +3,12 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Put,
   Query,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,12 +16,10 @@ import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { FavoriteRecipe, Recipe, User } from '@prisma/client';
 import { RecipeService } from './recipe.service';
 import { CurrentUser } from '../user';
-import { MinioFileNames } from '../minio-client/minio-file-name.decorator';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
 import { IInfiniteScrollResponse } from 'interfaces';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { MinioFileUploadInterceptor } from '../minio-client/minio-file-upload.interceptor';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { MinioClientService } from '../minio-client/minio-client.service';
 
@@ -30,26 +30,31 @@ export class RecipeController {
     private readonly minioClientService: MinioClientService
   ) {}
 
+  private logger = new Logger(RecipeController.name);
+
   @UseGuards(AccessTokenGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('file'), MinioFileUploadInterceptor)
+  @UseInterceptors(FilesInterceptor('file'))
   public async createOne(
     @Body() body: CreateRecipeDto,
+    @UploadedFiles() files: Express.Multer.File[],
     @CurrentUser('id') userId: string,
-    @MinioFileNames() fileNames: string[]
   ): Promise<Recipe> {
-    const recipe = await this.recipeService.createOne({
+
+    const recipePhotoes = await this.minioClientService.uploadFiles(files)
+
+    return await this.recipeService.createOne({
       title: body.title,
       description: body.description,
-      photos: fileNames,
+      photos: recipePhotoes,
       recipeIngredient: {
         createMany: {
-          data: body.ingredients,
+          data: body.ingredients.map(el => JSON.parse(el)),
         },
       },
       steps: {
         createMany: {
-          data: body.steps.map((el) => ({ content: el })),
+          data: body.steps.map((el) => ({ content: JSON.parse(el).content })),
         },
       },
       user: {
@@ -65,21 +70,18 @@ export class RecipeController {
         connect: { id: body.typeId },
       },
     });
-
-    return recipe;
   }
 
   @UseGuards(AccessTokenGuard)
   @Put(':id')
-  @UseInterceptors(FileInterceptor('file'), MinioFileUploadInterceptor)
+  @UseInterceptors(FilesInterceptor('file'))
   public async updateOne(
     @Param('id') id: string,
     @Body() body: UpdateRecipeDto,
     @CurrentUser('id') userId: string,
-    @MinioFileNames() fileNames?: string[]
   ): Promise<Recipe> {
     await this.minioClientService.deleteMany(body?.removedPictures);
-
+    // TODO: LATER implement
     const recipe = await this.recipeService.updateOne(
       {
         title: body.title,

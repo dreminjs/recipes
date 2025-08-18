@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MinioModule, } from 'nestjs-minio-client';
 import { getMinioClientConfig } from './minio-client.config';
 import { MinioClientService } from './minio-client.service';
-import { MinioClientController } from './minio-client.contoller';
 
 @Module({
     imports: [MinioModule.registerAsync({
@@ -12,7 +11,6 @@ import { MinioClientController } from './minio-client.contoller';
         useFactory: getMinioClientConfig
     })],
     providers: [MinioClientService],
-    controllers: [MinioClientController],
     exports: [MinioClientService]
 })
 export class MinioClientModule {}

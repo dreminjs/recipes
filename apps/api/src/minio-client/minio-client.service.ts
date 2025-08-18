@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { MinioService, MinioClient } from 'nestjs-minio-client';
 import * as crypto from 'crypto';
 import { Readable } from 'stream';
-import { BufferedFile } from './minio.interface';
 
 @Injectable()
 export class MinioClientService {
@@ -16,13 +15,13 @@ export class MinioClientService {
     return this.minioService.client;
   }
 
-  private readonly minioPort = this.configService.get<string>('MINIO_PORT');
+  private readonly minioPort = +this.configService.get<string>('MINIO_PORT');
 
   private readonly minioEndpoint = this.configService.get<string>('MINIO_ENDPOINT');
 
   private readonly minioBucket = this.configService.get<string>('MINIO_BUCKET');
 
-  public async uploadFiles(files: BufferedFile[]) {
+  public async uploadFiles(files: Express.Multer.File[]): Promise<string[]> {
     const uploadResults = await Promise.all(
       files.map(async (file) => {
         const hashedFileName = crypto
@@ -36,6 +35,7 @@ export class MinioClientService {
         );
         
         const fileName = hashedFileName + ext;
+
         const metaData = {
           'Content-Type': file.mimetype,
         };
@@ -64,7 +64,7 @@ export class MinioClientService {
       }),
     );
 
-    return uploadResults;
+    return uploadResults.map(el => el.fileName)
   }
 
   async findBuffer(fileName: string): Promise<Readable> {
