@@ -14,8 +14,14 @@ export class RecipeService {
     return await this.prisma.recipe.findFirst({ where });
   }
 
-  public async findMany(args: Prisma.RecipeFindManyArgs = {}): Promise<Recipe[]> {
+  public async findMany(
+    args: Prisma.RecipeFindManyArgs = {}
+  ): Promise<Recipe[]> {
     return await this.prisma.recipe.findMany(args);
+  }
+
+  public async count(where: Prisma.RecipeWhereInput = {}): Promise<number> {
+    return await this.prisma.recipe.count({ where });
   }
 
   public async updateOne(
@@ -27,8 +33,6 @@ export class RecipeService {
       data: dto,
     });
   }
-
-
 
   public async deleteOne(where: Prisma.RecipeWhereUniqueInput): Promise<void> {
     await this.prisma.recipe.delete({ where });

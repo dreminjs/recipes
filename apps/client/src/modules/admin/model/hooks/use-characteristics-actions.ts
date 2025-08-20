@@ -1,4 +1,4 @@
-import { ICharacteristicPayload } from '@/shared';
+import { ICharacteristic } from '@/modules/characteristics';
 import { Characteristics } from 'interfaces';
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
@@ -31,7 +31,7 @@ export const useCharacteristicActions = () => {
 
 
   const handleAddCharacteristic = (
-    payload: ICharacteristicPayload,
+    payload: ICharacteristic,
     characteristicType: Characteristics
   ) => {
     switch (characteristicType) {
@@ -45,7 +45,7 @@ export const useCharacteristicActions = () => {
         setHoliday(payload);
         break;
       default:
-        console.warn(`Unknown characteristic type: ${characteristicType}`);
+        alert(`Unknown characteristic type: ${characteristicType}`);
     }
   };
 

@@ -12,3 +12,7 @@ export interface IErrorResponse {
   message: string
   statusCode: number
 }
+export interface IPaginationQueryParameters {
+  page: number
+  limit: number  
+}

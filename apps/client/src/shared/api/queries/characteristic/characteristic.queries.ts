@@ -10,22 +10,10 @@ export const useGetCharacteristics = ({
 }: {
   type: Characteristics;
 } & IGetCharacteristicsQueryParameters) => {
-  const {
-    data: characteristics,
-    isError: characteristicsIsError,
-    isLoading: characteristicsIsLoading,
-    isSuccess: characteristicsIsSuccess,
-  } = useQuery({
+  return useQuery({
     queryFn: () => findMany({ type, ...query }),
     queryKey: [type, query.page, query.title, query.limit],
   });
-
-  return {
-    characteristics,
-    characteristicsIsError,
-    characteristicsIsLoading,
-    characteristicsIsSuccess,
-  };
 };
 
 

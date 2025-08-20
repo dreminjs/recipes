@@ -53,6 +53,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
     "speakeasy": "^2.0.0",
+    "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",

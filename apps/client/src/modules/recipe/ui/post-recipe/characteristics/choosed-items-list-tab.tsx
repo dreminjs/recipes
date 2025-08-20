@@ -1,4 +1,6 @@
-import { ICharacteristic, measuresObj } from '@/shared/';
+import { ICharacteristic } from '@/modules/characteristics';
+import { measuresObj } from '@/shared/';
+import { Measure } from '@prisma/client';
 import { Characteristics } from 'interfaces';
 import { FC } from 'react';
 
@@ -6,7 +8,7 @@ type IProps = {
   onRemove: () => void;
   id?: string;
   type: Characteristics;
-} & Partial<ICharacteristic>;
+} & (Partial<ICharacteristic> & { measure?: Measure });
 
 export const ChoosedItemsListTab: FC<IProps> = ({
   onRemove,

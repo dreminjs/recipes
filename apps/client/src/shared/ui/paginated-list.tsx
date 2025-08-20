@@ -1,4 +1,5 @@
 import { Pagination } from '@mui/material';
+import clsx from 'clsx';
 import { FC, PropsWithChildren } from 'react';
 
 type Props = {
@@ -14,11 +15,12 @@ type Props = {
     onChangePage: (newPage: number) => void;
     currentPage: number;
   };
+  containerClassName?: string
 } & PropsWithChildren;
 
-export const PaginatedList: FC<Props> = (props) => {
+export const PaginatedList: FC<Props> = ({ ...props }) => {
   return (
-    <div className='flex flex-col items-center'>
+    <div className={clsx(`flex flex-col items-center`,props.containerClassName)}>
       <input
         type="text"
         placeholder="Поиск..."
@@ -27,7 +29,7 @@ export const PaginatedList: FC<Props> = (props) => {
         className="w-full px-4 py-2 outline-none text-amber-900 bg-amber-50 border border-amber-500 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent placeholder-amber-500 transition-all"
       />
       <ul
-        className={`h-[260px] w-full p-0 list-none text-center ${
+        className={` w-full p-0 list-none text-center ${
           props.pagination?.length &&
           props.pagination.length > 4 &&
           'overflow-y-scroll'

@@ -2,7 +2,11 @@ import { FC } from 'react';
 import { TabPanel } from '@mui/lab';
 import { ChoosedItemsListTab } from './choosed-items-list-tab';
 import { useAtom } from 'jotai/react';
-import { typeAtom, nationalCuisineAtom, holidayAtom } from 'src/app/stores/post-recipe.store';
+import {
+  typeAtom,
+  nationalCuisineAtom,
+  holidayAtom,
+} from 'src/app/stores/post-recipe.store';
 
 interface IProps {
   parentNumber: string;

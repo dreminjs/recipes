@@ -13,12 +13,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
-import { FavoriteRecipe, Recipe, User } from '@prisma/client';
+import { FavoriteRecipe, Prisma, Recipe, User } from '@prisma/client';
 import { RecipeService } from './recipe.service';
 import { CurrentUser } from '../user';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
-import { IInfiniteScrollResponse } from 'interfaces';
+import { IInfiniteScrollResponse, IItemsPaginationResponse } from 'interfaces';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { MinioClientService } from '../minio-client/minio-client.service';
@@ -30,18 +30,15 @@ export class RecipeController {
     private readonly minioClientService: MinioClientService
   ) {}
 
-  private logger = new Logger(RecipeController.name);
-
   @UseGuards(AccessTokenGuard)
   @Post()
   @UseInterceptors(FilesInterceptor('file'))
   public async createOne(
     @Body() body: CreateRecipeDto,
     @UploadedFiles() files: Express.Multer.File[],
-    @CurrentUser('id') userId: string,
+    @CurrentUser('id') userId: string
   ): Promise<Recipe> {
-
-    const recipePhotoes = await this.minioClientService.uploadFiles(files)
+    const recipePhotoes = await this.minioClientService.uploadFiles(files);
 
     return await this.recipeService.createOne({
       title: body.title,
@@ -49,7 +46,7 @@ export class RecipeController {
       photos: recipePhotoes,
       recipeIngredient: {
         createMany: {
-          data: body.ingredients.map(el => JSON.parse(el)),
+          data: body.ingredients.map((el) => JSON.parse(el)),
         },
       },
       steps: {
@@ -78,7 +75,7 @@ export class RecipeController {
   public async updateOne(
     @Param('id') id: string,
     @Body() body: UpdateRecipeDto,
-    @CurrentUser('id') userId: string,
+    @CurrentUser('id') userId: string
   ): Promise<Recipe> {
     await this.minioClientService.deleteMany(body?.removedPictures);
     // TODO: LATER implement
@@ -117,39 +114,41 @@ export class RecipeController {
     @Query()
     {
       title,
-      cursor = 0,
+      skip = 0,
       take = 10,
       typeIds,
       nationalCuisineIds,
       holidayIds,
     }: GetRecipesQueryParameters
-  ): Promise<IInfiniteScrollResponse<Recipe>> {
+  ): Promise<IItemsPaginationResponse<Recipe>> {
+    const whereOptions = {
+      ...(typeIds && {
+        type: { id: typeIds instanceof Array ? { in: typeIds } : typeIds },
+      }),
+      ...(holidayIds && {
+        id: holidayIds instanceof Array ? { in: holidayIds } : holidayIds,
+      }),
+      ...(nationalCuisineIds && {
+        id:
+          nationalCuisineIds instanceof Array
+            ? { in: nationalCuisineIds }
+            : nationalCuisineIds,
+      }),
+      ...(title && { title: { contains: title } }),
+    } as Prisma.RecipeWhereInput;
+
     const recipes = await this.recipeService.findMany({
-      where: {
-        ...(typeIds && {
-          type: { id: typeIds instanceof Array ? { in: typeIds } : typeIds },
-        }),
-        ...(holidayIds && {
-          id: holidayIds instanceof Array ? { in: holidayIds } : holidayIds,
-        }),
-        ...(nationalCuisineIds && {
-          id:
-            nationalCuisineIds instanceof Array
-              ? { in: nationalCuisineIds }
-              : nationalCuisineIds,
-        }),
-        ...(title && { title: { contains: title } }),
-      },
+      where: whereOptions,
       include: { recipeIngredient: { include: { ingredient: true } } },
-      skip: cursor,
+      skip,
       take,
     });
 
-    const nextCursor = recipes.length > 0 ? cursor + take : null;
+    const recipesCount = await this.recipeService.count(whereOptions)
 
     return {
       items: recipes,
-      nextCursor,
+      itemsCount: recipesCount,
     };
   }
 

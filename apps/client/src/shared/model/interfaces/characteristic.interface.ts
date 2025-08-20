@@ -1,11 +1,10 @@
-import { Ingredient, Measure, Type } from '@prisma/client';
+import { Ingredient, Type } from '@prisma/client';
 import { PostCharacteristicFormSchema } from '../schemas/characteristic.schema';
 import { z } from 'zod';
+import { IPaginationQueryParameters } from './api.interface';
 
-export interface IGetCharacteristicsQueryParameters {
+export interface IGetCharacteristicsQueryParameters extends IPaginationQueryParameters {
   title?: string;
-  page: number;
-  limit: number;
 }
 
 export type IPostCharacteristicForm = z.infer<

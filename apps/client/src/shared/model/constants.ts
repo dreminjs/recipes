@@ -1,10 +1,10 @@
 import { IOption } from './interfaces/ingredient.interface';
-import {
-  IChoosedItemTabContent,
-  IChooseItemTabContent,
-} from './interfaces/types';
+import { IChooseItemTabContent } from './interfaces/types';
 
 export const API_URL = 'http://localhost:3001/api';
+
+export const MINIO_URL =
+  'http://localhost:9001/api/v1/buckets/index/objects/download?preview=true&prefix';
 
 export const QUERY_KEYS = {
   signup: 'signup',

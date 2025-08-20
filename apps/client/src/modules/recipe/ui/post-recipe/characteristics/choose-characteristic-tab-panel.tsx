@@ -1,4 +1,4 @@
-import { ChooseItemListTab } from '@/modules/admin/ui/characteristics/choose-item-list-tab';
+import { ChooseItemListTab } from '@/modules/recipe/ui/post-recipe/characteristics/choose-item-list-tab';
 import { TabsLayout } from '@/shared/ui/tabs-layout';
 import { FC, useState } from 'react';
 import { CustomTabList } from '../custom-tab-list';

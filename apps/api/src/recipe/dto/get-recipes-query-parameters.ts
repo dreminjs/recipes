@@ -12,7 +12,7 @@ export class GetRecipesQueryParameters {
     title: string
 
     @Transform(({ value }) => parseInt(value, 10))
-    cursor: number
+    skip: number
 
     @Transform(({ value }) => parseInt(value, 10))
     take: number

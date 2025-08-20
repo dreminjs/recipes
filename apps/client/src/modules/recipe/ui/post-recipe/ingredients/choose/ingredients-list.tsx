@@ -29,6 +29,7 @@ export const IngredietsList = () => {
         onChangePage,
         currentPage,
       }}
+      containerClassName='h-[380px]'
     >
       {data?.items.map((el) => (
         <IngredientItem
