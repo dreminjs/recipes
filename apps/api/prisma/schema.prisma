@@ -19,6 +19,8 @@ enum Measure {
   KG
   G
   N
+  tbsp 
+  tsp 
 }
 
 model User {

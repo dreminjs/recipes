@@ -23,7 +23,7 @@ export const RecipePhotoes: FC<IProps> = ({ urls }) => {
             <Image
               width={270}
               height={200}
-              className="object-cover w-[270px] h-[200px]"
+              className="object-cover w-[270px] h-[200px] rounded-md"
               src={`${MINIO_URL}=${el}`}
               alt={'recipe photo'}
             />

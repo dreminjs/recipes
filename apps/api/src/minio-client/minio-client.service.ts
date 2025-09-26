@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MinioService, MinioClient } from 'nestjs-minio-client';
 import * as crypto from 'crypto';
@@ -20,6 +20,8 @@ export class MinioClientService {
   private readonly minioEndpoint = this.configService.get<string>('MINIO_ENDPOINT');
 
   private readonly minioBucket = this.configService.get<string>('MINIO_BUCKET');
+
+  private logger = new Logger(MinioClientService.name)
 
   public async uploadFiles(files: Express.Multer.File[]): Promise<string[]> {
     const uploadResults = await Promise.all(
@@ -56,6 +58,9 @@ export class MinioClientService {
             size: file.size,
           };
         } catch (error) {
+
+          this.logger.log(error)
+
           throw new HttpException(
             `Error uploading file ${file.originalname}: ${error.message}`,
             HttpStatus.BAD_REQUEST,
@@ -63,6 +68,8 @@ export class MinioClientService {
         }
       }),
     );
+
+    this.logger.log(uploadResults)
 
     return uploadResults.map(el => el.fileName)
   }

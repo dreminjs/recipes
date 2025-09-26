@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma';
 import { JwtService } from '@nestjs/jwt';
-import { PasswordResetToken, Prisma } from '@prisma/client';
+import { PasswordResetToken, Prisma, User } from '@prisma/client';
+import { UserService } from '../user';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class PasswordService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly userService: UserService,
+    private readonly mailService: MailService
   ) {}
 
   async findOne(args: Prisma.PasswordResetTokenFindFirstArgs) {
@@ -18,7 +22,11 @@ export class PasswordService {
     await this.prisma.passwordResetToken.delete({ where: { userId } });
   }
 
-  async createResetRequest(userId: string): Promise<PasswordResetToken> {
+  async createResetRequest({
+    id: userId,
+    email,
+    nickname,
+  }: Pick<User, 'email' | 'nickname' | 'id'>): Promise<PasswordResetToken> {
     const token = this.jwtService.sign({ sub: userId }, { expiresIn: '15m' });
 
     const prevPasswordResetToken = await this.findOne({ where: { userId } });
@@ -30,16 +38,31 @@ export class PasswordService {
     const expiresAt = new Date();
     expiresAt.setMinutes(expiresAt.getMinutes() + 15);
 
-    return await this.prisma.passwordResetToken.create({
-      data: {
-        user: {
-          connect: {
-            id: userId,
+    const createPasswordResetToken =
+      await this.prisma.passwordResetToken.create({
+        data: {
+          user: {
+            connect: {
+              id: userId,
+            },
           },
+          token,
+          expiresAt,
         },
-        token,
-        expiresAt,
+      });
+
+    await this.mailService.sendResetPasswordMail(
+      { email, nickname },
+      createPasswordResetToken.token
+    );
+
+    await this.userService.updateOne(
+      {
+        email,
       },
-    });
+      { isTwoFactorEnabled: null }
+    );
+
+    return createPasswordResetToken;
   }
 }

@@ -35,7 +35,7 @@ export const AdminRecipesList = () => {
         onChangePage,
         currentPage: page,
       }}
-      divHeight='70vh'
+      listClassName='h-[62vh]'
     >
       {data?.items.map((el) => (
         <RecipesItem key={el.id} {...el} />

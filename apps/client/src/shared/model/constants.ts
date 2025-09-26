@@ -57,6 +57,8 @@ export const measuresObj = {
   KG: 'кг',
   G: 'гр',
   N: 'шт',
+  tbsp: "Ст. лошка",
+  tsp: "Ч. лошка"
 } as const;
 
 export const ACTIONS_KEYS = {
@@ -79,4 +81,5 @@ export const measuresOptions = [
   { label: 'кг', value: 'KG' },
   { label: 'гр', value: 'G' },
   { label: 'шт', value: 'N' },
+  {label: ""}
 ] as IOption[];

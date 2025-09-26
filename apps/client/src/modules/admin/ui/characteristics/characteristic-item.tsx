@@ -8,9 +8,9 @@ type IProps = {
 } & TCharacteristic;
 
 export const CharacteristicItem: FC<IProps> = ({ title, id, onClick }) => {
-  const nationalCuisine = useAtomValue(nationalCuisineAtom);
-  const holiday = useAtomValue(holidayAtom);
-  const type = useAtomValue(typeAtom);
+  const nationalCuisine = useAtomValue(nationalCuisineAtom);  
+  const holiday = useAtomValue(holidayAtom);  
+  const type = useAtomValue(typeAtom);  
 
   const isItemChoosed =
     type?.id == id || holiday?.id === id || nationalCuisine?.id === id;
@@ -20,12 +20,12 @@ export const CharacteristicItem: FC<IProps> = ({ title, id, onClick }) => {
       className={`flex mb-3 w-full items-center shadow-sm border-amber-300 justify-between p-3 rounded-lg transition-all duration-200 cursor-pointer ${
         isItemChoosed
           ? 'bg-amber-50 border-2'
-          : 'bg-white border border-gray-200 hover:border-amber-200 hover:shadow-xs'
+          : 'border border-gray-200 hover:border-amber-200 hover:shadow-xs'
       }`}
     >
       <button
         type="button"
-        className={`flex-1 text-left text-base bg-transparent ${
+        className={`flex-1 text-left bg-transparent text-base ${
           isItemChoosed ? 'font-semibold text-amber-800' : 'text-gray-800'
         }`}
         onClick={onClick}

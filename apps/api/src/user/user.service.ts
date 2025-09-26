@@ -7,6 +7,8 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   public async createOne(dto: Prisma.UserCreateInput): Promise<User> {
+    const link = crypto.randomUUID();
+    
     return await this.prisma.user.create({
       data: { ...dto },
     });

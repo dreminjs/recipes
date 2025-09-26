@@ -1,9 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenPayload, ITokens } from './token.interface';
 import { PrismaService } from '../prisma';
 import { Prisma, RefreshToken } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
+import { Response } from 'express';
+import { IStandardResponse } from 'interfaces';
 
 @Injectable()
 export class TokenService {
@@ -13,15 +15,16 @@ export class TokenService {
     private readonly configService: ConfigService
   ) {}
 
-  private logger = new Logger(TokenService.name);
-
   public async deleteOne(
     args: Prisma.RefreshTokenDeleteArgs
   ): Promise<RefreshToken> {
     return await this.prisma.refreshToken.delete(args);
   }
 
-  public async generateTokens(payload: ITokenPayload): Promise<ITokens> {
+  public async generateTokens(
+    payload: ITokenPayload,
+    res: Response
+  ): Promise<IStandardResponse> {
     const oldToken = await this.findOne({ userId: payload.userId });
 
     if (oldToken) {
@@ -51,10 +54,7 @@ export class TokenService {
       token: refreshToken,
     });
 
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return this.buildTokensResponse({ accessToken, refreshToken }, res);
   }
 
   public async validateToken(token: string): Promise<ITokenPayload> {
@@ -77,5 +77,26 @@ export class TokenService {
 
   public async deleteRefreshToken(where: Prisma.RefreshTokenWhereUniqueInput) {
     return await this.prisma.refreshToken.delete({ where });
+  }
+
+  private buildTokensResponse(dto: ITokens, res: Response): IStandardResponse {
+    res.cookie('accessToken', dto.accessToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+
+    res.cookie('refreshToken', dto.refreshToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+
+    return {
+      message: 'успешно!',
+      success: true,
+    };
   }
 }

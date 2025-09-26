@@ -10,9 +10,9 @@ export const getMailConfig = async (
       host: configService.get<string>("MAIL_HOST") || "smtp.gmail.com",
       port: +configService.get<number>("MAIL_PORT"), 
       secure: +configService.get<number>("MAIL_PORT") === 465, 
-      auth:{
+      auth: {
         user: configService.get<string>("USER_APP_EMAIL"),
-        pass: configService.get<string>("USER_APP_PASS")
+        pass: configService.get<string>("USER_APP_PASS"),
       }
     },
     defaults: {

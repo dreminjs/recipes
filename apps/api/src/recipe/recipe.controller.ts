@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
   Param,
   Post,
   Put,
@@ -18,7 +17,7 @@ import { RecipeService } from './recipe.service';
 import { CurrentUser } from '../user';
 import { AccessTokenGuard } from '../token';
 import { GetRecipesQueryParameters } from './dto/get-recipes-query-parameters';
-import { IInfiniteScrollResponse, IItemsPaginationResponse } from 'interfaces';
+import { IItemsPaginationResponse } from 'interfaces';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { MinioClientService } from '../minio-client/minio-client.service';
@@ -139,12 +138,22 @@ export class RecipeController {
 
     const recipes = await this.recipeService.findMany({
       where: whereOptions,
-      include: { recipeIngredient: { include: { ingredient: true } } },
+      include: {
+        type: true,
+        nationalCuisine: true,
+        holiday: true,
+        _count: {
+          select: {
+            steps: true,
+            recipeIngredient: true,
+          },
+        },
+      },
       skip,
       take,
     });
 
-    const recipesCount = await this.recipeService.count(whereOptions)
+    const recipesCount = await this.recipeService.count(whereOptions);
 
     return {
       items: recipes,

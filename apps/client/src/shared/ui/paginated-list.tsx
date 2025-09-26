@@ -16,11 +16,12 @@ type Props = {
     currentPage: number;
   };
   containerClassName?: string
+  listClassName?: string
 } & PropsWithChildren;
 
 export const PaginatedList: FC<Props> = ({ ...props }) => {
   return (
-    <div className={clsx(`flex flex-col items-center`,props.containerClassName)}>
+    <div className={clsx(`flex flex-col items-center`, props.containerClassName)}>
       <input
         type="text"
         placeholder="Поиск..."
@@ -29,11 +30,11 @@ export const PaginatedList: FC<Props> = ({ ...props }) => {
         className="w-full px-4 py-2 outline-none text-amber-900 bg-amber-50 border border-amber-500 rounded-lg focus:ring-2 focus:ring-amber-700 focus:border-transparent placeholder-amber-500 transition-all"
       />
       <ul
-        className={` w-full p-0 list-none text-center ${
+        className={`w-full p-0 list-none text-center ${
           props.pagination?.length &&
           props.pagination.length > 4 &&
           'overflow-y-scroll'
-        }`}
+        } ${clsx(props.listClassName)}`}
       >
         {props.children}
         {props.pagination.length === 0 && <li>ничего не найдено :(</li>}
