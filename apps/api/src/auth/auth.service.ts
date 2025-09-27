@@ -27,13 +27,7 @@ export class AuthService {
   ) {}
 
   public async validateUser({ email, password }: SigninDto): Promise<User> {
-    const user = await this.userService.findOne({
-      email,
-    });
-
-    if (!user?.hashPassword) {
-      throw new NotFoundException('Такого пользователя не существует!');
-    }
+    const user = await this.ensureUserExists(email);
 
     const isPasswordValid = comparePassword({
       hashPassword: user.hashPassword,
@@ -127,21 +121,18 @@ export class AuthService {
     return user;
   }
 
-  async checkUserExists(email: string) {
+  async ensureUserDoesNotExist(email: string) {
     const oldUser = await this.userService.findOne({ email });
-
     if (oldUser) {
       throw new BadRequestException(authMessages.userExists);
     }
   }
 
-  async checkUserIsnotExists(email: string): Promise<User> {
+  async ensureUserExists(email: string): Promise<User> {
     const oldUser = await this.userService.findOne({ email });
-
     if (!oldUser) {
       throw new BadRequestException(authMessages.userIsNotExists);
     }
-
-    return oldUser
+    return oldUser;
   }
 }

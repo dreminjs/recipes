@@ -18,8 +18,23 @@ export class PasswordService {
     return await this.prisma.passwordResetToken.findFirst(args);
   }
 
+  async findOneAndDelete(userId: string) {
+    const token = await this.findOne({ where: { user: { id: userId } } });
+
+    if(token){
+      this.deleteOne(token.userId)
+    }
+
+  }
+
   async deleteOne(userId: string): Promise<void> {
-    await this.prisma.passwordResetToken.delete({ where: { userId } });
+    const token = await this.prisma.passwordResetToken.delete({
+      where: { userId },
+    });
+
+    if (token) {
+      await this.deleteOne(userId);
+    }
   }
 
   async createResetRequest({

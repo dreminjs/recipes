@@ -43,7 +43,7 @@ export class AuthController {
     @Body() { email, nickname, ...body }: SignupDto,
     @Res({ passthrough: true }) res: Response
   ): Promise<IStandardResponse> {
-    await this.authService.validateSignupRequest(email);
+    await this.authService.ensureUserDoesNotExist(email);
 
     const newUser = await this.authService.signup({ email, nickname, ...body });
 
@@ -98,15 +98,9 @@ export class AuthController {
   public async requestResetPassword(
     @Body('email') email: string
   ): Promise<IStandardResponse> {
-    const { id: userId, nickname } = await this.authService.checkUserIsnotExists(email);
+    const { id: userId, nickname } = await this.authService.ensureUserExists(email);
 
-    const passwordResetToken = await this.passwordService.findOne({
-      where: { userId },
-    });
-
-    if (passwordResetToken) {
-      await this.passwordService.deleteOne(userId);
-    }
+    await this.passwordService.findOneAndDelete(userId)
 
     await this.passwordService.createResetRequest({id: userId, nickname, email});
 
@@ -162,6 +156,7 @@ export class AuthController {
       success: true,
       message: 'письмо отправленно',
     };
+
   }
 
   @Get('2fa/enable/:userId')
@@ -231,7 +226,4 @@ export class AuthController {
   public async activateAccount(@Param('link') link: string): Promise<void> {
     await this.userService.updateOne({ link }, { isActived: true });
   }
-}
-function checkUserIsnotExists() {
-  throw new Error('Function not implemented.');
 }
